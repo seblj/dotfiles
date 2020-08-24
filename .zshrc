@@ -89,7 +89,7 @@ SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias git-create="~/contributor/git_create/git_create.sh"
 alias share="~/scripts/share.sh"
 alias report="~/scripts/report.sh"
@@ -97,3 +97,6 @@ alias vmstart="VBoxManage startvm "Ubuntu" --type headless"
 alias vmpause="VBoxManage controlvm "Ubuntu" pause --type headless"
 alias vmresume"VBoxManage controlvm "Ubuntu" resume --type headless"
 alias vmstop="VBoxManage controlvm "Ubuntu" poweroff --type headless"
+alias weather="python3 ~/projects/weatherscrape.py"
+alias table="python3 ~/projects/table.py"
+alias icon="~/scripts/replace_icons.sh"

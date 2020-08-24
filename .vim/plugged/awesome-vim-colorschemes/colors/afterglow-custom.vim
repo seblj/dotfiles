@@ -1,3 +1,4 @@
+
 set background=dark
 if version > 580
     hi clear
@@ -370,21 +371,25 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("pythonImportedFuncDef", s:orange, "", "")
     call <SID>X("pythonImportedModule", s:orange, "", "")
     call <SID>X("pythonImportedObject", s:orange, "", "")
+	call <SID>X("pythonClassVar", s:wine, "", "")
+	" call <SID>X("pythonStatement", s:wine, "", "")
+	" call <SID>X("pythonError", s:wine, "", "")
+	" call <SID>X("pythonStrTemplate", s:wine, "", "")
 
-	call <SID>X("semshiSelf", s:wine, "", "")
-	call <SID>X("semshiGlobal", s:orange, "", "")
-	call <SID>X("semshiParameter", s:wine, "", "")
-	call <SID>X("semshiParameterUnused", s:wine, "", "")
-	call <SID>X("semshiFree", s:wine, "", "")
-	call <SID>X("semshiBuiltin", s:blue, "", "")
-	call <SID>X("semshiUnresolved", s:wine, "", "")
-	call <SID>X("semshiSelected", s:wine, "", "")
-	call <SID>X("semshiErrorSign", s:wine, "", "")
-	call <SID>X("semshiErrorChar", s:wine, "", "")
+	" call <SID>X("semshiSelf", s:wine, "", "")
+	" call <SID>X("semshiGlobal", s:orange, "", "")
+	" call <SID>X("semshiParameter", s:wine, "", "")
+	" call <SID>X("semshiParameterUnused", s:wine, "", "")
+	" call <SID>X("semshiFree", s:wine, "", "")
+	" call <SID>X("semshiBuiltin", s:blue, "", "")
+	" call <SID>X("semshiUnresolved", s:wine, "", "")
+	" call <SID>X("semshiSelected", s:wine, "", "")
+	" call <SID>X("semshiErrorSign", s:wine, "", "")
+	" call <SID>X("semshiErrorChar", s:wine, "", "")
 
-	call <SID>X("semshiAttribute", s:wine, "", "")
-	call <SID>X("semshiLocal", s:blue, "", "")
-	call <SID>X("semshiImported", s:wine, "", "")
+	" call <SID>X("semshiAttribute", s:wine, "", "")
+	" call <SID>X("semshiLocal", s:blue, "", "")
+	" call <SID>X("semshiImported", s:wine, "", "")
 
     " JavaScript Highlighting
     call <SID>X("javaScriptEndColons", s:foreground, "", "")

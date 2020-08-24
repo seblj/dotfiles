@@ -1,7 +1,7 @@
 [user]
+	username = seblj
 	email = seb.l.j@hotmail.com
 	name = Sebastian Lyng Johansen
-	username = seblj
 
 [include]
 	path = ~/.gitconfig.local
@@ -21,7 +21,6 @@
 	start = !git checkout master && git pull origin
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	sa = submodule add
-	amend = git commit -a --amend --no-edit
 
 [merge]
 	tool = vimdiff
