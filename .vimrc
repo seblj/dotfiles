@@ -1,32 +1,53 @@
+"" Fix for not overwriting indentation settings
+"" Must be initialized before plugin
+let g:polyglot_disabled = ['autoindent']
+
 call plug#begin()
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'justinmk/vim-syntax-extra'	   
-Plug 'w0rp/ale'
-" Plug 'Shougo/echodoc.vim'
-" Plug 'zchee/deoplete-clang'
-Plug 'ap/vim-css-color'
-Plug 'sheerun/vim-polyglot'
-Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-commentary'
-Plug 'rhysd/accelerated-jk'
-Plug 'terryma/vim-multiple-cursors'
 
-Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-airline/vim-airline'
+"    "Syntax and colorscheme
+    Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'justinmk/vim-syntax-extra'	   
+    Plug 'ap/vim-css-color'
+    Plug 'sheerun/vim-polyglot'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'airblade/vim-gitgutter'
+    "Statusline
+    Plug 'vim-airline/vim-airline'
 
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'mileszs/ack.vim'
-Plug 'vim-scripts/taglist.vim'	
-Plug 'ludovicchabant/vim-gutentags'
+    " Language server
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neoclide/coc-python'
+    " Plug 'dense-analysis/ale'
 
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
+    " Git
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+
+    " Tags and highlight with tags
+    Plug 'ludovicchabant/vim-gutentags'
+    Plug 'vim-scripts/TagHighlight'
+    Plug 'vim-scripts/taglist.vim'	
+
+    " Filetree
+    Plug 'scrooloose/nerdtree'
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'ryanoasis/vim-devicons'
+
+    " Search
+    Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'mileszs/ack.vim'
+
+    Plug 'lambdalisue/suda.vim'             " Write with sudo
+    Plug 'Raimondi/delimitMate'             " Auto pairs of surrounds
+    Plug 'tpope/vim-commentary'             " Easy comment
+    Plug 'rhysd/accelerated-jk'             " Faster jk
+    Plug 'terryma/vim-multiple-cursors'     " Multiple cursor from sublime
+    Plug 'tpope/vim-surround'               " Surround modification
+
+    " Latex
+    Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+    Plug 'lervag/vimtex'
+
 call plug#end()
 
 syntax on
@@ -37,8 +58,10 @@ set splitright
 set cmdheight=2
 set clipboard=unnamedplus
 set mouse=a
-set shiftwidth=4
 set tabstop=4
+set expandtab
+set softtabstop=4
+set shiftwidth=4
 set noswapfile
 set number relativenumber
 set completeopt=menu,noinsert
@@ -47,190 +70,215 @@ set foldmethod=indent
 set foldlevelstart=20
 set ignorecase
 set smartcase
+set cino+=L0
 
-" Allow larger undo history
+"" Allow larger undo history
 set undofile                       " use an undo file
 set undodir=$HOME/.vim/undo        " undo file path
 set undolevels=1000
 set undoreload=10000
+
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c
+autocmd BufRead,BufNewFile *.tex setlocal spell
 
-" Make echodoc show arguments in float window
-
-" " Or, you could use neovim's floating text feature.
-" let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'floating'
-" " To use a custom highlight for the float window,
-" " change Pmenu to your highlight group
-" highlight link EchoDocFloat Pmenu
-
-" let g:deoplete#enable_at_startup = 1
-" let g:echodoc_enable_at_startup = 1
-" let g:deoplete#sources#clang#libclang_path = '/usr/local/Cellar/llvm/9.0.1/lib/libclang.dylib'
-" call deoplete#custom#source('clang', 'rank', 9999)
-
+" Indent after enter with autopairs
 let g:delimitMate_expand_cr = 1
 
 " Python settings
 let g:python_highlight_all = 1 
 let g:python_highlight_space_errors = 0
 
-" Nerdtree settings
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-
-" Semshi settings
-" let g:semshi#excluded_hl_groups = ['global', 'local']
-let g:semshi#mark_selected_nodes = 0
-let g:semshi#error_sign = 0
-let g:semshi#update_delay_factor = 0.01
-let g:semshi#excluded_hl_groups = ['local', 'attribute', 'imported']
-
 " Airline settings
 let g:airline_section_warning = 0
-let g:airlin#extensions#branch#enabled = 1
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
 let g:airline#extensions#ale#enabled = 1
+
+" Tabline settings
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_splits = 0
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#tab_min_count = 2
+let g:airline#extensions#tabline#show_tab_type = 0
+
 "Font for symbols"
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
+    let g:airline_symbols = {}
+    let g:airline_symbols.dirty=''
+    let g:airline_symbols.notexists = ''
 endif
-
 
 "Ale settings"
 " always have a column, and only lint on save"
 
-let g:ale_linters = {
-\   'c': ['clang'],
-\}
-let g:ale_sign_column_always = 0
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-let g:ale_c_parse_makefile = 1
+" let g:ale_linters = {
+" 			\   'c': ['clang'],
+" 			\}
 
-" Tlist settings
-let g:Tlist_Close_On_Select = 1
-let g:Tlist_GainFocus_On_ToggleOpen = 1
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_sign_column_always = 0
+" let g:ale_sign_highlight_linenrs = 1
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_save = 1
+" let g:ale_c_parse_makefile = 1
+" let g:ale_sign_error = '✘'
+" let g:ale_sign_warning = ''
+" let g:ale_sign_info = ''
+" " Set color for line number and error sign to red, and warning sign to orange
+" highlight ALEErrorSignLineNr ctermbg=NONE ctermfg=red
+" highlight ALEErrorSign ctermbg=NONE ctermfg=red
+" highlight ALEWarningSign ctermbg=NONE ctermfg=130
 
-"Nerdtree settings
+" Nerdtree settings
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeChDirMode = 2
 packloadall
 silent! helptags ALL
 
+"Latex
+let g:livepreview_cursorhold_recompile = 0 "recompile when saving"
+let g:livepreview_previewer = 'open -a Skim'
+let g:tex_flavor = 'latex'
+let g:vimtex_quickfix_mode = 0
+let g:vimtex_view_general_viewer = 'open -a Skim'
+
+" Clean latex files when quitting file
+augroup vimtex_config
+    au!
+    au User VimtexEventQuit call vimtex#compiler#clean(0)
+augroup END
+
+" Set leaderkeys
 let mapleader = " "
+let maplocalleader = '\'
 
 " Mappings
-vnoremap < <gv
-vnoremap > >gv
 
-nnoremap <C-i> gg=G
+" Show full diagnostic message
+nmap <silent><leader>d <Plug>(coc-diagnostic-info)
 
-nnoremap gd <C-]>
-vnoremap gd <C-]>
+" Add syntax for Type with tags
+nmap <silent><leader>us :UpdateTypesFileOnly<CR>
 
-nnoremap gb <C-t>
-vnoremap gb <C-t>
+" Start preview for latex
+" nmap <silent><leader>sp :LLPStartPreview<CR>
 
-" Settings for Coc
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gy <Plug>(coc-type-definition)
+" Focus on single split without quiting the others
+nmap <leader>o <C-w>_ <C-w>\|
+
+nmap <leader>= <C-w>=
+
+" Ack
+nmap <leader>a :Ack 
+
+" Indent file
+nmap <leader>i gg=G
+
+" Easy replace word
+nmap <leader>s :%s//gI<Left><Left><Left>
+
+" Folding
+nmap <leader>f za
+
+" Unhighlight word
+nmap <silent><leader>l :nohl<CR>
+
+" Open new tab
+nmap <silent><leader>t :tabedit<CR>
+
+" Tab or shift-tab to go to next or previous tab
+nmap <silent><TAB> gt
+nmap <silent><S-TAB> gT
+
+" Open fzf with Ctrl+p
+map <silent><C-p> :update <bar> :Files<CR>
+
+" Keep visual when indenting
+vmap < <gv
+vmap > >gv
+
+" Toggle taglist
+nmap <silent>tl :TlistToggle<CR>1<C-w>w
+
+" Go to function using tags
+nmap gd <C-]>
+vmap gd <C-]>
+
+" Go back from function using tags
+nmap gb <C-t>
+vmap gb <C-t>
+
+" Coc.nvim settings
 nmap <silent> gr <Plug>(coc-references)
-inoremap <silent><expr> <TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" Complete the word and not the snippet and also enhanced <CR> experience
-" auto pairs.
-" inoremap <silent><expr> <CR> pumvisible() ? "\<C-n><C-p>": "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" imap <expr> <cr> pumvisible() ? "\<C-n><C-p>" : "\<C-g>u\<Plug>delimitMateCR"
-
-" Alias replace all to S
-nnoremap <leader>s :%s//gI<Left><Left><Left>
-
-" map <leader>tn :tabnew<cr>
-" map <leader>to :tabonly<cr>
-" map <leader>tc :tabclose<cr>
-" map <leader>tm :tabmove 
-" map <leader>t<leader> :tabnext 
-
+imap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
 "Ctrl + hjkl to move to different windows
-nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+
+" Shift + arrow keys to resize split
+nmap <silent><S-Right> :vertical resize -1<CR>
+nmap <silent><S-Left> :vertical resize +1<CR>
+nmap <silent><S-Up> :res +1<CR>
+nmap <silent><S-Down> :res -1<CR>
 
 "Alt + j = move line down
-nnoremap √ :m.+1<CR>==
-vnoremap √ :m '>+1<CR>gv=gv
-inoremap √ <Esc>:m .+1<CR>==gi
+nmap <silent>√ :m.+1<CR>==
+vmap <silent>√ :m '>+1<CR>gv=gv
+imap <silent>√ <Esc>:m .+1<CR>==gi
 
 "Alt + k = move line up
-nnoremap ª :m.-2<CR>==
-vnoremap ª :m '<-2<CR>gv=gv
-inoremap ª <Esc>:m .-2<CR>==gi
+nmap <silent>ª :m.-2<CR>==
+vmap <silent>ª :m '<-2<CR>gv=gv
+imap <silent>ª <Esc>:m .-2<CR>==gi
 
-"Wrap selected inside:
-vnoremap ( d<ESC>i()<ESC>P
-vnoremap [ d<ESC>i[]<ESC>P
-vnoremap { d<ESC>i{}<ESC>P
-vnoremap " d<ESC>i""<ESC>P
-vnoremap ' d<ESC>i''<ESC>P
+" Nerdtree setting
+nmap <silent>tnt :NERDTreeToggle<CR>
+nmap <silent>rnt :NERDTreeRefreshRoot<CR>
 
-"Fold with space
-nnoremap <leader>f za
+" Shift + j/k to jump number of lines up/down
+nmap J 25j
+nmap K 25k
 
-
-nnoremap tl :TlistToggle<CR>
-" nnoremap tlc :TlistClose<CR>
-
-"nt to go to nt"
-nnoremap nt 1<C-w>w
-"tnt to toggle nerdtree"
-nnoremap tnt :NERDTreeToggle<CR>
-"rnt to refresh nerdtree root"
-nnoremap rnt :NERDTreeRefreshRoot<CR>
-
-"shift + j/k = jump 25 lines up/down
-nnoremap <S-J> 25j
-nnoremap <S-K> 25k
-
-" Open new tab
-nnoremap <C-t> :tabedit<CR>
-
-"ctr + l = unhighlight words
-nnoremap <silent> ﬁ :nohl<CR><C-l>
-
-nnoremap zz :update<cr>
+vmap J 25j
+vmap K 25k
 
 " Accelerate j and k
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
+" Write file with sudo
+cnoreabbrev w!! w suda://%
 
-"quit nvim with capital letters.
+" Quit nvim with capital letters
 command! -bang Q q<bang>
 command! -bang W w<bang>
+
 command! -bang WQ wq<bang>
 command! -bang Wq wq<bang>
 
-"open fzf with Ctrl+p
-map <C-p> :update <bar> :Files<CR>
+command! -bang Wqa wqa<bang>
+command! -bang WQa wqa<bang>
+command! -bang WQA wqa<bang>
 
-" augroup remember_folds
-" 	autocmd!
-" 	autocmd BufWinLeave * mkview
-" 	autocmd BufWinEnter * silent! loadview
-" augroup END
+command! -bang Wa wa<bang>
+command! -bang WA wa<bang>
 
-autocmd ColorScheme * call MyCustomHighlights()
+command! -bang Qa qa<bang>
+command! -bang QA qa<bang>
+
+

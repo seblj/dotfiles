@@ -2,28 +2,31 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/oh-my-zsh"
-ZSH_THEME="spaceship"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export PATH=$PATH:~/programs/UPC/bin
+export UPCXX_INSTALL="$HOME/programs/UPC"
 
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="spaceship"
+
 #Remove % at end of print when not using \n
 PROMPT_EOL_MARK=""
 
-#Alias
-
-alias vim="nvim"
-
 #Change cursor
-_fix_cursor() {
-   echo -ne '\e[5 q'
-}
+# _fix_cursor() {
+#    echo -ne '\e[5 q'
+# }
 
-precmd_functions+=(_fix_cursor)
+# precmd_functions+=(_fix_cursor)
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -35,7 +38,9 @@ precmd_functions+=(_fix_cursor)
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
 
-plugins=(git zsh-z)
+plugins=(git zsh-z tmux)
+
+# ZSH_TMUX_AUTOSTART=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -45,7 +50,7 @@ source $ZSH/oh-my-zsh.sh
   SPACESHIP_PROMPT_ORDER=(
   user
   time     #
-  vi_mode  # these sections will be
+  # vi_mode  # these sections will be
   host     #
   char
   dir
@@ -86,13 +91,17 @@ SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 # SPACESHIP_GIT_STATUS_SUFFIX=""
 
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
+# Alias
+alias vim="nvim"
+alias cp="cp -i"
+alias mv="mv -i"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias git-create="~/contributor/git_create/git_create.sh"
 alias share="~/scripts/share.sh"
 alias report="~/scripts/report.sh"
+alias report_latex="~/scripts/report_latex.sh"
 alias vmstart="VBoxManage startvm "Ubuntu" --type headless"
 alias vmpause="VBoxManage controlvm "Ubuntu" pause --type headless"
 alias vmresume"VBoxManage controlvm "Ubuntu" resume --type headless"
@@ -100,3 +109,41 @@ alias vmstop="VBoxManage controlvm "Ubuntu" poweroff --type headless"
 alias weather="python3 ~/projects/weatherscrape.py"
 alias table="python3 ~/projects/table.py"
 alias icon="~/scripts/replace_icons.sh"
+
+
+# VI keybindings in shell
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+# bindkey '^r' history-incremental-search-backward
+
+export KEYTIMEOUT=1
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+bindkey '^[[Z' reverse-menu-complete
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

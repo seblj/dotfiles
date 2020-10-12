@@ -21,6 +21,7 @@
 	start = !git checkout master && git pull origin
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	sa = submodule add
+    amend = commit --amend
 
 [merge]
 	tool = vimdiff
