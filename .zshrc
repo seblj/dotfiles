@@ -98,7 +98,6 @@ alias vim="nvim"
 alias cp="cp -i"
 alias mv="mv -i"
 alias fscluster="sshfs sjo207@uvcluster.cs.uit.no:/home/sjo207 $(pwd)"
-alias dotfiles='/usr/bin/git --git-dir=$HOME/something/ --work-tree=$HOME'
 alias git-create="~/contributor/git_create/git_create.sh"
 alias share="~/scripts/share.sh"
 alias report="~/scripts/report.sh"
