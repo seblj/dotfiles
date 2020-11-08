@@ -7,25 +7,29 @@ call plug#begin()
     "Syntax and colorscheme
     Plug 'rafi/awesome-vim-colorschemes'
     Plug 'justinmk/vim-syntax-extra'	   
-    Plug 'ap/vim-css-color'
+    Plug 'ap/vim-css-color' 
     Plug 'sheerun/vim-polyglot'
 
+    Plug 'tpope/vim-repeat'
+
+    Plug 'puremourning/vimspector'
+    Plug 'szw/vim-maximizer'
+
     "Statusline
-    Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline'
+    Plug 'itchyny/lightline.vim'
 
     " Language server
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'neoclide/coc-python'
-    " Plug 'dense-analysis/ale'
 
     " Git
-    Plug 'tpope/vim-fugitive'
+    Plug 'itchyny/vim-gitbranch'
     Plug 'airblade/vim-gitgutter'
 
     " Tags and highlight with tags
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'vim-scripts/TagHighlight'
-    Plug 'vim-scripts/taglist.vim'	
 
     " Filetree
     Plug 'scrooloose/nerdtree'
@@ -40,12 +44,10 @@ call plug#begin()
     Plug 'lambdalisue/suda.vim'             " Write with sudo
     Plug 'Raimondi/delimitMate'             " Auto pairs of surrounds
     Plug 'tpope/vim-commentary'             " Easy comment
-    Plug 'rhysd/accelerated-jk'             " Faster jk
     Plug 'terryma/vim-multiple-cursors'     " Multiple cursor from sublime
     Plug 'tpope/vim-surround'               " Surround modification
 
     " Latex
-    Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
     Plug 'lervag/vimtex'
 
 call plug#end()
@@ -53,6 +55,7 @@ call plug#end()
 syntax on
 colorscheme afterglow-custom
 
+set regexpengine=1
 set splitbelow
 set splitright
 set cmdheight=2
@@ -78,8 +81,13 @@ set undodir=$HOME/.vim/undo        " undo file path
 set undolevels=1000
 set undoreload=10000
 
+autocmd BufRead,BufNewFile .gitignore_global set filetype=gitignore
 autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 autocmd BufRead,BufNewFile *.tex setlocal spell
+autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif
+
+" Hide tagfile by renaming from tags to .tags
+let g:gutentags_ctags_tagfile = '.tags'
 
 " Indent after enter with autopairs
 let g:delimitMate_expand_cr = 1
@@ -88,48 +96,47 @@ let g:delimitMate_expand_cr = 1
 let g:python_highlight_all = 1 
 let g:python_highlight_space_errors = 0
 
-" Airline settings
-let g:airline_section_warning = 0
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#ale#enabled = 1
+let g:lightline = {
+  \   'colorscheme': 'custom',
+  \   'active': {
+  \     'left':[ [ 'mode', 'paste' ], [ 'spell', 'gitbranch', 'readonly', 'filename', 'modified' ]],
+  \     'right':[ ['lineinfo', 'coc_error'], ['filetype']]
+  \   },
+  \   'component':{
+  \     'lineinfo': "%{line('.') . '/' . line('$')}",
+  \   },
+  \   'component_function': {
+  \     'gitbranch': 'gitbranch#name',
+  \   }
+  \ }
+let g:lightline.separator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.subseparator = {
+	\   'left': '', 'right': '' 
+  \}
 
-" Tabline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_splits = 0
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#tab_min_count = 2
-let g:airline#extensions#tabline#show_tab_type = 0
+"" Airline settings
+"let g:airline_section_warning = 0
+"let g:airline_extensions = []
+"let g:airline#extensions#branch#enabled = 1
+"let g:airline#extensions#branch#empty_message = ''
+"let g:airline#extensions#ale#enabled = 1
 
-"Font for symbols"
-let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-    let g:airline_symbols.dirty=''
-    let g:airline_symbols.notexists = ''
-endif
+"" Tabline settings
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#show_splits = 0
+"let g:airline#extensions#tabline#show_buffers = 0
+"let g:airline#extensions#tabline#tab_min_count = 2
+"let g:airline#extensions#tabline#show_tab_type = 0
 
-"Ale settings"
-" always have a column, and only lint on save"
-
-" let g:ale_linters = {
-" 			\   'c': ['clang'],
-" 			\}
-
-" let g:ale_lint_on_insert_leave = 0
-" let g:ale_sign_column_always = 0
-" let g:ale_sign_highlight_linenrs = 1
-" let g:ale_lint_on_text_changed = 0
-" let g:ale_lint_on_enter = 0
-" let g:ale_lint_on_save = 1
-" let g:ale_c_parse_makefile = 1
-" let g:ale_sign_error = '✘'
-" let g:ale_sign_warning = ''
-" let g:ale_sign_info = ''
-" " Set color for line number and error sign to red, and warning sign to orange
-" highlight ALEErrorSignLineNr ctermbg=NONE ctermfg=red
-" highlight ALEErrorSign ctermbg=NONE ctermfg=red
-" highlight ALEWarningSign ctermbg=NONE ctermfg=130
+""Font for symbols"
+"let g:airline_powerline_fonts = 1
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"    let g:airline_symbols.dirty=''
+"    let g:airline_symbols.notexists = ''
+"endif
 
 " Nerdtree settings
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -140,11 +147,10 @@ packloadall
 silent! helptags ALL
 
 "Latex
-let g:livepreview_cursorhold_recompile = 0 "recompile when saving"
-let g:livepreview_previewer = 'open -a Skim'
 let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_mode = 0
 let g:vimtex_view_general_viewer = 'open -a Skim'
+let g:vimtex_view_method = 'skim'
 
 " Clean latex files when quitting file
 augroup vimtex_config
@@ -159,27 +165,33 @@ let maplocalleader = '\'
 " Mappings
 
 " Show full diagnostic message
-nmap <silent><leader>d <Plug>(coc-diagnostic-info)
+nmap <silent><leader>cd <Plug>(coc-diagnostic-info)
 
 " Add syntax for Type with tags
 nmap <silent><leader>us :UpdateTypesFileOnly<CR>
 
+" Paste in visual mode without yanking the text to overwrite
+vmap <leader>p "_dP
+"
 " Start preview for latex
 " nmap <silent><leader>sp :LLPStartPreview<CR>
 
-" Focus on single split without quiting the others
-nmap <leader>o <C-w>_ <C-w>\|
+" Toggle focus on one split
+nnoremap <silent><leader>m :MaximizerToggle!<CR>
 
+" Resize splits
 nmap <leader>= <C-w>=
 
-" Ack
-nmap <leader>a :Ack 
+" Ack (leader A search for word under cursor)
+nmap <leader>a mA <bar> :Ack 
+nmap <leader>A mA <bar> :Ack<CR>
 
 " Indent file
 nmap <leader>i gg=G
 
 " Easy replace word
 nmap <leader>s :%s//gI<Left><Left><Left>
+vmap <leader>s :s//gI<Left><Left><Left>
 
 " Folding
 nmap <leader>f za
@@ -193,17 +205,48 @@ map <silent><C-p> :update <bar> :Files<CR>
 " Open new tab
 nmap <silent><leader>t :tabedit <bar> :Files<CR>
 
+"Debugger remaps
+nmap <silent><leader>dd :call vimspector#Launch()<CR>
+nmap <silent><leader>de :call vimspector#Reset()<CR>
+
+" Enable dot repeat for some commands
+nmap <silent><Plug>VimspectorStepOutRepeat :call vimspector#StepOut()<CR>
+    \ :call repeat#set("\<Plug>VimspectorStepOutRepeat", v:count)<CR>
+
+nmap <silent><Plug>VimspectorStepOverRepeat :call vimspector#StepOver()<CR>
+    \ :call repeat#set("\<Plug>VimspectorStepOverRepeat", v:count)<CR>
+
+nmap <silent><Plug>VimspectorStepIntoRepeat :call vimspector#StepInto()<CR>
+    \ :call repeat#set("\<Plug>VimspectorStepIntoRepeat", v:count)<CR>
+
+nmap <silent><Plug>VimspectorContinueRepeat :call vimspector#Continue()<CR>
+    \ :call repeat$set("\<Plug>VimspectorContinueRepeat", v:count)<CR>
+
+nmap <silent><Plug>VimspectorRunToCursorRepeat :call vimspector#RunToCursor()<CR>
+    \ :call repeat#set("\<Plug>VimspectorRunToCursorRepeat", v:count)<CR>
+
+nmap <silent><Plug>VimspectorToggleBreakpointRepeat :call vimspector#ToggleBreakpoint()<CR>
+    \ :call repeat#set("\<Plug>VimspectorToggleBreakpointRepeat", v:count)<CR>
+
+" Remap the comands created for repeat
+nmap <Leader>dk <Plug>VimspectorStepOutRepeat
+nmap <Leader>dj <Plug>VimspectorStepOverRepeat
+nmap <Leader>dl <Plug>VimspectorStepIntoRepeat
+nmap <leader>d_ <Plug>VimspectorRestart
+nmap <leader>d<space> :call vimspector#Continue()<CR>
+
+nmap <leader>drc <Plug>VimspectorRunToCursorRepeat
+nmap <leader>db <Plug>VimspectorToggleBreakpointRepeat
+nmap <leader>dcb <Plug>VimspectorToggleConditionalBreakpoint
+nmap <leader>dw :VimspectorWatch 
+
 " Tab or shift-tab to go to next or previous tab
 nmap <silent><TAB> gt
 nmap <silent><S-TAB> gT
 
-
 " Keep visual when indenting
 vmap < <gv
 vmap > >gv
-
-" Toggle taglist
-nmap <silent>tl :TlistToggle<CR>1<C-w>w
 
 " Go to function using tags
 nmap gd <C-]>
@@ -258,10 +301,6 @@ nmap K 10k
 vmap J 10j
 vmap K 10k
 
-" Accelerate j and k
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
-
 " Write file with sudo
 cnoreabbrev w!! w suda://%
 
@@ -282,4 +321,25 @@ command! -bang WA wa<bang>
 command! -bang Qa qa<bang>
 command! -bang QA qa<bang>
 
+" Function for using arrow keys as cnext and cprev in quickfix window
+function! QuickFixFunc(key)
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        if a:key == "down"
+            normal j
+        else
+            normal k
+        endif
+    else
+        if a:key == "down"
+            :silent! cnext
+        else
+            :silent! cprev
+        endif
+    endif
+endfunction
+nnoremap <silent> <Down> :call QuickFixFunc("down")<cr>
+nnoremap <silent> <Up> :call QuickFixFunc("up")<cr>
 
+" Leader and esc to close quickfix window and go back
+" to mark set with leader a
+nnoremap <silent> <leader><ESC> :cclose<CR> `A
