@@ -1,7 +1,14 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+export _Z_DATA="$HOME/.config/z/.z."
+
 # Path to your oh-my-zsh installation.
+export PATH="/Users/sebastianlyngjohansen/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH=$PATH:~/programs/UPC/bin
 export UPCXX_INSTALL="$HOME/programs/UPC"
@@ -20,13 +27,6 @@ ZSH_THEME="spaceship"
 
 #Remove % at end of print when not using \n
 PROMPT_EOL_MARK=""
-
-#Change cursor
-# _fix_cursor() {
-#    echo -ne '\e[5 q'
-# }
-
-# precmd_functions+=(_fix_cursor)
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -61,8 +61,8 @@ source $ZSH/oh-my-zsh.sh
   swift
   golang
   docker
-  venv
-  pyenv
+  # venv
+  # pyenv
 )
 # USER
 SPACESHIP_USER_SHOW=always
@@ -72,8 +72,7 @@ SPACESHIP_USER_SUFFIX=" " # remove space before host
 # HOST
 # Result will look like this:
 #   username@:(hostname)
-SPACESHIP_HOST_PREFIX="@:("
-SPACESHIP_HOST_SUFFIX=") "
+SPACESHIP_HOST_PREFIX="➜ "
 
 # DIR
 SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
@@ -91,17 +90,18 @@ SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 # SPACESHIP_GIT_STATUS_SUFFIX=""
 
 
-
-
 # Alias
 alias vim="nvim"
+alias nn="~/programs/nvim-nightly/bin/nvim"
+alias vimrc="vim ~/.vimrc"
+alias zshrc="vim ~/.zshrc"
 alias cp="cp -i"
 alias mv="mv -i"
-alias fscluster="sshfs sjo207@uvcluster.cs.uit.no:/home/sjo207 $(pwd)"
-alias git-create="~/contributor/git_create/git_create.sh"
+alias uitvpn="~/scripts/vpn/vpn.sh"
+alias submissions=" python3 ~/projects/grader/grade.py"
+alias fscluster="sshfs cluster:/home/sjo207 $(pwd)"
 alias share="~/scripts/share.sh"
-alias report="~/scripts/report.sh"
-alias report_latex="~/scripts/report_latex.sh"
+alias report="python3 ~/scripts/latex_template.py"
 alias vmstart="VBoxManage startvm "Ubuntu" --type headless"
 alias vmpause="VBoxManage controlvm "Ubuntu" pause --type headless"
 alias vmresume"VBoxManage controlvm "Ubuntu" resume --type headless"
@@ -143,6 +143,9 @@ echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 bindkey '^[[Z' reverse-menu-complete
+
+# autoload -Uz compinit
+compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

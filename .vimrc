@@ -2,7 +2,7 @@
 " Must be initialized before plugin
 let g:polyglot_disabled = ['autoindent']
 
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 
     "Syntax and colorscheme
     Plug 'rafi/awesome-vim-colorschemes'
@@ -16,7 +16,6 @@ call plug#begin()
     Plug 'szw/vim-maximizer'
 
     "Statusline
-    " Plug 'vim-airline/vim-airline'
     Plug 'itchyny/lightline.vim'
 
     " Language server
@@ -50,6 +49,9 @@ call plug#begin()
     " Latex
     Plug 'lervag/vimtex'
 
+    " " Markdown
+    " Plug 'JamshedVesuna/vim-markdown-preview'
+
 call plug#end()
 
 syntax on
@@ -67,7 +69,7 @@ set softtabstop=4
 set shiftwidth=4
 set noswapfile
 set number relativenumber
-set completeopt=menu,noinsert
+set completeopt=menu,noinsert,noselect
 set encoding=UTF-8
 set foldmethod=indent
 set foldlevelstart=20
@@ -86,6 +88,10 @@ autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 autocmd BufRead,BufNewFile *.tex setlocal spell
 autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif
 
+" let vim_markdown_preview_hotkey='<C-m>'
+" let vim_markdown_preview_github=1
+" let vim_markdown_preview_toggle=2
+
 " Hide tagfile by renaming from tags to .tags
 let g:gutentags_ctags_tagfile = '.tags'
 
@@ -100,7 +106,7 @@ let g:lightline = {
   \   'colorscheme': 'custom',
   \   'active': {
   \     'left':[ [ 'mode', 'paste' ], [ 'spell', 'gitbranch', 'readonly', 'filename', 'modified' ]],
-  \     'right':[ ['lineinfo', 'coc_error'], ['filetype']]
+  \     'right':[ ['lineinfo'], ['filetype']]
   \   },
   \   'component':{
   \     'lineinfo': "%{line('.') . '/' . line('$')}",
@@ -116,28 +122,6 @@ let g:lightline.subseparator = {
 	\   'left': '', 'right': '' 
   \}
 
-"" Airline settings
-"let g:airline_section_warning = 0
-"let g:airline_extensions = []
-"let g:airline#extensions#branch#enabled = 1
-"let g:airline#extensions#branch#empty_message = ''
-"let g:airline#extensions#ale#enabled = 1
-
-"" Tabline settings
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#show_splits = 0
-"let g:airline#extensions#tabline#show_buffers = 0
-"let g:airline#extensions#tabline#tab_min_count = 2
-"let g:airline#extensions#tabline#show_tab_type = 0
-
-""Font for symbols"
-"let g:airline_powerline_fonts = 1
-"if !exists('g:airline_symbols')
-"    let g:airline_symbols = {}
-"    let g:airline_symbols.dirty=''
-"    let g:airline_symbols.notexists = ''
-"endif
-
 " Nerdtree settings
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
@@ -147,7 +131,7 @@ packloadall
 silent! helptags ALL
 
 "Latex
-let g:tex_flavor = 'latex'
+" let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_mode = 0
 let g:vimtex_view_general_viewer = 'open -a Skim'
 let g:vimtex_view_method = 'skim'
@@ -172,19 +156,12 @@ nmap <silent><leader>us :UpdateTypesFileOnly<CR>
 
 " Paste in visual mode without yanking the text to overwrite
 vmap <leader>p "_dP
-"
-" Start preview for latex
-" nmap <silent><leader>sp :LLPStartPreview<CR>
 
 " Toggle focus on one split
 nnoremap <silent><leader>m :MaximizerToggle!<CR>
 
 " Resize splits
 nmap <leader>= <C-w>=
-
-" Ack (leader A search for word under cursor)
-nmap <leader>a mA <bar> :Ack 
-nmap <leader>A mA <bar> :Ack<CR>
 
 " Indent file
 nmap <leader>i gg=G
@@ -239,6 +216,35 @@ nmap <leader>drc <Plug>VimspectorRunToCursorRepeat
 nmap <leader>db <Plug>VimspectorToggleBreakpointRepeat
 nmap <leader>dcb <Plug>VimspectorToggleConditionalBreakpoint
 nmap <leader>dw :VimspectorWatch 
+
+
+" Ack (leader A search for word under cursor)
+nmap <leader>a mA <bar> :Ack 
+nmap <leader>A mA <bar> :Ack<CR>
+
+" Function for using arrow keys as cnext and cprev in quickfix window
+function! QuickFixFunc(key)
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        if a:key == "down"
+            normal j
+        else
+            normal k
+        endif
+    else
+        if a:key == "down"
+            :silent! cnext
+        else
+            :silent! cprev
+        endif
+    endif
+endfunction
+nnoremap <silent> <Down> :call QuickFixFunc("down")<cr>
+nnoremap <silent> <Up> :call QuickFixFunc("up")<cr>
+
+" Leader and esc to close quickfix window and go back
+" to mark set with leader a
+nnoremap <silent> <leader><ESC> :cclose<CR> `A
+
 
 " Tab or shift-tab to go to next or previous tab
 nmap <silent><TAB> gt
@@ -297,9 +303,17 @@ nmap <silent>rnt :NERDTreeRefreshRoot<CR>
 " Shift + j/k to jump number of lines up/down
 nmap J 10j
 nmap K 10k
+nmap H ^
+nmap L $
 
 vmap J 10j
 vmap K 10k
+vmap H ^
+vmap L $
+
+" Map in operatormode to make dL work like d$
+onoremap L $
+onoremap H ^
 
 " Write file with sudo
 cnoreabbrev w!! w suda://%
@@ -321,25 +335,10 @@ command! -bang WA wa<bang>
 command! -bang Qa qa<bang>
 command! -bang QA qa<bang>
 
-" Function for using arrow keys as cnext and cprev in quickfix window
-function! QuickFixFunc(key)
-    if empty(filter(getwininfo(), 'v:val.quickfix'))
-        if a:key == "down"
-            normal j
-        else
-            normal k
-        endif
-    else
-        if a:key == "down"
-            :silent! cnext
-        else
-            :silent! cprev
-        endif
-    endif
-endfunction
-nnoremap <silent> <Down> :call QuickFixFunc("down")<cr>
-nnoremap <silent> <Up> :call QuickFixFunc("up")<cr>
+" Use macros in visual mode
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
-" Leader and esc to close quickfix window and go back
-" to mark set with leader a
-nnoremap <silent> <leader><ESC> :cclose<CR> `A
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction

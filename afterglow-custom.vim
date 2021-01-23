@@ -587,9 +587,11 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("CocErrorHighlight", s:rederror, "", "")
 	
     " SQL
-
     autocmd BufNewFile,BufRead *.sql syntax keyword sqlKeyword natural
     " call <SID>X("sqlKeyword", s:red, "", "")
+
+    sign define vimspectorBP         text=\ ● texthl=spectorBP
+    call <SID>X("spectorBP", s:rederror, "", "")
 
 
 	" Option g:afterglow_blackout

@@ -5,7 +5,7 @@
 let s:yellow = [ '#e5cd52' , 221 ]
 let s:blue = [ '#4fb4d8' , 68 ]
 let s:red = [ '#f92672' , 132 ]
-let s:green = [ '#78bd65' , 64 ]
+let s:green = [ '#78bd65' , 30 ]
 let s:orange = [ '#ef7c2a' , 202 ]
 let s:white = [ '#ffffff' , 15 ]
 let s:lightGray = [ '#848794' , 245 ]

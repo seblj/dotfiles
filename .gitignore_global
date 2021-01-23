@@ -20,9 +20,14 @@ Thumbs.db
 
 
 tags
+.tags
 serial.out
 ~*
 types_c.taghl
-
-# Ignore files in /docs except .tex and .pdf
+.types_c.taghl
+.vscode
+.vimspector.json
+__pycache__
+vim-markdown-preview.html
+*.token
 
