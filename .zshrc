@@ -91,9 +91,10 @@ SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 
 
 # Alias
-alias vim="nvim"
-alias nn="~/programs/nvim-nightly/bin/nvim"
-alias vimrc="vim ~/.vimrc"
+alias nn="nvim"
+alias vim="~/programs/nvim-nightly/bin/nvim"
+alias vimrc="vim ~/dotfiles/init.vim"
+alias init.vim="vim ~/dotfiles/init.vim"
 alias zshrc="vim ~/.zshrc"
 alias cp="cp -i"
 alias mv="mv -i"

@@ -247,6 +247,8 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
         endif
     endfun
 
+    echo <SID>rgb(s:wine)
+
     " Vim Highlighting
     call <SID>X("NonText", s:selection, "", "")
     call <SID>X("SpecialKey", s:selection, "", "")
@@ -277,20 +279,20 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     endif
 
     " Standard Highlighting
-    call <SID>X("Title", s:comment, "", "bold")
-    call <SID>X("Identifier", s:orange, "", "NONE")
-    call <SID>X("Statement", s:wine, "", "")
-    call <SID>X("Conditional", s:wine, "", "")
-    call <SID>X("Repeat", s:wine, "", "")
-    call <SID>X("Structure", s:wine, "", "")
-    call <SID>X("Function", s:orange, "", "")
-    call <SID>X("Constant", s:pink, "", "")
-    call <SID>X("Keyword", s:foreground, "", "")
-    call <SID>X("String", s:yellow, "", "")
-    call <SID>X("Special", s:blue, "", "")
-    call <SID>X("PreProc", s:green, "", "")
-    call <SID>X("Operator", s:purple, "", "")
-    call <SID>X("Type", s:blue, "", "")
+    " call <SID>X("Title", s:comment, "", "bold")
+    " call <SID>X("Identifier", s:orange, "", "NONE")
+    " call <SID>X("Statement", s:wine, "", "")
+    " call <SID>X("Conditional", s:wine, "", "")
+    " call <SID>X("Repeat", s:wine, "", "")
+    " call <SID>X("Structure", s:wine, "", "")
+    " call <SID>X("Function", s:orange, "", "")
+    " call <SID>X("Constant", s:pink, "", "")
+    " call <SID>X("Keyword", s:foreground, "", "")
+    " call <SID>X("String", s:yellow, "", "")
+    " call <SID>X("Special", s:blue, "", "")
+    " call <SID>X("PreProc", s:green, "", "")
+    " call <SID>X("Operator", s:purple, "", "")
+    " call <SID>X("Type", s:blue, "", "")
 
     "Hightlight c-files type with darkgreen instead of blue
     autocmd BufRead,BufNewFile *.h,*.c,*.cpp hi Type ctermfg = 71
@@ -312,13 +314,13 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("cConditional", s:wine, "", "")
     call <SID>X("cRepeat", s:wine, "", "")
 	call <SID>X("c_t", s:darkgreen, "", "")
-	call <SID>X("cDelimiter", s:blue, "", "")
-	call <SID>X("cBraces", s:blue, "", "")
+	" call <SID>X("cDelimiter", s:blue, "", "")
+	" call <SID>X("cBraces", s:blue, "", "")
 	call <SID>X("cOperator", s:purple, "", "")
 
     " C++ Highlighting
     call <SID>X("cppSTLtype", s:wine, "", "")
-    call <SID>X("cppSTLnamespace", s:pink, "", "")
+    " call <SID>X("cppSTLnamespace", s:pink, "", "")
 
     " PHP Highlighting
     call <SID>X("phpVarSelector", s:wine, "", "")
@@ -586,6 +588,57 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	"coc.nvim
 	call <SID>X("CocErrorHighlight", s:rederror, "", "")
 	
+    
+    " Tree sitter
+    
+    call <SID>X("TSAnnotation", s:blue, "", "")
+    call <SID>X("TSAttribute", s:blue, "", "")
+    call <SID>X("TSBoolean", s:purple, "", "")
+    call <SID>X("TSCharacter", s:yellow, "", "")
+    call <SID>X("TSComment", s:comment, "", "")
+    call <SID>X("TSConditional", s:wine, "", "")
+    call <SID>X("TSConstBuiltin", s:orange, "", "")
+    call <SID>X("TSConstMacro", s:orange, "", "")
+    call <SID>X("TSConstant", s:orange, "", "")
+    call <SID>X("TSConstructor", s:red, "", "")
+    call <SID>X("TSError", s:red, "", "")
+    call <SID>X("TSException", s:red, "", "")
+    call <SID>X("TSField", s:green, "", "")
+    call <SID>X("TSFloat", s:purple, "", "")
+    call <SID>X("TSFuncBuiltin", s:green, "", "")
+    call <SID>X("TSFuncMacro", s:green, "", "")
+    call <SID>X("TSFunction", s:green, "", "")
+    call <SID>X("TSInclude", s:blue, "", "")
+    call <SID>X("TSKeyword", s:wine, "", "")
+    call <SID>X("TSKeywordFunction", s:wine, "", "")
+    call <SID>X("TSLabel", s:wine, "", "")
+    call <SID>X("TSMethod", s:green, "", "")
+    call <SID>X("TSNamespace", s:purple, "", "")
+    call <SID>X("TSNumber", s:purple, "", "")
+    call <SID>X("TSOperator", s:wine, "", "")
+    call <SID>X("TSParameter", s:orange, "", "")
+    call <SID>X("TSParameterReference", s:orange, "", "")
+    call <SID>X("TSProperty", s:green, "", "")
+    call <SID>X("TSPunctBracket", s:blue, "", "")
+    call <SID>X("TSPunctDelimiter", s:blue, "", "")
+    call <SID>X("TSPunctSpecial", s:blue, "", "")
+    call <SID>X("TSRepeat", s:wine, "", "")
+    call <SID>X("TSString", s:yellow, "", "")
+    call <SID>X("TSStringEscape", s:green, "", "")
+    call <SID>X("TSStringRegex", s:green, "", "")
+    call <SID>X("TSStructure", s:blue, "", "")
+    call <SID>X("TSTag", s:blue, "", "")
+    call <SID>X("TSTagDelimiter", s:wine, "", "")
+    call <SID>X("TSText", s:green, "", "")
+    " call <SID>X("TSEmphasis", s:red, "", "")
+    " call <SID>X("TSUnderline", s:red, "", "")
+    call <SID>X("TSType", s:blue, "", "")
+    call <SID>X("TSTypeBuiltin", s:blue, "", "")
+    call <SID>X("TSURI", s:red, "", "")
+    " call <SID>X("TSVariable", s:red, "", "")
+    call <SID>X("TSVariableBuiltin", s:orange, "", "")
+
+
     " SQL
     autocmd BufNewFile,BufRead *.sql syntax keyword sqlKeyword natural
     " call <SID>X("sqlKeyword", s:red, "", "")
