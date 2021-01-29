@@ -1,14 +1,7 @@
-" Fix for not overwriting indentation settings
-" Must be initialized before plugin
-let g:polyglot_disabled = ['autoindent']
-
 call plug#begin('~/.config/nvim/plugged')
-
     "Syntax and colorscheme
-    Plug 'rafi/awesome-vim-colorschemes'
-    " Plug 'ap/vim-css-color' 
-    " Plug 'justinmk/vim-syntax-extra'	   
-    " Plug 'sheerun/vim-polyglot'
+    " Plug 'rafi/awesome-vim-colorschemes'
+    " Plug 'norcalli/nvim-colorizer.lua'
 
     Plug 'tpope/vim-repeat'
 
@@ -21,35 +14,32 @@ call plug#begin('~/.config/nvim/plugged')
     " Language server
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-    " Plug 'neovim/nvim-lspconfig'
-    " Plug 'nvim-lua/completion-nvim'
-
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
-    
-    " Git
-    Plug 'itchyny/vim-gitbranch'
-    Plug 'airblade/vim-gitgutter'
 
-    " Tags and highlight with tags
+    " Plug 'neovim/nvim-lspconfig'
+    " Plug 'nvim-lua/completion-nvim'
+    " Plug 'steelsojka/completion-buffers'
+    
+    " Gitgutter alternative as well as displaying branch in statusline
+    Plug 'lewis6991/gitsigns.nvim'
+
+    " Tags for go to definition
     Plug 'ludovicchabant/vim-gutentags'
-    Plug 'vim-scripts/TagHighlight'
 
     " Filetree
-    Plug 'scrooloose/nerdtree'
-    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-    Plug 'ryanoasis/vim-devicons'
+    " Plug 'ryanoasis/vim-devicons'
 
     " Search
-    Plug 'junegunn/fzf.vim'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Plug 'junegunn/fzf.vim'
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     
-    " Plug 'nvim-lua/popup.nvim'
-    " Plug 'nvim-lua/plenary.nvim'
-    " Plug 'nvim-telescope/telescope.nvim'
+    " Telescope requirements
+    Plug 'nvim-lua/popup.nvim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
 
-    Plug 'mileszs/ack.vim'
-
+    " General plugins
     Plug 'lambdalisue/suda.vim'             " Write with sudo
     Plug 'Raimondi/delimitMate'             " Auto pairs of surrounds
     Plug 'tpope/vim-commentary'             " Easy comment
@@ -93,24 +83,55 @@ set smartcase
 set cino+=L0
 
 "" Allow larger undo history
-set undofile                       " use an undo file
-set undodir=$HOME/.vim/undo        " undo file path
+set undofile
 set undolevels=1000
 set undoreload=10000
 
 autocmd BufRead,BufNewFile .gitignore_global set filetype=gitignore
-autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 autocmd BufRead,BufNewFile *.tex setlocal spell
 autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif
+" Set syntax so path-completion works in strings for languages supported by
+" treesitter. Treesitter sets syntax to empty
+autocmd BufRead,BufNewFile * execute(':set ft:'.&ft)
 
-" Load lua-file
-lua require('init')
+" autocmd BufEnter * lua require'completion'.on_attach()
+" autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" autocmd CursorMoved * lua vim.lsp.diagnostic.show_line_diagnostics()
+" let g:completion_auto_change_source = 1
+" let g:completion_chain_complete_list = {
+"    \   'default' : {
+"    \     'default': [
+"    \       {'complete_items': ['lsp']},
+"    \       {'complete_items': ['buffers']},
+"    \     ],
+"    \     'tex' : [
+"    \       {'complete_items': ['vimtex', 'lsp']}
+"    \     ],
+"    \     'comment': [
+"    \       {'complete_items': ['buffers']}],
+"    \     'string': [
+"    \       {'complete_items': ['path']}],
+"    \   }
+"    \ }
+" let g:completion_sorting = "length"
+" let g:completion_items_duplicate = {'lsp': 0, 'vimtex': 0}
+" let g:completion_trigger_on_delete = 1
+
+" lua require('my_lsp-config')
+lua require('my_gitsigns')
+lua require('my_telescope')
+lua require('my_treesitter')
+
+" Lightline requires a function for branch
+function! GitsignsBranch()
+    return get(b:,'gitsigns_head','')
+endfunction
 
 " let vim_markdown_preview_hotkey='<C-m>'
 " let vim_markdown_preview_github=1
 " let vim_markdown_preview_toggle=2
 
-let g:vimsyn_embed= 'l'
+let g:vimsyn_embed = 'l'
 
 " Hide tagfile by renaming from tags to .tags
 let g:gutentags_ctags_tagfile = '.tags'
@@ -118,12 +139,8 @@ let g:gutentags_ctags_tagfile = '.tags'
 " Indent after enter with autopairs
 let g:delimitMate_expand_cr = 1
 
-" Python settings
-" let g:python_highlight_all = 1 
-" let g:python_highlight_space_errors = 0
-
 let g:lightline = {
-  \   'colorscheme': 'custom',
+  \   'colorscheme': 'sonokai',
   \   'active': {
   \     'left':[ [ 'mode', 'paste' ], [ 'spell', 'gitbranch', 'readonly', 'filename', 'modified' ]],
   \     'right':[ ['lineinfo'], ['filetype']]
@@ -132,7 +149,7 @@ let g:lightline = {
   \     'lineinfo': "%{line('.') . '/' . line('$')}",
   \   },
   \   'component_function': {
-  \     'gitbranch': 'gitbranch#name',
+  \     'gitbranch': 'GitsignsBranch',
   \   }
   \ }
 let g:lightline.separator = {
@@ -142,16 +159,8 @@ let g:lightline.subseparator = {
 	\   'left': '', 'right': '' 
   \}
 
-" Nerdtree settings
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-let g:NERDTreeChDirMode = 2
-packloadall
-silent! helptags ALL
-
 "Latex
-" let g:tex_flavor = 'latex'
+let g:tex_flavor = 'latex'
 let g:vimtex_quickfix_mode = 0
 let g:vimtex_view_general_viewer = 'open -a Skim'
 let g:vimtex_view_method = 'skim'
@@ -168,39 +177,17 @@ let maplocalleader = '\'
 
 " Mappings
 
-" Show full diagnostic message
-nmap <silent><leader>cd <Plug>(coc-diagnostic-info)
-
-" Add syntax for Type with tags
-nmap <silent><leader>us :UpdateTypesFileOnly<CR>
-
-" Paste in visual mode without yanking the text to overwrite
-vmap <leader>p "_dP
-
 " Toggle focus on one split
 nnoremap <silent><leader>m :MaximizerToggle!<CR>
 
-" Resize splits
-nmap <leader>= <C-w>=
-
-" Indent file
-nmap <leader>i gg=G
-
-" Easy replace word
-nmap <leader>s :%s//gI<Left><Left><Left>
-vmap <leader>s :s//gI<Left><Left><Left>
-
-" Folding
-nmap <leader>f za
-
-" Unhighlight word
-nmap <silent><leader>l :nohl<CR>
-
 " Open fzf with Ctrl+p
-map <silent><C-p> :update <bar> :Files<CR>
+" map <silent><C-p> :update <bar> :Files<CR>
+map <silent><C-p> :update <bar> :Telescope find_files<CR>
+nnoremap <silent><leader>a :Telescope live_grep<cr>
 
 " Open new tab
-nmap <silent><leader>t :tabedit <bar> :Files<CR>
+" nmap <silent><leader>t :tabedit <bar> :Files<CR>
+nmap <silent><leader>t :tabedit <bar> :Telescope find_files<CR>
 
 "Debugger remaps
 nmap <silent><leader>dd :call vimspector#Launch()<CR>
@@ -237,32 +224,43 @@ nmap <leader>db <Plug>VimspectorToggleBreakpointRepeat
 nmap <leader>dcb <Plug>VimspectorToggleConditionalBreakpoint
 nmap <leader>dw :VimspectorWatch 
 
-" Ack (leader A search for word under cursor)
-nmap <leader>a mA <bar> :Ack 
-nmap <leader>A mA <bar> :Ack<CR>
-
-" Function for using arrow keys as cnext and cprev in quickfix window
-function! QuickFixFunc(key)
-    if empty(filter(getwininfo(), 'v:val.quickfix'))
-        if a:key == "down"
-            normal j
-        else
-            normal k
-        endif
-    else
-        if a:key == "down"
-            :silent! cnext
-        else
-            :silent! cprev
-        endif
-    endif
-endfunction
-nnoremap <silent> <Down> :call QuickFixFunc("down")<cr>
-nnoremap <silent> <Up> :call QuickFixFunc("up")<cr>
-
 " Leader and esc to close quickfix window and go back
 " to mark set with leader a
-nnoremap <silent> <leader><ESC> :cclose<CR> `A
+" nnoremap <silent> <leader><ESC> :cclose<CR> `A
+
+" Go to function using tags
+nmap gd <C-]>
+vmap gd <C-]>
+
+" Go back from function after gd
+nmap gb <C-t>
+vmap gb <C-t>
+
+" Coc.nvim settings
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent><leader>cd <Plug>(coc-diagnostic-info)
+
+imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Paste in visual mode without yanking the text to overwrite
+vmap <leader>p "_dP
+
+" Resize splits
+nmap <leader>= <C-w>=
+
+" Indent file
+nmap <leader>i gg=G
+
+" Easy replace word
+nmap <leader>s :%s//gI<Left><Left><Left>
+vmap <leader>s :s//gI<Left><Left><Left>
+
+" Folding
+nmap <leader>f za
+
+" Unhighlight word
+nmap <silent><leader>l :nohl<CR>
 
 " Tab or shift-tab to go to next or previous tab
 nmap <silent><TAB> gt
@@ -272,21 +270,7 @@ nmap <silent><S-TAB> gT
 vmap < <gv
 vmap > >gv
 
-" Go to function using tags
-nmap gd <C-]>
-vmap gd <C-]>
-
-" Go back from function using tags
-nmap gb <C-t>
-vmap gb <C-t>
-
-" Coc.nvim settings
-nmap <silent> gr <Plug>(coc-references)
-imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Remap VIM 0 to first non-blank character
-map 0 ^
+" map 0 ^
 
 "Ctrl + hjkl to move to different windows
 nmap <C-l> <C-w>l
@@ -309,10 +293,6 @@ imap <silent>√ <Esc>:m .+1<CR>==gi
 nmap <silent>ª :m.-2<CR>==
 vmap <silent>ª :m '<-2<CR>gv=gv
 imap <silent>ª <Esc>:m .-2<CR>==gi
-
-" Nerdtree setting
-nmap <silent>tnt :NERDTreeToggle<CR>
-nmap <silent>rnt :NERDTreeRefreshRoot<CR>
 
 " Shift + j/k to jump number of lines up/down
 nmap J 10j
@@ -356,4 +336,23 @@ function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
+
+" Function for using arrow keys as cnext and cprev in quickfix window
+function! QuickFixFunc(key)
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        if a:key == "down"
+            normal j
+        else
+            normal k
+        endif
+    else
+        if a:key == "down"
+            :silent! cnext
+        else
+            :silent! cprev
+        endif
+    endif
+endfunction
+nnoremap <silent> <Down> :call QuickFixFunc("down")<cr>
+nnoremap <silent> <Up> :call QuickFixFunc("up")<cr>
 
