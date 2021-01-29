@@ -135,6 +135,7 @@ let g:vimsyn_embed = 'l'
 
 " Hide tagfile by renaming from tags to .tags
 let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_exclude_filetypes = ['sh']
 
 " Indent after enter with autopairs
 let g:delimitMate_expand_cr = 1
