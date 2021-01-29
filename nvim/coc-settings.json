@@ -1,0 +1,8 @@
+{
+    "diagnostic.errorSign": "✘",
+    "diagnostic.warningSign": "",
+    "diagnostic.infoSign": "",
+    "diagnostic.checkCurrentLine": true,
+    "diagnostic.messageTarget": "echo",
+    "python.jediEnabled": false
+}
