@@ -18,6 +18,7 @@ install_homebrew(){
 # Install neovim head
 install_neovim(){
     if [[ $OS == "Linux" ]]; then
+        sudo apt-get update
         sudo snap install --edge nvim --classic
 
     elif [[ $OS == "Darwin" ]]; then
@@ -68,6 +69,10 @@ install_packages(){
         zsh
         git
         curl
+        gcc
+        g++
+        nodejs
+        ctags
         )
 
     for package in "${packages[@]}"; do
@@ -81,7 +86,7 @@ install_packages(){
 
 setup_neovim(){
     SOURCE=$PWD/
-    DEST="/.config/"
+    DEST="$HOME/.config/"
 
     # Create directory if not exist
     mkdir -p ~/.config/nvim
@@ -91,7 +96,7 @@ setup_neovim(){
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
         echo "Setting up neovim config"
         for d in nvim/* ; do
-            ln -sf $SOURCE$d $HOME$DEST$d
+            ln -sf $SOURCE$d $DEST$d
         done
         echo "Done"
     fi
@@ -113,5 +118,5 @@ install_vim_plug
 install_packages
 setup_neovim
 setup_rest
-install_oh_my_zsh
-install_spaceship
+# install_oh_my_zsh
+# install_spaceship
