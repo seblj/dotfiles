@@ -4,7 +4,7 @@ INSTALL=""
 
 # Determine if brew or apt should be used for packages
 case "$OS" in
-    Linux*)   INSTALL="sudo apt-get install" ;;
+    Linux*)   INSTALL="sudo apt-get install -y" ;;
     Darwin*)  INSTALL="brew install" ;; 
 esac
 
