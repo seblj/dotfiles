@@ -81,7 +81,7 @@ install_packages(){
 
 setup_neovim(){
     SOURCE=$PWD/
-    DEST="~/.config/"
+    DEST="/.config/"
 
     # Create directory if not exist
     mkdir -p ~/.config/nvim
@@ -91,7 +91,7 @@ setup_neovim(){
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
         echo "Setting up neovim config"
         for d in nvim/* ; do
-            ln -s -f $SOURCE$d $DEST$d
+            ln -sf $SOURCE$d $HOME$DEST$d
         done
         echo "Done"
     fi
@@ -100,10 +100,10 @@ setup_neovim(){
 setup_rest(){
     read -p "Do you want to override .zshrc, .gitconfig, .gitignore_global and .macos? [y/n] " confirm
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
-        ln -s -f $PWD/.macos ~/
-        ln -s -f $PWD/.gitconfig ~/
-        ln -s -f $PWD/.gitignore_global ~/
-        ln -s -f $PWD/.zshrc ~/
+        ln -sf $PWD/.macos $HOME
+        ln -sf $PWD/.gitconfig $HOME
+        ln -sf $PWD/.gitignore_global $HOME
+        ln -sf $PWD/.zshrc $HOME
     fi
 }
 
@@ -111,7 +111,7 @@ install_homebrew
 install_neovim
 install_vim_plug
 install_packages
-install_oh_my_zsh
-install_spaceship
 setup_neovim
 setup_rest
+install_oh_my_zsh
+install_spaceship
