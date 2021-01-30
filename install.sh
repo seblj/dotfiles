@@ -27,15 +27,18 @@ install_neovim(){
     fi
 }
 
-# Install vim plug
+# Install vim plug for neovim
 install_vim_plug(){
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
-# Install oh_my_zsh
+# Install oh_my_zsh and plugins
 install_oh_my_zsh(){
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+    # Plugins 
+    git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
 }
 
 # Install spaceship prompt for oh_my_zsh
@@ -43,7 +46,7 @@ install_spaceship(){
     git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
     ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
     mkdir -p /usr/local/share/zsh/site-functions
-    ln -sf "$PWD/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
+    ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
 }
 
 #Check if a package is installed
@@ -78,8 +81,6 @@ install_packages(){
     for package in "${packages[@]}"; do
         if ! is_installed $package; then
             $INSTALL $package
-        else
-            echo "$package already installed"
         fi
     done
 }
@@ -100,6 +101,8 @@ setup_neovim(){
         done
         echo "Done"
     fi
+
+    nvim --headless +PlugInstall +qall >/dev/null 2>&1
 }
 
 setup_rest(){
@@ -117,6 +120,6 @@ install_neovim
 install_vim_plug
 install_packages
 setup_neovim
+install_oh_my_zsh
+install_spaceship
 setup_rest
-# install_oh_my_zsh
-# install_spaceship
