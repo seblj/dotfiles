@@ -36,10 +36,6 @@ install_vim_plug(){
 # Install oh_my_zsh and plugins
 install_oh_my_zsh(){
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-    # Hopefully fix insecure directories if there are any
-    compaudit | xargs chmod g-w,o-w >/dev/null 2>&1
-
 }
 
 # Install spaceship prompt for oh_my_zsh
@@ -55,23 +51,14 @@ install_spaceship(){
     sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
     sudo mkdir -p /usr/local/share/zsh/site-functions
     sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
+
+    # Hopefully fix insecure directories if there are any
+    compaudit | xargs chmod g-w,o-w >/dev/null 2>&1
 }
 
 #Check if a package is installed
-is_installed(){
-    if [[ $OS == "Darwin" ]]; then
-        if brew ls --versions $1 > /dev/null; then
-            true
-        else
-            false
-        fi
-    elif [[ $OS == "Linux" ]]; then
-        if dpkg -l $1; then
-            true
-        else
-            false
-        fi
-    fi
+installed(){
+    command -v "$1" >/dev/null 2>&1
 }
 
 # Install necessary dependencies if not already installed
@@ -79,6 +66,7 @@ install_packages(){
     packages=(
         zsh
         git
+        curl
         gcc
         g++
         nodejs
@@ -87,15 +75,15 @@ install_packages(){
         )
 
     for package in "${packages[@]}"; do
-        if ! is_installed $package; then
+        if ! installed $package; then
             $INSTALL $package
         fi
     done
 }
 
 setup_neovim(){
-    SOURCE=$PWD/
-    DEST="$HOME/.config/"
+    SOURCE=$PWD
+    DEST="$HOME/.config"
 
     # Create directory if not exist
     mkdir -p ~/.config/nvim
@@ -105,7 +93,7 @@ setup_neovim(){
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
         echo "Setting up neovim config"
         for d in nvim/* ; do
-            ln -sf $SOURCE$d $DEST$d
+            ln -sf $SOURCE/$d $DEST/$d
         done
         echo "Done"
     fi
