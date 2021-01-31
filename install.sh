@@ -35,18 +35,26 @@ install_vim_plug(){
 
 # Install oh_my_zsh and plugins
 install_oh_my_zsh(){
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-    # Plugins 
-    git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
+    # Hopefully fix insecure directories if there are any
+    compaudit | xargs chmod g-w,o-w >/dev/null 2>&1
+
 }
 
 # Install spaceship prompt for oh_my_zsh
 install_spaceship(){
+    if [[ $ZSH_CUSTOM == "" ]]; then
+        ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
+    fi
+
+    # Plugins
+    git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
+
     git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-    mkdir -p /usr/local/share/zsh/site-functions
-    ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
+    sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+    sudo mkdir -p /usr/local/share/zsh/site-functions
+    sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
 }
 
 #Check if a package is installed
@@ -71,11 +79,11 @@ install_packages(){
     packages=(
         zsh
         git
-        curl
         gcc
         g++
         nodejs
         ctags
+        tmux
         )
 
     for package in "${packages[@]}"; do
@@ -91,7 +99,7 @@ setup_neovim(){
 
     # Create directory if not exist
     mkdir -p ~/.config/nvim
-    read -p "Do you want override current neovim configuration? [y/n]: " confirm
+    read -p "Do you want override current neovim configuration? [y/n] " confirm
 
     # Symlink files in nvim directory to correct location
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
@@ -107,6 +115,8 @@ setup_neovim(){
 
 setup_rest(){
     read -p "Do you want to override .zshrc, .gitconfig, .gitignore_global and .macos? [y/n] " confirm
+    # Log files from z-plugin to .config
+    mkdir -p $HOME/.config/z
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
         ln -sf $PWD/.macos $HOME
         ln -sf $PWD/.gitconfig $HOME
