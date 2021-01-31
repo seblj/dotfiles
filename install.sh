@@ -65,7 +65,6 @@ installed(){
 install_packages(){
     packages=(
         zsh
-        git
         curl
         gcc
         g++
