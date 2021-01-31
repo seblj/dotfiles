@@ -51,9 +51,6 @@ install_spaceship(){
     sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
     sudo mkdir -p /usr/local/share/zsh/site-functions
     sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
-
-    # Hopefully fix insecure directories if there are any
-    compaudit | xargs chmod g-w,o-w >/dev/null 2>&1
 }
 
 #Check if a package is installed
@@ -111,6 +108,9 @@ setup_rest(){
         ln -sf $PWD/.zshrc $HOME
     fi
 }
+
+# Hopefully fix insecure directories if there are any
+/bin/zsh -i -c compaudit | xargs chmod g-w,o-w >/dev/null 2>&1
 
 install_homebrew
 install_neovim
