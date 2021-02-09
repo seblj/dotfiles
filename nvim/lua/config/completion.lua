@@ -49,4 +49,3 @@ vim.g.completion_chain_complete_list = {
 }
 
 map('i', '<C-space>', '<Plug>(completion_trigger)')
--- <Plug>(completion_trigger)

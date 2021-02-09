@@ -1,3 +1,5 @@
+---------- STATUSLINE CONFIG ----------
+
 local gl = require('galaxyline')
 local gls = gl.section
 local extension = require('galaxyline.provider_extensions')

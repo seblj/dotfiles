@@ -1,5 +1,6 @@
 ---------- GITSIGNS CONFIG ----------
-require('gitsigns').setup {    
+
+require('gitsigns').setup {
     signs = {
         add = {hl = 'DiffAdd'   , text = '+'},
         change = {hl = 'DiffChange', text = '~'},

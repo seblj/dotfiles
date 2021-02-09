@@ -23,5 +23,5 @@ map('n', '<leader>cd', '<Plug>(coc-diagnostic-info)')
 map('i', '<c-space>', 'coc#refresh()', {expr = true})
 cmd('command! -nargs=0 Prettier :CocCommand prettier.formatFile')
 
--- Autoformat closing tags
+-- Autoformat closing tags with vim-closetag
 map('i', '<CR>', 'pumvisible() ? coc#_select_confirm() : "\\<C-g>u\\<CR>\\<C-r>=coc#on_enter()\\<CR>"', {noremap = true, expr = true})
