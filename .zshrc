@@ -91,15 +91,14 @@ SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 
 
 # Alias
-alias vim="nvim"
-alias nn="~/programs/nvim-osx64/bin/nvim"
-alias init.vim="vim ~/dotfiles/nvim/init.vim"
+alias nn="nvim"
+alias vim="~/programs/nvim-nightly/bin/nvim"
+alias init.lua="vim ~/dotfiles/nvim/init.lua"
 alias zshrc="vim ~/.zshrc"
 alias cp="cp -i"
 alias mv="mv -i"
 alias uitvpn="~/scripts/vpn/vpn.sh"
 alias submissions=" python3 ~/projects/grader/grade.py"
-alias fscluster="sshfs cluster:/home/sjo207 $(pwd)"
 alias share="~/scripts/share.sh"
 alias report="python3 ~/scripts/latex_template.py"
 alias vmstart="VBoxManage startvm "Ubuntu" --type headless"
@@ -108,8 +107,7 @@ alias vmresume"VBoxManage controlvm "Ubuntu" resume --type headless"
 alias vmstop="VBoxManage controlvm "Ubuntu" poweroff --type headless"
 alias weather="python3 ~/projects/weatherscrape.py"
 alias table="python3 ~/projects/table.py"
-alias icon="~/scripts/replace_icons.sh"
-
+alias icons="~/scripts/replace_icons.sh"
 
 # VI keybindings in shell
 bindkey -v

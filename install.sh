@@ -5,7 +5,7 @@ INSTALL=""
 # Determine if brew or apt should be used for packages
 case "$OS" in
     Linux*)   INSTALL="sudo apt-get install -y" ;;
-    Darwin*)  INSTALL="brew install" ;; 
+    Darwin*)  INSTALL="brew install" ;;
 esac
 
 # Install homebrew if not already installed
@@ -17,20 +17,31 @@ install_homebrew(){
 
 # Install neovim head
 install_neovim(){
+    mkdir -p ~/programs
+    cd ~/programs
+
     if [[ $OS == "Linux" ]]; then
         sudo apt-get update
-        sudo snap install --edge nvim --classic
+        curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+        tar xzf nvim-linux64.tar.gz
+        rm nvim-linux64.tar.gz
+        mv ~/programs/nvim-linux64 ~/programs/nvim-nightly
 
     elif [[ $OS == "Darwin" ]]; then
         brew install --HEAD luajit
-        brew install --HEAD neovim
+        curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz
+        tar xzf nvim-macos.tar.gz
+        rm nvim-macos.tar.gz
+        mv ~/programs/nvim-osx-64 ~/programs/nvim-nightly
     fi
+
+    cd -
 }
 
-# Install vim plug for neovim
-install_vim_plug(){
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+# Package manager for vim
+install_packer(){
+    git clone https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/opt/packer.nvim
 }
 
 # Install oh_my_zsh and plugins
@@ -78,7 +89,7 @@ install_packages(){
 }
 
 setup_neovim(){
-    SOURCE=$PWD
+    SOURCE=$(pwd)
     DEST="$HOME/.config"
 
     # Create directory if not exist
@@ -93,19 +104,18 @@ setup_neovim(){
         done
         echo "Done"
     fi
-
-    nvim --headless +PlugInstall +qall >/dev/null 2>&1
 }
 
 setup_rest(){
+    SOURCE=$(pwd)
     read -p "Do you want to override .zshrc, .gitconfig, .gitignore_global and .macos? [y/n] " confirm
     # Log files from z-plugin to .config
     mkdir -p $HOME/.config/z
     if [[ $confirm == 'y' || $confirm == 'Y' ]]; then
-        ln -sf $PWD/.macos $HOME
-        ln -sf $PWD/.gitconfig $HOME
-        ln -sf $PWD/.gitignore_global $HOME
-        ln -sf $PWD/.zshrc $HOME
+        ln -sf $SOURCE/.macos $HOME
+        ln -sf $SOURCE/.gitconfig $HOME
+        ln -sf $SOURCE/.gitignore_global $HOME
+        ln -sf $SOURCE/.zshrc $HOME
     fi
 }
 
@@ -114,7 +124,7 @@ setup_rest(){
 
 install_homebrew
 install_neovim
-install_vim_plug
+install_packer
 install_packages
 setup_neovim
 install_oh_my_zsh

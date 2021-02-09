@@ -108,14 +108,14 @@ call sonokai#highlight('SpellBad', s:palette.red, s:palette.none, 'undercurl', s
 call sonokai#highlight('SpellCap', s:palette.yellow, s:palette.none, 'undercurl', s:palette.yellow)
 call sonokai#highlight('SpellLocal', s:palette.blue, s:palette.none, 'undercurl', s:palette.blue)
 call sonokai#highlight('SpellRare', s:palette.purple, s:palette.none, 'undercurl', s:palette.purple)
-call sonokai#highlight('StatusLine', s:palette.fg, s:palette.bg3)
+call sonokai#highlight('StatusLine', s:palette.fg, s:palette.none)
 call sonokai#highlight('StatusLineTerm', s:palette.fg, s:palette.bg3)
 call sonokai#highlight('StatusLineNC', s:palette.grey, s:palette.bg1)
 call sonokai#highlight('StatusLineTermNC', s:palette.grey, s:palette.bg1)
 call sonokai#highlight('TabLine', s:palette.fg, s:palette.bg4)
 call sonokai#highlight('TabLineFill', s:palette.grey, s:palette.bg1)
 call sonokai#highlight('TabLineSel', s:palette.bg0, s:palette.bg_red)
-call sonokai#highlight('VertSplit', s:palette.black, s:palette.none)
+call sonokai#highlight('VertSplit', s:palette.grey, s:palette.none)
 call sonokai#highlight('Visual', s:palette.none, s:palette.bg3)
 call sonokai#highlight('VisualNOS', s:palette.none, s:palette.bg3, 'underline')
 call sonokai#highlight('QuickFixLine', s:palette.blue, s:palette.none, 'bold')
@@ -255,7 +255,7 @@ else
   highlight clear InfoLine
   highlight clear HintLine
 endif
-call sonokai#highlight('ErrorText', s:palette.diff_red, s:palette.none, 'undercurl', s:palette.red)
+call sonokai#highlight('ErrorText', s:palette.error, s:palette.none, 'undercurl', s:palette.red)
 call sonokai#highlight('WarningText', s:palette.none, s:palette.none, 'undercurl', s:palette.yellow)
 call sonokai#highlight('InfoText', s:palette.none, s:palette.none, 'undercurl', s:palette.blue)
 call sonokai#highlight('HintText', s:palette.none, s:palette.diff_green, 'undercurl', s:palette.green)
@@ -323,6 +323,7 @@ highlight! link TSConstBuiltin OrangeItalic
 highlight! link TSConstMacro Orange
 highlight! link TSConstant OrangeItalic
 highlight! link TSConstructor Fg
+highlight! link TSCustomType Purple
 highlight! link TSError Normal
 highlight! link TSException Red
 highlight! link TSField Green
@@ -338,9 +339,9 @@ highlight! link TSMethod Green
 highlight! link TSNamespace Purple
 highlight! link TSNumber Purple
 highlight! link TSOperator Red
-highlight! link TSParameter OrangeItalic
+highlight! link TSParameter None
 highlight! link TSParameterReference OrangeItalic
-highlight! link TSProperty Green
+highlight! link TSProperty None
 highlight! link TSPunctBracket Fg
 highlight! link TSPunctDelimiter Grey
 highlight! link TSPunctSpecial Fg

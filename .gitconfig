@@ -23,6 +23,7 @@
 	sa = submodule add
     amend = commit --amend
 
+
 [merge]
 	tool = vimdiff
 	conflictstyle = diff3

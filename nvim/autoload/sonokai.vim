@@ -31,6 +31,7 @@ function! sonokai#get_palette(style) "{{{
           \ 'bg2':        ['#363944',   '236',  'DarkGrey'],
           \ 'bg3':        ['#3b3e48',   '237',  'DarkGrey'],
           \ 'bg4':        ['#414550',   '237',  'Grey'],
+          \ 'error':      ['#ff0033',   '203',  'Red'],
           \ 'bg_red':     ['#ff6077',   '203',  'Red'],
           \ 'diff_red':   ['#55393d',   '9',   'DarkRed'],
           \ 'bg_green':   ['#a7df78',   '107',  'Green'],
@@ -46,7 +47,7 @@ function! sonokai#get_palette(style) "{{{
           \ 'blue':       ['#76cce0',   '110',  'Blue'],
           \ 'purple':     ['#b39df3',   '176',  'Magenta'],
           \ 'grey':       ['#7f8490',   '246',  'LightGrey'],
-          \ 'none':       ['NONE',      'NONE', 'NONE']
+          \ 'none':       ['NONE',      'NONE', 'NONE'],
           \ }
   elseif a:style ==# 'default'
     let palette = {
