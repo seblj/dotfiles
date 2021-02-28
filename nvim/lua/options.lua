@@ -1,20 +1,13 @@
 ---------- OPTIONS ----------
+local utils = require'utils'
+local cmd, g, opt, exec = vim.cmd, vim.g, utils.opt, vim.api.nvim_exec
 
-local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
-local cmd, g = vim.cmd, vim.g
-
-local function opt(scope, key, value)
-  scopes[scope][key] = value
-  if scope ~= 'o' then scopes['o'][key] = value end
-end
-
-cmd 'colorscheme sonokai'
-cmd 'syntax on'
-cmd 'filetype plugin indent on'
+cmd('colorscheme sonokai')
+cmd('filetype plugin indent on')
 
 opt('o', 'splitbelow', true)
 opt('o', 'splitright', true)
--- opt('o', 'updatetime', 250)
+opt('o', 'updatetime', 250)
 opt('o', 'cmdheight', 2)
 opt('o', 'clipboard', 'unnamedplus')
 opt('o', 'mouse', 'a')
@@ -30,19 +23,24 @@ opt('o', 'foldlevelstart', 20)
 opt('o', 'ignorecase', true)
 opt('o', 'smartcase', true)
 opt('o', 'termguicolors', true)
-opt('b', 'cino', 'L0')
 opt('b', 'undofile', true)
 opt('o', 'undolevels', 1000)
 opt('o', 'undoreload', 10000)
 
-cmd("autocmd BufRead,BufNewFile .gitignore_global set filetype=gitignore")
-cmd("autocmd BufWritePre * %s/\\s\\+$//e")
-cmd("autocmd BufRead,BufNewFile *.tex setlocal spell")
-cmd("autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif")
-cmd("autocmd BufRead,BufNewFile *.h,*.c set filetype=c")
-cmd([[autocmd BufRead,BufNewFile *.tsx setlocal commentstring={/*\ %s\ */}]])
+cmd([[autocmd FileType * setlocal formatoptions-=o]])
+cmd([[autocmd BufRead,BufNewFile .gitignore_global set filetype=gitignore]])
+cmd([[autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif]])
+cmd([[autocmd BufRead,BufNewFile *.h,*.c set filetype=c]])
+exec(
+[[
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
+augroup END
+]],
+false
+)
+
 
 g.vimsyn_embed = 'l'
-g.delimitMate_expand_cr = 1
-g.closetag_filenames = '*.html,*.tsx'
-g.closetag_regions = {typescriptreact = 'jsxRegion,tsxRegion'}
+g.python3_host_prog = '/usr/local/bin/python3.8'

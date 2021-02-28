@@ -1,3 +1,5 @@
+---------- VIMTEX SOURCE FOR COMPLETION ----------
+
 local M = {}
 
 function M.getCompletionItems(prefix)

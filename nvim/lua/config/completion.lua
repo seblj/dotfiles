@@ -1,26 +1,15 @@
 ---------- COMPLETION CONFIG ----------
 
-local function map(mode, lhs, rhs, opts)
-  local options = {silent = true}
-  if opts then options = vim.tbl_extend('force', options, opts) end
-    for c in mode:gmatch"." do
-        vim.api.nvim_set_keymap(c, lhs, rhs, options)
-    end
-end
+local utils = require'utils'
+local cmd, opt, map = vim.cmd, utils.opt, utils.map
 
-
-local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
-local function opt(scope, key, value)
-  scopes[scope][key] = value
-  if scope ~= 'o' then scopes['o'][key] = value end
-end
-
+map('i', '<C-space>', '<Plug>(completion_trigger)', {noremap = false})
 opt('o', 'completeopt', 'menuone,noinsert,noselect')
-
-vim.cmd("autocmd BufEnter * lua require'completion'.on_attach()")
+cmd("autocmd BufEnter * lua require'completion'.on_attach()")
 
 require'completion'.addCompletionSource('vimtex', require'completion_sources/vimtex'.complete_item)
 
+vim.g.completion_confirm_key = ""
 vim.g.completion_auto_change_source = 1
 vim.g.completion_sorting = "length"
 vim.g.completion_items_duplicate = {
@@ -33,7 +22,6 @@ vim.g.completion_chain_complete_list = {
     default = {
         default = {
             {complete_items = {'lsp'}},
-            {complete_items = {'path'}},
             {complete_items = {'buffers'}}
         },
         tex = {
@@ -43,9 +31,26 @@ vim.g.completion_chain_complete_list = {
             {complete_items = {'buffers'}}
         },
         string = {
-            {complete_items = {'path'}}
+            {complete_items = {'path'}, triggered_only = {'/'}},
         },
     }
 }
 
-map('i', '<C-space>', '<Plug>(completion_trigger)')
+
+-- vim.g.completion_customize_lsp_label = {
+--     Function = ' [function]',
+--     Method = ' [method]',
+--     Reference = ' [refrence]',
+--     Enum = ' [enum]',
+--     Field = 'ﰠ [field]',
+--     Keyword = ' [key]',
+--     Variable = ' [variable]',
+--     Folder = ' [folder]',
+--     Snippet = ' [snippet]',
+--     Operator = ' [operator]',
+--     Module = ' [module]',
+--     Text = 'ﮜ[text]',
+--     Class = ' [class]',
+--     Interface = ' [interface]'
+-- }
+

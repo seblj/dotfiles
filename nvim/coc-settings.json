@@ -2,9 +2,40 @@
     "diagnostic.errorSign": "✘",
     "diagnostic.warningSign": "",
     "diagnostic.infoSign": "",
+    "diagnostic.hintSign":"ﯦ",
     "diagnostic.checkCurrentLine": true,
     "diagnostic.messageTarget": "echo",
     "python.jediEnabled": false,
     "coc.preferences.hoverTarget": "float",
-     "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "typescriptreact", "typescript"]
+    "languageserver": {
+        "lua": {
+            "command": "/Users/sebastianlyngjohansen/Applications/lua-language-server/bin/macOS/lua-language-server",
+            "args": ["-E", "/Users/sebastianlyngjohansen/Applications/lua-language-server/main.lua"],
+            "filetypes": ["lua"],
+            "rootPatterns": [".git/"],
+            "settings": {
+                "Lua": {
+                    "workspace": {
+                        "library": {
+                            "/path/to/hammerspoon-completion/build/stubs": true,
+                            "/path/to/neovim/runtime/lua": true
+                        },
+                        "maxPreload": 2000,
+                        "preloadFileSize": 1000
+                    },
+                    "runtime": {
+                        "version": "LuaJIT"
+                    },
+                    "diagnostics": {
+                        "enable": true,
+                        "globals": ["hs", "vim", "it", "describe", "before_each", "after_each"],
+                        "disable": ["lowercase-global"]
+                    },
+                    "completion": {
+                        "keywordSnippet": "Disable"
+                    }
+                }
+            }
+        }
+    }
 }

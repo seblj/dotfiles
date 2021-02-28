@@ -12,6 +12,10 @@
 [core]
 	editor = nvim
 	excludesfile = /Users/sebastianlyngjohansen/.gitignore_global
+    pager = delta
+
+[pull]
+    rebase = true
 
 [alias]
 	st = status
@@ -19,10 +23,23 @@
 	cm = commit -m
 	aacm = !git add -A . && git commit -m
 	start = !git checkout master && git pull origin
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	lg = !git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)%an%Creset' --abbrev-commit | emojify | less
 	sa = submodule add
     amend = commit --amend
 
+[delta]
+    line-numbers = true
+    syntax-theme = TwoDark
+    side-by-side = false
+    file-modified-labed = modified
+    file-style = white
+    file-decoration-style = none
+    hunk-header-decoration-style = white box
+    hunk-header-file-style = white
+    hunk-header-line-number-style = white
+
+[interactive]
+    diffFilter = delta --color-only
 
 [merge]
 	tool = vimdiff

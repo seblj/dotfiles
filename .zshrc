@@ -10,8 +10,8 @@ export _Z_DATA="$HOME/.config/z/.z."
 # Path to your oh-my-zsh installation.
 export PATH="/Users/sebastianlyngjohansen/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH=$PATH:~/programs/UPC/bin
-export UPCXX_INSTALL="$HOME/programs/UPC"
+export PATH=$PATH:~/Applications/UPC/bin
+export UPCXX_INSTALL="$HOME/Applications/UPC"
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
@@ -28,16 +28,6 @@ ZSH_THEME="spaceship"
 #Remove % at end of print when not using \n
 PROMPT_EOL_MARK=""
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
 plugins=(git zsh-z tmux)
 
 # ZSH_TMUX_AUTOSTART=true
@@ -49,8 +39,6 @@ source $ZSH/oh-my-zsh.sh
   prompt spaceship
   SPACESHIP_PROMPT_ORDER=(
   user
-  time     #
-  # vi_mode  # these sections will be
   host     #
   char
   dir
@@ -61,8 +49,7 @@ source $ZSH/oh-my-zsh.sh
   swift
   golang
   docker
-  # venv
-  # pyenv
+  venv
 )
 # USER
 SPACESHIP_USER_SHOW=always
@@ -70,44 +57,43 @@ SPACESHIP_USER_PREFIX="" # remove `with` before username
 SPACESHIP_USER_SUFFIX=" " # remove space before host
 
 # HOST
-# Result will look like this:
-#   username@:(hostname)
 SPACESHIP_HOST_PREFIX="➜ "
 
 # DIR
 SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
 SPACESHIP_DIR_TRUNC='1' # show only last directory
-# SPACESHIP_DIR_TRUNC_REPO=false
 
 # GIT
 # Disable git symbol
-# # Wrap git in `git:(...)`
 SPACESHIP_GIT_PREFIX='➜ '
 SPACESHIP_GIT_SUFFIX=" "
 SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
-# Unwrap git status from `[...]`
-# SPACESHIP_GIT_STATUS_PREFIX=""
-# SPACESHIP_GIT_STATUS_SUFFIX=""
 
+SPACESHIP_VENV_PREFIX='➜ ' 
+SPACESHIP_VENV_SUFFIX=' ' 
+SPACESHIP_VENV_GENERIC_NAMES=''
+SPACESHIP_VENV_SYMBOL=' '
+SPACESHIP_VENV_COLOR='#0087d7'
 
 # Alias
 alias nn="nvim"
-alias vim="~/programs/nvim-nightly/bin/nvim"
+alias vim="~/Applications/nvim-nightly/bin/nvim"
 alias init.lua="vim ~/dotfiles/nvim/init.lua"
 alias zshrc="vim ~/.zshrc"
 alias cp="cp -i"
 alias mv="mv -i"
-alias uitvpn="~/scripts/vpn/vpn.sh"
+alias uitvpn="~/projects/scripts/vpn/vpn.sh"
 alias submissions=" python3 ~/projects/grader/grade.py"
 alias share="~/scripts/share.sh"
-alias report="python3 ~/scripts/latex_template.py"
+alias report="python3 ~/projects/scripts/latex_template.py"
 alias vmstart="VBoxManage startvm "Ubuntu" --type headless"
 alias vmpause="VBoxManage controlvm "Ubuntu" pause --type headless"
 alias vmresume"VBoxManage controlvm "Ubuntu" resume --type headless"
 alias vmstop="VBoxManage controlvm "Ubuntu" poweroff --type headless"
 alias weather="python3 ~/projects/weatherscrape.py"
 alias table="python3 ~/projects/table.py"
-alias icons="~/scripts/replace_icons.sh"
+alias icons="~/projects/scripts/replace_icons.sh"
+
 
 # VI keybindings in shell
 bindkey -v

@@ -1,6 +1,5 @@
 ---------- TREE-SITTER CONFIG ----------
 
-
 local cmd = vim.cmd
 
 require'nvim-treesitter.configs'.setup {
@@ -16,3 +15,4 @@ hlmap["custom-type"]= "TSCustomType"
 
 -- Set filetype which sets syntax because tree-sitter breaks set syntax
 cmd("autocmd BufRead,BufNewFile * execute(':set ft:'.&ft)")
+

@@ -30,4 +30,6 @@ types_c.taghl
 __pycache__
 vim-markdown-preview.html
 *.token
+.ccls-cache
+*.passwd
 

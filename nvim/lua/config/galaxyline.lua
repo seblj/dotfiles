@@ -71,10 +71,10 @@ gls.left[2] = {
       local mode_color = {
           n = colors.green,
           i = colors.red,
+          c  = colors.purple,
           v = colors.blue,
           [''] = colors.blue,
           V = colors.blue,
-          c = colors.red,
           no = colors.magenta,
           s = colors.orange,
           S = colors.orange,
@@ -89,7 +89,6 @@ gls.left[2] = {
           ['r?'] = colors.cyan,
           ['!']  = colors.green,
           t = colors.green,
-          c  = colors.purple,
           ['r?'] = colors.red,
           ['r']  = colors.red,
           rm = colors.red,
@@ -120,16 +119,16 @@ gls.left[4] = {
 
 gls.left[5] = {
   GitIcon = {
-    provider = function() return '  ' end,
-    condition = require('galaxyline.provider_vcs').check_git_workspace,
-    highlight = {colors.orange,colors.line_bg},
+    provider = function() return '  ' end,
+    condition = require('galaxyline.provider_vcs').get_git_branch,
+    highlight = {colors.red,colors.line_bg,'bold'},
   }
 }
 gls.left[6] = {
   GitBranch = {
     provider = 'GitBranch',
     condition = require('galaxyline.provider_vcs').get_git_branch,
-    highlight = {'#8FBCBB',colors.line_bg,'bold'},
+    highlight = {colors.red,colors.line_bg,'bold'},
   }
 }
 

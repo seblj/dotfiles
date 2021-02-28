@@ -1,19 +1,11 @@
 ---------- MAPPINGS ----------
 
-local cmd, fn, g, exec = vim.cmd, vim.fn, vim.g, vim.api.nvim_exec
-local function map(mode, lhs, rhs, opts)
-  local options = {noremap = true, silent = true}
-  if opts then options = vim.tbl_extend('force', options, opts) end
-    for c in mode:gmatch"." do
-        vim.api.nvim_set_keymap(c, lhs, rhs, options)
-    end
-end
+local utils = require'utils'
+local cmd, g, exec, map = vim.cmd, vim.g, vim.api.nvim_exec, utils.map
 
 -- Leader is space and localleader is \
 g.mapleader = ' '
 g.maplocalleader = "\\"
-
-map('n', '<leader>m', ':MaximizerToggle!<CR>')                                  -- Maximize split
 
 ---------- GENERAL MAPPINGS ----------
 
@@ -22,9 +14,9 @@ map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})      
 map('v', '<leader>p', '_dP')                                                    -- Not override clipboard
 map('n', '<leader>=', '<C-w>=')                                                 -- Resize windows
 map('n', '<leader>i', '<gg=G')                                                  -- Indent file
-map('n', '<leader>s', ':%s//gI<Left><Left><Left>')                              -- Search and replace
-map('v', '<leader>s', ':s//gI<Left><Left><Left>')                               -- Search and replace
-map('n', '<leader>f', 'za')                                                     -- Fold
+map('n', '<leader>s', ':%s//gI<Left><Left><Left>', {silent = false})            -- Search and replace
+map('v', '<leader>s', ':s//gI<Left><Left><Left>', {silent = false})             -- Search and replace
+map('n', '<C-f>', 'za')                                                     -- Fold
 map('n', '<leader>l', ':nohl<CR>')                                              -- Remove highlight after search
 map('n', '<Tab>', 'gt')                                                         -- Next tab
 map('n', '<S-TAB>', 'gT')                                                       -- Previous tab
@@ -47,10 +39,17 @@ map('n', 'ª', ':m.-2<CR>==')                                                   
 map('v', 'ª', ":m '<-2<CR>gv=gv")                                               -- Move line with Alt-k
 map('i' ,'ª', '<Esc>:m .-2<CR>==gi')                                            -- Move line with Alt-k
 
-map('nv', 'J', '10j')                                                           -- 10 lines down with J
-map('nv', 'K', '10k')                                                           -- 10 lines up with K
-map('nvo', 'H', '^')                                                            -- Beginning of line
-map('nvo', 'L', '$')                                                            -- End of line
+map('n', 'J', '10j')                                                            -- 10 lines down with J
+map('v', 'J', '10j')                                                            -- 10 lines down with J
+map('n', 'K', '10k')                                                            -- 10 lines up with K
+map('v', 'K', '10k')                                                            -- 10 lines up with K
+
+map('n', 'H', '^')                                                              -- Beginning of line
+map('n', 'L', '$')                                                              -- End of line
+map('v', 'H', '^')                                                              -- Beginning of line
+map('v', 'L', '$')                                                              -- End of line
+map('o', 'H', '^')                                                              -- Beginning of line
+map('o', 'L', '$')                                                              -- End of line
 
 cmd('cnoreabbrev w!! w suda://%')                                               -- Write with sudo
 cmd('cnoreabbrev Q q')                                                          -- Quit with Q
@@ -68,29 +67,29 @@ cmd('cnoreabbrev QA qa')                                                        
 ---------- FUNCTIONS ----------
 
 -- Function for using arrow keys as cnext and cprev only in quickfix window
-exec(
-[[
-function! QuickFixFunc(key)
-    if empty(filter(getwininfo(), 'v:val.quickfix'))
-        if a:key == "down"
-            normal j
-        else
-            normal k
-        endif
-    else
-        if a:key == "down"
-            :silent! cnext
-        else
-            :silent! cprev
-        endif
-    endif
-endfunction
-]],
-false
-)
+-- exec(
+-- [[
+-- function! QuickFixFunc(key)
+--     if empty(filter(getwininfo(), 'v:val.quickfix'))
+--         if a:key == "down"
+--             normal j
+--         else
+--             normal k
+--         endif
+--     else
+--         if a:key == "down"
+--             :silent! cnext
+--         else
+--             :silent! cprev
+--         endif
+--     endif
+-- endfunction
+-- ]],
+-- false
+-- )
 
-map('n', '<Down>', ':call QuickFixFunc("down")<CR>')                            -- Use down as cnext
-map('n', '<Up>', ':call QuickFixFunc("up")<CR>')                                -- Use up as cprev
+-- map('n', '<Down>', ':call QuickFixFunc("down")<CR>')                            -- Use down as cnext
+-- map('n', '<Up>', ':call QuickFixFunc("up")<CR>')                                -- Use up as cprev
 
 -- Function to execute macro over a visual range
 exec(
@@ -104,3 +103,16 @@ false
 )
 
 map('x', '@', ':<C-u>call ExecuteMacroOverVisualRange()<CR>')                   -- Macro over visual range
+
+exec(
+[[
+nmap <leader>z :call SynStack()<CR>
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+]],
+false
+)

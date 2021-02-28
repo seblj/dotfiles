@@ -67,7 +67,7 @@ if &diff
   call sonokai#highlight('CursorLine', s:palette.none, s:palette.none, 'underline')
   call sonokai#highlight('CursorColumn', s:palette.none, s:palette.none, 'bold')
 else
-  call sonokai#highlight('CursorLine', s:palette.none, s:palette.bg1)
+  call sonokai#highlight('CursorLine', s:palette.red, s:palette.bg1)
   call sonokai#highlight('CursorColumn', s:palette.none, s:palette.bg1)
 endif
 call sonokai#highlight('LineNr', s:palette.grey, s:palette.none)
@@ -78,10 +78,11 @@ elseif (&relativenumber == 1 && &cursorline == 0) || s:configuration.sign_column
 else
   call sonokai#highlight('CursorLineNr', s:palette.fg, s:palette.bg1)
 endif
-call sonokai#highlight('DiffAdd', s:palette.green, s:palette.none)
-call sonokai#highlight('DiffChange', s:palette.blue, s:palette.none)
-call sonokai#highlight('DiffDelete', s:palette.red, s:palette.none)
-call sonokai#highlight('DiffText', s:palette.bg0, s:palette.fg)
+hi! Visual cterm=none ctermfg=none
+call sonokai#highlight('DiffAdd', s:palette.none, s:palette.diff_green)
+call sonokai#highlight('DiffChange', s:palette.none, s:palette.diff_blue)
+call sonokai#highlight('DiffDelete', s:palette.none, s:palette.diff_red)
+call sonokai#highlight('DiffText', s:palette.bg0, s:palette.diff_orange)
 call sonokai#highlight('Directory', s:palette.green, s:palette.none)
 call sonokai#highlight('ErrorMsg', s:palette.red, s:palette.none)
 call sonokai#highlight('WarningMsg', s:palette.yellow, s:palette.none, 'bold')
@@ -142,9 +143,9 @@ if has('nvim')
   highlight! link LspDiagnosticsUnderlineInformation InfoText
   highlight! link LspDiagnosticsUnderlineHint HintText
   highlight! link LspDiagnosticsSignError RedSign
-  highlight! link LspDiagnosticsSignWarning YellowSign
+  highlight! link LspDiagnosticsSignWarning OrangeSign
   highlight! link LspDiagnosticsSignInformation BlueSign
-  highlight! link LspDiagnosticsSignHint GreenSign
+  highlight! link LspDiagnosticsSignHint YellowSign
   highlight! link LspReferenceText CurrentWord
   highlight! link LspReferenceRead CurrentWord
   highlight! link LspReferenceWrite CurrentWord
@@ -373,9 +374,9 @@ highlight! link CocInfoHighlight InfoText
 highlight! link CocHintHighlight HintText
 highlight! link CocHighlightText CurrentWord
 highlight! link CocErrorSign RedSign
-highlight! link CocWarningSign YellowSign
+highlight! link CocWarningSign OrangeSign
 highlight! link CocInfoSign BlueSign
-highlight! link CocHintSign GreenSign
+highlight! link CocHintSign YellowSign
 highlight! link CocWarningVirtualText Grey
 highlight! link CocErrorVirtualText Grey
 highlight! link CocInfoVirtualText Grey
@@ -1891,5 +1892,8 @@ highlight! link helpSpecial Purple
 highlight! link helpSectionDelim Grey
 " ft_end }}}
 " }}}
+call sonokai#highlight('DashboardHeader', s:palette.red, s:palette.none)
+call sonokai#highlight('DashboardCenter', s:palette.blue, s:palette.none)
+" highlight! link DashboardHeader s:palette.s:palette.red
 
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker fmr={{{,}}}:
