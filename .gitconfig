@@ -33,7 +33,7 @@
     side-by-side = false
     file-modified-labed = modified
     file-style = white
-    file-decoration-style = none
+    file-decoration-style = white box
     hunk-header-decoration-style = white box
     hunk-header-file-style = white
     hunk-header-line-number-style = white

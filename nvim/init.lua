@@ -7,6 +7,7 @@ require('keymaps')
 
 local utils = require('utils')
 local enable, disable, map = utils.enable, utils.disable, utils.map
+local test = enable
 
 local nvimlsp = disable
 local coc = enable
@@ -35,7 +36,7 @@ return require('packer').startup(function(use)
     }
     use {'lewis6991/gitsigns.nvim',                                     -- Gitgutter alternative
         config = [[require'config/gitsigns']],
-        branch = 'develop',
+        branch = 'main',
         cond = enable,
     }
     use {'tpope/vim-fugitive',
@@ -45,6 +46,7 @@ return require('packer').startup(function(use)
         branch = 'main',
         config = [[require'config/galaxyline']]
     }
+    use 'mkitt/tabline.vim'
     use {'neoclide/coc.nvim',                                           -- Lsp
         branch = 'release',
         config = [[require'config/coc']],

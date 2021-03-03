@@ -55,6 +55,7 @@ source $ZSH/oh-my-zsh.sh
 SPACESHIP_USER_SHOW=always
 SPACESHIP_USER_PREFIX="" # remove `with` before username
 SPACESHIP_USER_SUFFIX=" " # remove space before host
+SPACESHIP_USER_COLOR="yellow"
 
 # HOST
 SPACESHIP_HOST_PREFIX="➜ "
@@ -62,6 +63,7 @@ SPACESHIP_HOST_PREFIX="➜ "
 # DIR
 SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
 SPACESHIP_DIR_TRUNC='1' # show only last directory
+SPACESHIP_DIR_COLOR="cyan"
 
 # GIT
 # Disable git symbol

@@ -7,6 +7,7 @@
     "diagnostic.messageTarget": "echo",
     "python.jediEnabled": false,
     "coc.preferences.hoverTarget": "float",
+    "omnisharp.version": "v1.37.3",
     "languageserver": {
         "lua": {
             "command": "/Users/sebastianlyngjohansen/Applications/lua-language-server/bin/macOS/lua-language-server",

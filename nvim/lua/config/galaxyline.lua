@@ -13,7 +13,8 @@ local colors = {
     fg = '#8FBCBB',
     fg_green = '#65a380',
     none = 'NONE',
-    yellow = '#fabd2f',
+    yellow = '#d78700',
+    yellow = '#e7c664',
     cyan = '#008080',
     darkblue = '#081633',
     green = '#afd700',
@@ -42,7 +43,6 @@ end
 gls.left[1] = {
   FirstElement = {
     provider = function() return ' ' end,
-    highlight = {colors.blue,colors.line_bg}
   },
 }
 gls.left[2] = {
@@ -144,6 +144,7 @@ gls.left[8] = {
     provider = 'DiffAdd',
     condition = checkwidth,
     icon = ' ',
+    -- icon = '  ',
     highlight = {colors.green,colors.line_bg},
   }
 }
@@ -152,7 +153,8 @@ gls.left[9] = {
     provider = 'DiffModified',
     condition = checkwidth,
     icon = ' ',
-    highlight = {colors.orange,colors.line_bg},
+    -- icon = ' 柳',
+    highlight = {colors.blue,colors.line_bg},
   }
 }
 gls.left[10] = {
@@ -160,6 +162,7 @@ gls.left[10] = {
     provider = 'DiffRemove',
     condition = checkwidth,
     icon = ' ',
+    -- icon = '  ',
     highlight = {colors.red,colors.line_bg},
   }
 }
@@ -188,18 +191,25 @@ gls.right[2] = {
 gls.right[3] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
-    icon = '  ',
-    highlight = {colors.yellow,colors.line_bg},
+    icon = '  ',
+    highlight = {colors.orange,colors.line_bg},
   }
 }
 gls.right[4] = {
+    DiagnosticInfo = {
+        provider = 'DiagnosticInfo',
+        icon = '  ',
+        highlight = {colors.yellow, colors.line_bg}
+    }
+}
+gls.right[5] = {
   Space = {
     provider = function () return ' ' end,
     highlight = {colors.line_bg, colors.line_bg}
   }
 }
 
-gls.right[5]= {
+gls.right[6]= {
   FileFormat = {
     provider = 'FileFormat',
     separator_highlight = {colors.bg,colors.line_bg},

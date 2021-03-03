@@ -28,6 +28,10 @@ function M.edit_dotfiles()
     }
 end
 
+function M.get_path_tail(dir)
+    return string.reverse((dir:reverse()):sub(0, (dir:reverse()):find('/')-1))
+end
+
 -- Searches from current dir if not git repo
 -- Searches from root of git dir if git repo.
 -- Set prompt-title to directory searching from
@@ -40,7 +44,7 @@ function M.find_files()
         }
     else
         -- Ugly oneliner. Find name of directory for prompt_title
-        local dir = string.reverse((git_root:reverse()):sub(0, (git_root:reverse()):find('/')-1))
+        local dir = M.get_path_tail(git_root)
         require("telescope.builtin").find_files {
             cwd = git_root,
             prompt_title = dir
@@ -57,12 +61,19 @@ function M.live_grep()
         }
     else
         -- Ugly oneliner. Find name of directory for prompt_title
-        local dir = string.reverse((git_root:reverse()):sub(0, (git_root:reverse()):find('/')-1))
+        local dir = M.get_path_tail(git_root);
         require("telescope.builtin").live_grep {
             cwd = git_root,
             prompt_title = dir
         }
     end
+end
+
+function M.find_cwd_files()
+    local cwd = vim.api.nvim_eval("expand('%:p:h:t')")
+    require("telescope.builtin").find_files {
+        prompt_title = cwd
+    }
 end
 
 return M
