@@ -1,6 +1,6 @@
 ---------- OPTIONS ----------
-local utils = require'utils'
-local cmd, g, opt, exec = vim.cmd, vim.g, utils.opt, vim.api.nvim_exec
+local utils = require('utils')
+local cmd, g, opt = vim.cmd, vim.g, utils.opt
 
 cmd('colorscheme sonokai')
 cmd('filetype plugin indent on')
@@ -25,23 +25,12 @@ opt('o', 'smartcase', true)
 opt('o', 'termguicolors', true)
 opt('b', 'undofile', true)
 opt('o', 'undolevels', 1000)
-opt('o', 'undoreload', 10000)
 opt('o', 'shortmess', vim.o.shortmess .. 'c')
 
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
-cmd([[autocmd BufRead,BufNewFile .gitignore_global set filetype=gitignore]])
+cmd([[autocmd BufRead,BufNewFile .gitignore_global set ft=gitignore]])
+cmd([[autocmd BufRead,BufNewFile .gitconfig.local set ft=gitconfig]])
 cmd([[autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif]])
-cmd([[autocmd BufRead,BufNewFile *.h,*.c set filetype=c]])
-exec(
-[[
-augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
-augroup END
-]],
-false
-)
-
 
 g.vimsyn_embed = 'l'
 g.python3_host_prog = '/usr/local/bin/python3.8'

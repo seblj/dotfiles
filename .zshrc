@@ -1,13 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# export PATH="$HOME/.pyenv/bin:$PATH"
-# eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
-
 export _Z_DATA="$HOME/.config/z/.z."
 
-# Path to your oh-my-zsh installation.
 export PATH="/Users/sebastianlyngjohansen/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH=$PATH:~/Applications/UPC/bin
@@ -21,6 +15,8 @@ export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
+
+export MANPAGER='nvim +Man!'
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="spaceship"
@@ -39,7 +35,7 @@ source $ZSH/oh-my-zsh.sh
   prompt spaceship
   SPACESHIP_PROMPT_ORDER=(
   user
-  host     #
+  host
   char
   dir
   git
@@ -51,6 +47,9 @@ source $ZSH/oh-my-zsh.sh
   docker
   venv
 )
+
+SPACESHIP_CHAR_SYMBOL="→ "
+
 # USER
 SPACESHIP_USER_SHOW=always
 SPACESHIP_USER_PREFIX="" # remove `with` before username
@@ -58,7 +57,7 @@ SPACESHIP_USER_SUFFIX=" " # remove space before host
 SPACESHIP_USER_COLOR="yellow"
 
 # HOST
-SPACESHIP_HOST_PREFIX="➜ "
+SPACESHIP_HOST_PREFIX="→ "
 
 # DIR
 SPACESHIP_DIR_PREFIX='' # disable directory prefix, cause it's not the first section
@@ -66,20 +65,22 @@ SPACESHIP_DIR_TRUNC='1' # show only last directory
 SPACESHIP_DIR_COLOR="cyan"
 
 # GIT
-# Disable git symbol
-SPACESHIP_GIT_PREFIX='➜ '
+SPACESHIP_GIT_PREFIX='→ '
 SPACESHIP_GIT_SUFFIX=" "
 SPACESHIP_GIT_BRANCH_SUFFIX="" # remove space after branch name
 
-SPACESHIP_VENV_PREFIX='➜ ' 
+# VENV
+SPACESHIP_VENV_PREFIX='→ ' 
 SPACESHIP_VENV_SUFFIX=' ' 
 SPACESHIP_VENV_GENERIC_NAMES=''
 SPACESHIP_VENV_SYMBOL=' '
 SPACESHIP_VENV_COLOR='#0087d7'
 
 # Alias
+alias nnpr="/Users/sebastianlyngjohansen/Applications/neovim_pr/build/bin/nvim"
 alias nn="nvim"
 alias vim="~/Applications/nvim-nightly/bin/nvim"
+# alias vim="~/Applications/neovim/build/bin/nvim"
 alias init.lua="vim ~/dotfiles/nvim/init.lua"
 alias zshrc="vim ~/.zshrc"
 alias cp="cp -i"
@@ -100,12 +101,13 @@ alias icons="~/projects/scripts/replace_icons.sh"
 # VI keybindings in shell
 bindkey -v
 
+bindkey -M vicmd L vi-end-of-line
+bindkey -M vicmd H vi-beginning-of-line
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
-# bindkey '^r' history-incremental-search-backward
 
 export KEYTIMEOUT=1
 function zle-keymap-select {
@@ -130,9 +132,8 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 bindkey '^[[Z' reverse-menu-complete
 
-# autoload -Uz compinit
+autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-

@@ -113,7 +113,7 @@ call sonokai#highlight('StatusLine', s:palette.fg, s:palette.none)
 call sonokai#highlight('StatusLineTerm', s:palette.fg, s:palette.bg3)
 call sonokai#highlight('StatusLineNC', s:palette.grey, s:palette.bg1)
 call sonokai#highlight('StatusLineTermNC', s:palette.grey, s:palette.bg1)
-call sonokai#highlight('TabLine', s:palette.none, s:palette.bg4)
+call sonokai#highlight('TabLine', s:palette.none, s:palette.yellow)
 call sonokai#highlight('TabLineFill', s:palette.grey, s:palette.bg1)
 call sonokai#highlight('TabLineSel', s:palette.none, s:palette.bg_red)
 call sonokai#highlight('VertSplit', s:palette.grey, s:palette.none)
@@ -1894,6 +1894,30 @@ highlight! link helpSectionDelim Grey
 " }}}
 call sonokai#highlight('DashboardHeader', s:palette.red, s:palette.none)
 call sonokai#highlight('DashboardCenter', s:palette.blue, s:palette.none)
+augroup highlight_yank
+  autocmd!
+  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
+augroup END
+
+" Colors for :term
+let g:terminal_color_0  = '#1d1f21'
+let g:terminal_color_1  = '#ff2200'
+let g:terminal_color_2  = '#198844'
+let g:terminal_color_3  = '#bbbb00'
+let g:terminal_color_4  = '#00bbbb'
+let g:terminal_color_5  = '#bb00bb'
+let g:terminal_color_6  = '#00bbbb'
+let g:terminal_color_7  = '#f5f5f5'
+let g:terminal_color_8  = '#989698'
+let g:terminal_color_9  = '#ff2200'
+let g:terminal_color_10 = '#198844'
+let g:terminal_color_11 = '#d8865f'
+let g:terminal_color_12 = '#00bbbb'
+let g:terminal_color_13 = '#bb00bb'
+let g:terminal_color_14 = '#00bbbb'
+let g:terminal_color_15 = '#ffffff'
+
+
 " highlight! link DashboardHeader s:palette.s:palette.red
 
 " vim: set sw=2 ts=2 sts=2 et tw=80 ft=vim fdm=marker fmr={{{,}}}:

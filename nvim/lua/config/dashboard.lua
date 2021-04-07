@@ -7,7 +7,7 @@ g.dashboard_default_executive = 'telescope'
 g.dashboard_custom_section = {
     find_dotfiles = {
         description = {'  Open dotfiles        '},
-        command = 'lua require"utils".edit_dotfiles()'
+        command = 'lua require("utils").edit_dotfiles()'
     },
     find_history = {
         description = {'  Recently opened files'},

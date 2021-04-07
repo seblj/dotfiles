@@ -1,6 +1,6 @@
 ---------- VIMSPECTOR CONFIG ----------
 
-local cmd, fn, g, exec = vim.cmd, vim.fn, vim.g, vim.api.nvim_exec
+local g = vim.g
 local function map(mode, lhs, rhs, opts)
     local options = {silent = true}
     if opts then options = vim.tbl_extend('force', options, opts) end
@@ -9,6 +9,7 @@ local function map(mode, lhs, rhs, opts)
     end
 end
 
+g.vimspector_base_dir='/Users/sebastianlyngjohansen/.config/vimspector-config'
 
 -- Repeat remaps for vimspector
 map('n', '<Plug>VimspectorStepOutRepeat', ':call vimspector#StepOut()<CR> :call repeat#set("\\<Plug>VimspectorStepOutRepeat", v:count)<CR>')
@@ -19,16 +20,16 @@ map('n', '<Plug>VimspectorRunToCursorRepeat', ':call vimspector#RunToCursor()<CR
 map('n', '<Plug>VimspectorToggleBreakpointRepeat', ':call vimspector#ToggleBreakpoint()<CR> :call repeat#set("\\<Plug>VimspectorToggleBreakpointRepeat", v:count)<CR>')
 
 -- " Remap the comands created for repeat
-map('n', '<leader>dd', ':call vimspector#Launch()<CR>')
-map('n', '<leader>de', ':call vimspector#Reset()<CR>')
+map('n', '<leader>vd', ':call vimspector#Launch()<CR>')
+map('n', '<leader>ve', ':call vimspector#Reset()<CR>')
 
-map('n', '<Leader>dk', '<Plug>VimspectorStepOutRepeat')
-map('n', '<Leader>dj', '<Plug>VimspectorStepOverRepeat')
-map('n', '<Leader>dl', '<Plug>VimspectorStepIntoRepeat')
-map('n', '<leader>d_', '<Plug>VimspectorRestart')
-map('n', '<leader>d<space>', ':call vimspector#Continue()<CR>')
+map('n', '<Leader>vk', '<Plug>VimspectorStepOutRepeat')
+map('n', '<Leader>vj', '<Plug>VimspectorStepOverRepeat')
+map('n', '<Leader>vl', '<Plug>VimspectorStepIntoRepeat')
+map('n', '<leader>vr', '<Plug>VimspectorRestart')
+map('n', '<leader>v<space>', ':call vimspector#Continue()<CR>')
 
-map('n', '<leader>drc', '<Plug>VimspectorRunToCursorRepeat')
-map('n', '<leader>db', '<Plug>VimspectorToggleBreakpointRepeat')
-map('n', '<leader>dcb', '<Plug>VimspectorToggleConditionalBreakpoint')
-map('n', '<leader>dw', ':VimspectorWatch', {silent = false})
+map('n', '<leader>vc', '<Plug>VimspectorRunToCursorRepeat')
+map('n', '<leader>vb', '<Plug>VimspectorToggleBreakpointRepeat')
+map('n', '<leader>vcb', '<Plug>VimspectorToggleConditionalBreakpoint')
+map('n', '<leader>vw', '"iyiw:VimspectorWatch <C-r>"<CR>')

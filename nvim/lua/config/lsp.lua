@@ -1,12 +1,12 @@
 ---------- LSP CONFIG ----------
 
 local lspconfig = require('lspconfig')
-local utils = require'utils'
+local utils = require('utils')
 local cmd, map = vim.cmd, utils.map
 
 cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()")
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+-- map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
 map('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>')
 
@@ -48,7 +48,7 @@ local pid = vim.fn.getpid()
 local omnisharp_bin = "/Users/sebastianlyngjohansen/Applications/omnisharp-osx/run"
 -- on Windows
 -- local omnisharp_bin = "/path/to/omnisharp/OmniSharp.exe"
-require'lspconfig'.omnisharp.setup{
+require('lspconfig').omnisharp.setup{
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
 }
 lspconfig.vimls.setup{}
@@ -60,7 +60,7 @@ lspconfig.sqlls.setup{
     cmd = {"/usr/local/bin/sql-language-server", "up", "--method", "stdio"};
 }
 
-require'lspconfig'.sumneko_lua.setup {
+require('lspconfig').sumneko_lua.setup {
     cmd = {'/Users/sebastianlyngjohansen/Applications/lua-language-server/bin/macOS/lua-language-server', "-E", '/Users/sebastianlyngjohansen/Applications/lua-language-server' .. "/main.lua"};
     settings = {
         Lua = {

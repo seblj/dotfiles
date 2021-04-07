@@ -43,6 +43,7 @@ end
 gls.left[1] = {
   FirstElement = {
     provider = function() return ' ' end,
+    highlight = {colors.line_bg,colors.line_bg}
   },
 }
 gls.left[2] = {
