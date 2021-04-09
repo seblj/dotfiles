@@ -1,5 +1,9 @@
 ---------- INITIALIZE CONFIG ----------
 
+if require('seblj/first_load')() then
+    return
+end
+
 require('options')
 require('keymaps')
 
@@ -11,7 +15,6 @@ local enable, disable, map = utils.enable, utils.disable, utils.map
 local nvimlsp = disable
 local coc = enable
 
-vim.cmd [[packadd packer.nvim]]
 vim.cmd [[autocmd BufWritePost init.lua PackerCompile]]
 
 return require('packer').startup(function(use)
@@ -22,7 +25,7 @@ return require('packer').startup(function(use)
     }
 
     -- Installed plugins
-    use {'wbthomason/packer.nvim', opt = true}                          -- Package manager
+    use {'wbthomason/packer.nvim'}                                      -- Package manager
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
         config = [[require('colorizer').setup()]]
     }
