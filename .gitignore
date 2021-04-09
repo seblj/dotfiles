@@ -3,3 +3,5 @@ nvim/plugin
 minimal.vim
 karabiner/automatic_backups
 vimspector-config
+.zsh_history
+.zcompdump*
