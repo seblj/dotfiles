@@ -1,6 +1,6 @@
 ---------- COC CONFIG ----------
 
-local utils = require('utils')
+local utils = require('seblj.utils')
 local eval, opt, map, cmd, fn = vim.api.nvim_eval, utils.opt, utils.map, vim.cmd, vim.fn
 
 opt('o', 'completeopt', 'menuone,noinsert,noselect')

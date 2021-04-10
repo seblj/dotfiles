@@ -1,7 +1,7 @@
 ---------- LSP CONFIG ----------
 
 local lspconfig = require('lspconfig')
-local utils = require('utils')
+local utils = require('seblj.utils')
 local cmd, map = vim.cmd, utils.map
 
 cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()")

@@ -2,7 +2,6 @@
 
 local gl = require('galaxyline')
 local gls = gl.section
-local extension = require('galaxyline.provider_extensions')
 gl.short_line_list = {
     'NvimTree'
 }
@@ -13,7 +12,6 @@ local colors = {
     fg = '#8FBCBB',
     fg_green = '#65a380',
     none = 'NONE',
-    yellow = '#d78700',
     yellow = '#e7c664',
     cyan = '#008080',
     darkblue = '#081633',
@@ -33,12 +31,22 @@ function has_file_type()
     return true
 end
 
+local checkwidth = function()
+  local squeeze_width  = vim.fn.winwidth(0) / 2
+  if squeeze_width > 40 then
+    return true
+  end
+  return false
+end
+
 local buffer_not_empty = function()
   if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
     return true
   end
   return false
 end
+
+---------- LEFT ----------
 
 gls.left[1] = {
   FirstElement = {
@@ -53,7 +61,6 @@ gls.left[2] = {
       local alias = {
           n = 'NORMAL',
           i = 'INSERT',
-          c = 'COMMAND',
           V = 'VISUAL',
           [''] = 'VISUAL',
           v ='VISUAL',
@@ -81,16 +88,11 @@ gls.left[2] = {
           S = colors.orange,
           [''] = colors.orange,
           ic = colors.yellow,
-          R = colors.purple,
-          Rv = colors.purple,
           cv = colors.red,
           ce = colors.red,
-          r = colors.cyan,
-          rm = colors.cyan,
           ['r?'] = colors.cyan,
           ['!']  = colors.green,
-          t = colors.green,
-          ['r?'] = colors.red,
+          t = colors.blue,
           ['r']  = colors.red,
           rm = colors.red,
           R  = colors.yellow,
@@ -168,13 +170,8 @@ gls.left[10] = {
   }
 }
 
-local checkwidth = function()
-  local squeeze_width  = vim.fn.winwidth(0) / 2
-  if squeeze_width > 40 then
-    return true
-  end
-  return false
-end
+
+---------- RIGHT ----------
 
 gls.right[1] = {
   DiagnosticError = {

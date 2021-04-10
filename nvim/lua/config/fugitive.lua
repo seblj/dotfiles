@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = require('seblj.utils')
 local map = utils.map
 
 map('n', '<leader>gl', 'd3o', {noremap = false})

@@ -1,13 +1,13 @@
 ---------- COMPLETION CONFIG ----------
 
-local utils = require('utils')
+local utils = require('seblj.utils')
 local cmd, opt, map = vim.cmd, utils.opt, utils.map
 
 map('i', '<C-space>', '<Plug>(completion_trigger)', {noremap = false})
 opt('o', 'completeopt', 'menuone,noinsert,noselect')
 cmd("autocmd BufEnter * lua require('completion').on_attach()")
 
-require('completion').addCompletionSource('vimtex', require('completion_sources/vimtex').complete_item)
+require('completion').addCompletionSource('vimtex', require('completion_sources.vimtex').complete_item)
 
 vim.g.completion_confirm_key = ""
 vim.g.completion_auto_change_source = 1

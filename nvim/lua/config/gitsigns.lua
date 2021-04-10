@@ -11,4 +11,3 @@ require('gitsigns').setup {
     use_decoration_api = false,
     max_file_length = 200000
 }
-
