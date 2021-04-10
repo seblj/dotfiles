@@ -3,20 +3,50 @@ local enable, disable, map = utils.enable, utils.disable, utils.map
 
 local nvimlsp = disable
 local coc = enable
+local plugin_dir = "~/projects/plugins/"
 
 vim.cmd [[autocmd BufWritePost init.lua PackerCompile]]
 
 return require('packer').startup(function(use)
+    use {'wbthomason/packer.nvim'}                                      -- Package manager
+
+    -- Uses local plugin if exists. Install from github if not
+    -- Idea from https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/plugins.lua.
+    -- Extend this from tj to allow options
+    local local_use = function(first)
+        local opts = {}
+        local plugin = first
+        if type(first) == 'table' then
+            plugin = vim.tbl_flatten(first)[1]
+            -- Get all the options
+            for k, v in pairs(first) do
+                if type(k) ~= 'number' then
+                    opts[k] = v
+                end
+            end
+        end
+
+        local username = plugin:match("(.*)/")
+        plugin = plugin:match("/(.*)")
+        local use_tbl = {}
+
+        if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin)) == 1 then
+            table.insert(use_tbl, plugin_dir .. plugin)
+        else
+            table.insert(use_tbl, string.format('%s/%s', username, plugin))
+        end
+
+        use (vim.tbl_extend('error', use_tbl, opts))
+    end
 
     -- My plugins
-    use {'~/projects/plugins/nvim-tabline',                             -- Tabline
-        config = [[require('config.tabline')]]
+    local_use {'seblj/nvim-tabline',                                    -- Tabline
+        config = [[require('config.tabline')]],
     }
 
     -- Installed plugins
-    use {'wbthomason/packer.nvim'}                                      -- Package manager
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
-        config = [[require('colorizer').setup()]]
+        config = [[require('colorizer').setup()]],
     }
     use {'jbyuki/instant.nvim',                                         -- Live collaborating
         config = [[vim.g.instant_username = "seblyng"]]
