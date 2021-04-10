@@ -1,5 +1,6 @@
+-- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/first_load.lua
 local download_packer = function()
-  if vim.fn.input("Download Packer? (y for yes)") ~= "y" then
+  if vim.fn.input("Download Packer? (y for yes): ") ~= "y" then
     return
   end
 

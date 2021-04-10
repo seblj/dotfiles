@@ -1,5 +1,5 @@
 ---------- OPTIONS ----------
-local utils = require('utils')
+local utils = require('seblj.utils')
 local cmd, g, opt = vim.cmd, vim.g, utils.opt
 
 cmd('colorscheme sonokai')

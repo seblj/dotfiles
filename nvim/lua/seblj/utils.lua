@@ -27,6 +27,8 @@ function M.edit_dotfiles()
     require('telescope.builtin').find_files{
         cwd = "~/dotfiles",
         prompt_title = "Dotfiles",
+        hidden = true,
+        file_ignore_patterns = { '.git/' }
     }
 end
 
@@ -43,7 +45,7 @@ function M.find_files()
     local curr_dir = eval("expand('%:p:h:t')")
     if git_root == '' or git_root == nil then
         require("telescope.builtin").find_files {
-            prompt_title = curr_dir
+            prompt_title = curr_dir,
         }
     else
         local dir = M.get_path_tail(git_root)
@@ -104,12 +106,14 @@ end
 -- Reloads config for nvim so I don't need to reopen buffer
 function M.reload_config()
     cmd('luafile ~/dotfiles/nvim/init.lua')
-    package.loaded['options'] = nil
-    package.loaded['keymaps'] = nil
-    package.loaded['utils'] = nil
-    require('options')
-    require('keymaps')
-    require('utils')
+    package.loaded['seblj.options'] = nil
+    package.loaded['seblj.keymaps'] = nil
+    package.loaded['seblj.utils'] = nil
+    package.loaded['seblj.plugins'] = nil
+    require('seblj.options')
+    require('seblj.keymaps')
+    require('seblj.utils')
+    require('seblj.plugins')
     for pack, _ in pairs(package.loaded) do
         if string.match(pack, "^config") then
             package.loaded[pack] = nil
@@ -132,6 +136,18 @@ function M.quickfix(key)
         elseif (key == 'up') then
             cmd('silent! cprev')
         end
+    end
+end
+
+-- Save and execute file based on filetype
+function M.save_and_exec()
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    if ft == 'vim' then
+        cmd('silent! write')
+        cmd('source %')
+    elseif ft == 'lua' then
+        cmd('silent! write')
+        cmd('luafile %')
     end
 end
 

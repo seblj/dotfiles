@@ -1,6 +1,6 @@
 ---------- MAPPINGS ----------
 
-local utils = require('utils')
+local utils = require('seblj.utils')
 local cmd, g, map = vim.cmd, vim.g, utils.map
 
 -- Leader is space and localleader is \
@@ -13,7 +13,7 @@ map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})        
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})      -- Shift-tab for previous completion
 map('n', '<Tab>', 'gt')                                                         -- Next tab
 map('n', '<S-TAB>', 'gT')                                                       -- Previous tab
-map('n', '<leader>r', ':lua require("utils").reload_config()<CR>')              -- Reload config
+map('n', '<leader>r', ':lua require("seblj.utils").reload_config()<CR>')              -- Reload config
 map('n', '<leader>=', '<C-w>=')                                                 -- Resize windows
 map('n', '<leader>i', '<gg=G')                                                  -- Indent file
 map('n', '<leader>s', ':%s//gI<Left><Left><Left>', {silent = false})            -- Search and replace
@@ -60,10 +60,11 @@ map('v', 'L', '$')                                                              
 map('o', 'H', '^')                                                              -- Beginning of line
 map('o', 'L', '$')                                                              -- End of line
 
-map('x', '@', ':<C-u>:lua require("utils").visual_macro()<CR>')                 -- Macro over visual range
-map('n', '<leader>z', ':lua require("utils").syn_stack()<CR>')                  -- Get syntax group
-map('n', '<Down>', ':lua require("utils").quickfix("down")<CR>')                -- Move down in quickfixlist
-map('n', '<Up>', ':lua require("utils").quickfix("up")<CR>')                    -- Move up in quickfixlist
+map('n', '<leader>w', ':lua require("seblj.utils").save_and_exec()<CR>')
+map('x', '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>')                 -- Macro over visual range
+map('n', '<leader>z', ':lua require("seblj.utils").syn_stack()<CR>')                  -- Get syntax group
+map('n', '<Down>', ':lua require("seblj.utils").quickfix("down")<CR>')                -- Move down in quickfixlist
+map('n', '<Up>', ':lua require("seblj.utils").quickfix("up")<CR>')                    -- Move up in quickfixlist
 map('n', '<leader><ESC>', ':cclose<CR> `A')                                     -- Close and go to mark
 
 map('t', '<Esc><Esc>', '<C-\\><C-n>')                                           -- Exit term-mode
