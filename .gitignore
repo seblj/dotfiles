@@ -5,3 +5,4 @@ karabiner/automatic_backups
 vimspector-config
 .zsh_history
 .zcompdump*
+.zsh_sessions

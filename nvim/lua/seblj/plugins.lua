@@ -1,8 +1,12 @@
 local utils = require('seblj.utils')
-local enable, disable, map = utils.enable, utils.disable, utils.map
+local map = utils.map
 
-local nvimlsp = disable
-local coc = enable
+Use_coc = true
+
+-- Easy switch between nvimlsp and coc
+local coc = function() return Use_coc end
+local nvimlsp = function() return not Use_coc end
+
 local plugin_dir = "~/projects/plugins/"
 
 vim.cmd [[autocmd BufWritePost init.lua PackerCompile]]
@@ -20,43 +24,56 @@ return require('packer').startup(function(use)
             plugin = vim.tbl_flatten(first)[1]
             -- Get all the options
             for k, v in pairs(first) do
-                if type(k) ~= 'number' then
+                if type(k) ~= 'number' and k ~= 'upstream' then
                     opts[k] = v
                 end
             end
         end
+        local plugin_list = vim.split(plugin, '/')
+        local username = plugin_list[1]
+        local plugin_name = plugin_list[2]
 
-        local username = plugin:match("(.*)/")
-        plugin = plugin:match("/(.*)")
         local use_tbl = {}
-
-        if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin)) == 1 then
-            table.insert(use_tbl, plugin_dir .. plugin)
+        if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin_name)) == 1 and first['upstream'] ~= true then
+            table.insert(use_tbl, plugin_dir .. plugin_name)
         else
-            table.insert(use_tbl, string.format('%s/%s', username, plugin))
+            table.insert(use_tbl, string.format('%s/%s', username, plugin_name))
         end
 
         use (vim.tbl_extend('error', use_tbl, opts))
     end
 
-    -- My plugins
+    -- My plugins/forks
     local_use {'seblj/nvim-tabline',                                    -- Tabline
-        config = [[require('config.tabline')]],
+        config = [[require('tabline').setup{}]]
     }
+    local_use {'seblj/nvim-echo-diagnostics',                           -- Echo lspconfig diagnostics
+        config = [[require('echo-diagnostics').setup{}]],
+        cond = nvimlsp
+    }
+    local_use {'windwp/nvim-autopairs',                                 -- Auto pairs
+        config = [[require('config.autopairs')]],
+        cond = function() return true end,
+        upstream = true
+    }
+    local_use {'seblj/nvim-colorscheme'}
 
     -- Installed plugins
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
         config = [[require('colorizer').setup()]],
     }
+    use {'tjdevries/colorbuddy.nvim',
+        config = [[require('colorbuddy').colorscheme('colorscheme')]]
+    }
     use {'jbyuki/instant.nvim',                                         -- Live collaborating
-        config = [[vim.g.instant_username = "seblyng"]]
+        config = [[vim.g.instant_username = "seblj"]],
     }
     use {'glepnir/dashboard-nvim',                                      -- Startup screen
         config = [[require('config.dashboard')]]
     }
     use {'prettier/vim-prettier',                                       -- Formatting
         run = 'yarn install',
-        config = map('n', '<leader>p', ':PrettierAsync<CR>'),
+        config = [[require('config.prettier')]],
         cond = nvimlsp
     }
     use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
@@ -68,8 +85,7 @@ return require('packer').startup(function(use)
     }
     use {'lewis6991/gitsigns.nvim',                                     -- Git diff signs
         config = [[require('config.gitsigns')]],
-        branch = 'main',
-        cond = enable,
+
     }
     use {'tpope/vim-fugitive',                                          -- Git-wrapper
         config = [[require('config.fugitive')]]
@@ -89,15 +105,19 @@ return require('packer').startup(function(use)
     }
     use 'nvim-treesitter/playground'                                    -- Display information from treesitter
     use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
-        config = [[require('config.lsp')]],
+        config = [[require('config.lspconfig')]],
         cond = nvimlsp
     }
-    use {'nvim-lua/completion-nvim',                                    -- Completion with built-in LSP
-        config = [[require('config.completion')]],
+    use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
+        config = [[require('config.compe')]],
         cond = nvimlsp
     }
-    use {'steelsojka/completion-buffers',                               -- Buffer completion
+    use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
+        config = [[require('config.lspsaga')]],
         cond = nvimlsp
+    }
+    use {'onsails/lspkind-nvim',                                        -- Icons for completion
+        config = nvimlsp
     }
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
         config = [[require('config.luatree')]]
@@ -109,11 +129,20 @@ return require('packer').startup(function(use)
                     'nvim-telescope/telescope-fzy-native.nvim'},
         config = [[require('config.telescope')]]
     }
+
+    -- Keep around and wait for references
+    use {'fannheyward/telescope-coc.nvim',
+        config = [[require('telescope').load_extension('coc')]],
+        cond = function() return false end
+    }
     use 'lambdalisue/suda.vim'                                          -- Write with sudo
     use {'Raimondi/delimitMate',                                        -- Auto pairs
-        config = [[vim.g.delimitMate_expand_cr = 1]]
+        config = [[vim.g.delimitMate_expand_cr = 1]],
+        cond = function() return false end
     }
-    use 'tpope/vim-commentary'                                          -- Easy commenting
+    use {'preservim/nerdcommenter',                                     -- Easy commenting
+       config = [[require('config.commentary')]]
+    }
     use 'terryma/vim-multiple-cursors'                                  -- Multiple cursors
     use 'tpope/vim-surround'                                            -- Edit surrounds
     use {'lervag/vimtex',                                               -- Latex

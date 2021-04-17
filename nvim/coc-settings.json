@@ -6,6 +6,8 @@
     "diagnostic.checkCurrentLine": true,
     "diagnostic.messageTarget": "echo",
     "python.jediEnabled": false,
+    "coc.preferences.useQuickfixForLocations": true,
+    "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "typescriptreact", "typescript"],
     "suggest.completionItemKindLabels": {
         "function": "",
         "method": "ƒ",
@@ -33,8 +35,6 @@
         "typeParameter": "\uf278",
         "default": "\uf29c"
     },
-    "coc.preferences.useQuickfixForLocations": true,
-    "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "typescriptreact", "typescript"],
     "omnisharp.version": "v1.37.3",
     "languageserver": {
         "lua": {

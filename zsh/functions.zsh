@@ -10,6 +10,11 @@ diff_commit() {
     fi
 }
 
+# Kill specified port
+kill_port() {
+    kill $(lsof -t -i:$1)
+}
+
 # Push upstream
 gpo() {
     git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)

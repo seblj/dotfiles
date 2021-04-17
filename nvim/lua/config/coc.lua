@@ -16,8 +16,9 @@ map('n', '<leader>ca', ':CocAction<CR>')
 map('n', '<leader>cd', '<Plug>(coc-diagnostic-info)', {noremap = false})
 map('i', '<c-space>', 'coc#refresh()', {expr = true})
 map('n', '<leader>p', ':CocCommand prettier.formatFile<CR>')
--- Autoformat closing tags with vim-closetag
-map('i', '<CR>', 'pumvisible() ? coc#_select_confirm() : "\\<C-g>u\\<CR>\\<C-r>=coc#on_enter()\\<CR>"', {expr = true})
+
+-- Autoimport packages
+cmd([[inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]])
 
 -- Show documentation under cursor
 function _G.show_documentation()

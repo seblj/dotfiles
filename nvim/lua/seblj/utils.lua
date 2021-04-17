@@ -2,7 +2,7 @@
 
 local eval, cmd = vim.api.nvim_eval, vim.cmd
 
-M = {}
+local M = {}
 
 -- Set mappings
 function M.map(mode, lhs, rhs, opts)
@@ -18,10 +18,6 @@ function M.opt(scope, key, value)
     if scope ~= 'o' then scopes['o'][key] = value end
 end
 
--- Used for turning plugins on and off with 'cond'
-M.enable = function() return true end
-M.disable = function() return false end
-
 -- Telescope function for quick edit of dotfiles
 function M.edit_dotfiles()
     require('telescope.builtin').find_files{
@@ -32,9 +28,10 @@ function M.edit_dotfiles()
     }
 end
 
--- Ugly oneliner. Find name of tail directory
+-- Find tail directory of path
 function M.get_path_tail(dir)
-    return string.reverse((dir:reverse()):sub(0, (dir:reverse()):find('/')-1))
+    local dir_list = vim.split(dir, '/')
+    return dir_list[#dir_list]
 end
 
 -- Searches from current dir if not git repo
@@ -56,6 +53,8 @@ function M.find_files()
     end
 end
 
+-- Live grep from root of git repo, if it is a repo
+-- Else grep current directory
 function M.live_grep()
     local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
     local curr_dir = eval("expand('%:p:h:t')")

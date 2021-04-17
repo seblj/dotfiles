@@ -343,6 +343,7 @@ highlight! link TSOperator Red
 highlight! link TSParameter None
 highlight! link TSParameterReference OrangeItalic
 highlight! link TSProperty None
+highlight! link tsxTSProperty Green
 highlight! link TSPunctBracket Fg
 highlight! link TSPunctDelimiter Grey
 highlight! link TSPunctSpecial Fg

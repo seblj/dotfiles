@@ -30,5 +30,8 @@ symlink_macos(){
 
 # TODO: Install casks in cask.sh
 
+# Prints out al casks to install
+# awk '/^brew install/ {print $4}' ~/dotfiles/mac/cask.sh
+
 symlink_macos
 install_homebrew
