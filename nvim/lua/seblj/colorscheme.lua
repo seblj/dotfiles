@@ -1,6 +1,6 @@
 local Color, c, Group, g, s = require("colorbuddy").setup()
 
-vim.g.colors_name = 'colorscheme'
+vim.g.colors_name = 'custom'
 
 ---------- COLORS ----------
 

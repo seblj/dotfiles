@@ -2,6 +2,7 @@
 local utils = require('seblj.utils')
 local cmd, g, opt = vim.cmd, vim.g, utils.opt
 
+cmd('colorscheme custom')
 cmd('filetype plugin indent on')
 
 opt('o', 'splitbelow', true)

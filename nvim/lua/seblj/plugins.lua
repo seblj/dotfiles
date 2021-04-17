@@ -56,15 +56,12 @@ return require('packer').startup(function(use)
         cond = function() return true end,
         upstream = true
     }
-    local_use {'seblj/nvim-colorscheme'}
 
     -- Installed plugins
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
         config = [[require('colorizer').setup()]],
     }
-    use {'tjdevries/colorbuddy.nvim',
-        config = [[require('colorbuddy').colorscheme('colorscheme')]]
-    }
+    use {'tjdevries/colorbuddy.nvim'}                                   -- Colorscheme helper
     use {'jbyuki/instant.nvim',                                         -- Live collaborating
         config = [[vim.g.instant_username = "seblj"]],
     }
