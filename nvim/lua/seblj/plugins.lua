@@ -47,10 +47,10 @@ return require('packer').startup(function(use)
     local_use {'seblj/nvim-tabline',                                    -- Tabline
         config = [[require('tabline').setup{}]]
     }
-    local_use {'seblj/nvim-echo-diagnostics',                           -- Echo lspconfig diagnostics
-        config = [[require('echo-diagnostics').setup{}]],
-        cond = nvimlsp
-    }
+    -- local_use {'seblj/nvim-echo-diagnostics',                           -- Echo lspconfig diagnostics
+    --     config = [[require('echo-diagnostics').setup{}]],
+    --     cond = nvimlsp
+    -- }
     local_use {'windwp/nvim-autopairs',                                 -- Auto pairs
         config = [[require('config.autopairs')]],
         cond = function() return true end,
@@ -68,11 +68,11 @@ return require('packer').startup(function(use)
     use {'glepnir/dashboard-nvim',                                      -- Startup screen
         config = [[require('config.dashboard')]]
     }
-    use {'prettier/vim-prettier',                                       -- Formatting
-        run = 'yarn install',
-        config = [[require('config.prettier')]],
-        cond = nvimlsp
-    }
+    -- use {'prettier/vim-prettier',                                       -- Formatting
+    --     run = 'yarn install',
+    --     config = [[require('config.prettier')]],
+    --     cond = nvimlsp
+    -- }
     use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
     use {'puremourning/vimspector',                                     -- Debugging
         config = [[require('config.vimspector')]]
@@ -101,21 +101,21 @@ return require('packer').startup(function(use)
         config = [[require('config.treesitter')]]
     }
     use 'nvim-treesitter/playground'                                    -- Display information from treesitter
-    use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
-        config = [[require('config.lspconfig')]],
-        cond = nvimlsp
-    }
-    use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
-        config = [[require('config.compe')]],
-        cond = nvimlsp
-    }
-    use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
-        config = [[require('config.lspsaga')]],
-        cond = nvimlsp
-    }
-    use {'onsails/lspkind-nvim',                                        -- Icons for completion
-        config = nvimlsp
-    }
+    -- use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
+    --     config = [[require('config.lspconfig')]],
+    --     cond = nvimlsp
+    -- }
+    -- use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
+    --     config = [[require('config.compe')]],
+    --     cond = nvimlsp
+    -- }
+    -- use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
+    --     config = [[require('config.lspsaga')]],
+    --     cond = nvimlsp
+    -- }
+    -- use {'onsails/lspkind-nvim',                                        -- Icons for completion
+    --     config = nvimlsp
+    -- }
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
         config = [[require('config.luatree')]]
     }
@@ -130,13 +130,12 @@ return require('packer').startup(function(use)
     -- Keep around and wait for references
     use {'fannheyward/telescope-coc.nvim',
         config = [[require('telescope').load_extension('coc')]],
-        cond = function() return false end
     }
     use 'lambdalisue/suda.vim'                                          -- Write with sudo
-    use {'Raimondi/delimitMate',                                        -- Auto pairs
-        config = [[vim.g.delimitMate_expand_cr = 1]],
-        cond = function() return false end
-    }
+    -- use {'Raimondi/delimitMate',                                        -- Auto pairs
+    --     config = [[vim.g.delimitMate_expand_cr = 1]],
+    --     cond = function() return false end
+    -- }
     use {'preservim/nerdcommenter',                                     -- Easy commenting
        config = [[require('config.commentary')]]
     }

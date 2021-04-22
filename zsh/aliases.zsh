@@ -1,8 +1,7 @@
 # Alias
 
-alias vim="~/Applications/nvim-nightly/bin/nvim"
-alias nnpr="~/Applications/neovim/build/bin/nvim"
-alias nn="nvim"
+alias vim="nvim"
+alias nnpr="~/Applications/nvim-nightly/bin/nvim"
 alias cp="cp -i"
 alias mv="mv -i"
 alias f="find . |grep"

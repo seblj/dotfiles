@@ -1,1 +1,1 @@
-luafile ~/dotfiles/nvim/lua/seblj/colorscheme.lua
+luafile ~/.config/nvim/lua/seblj/colorscheme.lua

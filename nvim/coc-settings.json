@@ -35,6 +35,7 @@
         "typeParameter": "\uf278",
         "default": "\uf29c"
     },
+    "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
     "omnisharp.version": "v1.37.3",
     "languageserver": {
         "lua": {

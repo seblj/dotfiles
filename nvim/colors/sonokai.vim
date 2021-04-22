@@ -357,7 +357,8 @@ highlight! link TSTagDelimiter Red
 highlight! link TSText Green
 call sonokai#highlight('TSEmphasis', s:palette.none, s:palette.none, 'bold')
 " call sonokai#highlight('TSUnderline', s:palette.none, s:palette.none, 'underline')
-highlight! link TSType BlueItalic
+highlight! link TSType Blue
+highlight! link cTSType Red
 highlight! link TSTypeBuiltin BlueItalic
 highlight! link TSURI markdownUrl
 highlight! link TSVariable Fg

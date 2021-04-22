@@ -38,19 +38,34 @@ end
 -- Searches from root of git dir if git repo.
 -- Set prompt-title to directory searching from
 function M.find_files()
-    local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
     local curr_dir = eval("expand('%:p:h:t')")
-    if git_root == '' or git_root == nil then
-        require("telescope.builtin").find_files {
-            prompt_title = curr_dir,
-        }
-    else
-        local dir = M.get_path_tail(git_root)
-        require("telescope.builtin").find_files {
-            cwd = git_root,
-            prompt_title = dir
-        }
-    end
+    require("telescope.builtin").find_files {
+        prompt_title = curr_dir,
+    }
+
+    -- local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
+    -- local curr_dir = eval("expand('%:p:h:t')")
+    -- if git_root == '' or git_root == nil then
+    --     require("telescope.builtin").find_files {
+    --         prompt_title = curr_dir,
+    --     }
+    -- else
+    --     local dir = M.get_path_tail(git_root)
+    --     require("telescope.builtin").find_files {
+    --         cwd = git_root,
+    --         prompt_title = dir
+    --     }
+    -- end
+end
+
+function M.git_files()
+    local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
+    local dir = M.get_path_tail(git_root)
+    require("telescope.builtin").git_files {
+        prompt_title = dir,
+        recurse_submodules = true,
+        show_untracked = false
+    }
 end
 
 -- Live grep from root of git repo, if it is a repo
@@ -147,6 +162,11 @@ function M.save_and_exec()
     elseif ft == 'lua' then
         cmd('silent! write')
         cmd('luafile %')
+    elseif ft == 'python' then
+        cmd('silent! write')
+        cmd('sp')
+        cmd('term python3 %')
+        cmd('startinsert')
     end
 end
 

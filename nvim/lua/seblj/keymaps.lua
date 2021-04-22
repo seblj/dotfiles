@@ -61,7 +61,7 @@ map('v', 'L', '$')                                                              
 map('o', 'H', '^')                                                              -- Beginning of line
 map('o', 'L', '$')                                                              -- End of line
 
-map('n', '<leader>w', ':lua require("seblj.utils").save_and_exec()<CR>')        -- Save and execute vim or lua file
+map('n', '<leader>x', ':lua require("seblj.utils").save_and_exec()<CR>')        -- Save and execute vim or lua file
 map('x', '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>')           -- Macro over visual range
 map('n', '<leader>z', ':lua require("seblj.utils").syn_stack()<CR>')            -- Get syntax group
 map('n', '<Down>', ':lua require("seblj.utils").quickfix("down")<CR>')          -- Move down in quickfixlist
