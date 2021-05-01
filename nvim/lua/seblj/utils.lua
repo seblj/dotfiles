@@ -5,21 +5,21 @@ local eval, cmd = vim.api.nvim_eval, vim.cmd
 local M = {}
 
 -- Set mappings
-function M.map(mode, lhs, rhs, opts)
+M.map = function(mode, lhs, rhs, opts)
     local options = {noremap = true, silent = true}
     if opts then options = vim.tbl_extend('force', options, opts) end
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 -- Set options
-function M.opt(scope, key, value)
+M.opt = function(scope, key, value)
     local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
     scopes[scope][key] = value
     if scope ~= 'o' then scopes['o'][key] = value end
 end
 
 -- Telescope function for quick edit of dotfiles
-function M.edit_dotfiles()
+M.edit_dotfiles = function()
     require('telescope.builtin').find_files{
         cwd = "~/dotfiles",
         prompt_title = "Dotfiles",
@@ -29,7 +29,7 @@ function M.edit_dotfiles()
 end
 
 -- Find tail directory of path
-function M.get_path_tail(dir)
+M.get_path_tail = function(dir)
     local dir_list = vim.split(dir, '/')
     return dir_list[#dir_list]
 end
@@ -37,28 +37,15 @@ end
 -- Searches from current dir if not git repo
 -- Searches from root of git dir if git repo.
 -- Set prompt-title to directory searching from
-function M.find_files()
-    local curr_dir = eval("expand('%:p:h:t')")
+M.find_files = function()
+    local curr_dir = vim.api.nvim_exec([[pwd]], true)
+    local dir = M.get_path_tail(curr_dir)
     require("telescope.builtin").find_files {
-        prompt_title = curr_dir,
+        prompt_title = dir,
     }
-
-    -- local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
-    -- local curr_dir = eval("expand('%:p:h:t')")
-    -- if git_root == '' or git_root == nil then
-    --     require("telescope.builtin").find_files {
-    --         prompt_title = curr_dir,
-    --     }
-    -- else
-    --     local dir = M.get_path_tail(git_root)
-    --     require("telescope.builtin").find_files {
-    --         cwd = git_root,
-    --         prompt_title = dir
-    --     }
-    -- end
 end
 
-function M.git_files()
+M.git_files = function()
     local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
     local dir = M.get_path_tail(git_root)
     require("telescope.builtin").git_files {
@@ -70,7 +57,7 @@ end
 
 -- Live grep from root of git repo, if it is a repo
 -- Else grep current directory
-function M.live_grep()
+M.live_grep = function()
     local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
     local curr_dir = eval("expand('%:p:h:t')")
     if git_root == '' or git_root == nil then
@@ -86,17 +73,9 @@ function M.live_grep()
     end
 end
 
--- Search in current dir. Expand builtin with prompt_title
-function M.find_cwd_files()
-    local cwd = eval("expand('%:p:h:t')")
-    require("telescope.builtin").find_files {
-        prompt_title = cwd
-    }
-end
-
 
 -- Function to execute macro over a visual range
-function M.visual_macro()
+M.visual_macro = function()
     cmd('echo "@".getcmdline()')
     cmd([[execute ":'<,'>normal @".nr2char(getchar())]])
 end
@@ -104,7 +83,7 @@ end
 -- Find syntax on current line.
 -- Should work both with and without tree-sitter.
 -- Dependant on tree-sitter setting syntax to empty
-function M.syn_stack()
+M.syn_stack = function()
     if (eval('&syntax') == '') then
         if (eval("exists(':TSHighlightCapturesUnderCursor')") == 2) then
             cmd([[TSHighlightCapturesUnderCursor]])
@@ -118,7 +97,7 @@ function M.syn_stack()
 end
 
 -- Reloads config for nvim so I don't need to reopen buffer
-function M.reload_config()
+M.reload_config = function()
     cmd('luafile ~/dotfiles/nvim/init.lua')
     package.loaded['seblj.options'] = nil
     package.loaded['seblj.keymaps'] = nil
@@ -137,7 +116,7 @@ function M.reload_config()
 end
 
 -- Use arrowkeys for cnext and cprev only in quickfixlist
-function M.quickfix(key)
+M.quickfix = function(key)
     if (eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1) then
         if (key == 'down') then
             cmd('normal j')
@@ -154,7 +133,7 @@ function M.quickfix(key)
 end
 
 -- Save and execute file based on filetype
-function M.save_and_exec()
+M.save_and_exec = function()
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
     if ft == 'vim' then
         cmd('silent! write')
@@ -169,5 +148,73 @@ function M.save_and_exec()
         cmd('startinsert')
     end
 end
+
+
+---------- RESIZE SPLITS ----------
+
+-- https://github.com/ahonn/resize.vim/blob/master/plugin/resize.vim rewritten in lua
+
+local resize_size = 1
+
+local pos_size = "+"..resize_size
+local neg_size = "-"..resize_size
+
+local get_direction = function(pos)
+    local this = vim.fn.winnr()
+    cmd(string.format("wincmd %s", pos))
+    local next = vim.fn.winnr()
+    cmd(string.format("%s wincmd w", this))
+    return this == next
+end
+
+local is_bottom_window = function()
+    local is_top = get_direction("k")
+    local is_bottom = get_direction("j")
+    return is_bottom and not is_top
+end
+
+local is_right_window = function()
+    local is_left = get_direction("h")
+    local is_right = get_direction("l")
+    return is_right and not is_left
+end
+
+local resize_vertical = function(size)
+    cmd(string.format("vertical resize %s", size))
+end
+
+local resize_horizontal = function(size)
+    cmd(string.format("resize %s", size))
+end
+
+M.resize_up = function()
+    if is_bottom_window() then
+        return resize_horizontal(pos_size)
+    end
+    return resize_horizontal(neg_size)
+end
+
+M.resize_down = function()
+    if is_bottom_window() then
+        return resize_horizontal(neg_size)
+    end
+    return resize_horizontal(pos_size)
+end
+
+M.resize_left = function()
+    if is_right_window() then
+        return resize_vertical(pos_size)
+    end
+    return resize_vertical(neg_size)
+end
+
+M.resize_right = function()
+    if is_right_window() then
+        return resize_vertical(neg_size)
+    end
+    return resize_vertical(pos_size)
+end
+
+----------------------------------------
 
 return M

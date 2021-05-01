@@ -1,7 +1,7 @@
 ---------- VIMSPECTOR CONFIG ----------
 
 local g = vim.g
-local function map(mode, lhs, rhs, opts)
+local map = function(mode, lhs, rhs, opts)
     local options = {silent = true}
     if opts then options = vim.tbl_extend('force', options, opts) end
     for c in mode:gmatch"." do

@@ -8,12 +8,9 @@ g.vimtex_general_viewer = 'open -a Skim'
 g.vimtex_view_method = 'skim'
 
 -- Clean latex files when quitting
-exec(
-[[
+exec([[
 augroup vimtex_config
     au!
     au User VimtexEventQuit call vimtex#compiler#clean(0)
 augroup END
-]],
-false
-)
+]],false)

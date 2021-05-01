@@ -5,7 +5,7 @@
     "diagnostic.hintSign":"ﯦ",
     "diagnostic.checkCurrentLine": true,
     "diagnostic.messageTarget": "echo",
-    "python.jediEnabled": false,
+    "python.analysis.typeCheckingMode": "off",
     "coc.preferences.useQuickfixForLocations": true,
     "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "typescriptreact", "typescript"],
     "suggest.completionItemKindLabels": {
@@ -39,16 +39,18 @@
     "omnisharp.version": "v1.37.3",
     "languageserver": {
         "lua": {
-            "command": "/Users/sebastianlyngjohansen/Applications/lua-language-server/bin/macOS/lua-language-server",
-            "args": ["-E", "/Users/sebastianlyngjohansen/Applications/lua-language-server/main.lua"],
+            "command": "~/.local/share/nvim/lspinstall/lua/./sumneko-lua-language-server",
             "filetypes": ["lua"],
             "rootPatterns": [".git/"],
             "settings": {
                 "Lua": {
+                    "telemetry": {
+                        "enable": true
+                    },
                     "workspace": {
                         "library": {
-                            "/path/to/hammerspoon-completion/build/stubs": true,
-                            "/path/to/neovim/runtime/lua": true
+                            "/usr/local/share/nvim/runtime/lua": true,
+                            "/usr/local/share/nvim/runtime/lua/vim/lsp": true
                         },
                         "maxPreload": 2000,
                         "preloadFileSize": 1000

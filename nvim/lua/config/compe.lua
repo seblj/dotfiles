@@ -1,7 +1,8 @@
 local utils = require('seblj.utils')
-local opt = utils.opt
+local opt, map = utils.opt, utils.map
 
 opt('o', 'completeopt', 'menuone,noselect')
+map('i', '<C-space>', 'compe#complete()', {expr = true})
 
 require'compe'.setup {
   enabled = true;
@@ -21,9 +22,9 @@ require'compe'.setup {
   source = {
     path = true;
     buffer = true;
-    calc = true;
+    calc = false;
     nvim_lsp = true;
-    nvim_lua = true;
-    vsnip = true;
+    nvim_lua = false; -- Enabled by sumneko
+    vsnip = false;
   };
 }

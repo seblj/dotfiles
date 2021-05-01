@@ -1,7 +1,7 @@
 local utils = require('seblj.utils')
 local map = utils.map
 
-Use_coc = true
+Use_coc = false
 
 -- Easy switch between nvimlsp and coc
 local coc = function() return Use_coc end
@@ -47,10 +47,10 @@ return require('packer').startup(function(use)
     local_use {'seblj/nvim-tabline',                                    -- Tabline
         config = [[require('tabline').setup{}]]
     }
-    -- local_use {'seblj/nvim-echo-diagnostics',                           -- Echo lspconfig diagnostics
-    --     config = [[require('echo-diagnostics').setup{}]],
-    --     cond = nvimlsp
-    -- }
+    local_use {'seblj/nvim-echo-diagnostics',                           -- Echo lspconfig diagnostics
+        config = [[require('echo-diagnostics').setup{}]],
+        cond = nvimlsp
+    }
     local_use {'windwp/nvim-autopairs',                                 -- Auto pairs
         config = [[require('config.autopairs')]],
         cond = function() return true end,
@@ -62,17 +62,14 @@ return require('packer').startup(function(use)
         config = [[require('colorizer').setup()]],
     }
     use {'tjdevries/colorbuddy.nvim'}                                   -- Colorscheme helper
-    use {'jbyuki/instant.nvim',                                         -- Live collaborating
-        config = [[vim.g.instant_username = "seblj"]],
+    use {'mhinz/vim-startify',                                          -- Startup screen
+        config = [[require('config.startify')]]
     }
-    use {'glepnir/dashboard-nvim',                                      -- Startup screen
-        config = [[require('config.dashboard')]]
+    use {'prettier/vim-prettier',                                       -- Formatting
+        run = 'yarn install',
+        config = [[require('config.prettier')]],
+        cond = nvimlsp
     }
-    -- use {'prettier/vim-prettier',                                       -- Formatting
-    --     run = 'yarn install',
-    --     config = [[require('config.prettier')]],
-    --     cond = nvimlsp
-    -- }
     use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
     use {'puremourning/vimspector',                                     -- Debugging
         config = [[require('config.vimspector')]]
@@ -83,6 +80,9 @@ return require('packer').startup(function(use)
     use {'lewis6991/gitsigns.nvim',                                     -- Git diff signs
         config = [[require('config.gitsigns')]],
 
+    }
+    use {'rhysd/git-messenger.vim',                                     -- Show commit message
+        config = map('n', '<leader>cm', '<Plug>(git-messenger)', {noremap = false})
     }
     use {'tpope/vim-fugitive',                                          -- Git-wrapper
         config = [[require('config.fugitive')]]
@@ -101,21 +101,26 @@ return require('packer').startup(function(use)
         config = [[require('config.treesitter')]]
     }
     use 'nvim-treesitter/playground'                                    -- Display information from treesitter
-    -- use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
-    --     config = [[require('config.lspconfig')]],
-    --     cond = nvimlsp
-    -- }
-    -- use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
-    --     config = [[require('config.compe')]],
-    --     cond = nvimlsp
-    -- }
-    -- use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
-    --     config = [[require('config.lspsaga')]],
-    --     cond = nvimlsp
-    -- }
-    -- use {'onsails/lspkind-nvim',                                        -- Icons for completion
-    --     config = nvimlsp
-    -- }
+    use 'nvim-treesitter/nvim-treesitter-textobjects'                   -- Manipulate text using treesitter
+    use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
+        config = [[require('config.lspconfig')]],
+        cond = nvimlsp
+    }
+    use {'kabouzeid/nvim-lspinstall'}
+    use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
+        config = [[require('config.compe')]],
+        cond = nvimlsp
+    }
+    use {'ray-x/lsp_signature.nvim',
+        cond = nvimlsp
+    }
+    use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
+        config = [[require('config.lspsaga')]],
+        cond = nvimlsp
+    }
+    use {'onsails/lspkind-nvim',                                        -- Icons for completion
+        config = nvimlsp
+    }
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
         config = [[require('config.luatree')]]
     }
@@ -126,20 +131,17 @@ return require('packer').startup(function(use)
                     'nvim-telescope/telescope-fzy-native.nvim'},
         config = [[require('config.telescope')]]
     }
-
-    -- Keep around and wait for references
-    use {'fannheyward/telescope-coc.nvim',
+    use {'fannheyward/telescope-coc.nvim',                              -- Telescope extension for coc
         config = [[require('telescope').load_extension('coc')]],
+        cond = coc
     }
     use 'lambdalisue/suda.vim'                                          -- Write with sudo
-    -- use {'Raimondi/delimitMate',                                        -- Auto pairs
-    --     config = [[vim.g.delimitMate_expand_cr = 1]],
-    --     cond = function() return false end
-    -- }
     use {'preservim/nerdcommenter',                                     -- Easy commenting
        config = [[require('config.commentary')]]
     }
-    use 'terryma/vim-multiple-cursors'                                  -- Multiple cursors
+    use {'mg979/vim-visual-multi',                                      -- Multiple cursors
+        config = [[require('config.multicursor')]]
+    }
     use 'tpope/vim-surround'                                            -- Edit surrounds
     use {'lervag/vimtex',                                               -- Latex
         config = [[require('config.vimtex')]]
@@ -148,5 +150,3 @@ return require('packer').startup(function(use)
         run = 'cd app && yarn install',
     }
 end)
-
-

@@ -15,6 +15,8 @@ opt('b', 'tabstop', 4)
 opt('b', 'expandtab', true)
 opt('b', 'softtabstop', 4)
 opt('b', 'shiftwidth', 4)
+opt('b', 'autoindent', true)
+opt('b', 'cindent', true)
 opt('b', 'swapfile', false)
 opt('w', 'number', true)
 opt('w', 'relativenumber', true)
@@ -34,7 +36,7 @@ cmd([[autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif]
 vim.api.nvim_exec([[
 augroup highlight_yank
   autocmd!
-  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
+  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=150}
 augroup END
 ]], false)
 

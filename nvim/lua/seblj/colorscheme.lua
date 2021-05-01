@@ -19,25 +19,7 @@ Color.new('green', '#9ed072')
 Color.new('blue', '#76cce0')
 Color.new('purple', '#b39df3')
 Color.new('grey', '#7f8490')
-
----------- TERM COLORS ----------
-
--- vim.g.terminal_color_0  = '#1d1f21'
--- vim.g.terminal_color_1  = '#ff2200'
--- vim.g.terminal_color_2  = '#198844'
--- vim.g.terminal_color_3  = '#bbbb00'
--- vim.g.terminal_color_4  = '#00bbbb'
--- vim.g.terminal_color_5  = '#bb00bb'
--- vim.g.terminal_color_6  = '#00bbbb'
--- vim.g.terminal_color_7  = '#f5f5f5'
--- vim.g.terminal_color_8  = '#989698'
--- vim.g.terminal_color_9  = '#ff2200'
--- vim.g.terminal_color_10 = '#198844'
--- vim.g.terminal_color_11 = '#d8865f'
--- vim.g.terminal_color_12 = '#00bbbb'
--- vim.g.terminal_color_13 = '#bb00bb'
--- vim.g.terminal_color_14 = '#00bbbb'
--- vim.g.terminal_color_15 = '#ffffff'
+Color.new('border', '#80A0C2')
 
 ---------- GROUPS ----------
 
@@ -106,9 +88,9 @@ Group.new('debugBreakpoint', c.bg1, c.red)
 Group.new('ToolbarButton', c.bg1, c.blue)
 
 Group.new('ErrorText', c.error, c.none, s.undercurl, c.red)
-Group.new('WarningText', c.none, c.none, s.undercurl, c.yellow)
-Group.new('InfoText', c.none, c.none, s.undercurl, c.blue)
-Group.new('HintText', c.none, c.diff_green, s.undercurl, c.green)
+Group.new('WarningText', c.orange, c.none, s.undercurl, c.yellow)
+Group.new('InfoText', c.yellow, c.none, s.undercurl, c.blue)
+Group.new('HintText', c.yellow, c.none, s.undercurl, c.green)
 Group.new('ErrorFloat', c.red, c.bg2)
 Group.new('WarningFloat', c.yellow, c.bg2)
 Group.new('InfoFloat', c.blue, c.bg2)
@@ -293,10 +275,10 @@ Group.new('CocExplorerHelpHint', c.grey)
 
 ---------- NVIM LSPCONFIG ----------
 
-Group.new('LspDiagnosticsFloatingError', g.ErrorFloat, g.ErrorFloat, g.ErrorFloat)
-Group.new('LspDiagnosticsFloatingWarning', g.WarningFloat, g.WarningFloat, g.WarningFloat)
-Group.new('LspDiagnosticsFloatingInformation', g.InfoFloat, g.InfoFloat, g.InfoFloat)
-Group.new('LspDiagnosticsFloatingHint', g.HintFloat, g.HintFloat, g.HintFloat)
+Group.new('LspDiagnosticsFloatingError', c.red, c.none)
+Group.new('LspDiagnosticsFloatingWarning', c.orange, c.none)
+Group.new('LspDiagnosticsFloatingInformation', c.yellow, c.none)
+Group.new('LspDiagnosticsFloatingHint', c.fg1, c.none)
 Group.new('LspDiagnosticsDefaultError', g.ErrorText, g.ErrorText, g.ErrorText)
 Group.new('LspDiagnosticsDefaultWarning', g.WarningText, g.WarningText, g.WarningText)
 Group.new('LspDiagnosticsDefaultInformation', g.InfoText, g.InfoText, g.InfoText)
@@ -304,7 +286,7 @@ Group.new('LspDiagnosticsDefaultHint', g.HintText, g.HintText, g.HintText)
 Group.new('LspDiagnosticsVirtualTextError', c.red)
 Group.new('LspDiagnosticsVirtualTextWarning', c.orange)
 Group.new('LspDiagnosticsVirtualTextInformation', c.yellow)
-Group.new('LspDiagnosticsVirtualTextHint', c.grey)
+Group.new('LspDiagnosticsVirtualTextHint', c.yellow)
 Group.new('LspDiagnosticsUnderlineError', g.ErrorText, g.ErrorText, g.ErrorText)
 Group.new('LspDiagnosticsUnderlineWarning', g.WarningText, g.WarningText, g.WarningText)
 Group.new('LspDiagnosticsUnderlineInformation', g.InfoText, g.InfoText, g.InfoText)
@@ -313,9 +295,19 @@ Group.new('LspDiagnosticsSignError', g.RedSign, g.RedSign, g.RedSign)
 Group.new('LspDiagnosticsSignWarning', g.OrangeSign, g.OrangeSign, g.OrangeSign)
 Group.new('LspDiagnosticsSignInformation', g.BlueSign, g.BlueSign, g.BlueSign)
 Group.new('LspDiagnosticsSignHint', g.YellowSign, g.YellowSign, g.YellowSign)
-Group.new('LspReferenceText', g.CurrentWord, g.CurrentWord, g.CurrentWord)
-Group.new('LspReferenceRead', g.CurrentWord, g.CurrentWord, g.CurrentWord)
-Group.new('LspReferenceWrite', g.CurrentWord, g.CurrentWord, g.CurrentWord)
+Group.new('LspReferenceText', g.CurrentWord, c.none)
+Group.new('LspReferenceRead', g.CurrentWord, c.none)
+Group.new('LspReferenceWrite', g.CurrentWord, c.none)
+
+---------- LSPSAGA ----------
+
+Group.new('LspSagaDiagnosticBorder', c.border)
+Group.new('LspSagaDiagnosticTruncateLine', c.border)
+Group.new('LspSagaDiagnosticHeader', c.fg1)
+Group.new('LspSagaRenameBorder', c.border)
+Group.new('LspSagaHoverBorder', c.border)
+Group.new('LspSagaCodeActionBorder', c.border)
+Group.new('LspSagaSignatureHelpBorder', c.border)
 
 ---------- GITSIGNS ----------
 

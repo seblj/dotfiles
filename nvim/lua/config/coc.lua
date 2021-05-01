@@ -9,7 +9,6 @@ map('n', 'gd', ':lua goto_definition()<CR>', {noremap = false})
 map('n', 'gb', '<C-t>')
 map('n', 'gh', ':lua show_documentation()<CR>')
 map('n', 'gR', '<Plug>(coc-rename)', {noremap = false})
--- map('n', 'gr', 'mA<Plug>(coc-references)', {noremap = false})
 map('n', 'gr', '<cmd>Telescope coc references<CR>', {noremap = false})
 map('n', 'gn', '<Plug>(coc-diagnostic-next)', {noremap = false})
 map('n', 'gp', '<Plug>(coc-diagnostic-prev)', {noremap = false})
@@ -22,7 +21,7 @@ map('n', '<leader>p', ':CocCommand prettier.formatFile<CR>')
 cmd([[inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]])
 
 -- Show documentation under cursor
-function _G.show_documentation()
+_G.show_documentation = function()
     if (eval("index(['vim','help'], &filetype)") >= 0) then
         cmd([[execute 'h '.expand('<cword>')]])
     else
@@ -31,11 +30,10 @@ function _G.show_documentation()
 end
 
 -- Use tagstack for go to definition
-function _G.goto_definition()
+_G.goto_definition = function()
     local from = {vim.fn.bufnr('%'), vim.fn.line('.'), vim.fn.col('.'), 0}
     local items = {{tagname = vim.fn.expand('<cword>'), from = from}}
 
-    if fn.CocAction('jumpDefinition') then
-        vim.fn.settagstack(vim.fn.win_getid(), {items=items}, 't')
-    end
+    vim.fn.settagstack(vim.fn.win_getid(), {items=items}, 't')
+    cmd('Telescope coc definitions')
 end

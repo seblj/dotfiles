@@ -3,7 +3,8 @@
 local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {
-    'NvimTree'
+    'NvimTree',
+    'packer'
 }
 
 local colors = {
@@ -23,13 +24,13 @@ local colors = {
     red = '#ec5f67'
 }
 
-function has_file_type()
-    local f_type = vim.bo.filetype
-    if not f_type or f_type == '' then
-        return false
-    end
-    return true
-end
+-- local has_file_type = function()
+--     local f_type = vim.bo.filetype
+--     if not f_type or f_type == '' then
+--         return false
+--     end
+--     return true
+-- end
 
 local checkwidth = function()
   local squeeze_width  = vim.fn.winwidth(0) / 2
@@ -194,20 +195,37 @@ gls.right[3] = {
   }
 }
 gls.right[4] = {
-    DiagnosticInfo = {
+  Space = {
+    provider = function () return ' ' end,
+    highlight = {colors.red, colors.line_bg}
+  }
+}
+
+-- Info in coc is the same as hint for nvim lspconfig
+gls.right[5] = {
+    DiagnosticInfo = {      -- Show info for coc
         provider = 'DiagnosticInfo',
+        condition = function() return Use_coc end,
         icon = '  ',
         highlight = {colors.yellow, colors.line_bg}
     }
 }
-gls.right[5] = {
+gls.right[5] = {            -- Show hint for nvim lspconfig
+    DiagnosticHint = {
+        provider = 'DiagnosticHint',
+        condition = function() return not Use_coc end,
+        icon = '  ',
+        highlight = {colors.yellow, colors.line_bg}
+    }
+}
+gls.right[6] = {
   Space = {
     provider = function () return ' ' end,
     highlight = {colors.line_bg, colors.line_bg}
   }
 }
 
-gls.right[6]= {
+gls.right[7]= {
   FileFormat = {
     provider = 'FileFormat',
     separator_highlight = {colors.bg,colors.line_bg},
@@ -232,19 +250,41 @@ gls.right[9] = {
   }
 }
 
+
+---------- INACTIVE ----------
+
 gls.short_line_left[1] = {
     BufferType = {
-        provider = 'FileTypeName',
-        condition = has_file_type,
-        highlight = {colors.fg,colors.line_bg}
+        provider = function()
+            local ft = require('galaxyline.provider_buffer').get_buffer_filetype()
+            local fname = require('galaxyline.provider_fileinfo').get_current_file_name()
+            if fname ~= '' then
+                return fname
+            else
+                return ft
+            end
+
+        end,
+        highlight = {colors.fg,colors.line_bg,'bold'}
     }
+}
+-- gls.short_line_left[1] = {
+--     BufferType = {
+--         provider = 'FileTypeName',
+--         condition = has_file_type,
+--         highlight = {colors.fg,colors.line_bg}
+--     }
+-- }
+gls.short_line_left[2] = {
+  Line = {
+    provider = function() return ' ' end,
+    highlight = {colors.fg,colors.line_bg,'bold'},
+  }
 }
 
 gls.short_line_right[1] = {
-    BufferIcon = {
-        provider = 'BufferIcon',
-        condition = has_file_type,
-        highlight = {colors.fg,colors.line_bg}
-    }
+  BufferIcon = {
+    provider = 'BufferIcon',
+    highlight = {colors.fg, colors.bg}
+  }
 }
-
