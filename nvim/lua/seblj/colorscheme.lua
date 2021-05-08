@@ -1,1028 +1,1068 @@
-local Color, c, Group, g, s = require("colorbuddy").setup()
+-- Tries to load colorscheme twice if syntax on or syntax enable is not set in config
+-- Syntax on or syntax enable in config messes with treesitter after my reload function
+-- Live changing of colors with luafile won't work. Using lua require('seblj.utils').reload_config()
+if Loaded_colorscheme then return end
+Loaded_colorscheme = true
 
 vim.g.colors_name = 'custom'
 
+local highlight = function(name, opts)
+    if not opts.guisp then opts.guisp = 'NONE' end
+    if not opts.gui then opts.gui = 'NONE' end
+    if name and vim.tbl_count(opts) > 0 then
+        if opts.link and opts.link ~= "" then
+            vim.cmd("highlight!" .. " link " .. name .. " " .. opts.link)
+        else
+            local cmd = {"highlight!", name}
+            for k, v in pairs(opts) do
+                table.insert(cmd, string.format("%s=", k) .. v)
+            end
+            vim.cmd(table.concat(cmd, " "))
+        end
+    end
+end
+
+local all = function(hls)
+    for _, hl in ipairs(hls) do
+        highlight(unpack(hl))
+    end
+end
+
 ---------- COLORS ----------
 
-Color.new('bg1', '#1c1c1c')
-Color.new('bg2', '#363944')
-Color.new('fg1', '#eeeeee')
-Color.new('error', '#ff0033')
-Color.new('diff_red', '#55393d')
-Color.new('diff_green', '#394634')
-Color.new('diff_blue', '#354157')
-Color.new('diff_orange', '#e5d5ac')
-Color.new('red', '#fc5d7c')
-Color.new('orange', '#fea24f')
-Color.new('yellow', '#e7c664')
-Color.new('green', '#9ed072')
-Color.new('blue', '#76cce0')
-Color.new('purple', '#b39df3')
-Color.new('grey', '#7f8490')
-Color.new('border', '#80A0C2')
+local c = {
+    bg = '#1c1c1c',
+    bg2 = '#363944',
+    fg = '#eeeeee',
+    error = '#ff0033',
+    diff_red = '#55393d',
+    diff_green = '#394634',
+    diff_blue = '#354157',
+    diff_orange = '#e5d5ac',
+    border = '#80A0C2',
+    red = '#fc5d7c',
+    orange = '#fea24f',
+    yellow = '#e7c664',
+    green = '#9ed072',
+    blue = '#76cce0',
+    purple = '#b39df3',
+    grey = '#7f8490',
+    -- git_current = '#2e5049',
+    -- git_incoming = '#344f69',
+}
 
 ---------- GROUPS ----------
 
-Group.new('Normal', c.fg1, c.bg1)
-Group.new('Terminal', c.fg1, c.bg1)
-Group.new('EndOfBuffer', c.bg1, c.bg1)
-Group.new('Folded', c.grey, c.bg1)
-Group.new('ToolbarLine', c.fg1, c.bg2)
-Group.new('SignColumn', c.fg1, c.none)
-Group.new('FoldColumn', c.grey, c.none)
-Group.new('IncSearch', c.bg1, c.red)
-Group.new('Search', c.bg1, c.green)
-Group.new('ColorColumn', c.none, c.bg1)
-Group.new('Conceal', c.grey, c.none)
-Group.new('Cursor', c.none, c.none, s.reverse)
-
-Group.new('vCursor', g.Cursor, g.Cursor, g.Cursor)
-Group.new('iCursor', g.Cursor, g.Cursor, g.Cursor)
-Group.new('lCursor', g.Cursor, g.Cursor, g.Cursor)
-Group.new('CursorIM', g.Cursor, g.Cursor, g.Cursor)
-
-Group.new('CursorLine', c.red, c.bg1)
-Group.new('CursorColumn', c.none, c.bg1)
-Group.new('LineNr', c.grey, c.none)
-Group.new('CursorLineNr', c.fg1, c.none)
-
-Group.new('DiffAdd', c.none, c.diff_green)
-Group.new('DiffChange', c.none, c.diff_blue)
-Group.new('DiffDelete', c.none, c.diff_red)
-Group.new('DiffText', c.bg1, c.diff_orange)
-Group.new('Directory', c.green, c.none)
-Group.new('ErrorMsg', c.red, c.none)
-Group.new('WarningMsg', c.yellow, c.none, s.bold)
-Group.new('ModeMsg', c.fg1, c.none, s.bold)
-Group.new('MoreMsg', c.blue, c.none, s.bold)
-Group.new('MatchParen', c.none, c.bg2)
-Group.new('NonText', c.bg2, c.none)
-Group.new('Whitespace', c.bg2, c.none)
-Group.new('SpecialKey', c.bg2, c.none)
-Group.new('Pmenu', c.fg1, c.bg2)
-Group.new('PmenuSbar', c.none, c.bg2)
-Group.new('PmenuSel', c.bg1, c.green)
-Group.new('WildMenu', g.PmenuSel, g.PmenuSel, g.PmenuSel)
-
-Group.new('PmenuThumb', c.none, c.grey)
-Group.new('NormalFloat', c.fg1, c.bg2)
-Group.new('Question', c.yellow, c.none)
-Group.new('SpellBad', c.red, c.none, s.undercurl, c.red)
-Group.new('SpellCap', c.yellow, c.none, s.undercurl, c.yellow)
-Group.new('SpellLocal', c.blue, c.none, s.undercurl, c.blue)
-Group.new('SpellRare', c.purple, c.none, s.undercurl, c.purple)
-Group.new('StatusLine', c.fg1, c.none)
-Group.new('StatusLineTerm', c.fg1, c.bg2)
-Group.new('StatusLineNC', c.grey, c.bg1)
-Group.new('StatusLineTermNC', c.grey, c.bg1)
-Group.new('TabLine', c.none, c.yellow)
-Group.new('TabLineFill', c.grey, c.bg1)
-Group.new('TabLineSel', c.none, c.red)
-Group.new('VertSplit', c.grey, c.none)
-Group.new('Visual', c.none, c.bg2)
-Group.new('VisualNOS', c.none, c.bg2, s.underline)
-Group.new('QuickFixLine', c.blue, c.none, s.bold)
-Group.new('Debug', c.yellow, c.none)
-Group.new('debugPC', c.bg1, c.green)
-Group.new('debugBreakpoint', c.bg1, c.red)
-Group.new('ToolbarButton', c.bg1, c.blue)
-
-Group.new('ErrorText', c.error, c.none, s.undercurl, c.red)
-Group.new('WarningText', c.orange, c.none, s.undercurl, c.yellow)
-Group.new('InfoText', c.yellow, c.none, s.undercurl, c.blue)
-Group.new('HintText', c.yellow, c.none, s.undercurl, c.green)
-Group.new('ErrorFloat', c.red, c.bg2)
-Group.new('WarningFloat', c.yellow, c.bg2)
-Group.new('InfoFloat', c.blue, c.bg2)
-Group.new('HintFloat', c.green, c.bg2)
-Group.new('ErrorLine', c.none, c.none)
-Group.new('WarningLine', c.none, c.none)
-Group.new('InfoLine', c.none, c.none)
-Group.new('HintLine', c.none, c.none)
-
-Group.new('RedSign', c.red, c.bg1)
-Group.new('OrangeSign', c.orange, c.bg1)
-Group.new('YellowSign', c.yellow, c.bg1)
-Group.new('GreenSign', c.green, c.bg1)
-Group.new('BlueSign', c.blue, c.bg1)
-Group.new('PurpleSign', c.purple, c.bg1)
-
-Group.new('CurrentWord', c.bg1, c.green)
-Group.new('Substitute', c.bg1, c.yellow)
-Group.new('TermCursor', g.Cursor, g.Cursor, g.Cursor)
-Group.new('healthError', c.red)
-Group.new('healthSuccess', c.green)
-Group.new('healthWarning', c.yellow)
-
-Group.new('Type', c.blue, c.none)
-Group.new('Structure', c.blue, c.none)
-Group.new('StorageClass', c.blue, c.none)
-Group.new('Identifier', c.orange, c.none)
-Group.new('Constant', c.orange, c.none)
-
-Group.new('PreProc', c.red, c.none)
-Group.new('PreCondit', c.red, c.none)
-Group.new('Include', c.red, c.none)
-Group.new('Keyword', c.red, c.none)
-Group.new('Define', c.red, c.none)
-Group.new('Typedef', c.red, c.none)
-Group.new('Exception', c.red, c.none)
-Group.new('Conditional', c.red, c.none)
-Group.new('Repeat', c.red, c.none)
-Group.new('Statement', c.red, c.none)
-Group.new('Macro', c.purple, c.none)
-Group.new('Error', c.red, c.none)
-Group.new('Label', c.purple, c.none)
-Group.new('Special', c.purple, c.none)
-Group.new('SpecialChar', c.purple, c.none)
-Group.new('Boolean', c.purple, c.none)
-Group.new('String', c.yellow, c.none)
-Group.new('Character', c.yellow, c.none)
-Group.new('Number', c.purple, c.none)
-Group.new('Float', c.purple, c.none)
-Group.new('Function', c.green, c.none)
-Group.new('Operator', c.red, c.none)
-Group.new('Title', c.red, c.none, s.bold)
-Group.new('Tag', c.orange, c.none)
-Group.new('Delimiter', c.fg1, c.none)
-
-Group.new('Comment', c.grey, c.none, s.italic)
-Group.new('SpecialComment', c.grey, c.none, s.italic)
-Group.new('Todo', c.blue, c.none, s.italic)
-
-Group.new('Ignore', c.grey, c.none)
-Group.new('Underlined', c.none, c.none, s.underline)
-
----------- TREESITTER ----------
-
-Group.new('TSAnnotation', c.blue)
-Group.new('TSAttribute', c.blue)
-Group.new('TSBoolean', c.purple)
-Group.new('TSCharacter', c.yellow)
-Group.new('TSComment', c.grey)
-Group.new('TSConditional', c.red)
-Group.new('TSConstBuiltin', c.orange)
-Group.new('TSConstMacro', c.orange)
-Group.new('TSConstant', c.orange)
-Group.new('TSConstructor', c.fg1)
-Group.new('TSCustomType', c.purple)
-Group.new('TSError', g.Normal, g.Normal, g.Normal)
-Group.new('TSException', c.red)
-Group.new('TSField', c.green)
-Group.new('TSFloat', c.purple)
-Group.new('TSFuncBuiltin', c.green)
-Group.new('TSFuncMacro', c.green)
-Group.new('TSFunction', c.green)
-Group.new('TSInclude', c.blue)
-Group.new('TSKeyword', c.red)
-Group.new('TSKeywordFunction', c.red)
-Group.new('TSLabel', c.red)
-Group.new('TSMethod', c.green)
-Group.new('TSNamespace', c.purple)
-Group.new('TSNumber', c.purple)
-Group.new('TSOperator', c.red)
-Group.new('TSParameter', c.none, c.none)
-Group.new('TSParameterReference', c.orange)
-Group.new('TSProperty', c.none, c.none)
-Group.new('tsxTSProperty', c.green)
-Group.new('TSPunctBracket', c.fg1)
-Group.new('TSPunctDelimiter', c.grey)
-Group.new('TSPunctSpecial', c.fg1)
-Group.new('TSRepeat', c.red)
-Group.new('TSString', c.yellow)
-Group.new('TSStringEscape', c.green)
-Group.new('TSStringRegex', c.green)
-Group.new('TSStructure', c.blue)
-Group.new('TSTag', c.blue)
-Group.new('TSTagDelimiter', c.red)
-Group.new('TSText', c.green)
-Group.new('TSEmphasis', c.none, c.none, s.bold)
--- Group.new('TSUnderline', c.none, c.none, s.underline)
-Group.new('TSType', c.blue)
-Group.new('TSTypeBuiltin', c.blue)
-Group.new('TSURI', c.blue, c.none, s.underline)
-Group.new('TSVariable', c.fg1)
-Group.new('TSVariableBuiltin', c.orange)
-
----------- COC ----------
-
--- Group.new('CocHoverRange', c.none, c.none, s.bold + s.underline)
-Group.new('CocErrorFloat', g.ErrorFloat, g.ErrorFloat, g.ErrorFloat)
-Group.new('CocWarningFloat', g.WarningFloat, g.WarningFloat, g.WarningFloat)
-Group.new('CocInfoFloat', g.InfoFloat, g.InfoFloat, g.InfoFloat)
-Group.new('CocHintFloat', g.HintFloat, g.HintFloat, g.HintFloat)
-Group.new('CocErrorHighlight', g.ErrorText, g.ErrorText, g.ErrorText)
-Group.new('CocWarningHighlight', g.WarningText, g.WarningText, g.WarningText)
-Group.new('CocInfoHighlight', g.InfoText, g.InfoText, g.InfoText)
-Group.new('CocHintHighlight', g.HintText, g.HintText, g.HintText)
-Group.new('CocHighlightText', g.CurrentWord, g.CurrentWord, g.CurrentWord)
-Group.new('CocErrorSign', g.RedSign, g.RedSign, g.RedSign)
-Group.new('CocWarningSign', g.OrangeSign, g.OrangeSign, g.OrangeSign)
-Group.new('CocInfoSign', g.BlueSign, g.BlueSign, g.BlueSign)
-Group.new('CocHintSign', g.YellowSign, g.YellowSign, g.YellowSign)
-Group.new('CocWarningVirtualText', c.grey)
-Group.new('CocErrorVirtualText', c.grey)
-Group.new('CocInfoVirtualText', c.grey)
-Group.new('CocHintVirtualText', c.grey)
-Group.new('CocErrorLine', g.ErrorLine, g.ErrorLine, g.ErrorLine)
-Group.new('CocWarningLine', g.WarningLine, g.WarningLine, g.WarningLine)
-Group.new('CocInfoLine', g.InfoLine, g.InfoLine, g.InfoLine)
-Group.new('CocHintLine', g.HintLine, g.HintLine, g.HintLine)
-Group.new('CocCodeLens', c.grey)
-Group.new('HighlightedyankRegion', g.Visual, g.Visual, g.Visual)
-Group.new('CocGitAddedSign', g.GreenSign, g.GreenSign, g.GreenSign)
-Group.new('CocGitChangeRemovedSign', g.PurpleSign, g.PurpleSign, g.PurpleSign)
-Group.new('CocGitChangedSign', g.BlueSign, g.BlueSign, g.BlueSign)
-Group.new('CocGitRemovedSign', g.RedSign, g.RedSign, g.RedSign)
-Group.new('CocGitTopRemovedSign', g.RedSign, g.RedSign, g.RedSign)
-Group.new('CocExplorerBufferRoot', c.red)
-Group.new('CocExplorerBufferExpandIcon', c.blue)
-Group.new('CocExplorerBufferBufnr', c.yellow)
-Group.new('CocExplorerBufferModified', c.yellow)
-Group.new('CocExplorerBufferReadonly', c.red)
-Group.new('CocExplorerBufferBufname', c.grey)
-Group.new('CocExplorerBufferFullpath', c.grey)
-Group.new('CocExplorerFileRoot', c.red)
-Group.new('CocExplorerFileRootName', c.green)
-Group.new('CocExplorerFileExpandIcon', c.blue)
-Group.new('CocExplorerFileFullpath', c.grey)
-Group.new('CocExplorerFileDirectory', c.green)
-Group.new('CocExplorerFileGitStaged', c.purple)
-Group.new('CocExplorerFileGitUnstaged', c.yellow)
-Group.new('CocExplorerFileGitRootStaged', c.purple)
-Group.new('CocExplorerFileGitRootUnstaged', c.yellow)
-Group.new('CocExplorerGitPathChange', c.fg1)
-Group.new('CocExplorerGitContentChange', c.fg1)
-Group.new('CocExplorerGitRenamed', c.purple)
-Group.new('CocExplorerGitCopied', c.fg1)
-Group.new('CocExplorerGitAdded', c.green)
-Group.new('CocExplorerGitUntracked', c.blue)
-Group.new('CocExplorerGitUnmodified', c.fg1)
-Group.new('CocExplorerGitUnmerged', c.orange)
-Group.new('CocExplorerGitMixed', c.fg1)
-Group.new('CocExplorerGitModified', c.yellow)
-Group.new('CocExplorerGitDeleted', c.red)
-Group.new('CocExplorerGitIgnored', c.grey)
-Group.new('CocExplorerFileSize', c.blue)
-Group.new('CocExplorerTimeAccessed', c.purple)
-Group.new('CocExplorerTimeCreated', c.purple)
-Group.new('CocExplorerTimeModified', c.purple)
-Group.new('CocExplorerFileRootName', c.orange)
-Group.new('CocExplorerBufferNameVisible', c.green)
-Group.new('CocExplorerIndentLine', g.Conceal, g.Conceal, g.Conceal)
-Group.new('CocExplorerHelpDescription', c.grey)
-Group.new('CocExplorerHelpHint', c.grey)
-
----------- NVIM LSPCONFIG ----------
-
-Group.new('LspDiagnosticsFloatingError', c.red, c.none)
-Group.new('LspDiagnosticsFloatingWarning', c.orange, c.none)
-Group.new('LspDiagnosticsFloatingInformation', c.yellow, c.none)
-Group.new('LspDiagnosticsFloatingHint', c.fg1, c.none)
-Group.new('LspDiagnosticsDefaultError', g.ErrorText, g.ErrorText, g.ErrorText)
-Group.new('LspDiagnosticsDefaultWarning', g.WarningText, g.WarningText, g.WarningText)
-Group.new('LspDiagnosticsDefaultInformation', g.InfoText, g.InfoText, g.InfoText)
-Group.new('LspDiagnosticsDefaultHint', g.HintText, g.HintText, g.HintText)
-Group.new('LspDiagnosticsVirtualTextError', c.red)
-Group.new('LspDiagnosticsVirtualTextWarning', c.orange)
-Group.new('LspDiagnosticsVirtualTextInformation', c.yellow)
-Group.new('LspDiagnosticsVirtualTextHint', c.yellow)
-Group.new('LspDiagnosticsUnderlineError', g.ErrorText, g.ErrorText, g.ErrorText)
-Group.new('LspDiagnosticsUnderlineWarning', g.WarningText, g.WarningText, g.WarningText)
-Group.new('LspDiagnosticsUnderlineInformation', g.InfoText, g.InfoText, g.InfoText)
-Group.new('LspDiagnosticsUnderlineHint', g.HintText, g.HintText, g.HintText)
-Group.new('LspDiagnosticsSignError', g.RedSign, g.RedSign, g.RedSign)
-Group.new('LspDiagnosticsSignWarning', g.OrangeSign, g.OrangeSign, g.OrangeSign)
-Group.new('LspDiagnosticsSignInformation', g.BlueSign, g.BlueSign, g.BlueSign)
-Group.new('LspDiagnosticsSignHint', g.YellowSign, g.YellowSign, g.YellowSign)
-Group.new('LspReferenceText', g.CurrentWord, c.none)
-Group.new('LspReferenceRead', g.CurrentWord, c.none)
-Group.new('LspReferenceWrite', g.CurrentWord, c.none)
-
----------- LSPSAGA ----------
-
-Group.new('LspSagaDiagnosticBorder', c.border)
-Group.new('LspSagaDiagnosticTruncateLine', c.border)
-Group.new('LspSagaDiagnosticHeader', c.fg1)
-Group.new('LspSagaRenameBorder', c.border)
-Group.new('LspSagaHoverBorder', c.border)
-Group.new('LspSagaCodeActionBorder', c.border)
-Group.new('LspSagaSignatureHelpBorder', c.border)
-
----------- GITSIGNS ----------
-
-Group.new('GitGutterAdd', g.GreenSign, g.GreenSign, g.GreenSign)
-Group.new('GitGutterChange', g.BlueSign, g.BlueSign, g.BlueSign)
-Group.new('GitGutterDelete', g.RedSign, g.RedSign, g.RedSign)
-Group.new('GitGutterChangeDelete', g.PurpleSign, g.PurpleSign, g.PurpleSign)
-
----------- MULTIPLE CURSORS ----------
-
-Group.new('multiple_cursors_cursor', g.Cursor, g.Cursor, g.Cursor)
-Group.new('multiple_cursors_visual', g.Visual, g.Visual, g.Visual)
-
----------- VIM PLUG ----------
-
-Group.new('plug1', c.red, c.none, s.bold)
-Group.new('plugNumber', c.yellow, c.none, s.bold)
-Group.new('plug2', c.blue)
-Group.new('plugBracket', c.blue)
-Group.new('plugName', c.green)
-Group.new('plugDash', c.red)
-Group.new('plugNotLoaded', c.grey)
-Group.new('plugH2', c.purple)
-Group.new('plugMessage', c.purple)
-Group.new('plugError', c.red)
-Group.new('plugRelDate', c.grey)
-Group.new('plugStar', c.purple)
-Group.new('plugUpdate', c.blue)
-Group.new('plugDeleted', c.grey)
-Group.new('plugEdge', c.purple)
-
----------- TEX ----------
-
-Group.new('texStatement', c.blue)
-Group.new('texOnlyMath', c.grey)
-Group.new('texDefName', c.yellow)
-Group.new('texNewCmd', c.orange)
-Group.new('texCmdName', c.blue)
-Group.new('texBeginEnd', c.red)
-Group.new('texBeginEndName', c.green)
-Group.new('texDocType', c.red)
-Group.new('texDocTypeArgs', c.orange)
-Group.new('texInputFile', c.green)
-Group.new('texFileArg', c.green)
-Group.new('texCmd', c.blue)
-Group.new('texCmdPackage', c.blue)
-Group.new('texCmdDef', c.red)
-Group.new('texDefArgName', c.yellow)
-Group.new('texCmdNewcmd', c.red)
-Group.new('texCmdClass', c.red)
-Group.new('texCmdTitle', c.red)
-Group.new('texCmdAuthor', c.red)
-Group.new('texCmdEnv', c.red)
-Group.new('texCmdPart', c.red)
-Group.new('texEnvArgName', c.green)
-
----------- HTML ----------
-
-Group.new('htmlH1', c.red, c.none, s.bold)
-Group.new('htmlH2', c.orange, c.none, s.bold)
-Group.new('htmlH3', c.yellow, c.none, s.bold)
-Group.new('htmlH4', c.green, c.none, s.bold)
-Group.new('htmlH5', c.blue, c.none, s.bold)
-Group.new('htmlH6', c.purple, c.none, s.bold)
-Group.new('htmlLink', c.none, c.none, s.underline)
-Group.new('htmlBold', c.none, c.none, s.bold)
-Group.new('htmlBoldUnderline', c.none, c.none, s.bold + s.underline)
-Group.new('htmlBoldItalic', c.none, c.none, s.bold + s.italic)
-Group.new('htmlBoldUnderlineItalic', c.none, c.none, s.bold + s.underline + s.italic)
-Group.new('htmlUnderline', c.none, c.none, s.underline)
-Group.new('htmlUnderlineItalic', c.none, c.none, s.underline + s.italic)
-Group.new('htmlItalic', c.none, c.none, s.italic)
-
-Group.new('htmlTag', c.green)
-Group.new('htmlEndTag', c.blue)
-Group.new('htmlTagN', c.red)
-Group.new('htmlTagName', c.red)
-Group.new('htmlArg', c.blue)
-Group.new('htmlScriptTag', c.purple)
-Group.new('htmlSpecialTagName', c.red)
-Group.new('htmlString', c.green)
-
----------- CSS ----------
-
-Group.new('cssStringQ', c.green)
-Group.new('cssStringQQ', c.green)
-Group.new('cssAttrComma', c.grey)
-Group.new('cssBraces', c.grey)
-Group.new('cssTagName', c.purple)
-Group.new('cssClassNameDot', c.grey)
-Group.new('cssClassName', c.red)
-Group.new('cssFunctionName', c.orange)
-Group.new('cssAttr', c.green)
-Group.new('cssCommonAttr', c.green)
-Group.new('cssProp', c.blue)
-Group.new('cssPseudoClassId', c.yellow)
-Group.new('cssPseudoClassFn', c.green)
-Group.new('cssPseudoClass', c.yellow)
-Group.new('cssImportant', c.red)
-Group.new('cssSelectorOp', c.orange)
-Group.new('cssSelectorOp2', c.orange)
-Group.new('cssColor', c.green)
-Group.new('cssUnitDecorators', c.green)
-Group.new('cssValueLength', c.green)
-Group.new('cssValueInteger', c.green)
-Group.new('cssValueNumber', c.green)
-Group.new('cssValueAngle', c.green)
-Group.new('cssValueTime', c.green)
-Group.new('cssValueFrequency', c.green)
-Group.new('cssVendor', c.grey)
-Group.new('cssNoise', c.grey)
-
----------- LESS ----------
-
-Group.new('lessMixinChar', c.grey)
-Group.new('lessClass', c.red)
-Group.new('lessFunction', c.orange)
-
----------- JAVASCRIPT / JSX ----------
-
-Group.new('javaScriptNull', c.orange)
-Group.new('javaScriptIdentifier', c.blue)
-Group.new('javaScriptParens', c.fg1)
-Group.new('javaScriptBraces', c.fg1)
-Group.new('javaScriptNumber', c.purple)
-Group.new('javaScriptLabel', c.red)
-Group.new('javaScriptGlobal', c.blue)
-Group.new('javaScriptMessage', c.blue)
-
-Group.new('jsNoise', c.fg1)
-Group.new('Noise', c.fg1)
-Group.new('jsParens', c.fg1)
-Group.new('jsBrackets', c.fg1)
-Group.new('jsObjectBraces', c.fg1)
-Group.new('jsThis', c.blue)
-Group.new('jsUndefined', c.orange)
-Group.new('jsNull', c.orange)
-Group.new('jsNan', c.orange)
-Group.new('jsSuper', c.orange)
-Group.new('jsPrototype', c.orange)
-Group.new('jsFunction', c.red)
-Group.new('jsGlobalNodeObjects', c.blue)
-Group.new('jsGlobalObjects', c.blue)
-Group.new('jsArrowFunction', c.red)
-Group.new('jsArrowFuncArgs', c.fg1)
-Group.new('jsFuncArgs', c.fg1)
-Group.new('jsObjectProp', c.fg1)
-Group.new('jsVariableDef', c.fg1)
-Group.new('jsObjectKey', c.fg1)
-Group.new('jsParen', c.fg1)
-Group.new('jsParenIfElse', c.fg1)
-Group.new('jsParenRepeat', c.fg1)
-Group.new('jsParenSwitch', c.fg1)
-Group.new('jsParenCatch', c.fg1)
-Group.new('jsBracket', c.fg1)
-Group.new('jsObjectValue', c.fg1)
-Group.new('jsDestructuringBlock', c.fg1)
-Group.new('jsBlockLabel', c.purple)
-Group.new('jsFunctionKey', c.green)
-Group.new('jsClassDefinition', c.blue)
-Group.new('jsDot', c.grey)
-Group.new('jsSpreadExpression', c.purple)
-Group.new('jsSpreadOperator', c.green)
-Group.new('jsModuleKeyword', c.blue)
-Group.new('jsTemplateExpression', c.purple)
-Group.new('jsTemplateBraces', c.purple)
-Group.new('jsClassMethodType', c.blue)
-Group.new('jsExceptions', c.blue)
-
-Group.new('javascriptOpSymbol', c.red)
-Group.new('javascriptOpSymbols', c.red)
-Group.new('javascriptIdentifierName', c.fg1)
-Group.new('javascriptVariable', c.blue)
-Group.new('javascriptObjectLabel', c.fg1)
-Group.new('javascriptPropertyNameString', c.fg1)
-Group.new('javascriptFuncArg', c.fg1)
-Group.new('javascriptObjectLiteral', c.green)
-Group.new('javascriptIdentifier', c.orange)
-Group.new('javascriptArrowFunc', c.red)
-Group.new('javascriptTemplate', c.purple)
-Group.new('javascriptTemplateSubstitution', c.purple)
-Group.new('javascriptTemplateSB', c.purple)
-Group.new('javascriptNodeGlobal', c.blue)
-Group.new('javascriptDocTags', c.red)
-Group.new('javascriptDocNotation', c.blue)
-Group.new('javascriptClassSuper', c.orange)
-Group.new('javascriptClassName', c.blue)
-Group.new('javascriptClassSuperName', c.blue)
-Group.new('javascriptOperator', c.red)
-Group.new('javascriptBrackets', c.fg1)
-Group.new('javascriptBraces', c.fg1)
-Group.new('javascriptLabel', c.purple)
-Group.new('javascriptEndColons', c.grey)
-Group.new('javascriptObjectLabelColon', c.grey)
-Group.new('javascriptDotNotation', c.grey)
-Group.new('javascriptGlobalArrayDot', c.grey)
-Group.new('javascriptGlobalBigIntDot', c.grey)
-Group.new('javascriptGlobalDateDot', c.grey)
-Group.new('javascriptGlobalJSONDot', c.grey)
-Group.new('javascriptGlobalMathDot', c.grey)
-Group.new('javascriptGlobalNumberDot', c.grey)
-Group.new('javascriptGlobalObjectDot', c.grey)
-Group.new('javascriptGlobalPromiseDot', c.grey)
-Group.new('javascriptGlobalRegExpDot', c.grey)
-Group.new('javascriptGlobalStringDot', c.grey)
-Group.new('javascriptGlobalSymbolDot', c.grey)
-Group.new('javascriptGlobalURLDot', c.grey)
-Group.new('javascriptMethod', c.green)
-Group.new('javascriptMethodName', c.green)
-Group.new('javascriptObjectMethodName', c.green)
-Group.new('javascriptGlobalMethod', c.green)
-Group.new('javascriptDOMStorageMethod', c.green)
-Group.new('javascriptFileMethod', c.green)
-Group.new('javascriptFileReaderMethod', c.green)
-Group.new('javascriptFileListMethod', c.green)
-Group.new('javascriptBlobMethod', c.green)
-Group.new('javascriptURLStaticMethod', c.green)
-Group.new('javascriptNumberStaticMethod', c.green)
-Group.new('javascriptNumberMethod', c.green)
-Group.new('javascriptDOMNodeMethod', c.green)
-Group.new('javascriptES6BigIntStaticMethod', c.green)
-Group.new('javascriptBOMWindowMethod', c.green)
-Group.new('javascriptHeadersMethod', c.green)
-Group.new('javascriptRequestMethod', c.green)
-Group.new('javascriptResponseMethod', c.green)
-Group.new('javascriptES6SetMethod', c.green)
-Group.new('javascriptReflectMethod', c.green)
-Group.new('javascriptPaymentMethod', c.green)
-Group.new('javascriptPaymentResponseMethod', c.green)
-Group.new('javascriptTypedArrayStaticMethod', c.green)
-Group.new('javascriptGeolocationMethod', c.green)
-Group.new('javascriptES6MapMethod', c.green)
-Group.new('javascriptServiceWorkerMethod', c.green)
-Group.new('javascriptCacheMethod', c.green)
-Group.new('javascriptFunctionMethod', c.green)
-Group.new('javascriptXHRMethod', c.green)
-Group.new('javascriptBOMNavigatorMethod', c.green)
-Group.new('javascriptServiceWorkerMethod', c.green)
-Group.new('javascriptDOMEventTargetMethod', c.green)
-Group.new('javascriptDOMEventMethod', c.green)
-Group.new('javascriptIntlMethod', c.green)
-Group.new('javascriptDOMDocMethod', c.green)
-Group.new('javascriptStringStaticMethod', c.green)
-Group.new('javascriptStringMethod', c.green)
-Group.new('javascriptSymbolStaticMethod', c.green)
-Group.new('javascriptRegExpMethod', c.green)
-Group.new('javascriptObjectStaticMethod', c.green)
-Group.new('javascriptObjectMethod', c.green)
-Group.new('javascriptBOMLocationMethod', c.green)
-Group.new('javascriptJSONStaticMethod', c.green)
-Group.new('javascriptGeneratorMethod', c.green)
-Group.new('javascriptEncodingMethod', c.green)
-Group.new('javascriptPromiseStaticMethod', c.green)
-Group.new('javascriptPromiseMethod', c.green)
-Group.new('javascriptBOMHistoryMethod', c.green)
-Group.new('javascriptDOMFormMethod', c.green)
-Group.new('javascriptClipboardMethod', c.green)
-Group.new('javascriptTypedArrayStaticMethod', c.green)
-Group.new('javascriptBroadcastMethod', c.green)
-Group.new('javascriptDateStaticMethod', c.green)
-Group.new('javascriptDateMethod', c.green)
-Group.new('javascriptConsoleMethod', c.green)
-Group.new('javascriptArrayStaticMethod', c.green)
-Group.new('javascriptArrayMethod', c.green)
-Group.new('javascriptMathStaticMethod', c.green)
-Group.new('javascriptSubtleCryptoMethod', c.green)
-Group.new('javascriptCryptoMethod', c.green)
-Group.new('javascriptProp', c.fg1)
-Group.new('javascriptBOMWindowProp', c.fg1)
-Group.new('javascriptDOMStorageProp', c.fg1)
-Group.new('javascriptFileReaderProp', c.fg1)
-Group.new('javascriptURLUtilsProp', c.fg1)
-Group.new('javascriptNumberStaticProp', c.fg1)
-Group.new('javascriptDOMNodeProp', c.fg1)
-Group.new('javascriptRequestProp', c.fg1)
-Group.new('javascriptResponseProp', c.fg1)
-Group.new('javascriptES6SetProp', c.fg1)
-Group.new('javascriptPaymentProp', c.fg1)
-Group.new('javascriptPaymentResponseProp', c.fg1)
-Group.new('javascriptPaymentAddressProp', c.fg1)
-Group.new('javascriptPaymentShippingOptionProp', c.fg1)
-Group.new('javascriptTypedArrayStaticProp', c.fg1)
-Group.new('javascriptServiceWorkerProp', c.fg1)
-Group.new('javascriptES6MapProp', c.fg1)
-Group.new('javascriptRegExpStaticProp', c.fg1)
-Group.new('javascriptRegExpProp', c.fg1)
-Group.new('javascriptXHRProp', c.fg1)
-Group.new('javascriptBOMNavigatorProp', c.green)
-Group.new('javascriptDOMEventProp', c.fg1)
-Group.new('javascriptBOMNetworkProp', c.fg1)
-Group.new('javascriptDOMDocProp', c.fg1)
-Group.new('javascriptSymbolStaticProp', c.fg1)
-Group.new('javascriptSymbolProp', c.fg1)
-Group.new('javascriptBOMLocationProp', c.fg1)
-Group.new('javascriptEncodingProp', c.fg1)
-Group.new('javascriptCryptoProp', c.fg1)
-Group.new('javascriptBOMHistoryProp', c.fg1)
-Group.new('javascriptDOMFormProp', c.fg1)
-Group.new('javascriptDataViewProp', c.fg1)
-Group.new('javascriptBroadcastProp', c.fg1)
-Group.new('javascriptMathStaticProp', c.fg1)
-
-Group.new('jsxTagName', c.red)
-Group.new('jsxOpenPunct', c.green)
-Group.new('jsxClosePunct', c.blue)
-Group.new('jsxEscapeJs', c.purple)
-Group.new('jsxAttrib', c.blue)
-
----------- TYPESCRIPT / TSX ----------
-
-Group.new('typescriptStorageClass', c.red)
-Group.new('typescriptEndColons', c.fg1)
-Group.new('typescriptSource', c.blue)
-Group.new('typescriptMessage', c.green)
-Group.new('typescriptGlobalObjects', c.blue)
-Group.new('typescriptInterpolation', c.purple)
-Group.new('typescriptInterpolationDelimiter', c.purple)
-Group.new('typescriptBraces', c.fg1)
-Group.new('typescriptParens', c.fg1)
-
-Group.new('typescriptMethodAccessor', c.red)
-Group.new('typescriptVariable', c.red)
-Group.new('typescriptVariableDeclaration', c.fg1)
-Group.new('typescriptTypeReference', c.blue)
-Group.new('typescriptBraces', c.fg1)
-Group.new('typescriptEnumKeyword', c.red)
-Group.new('typescriptEnum', c.blue)
-Group.new('typescriptIdentifierName', c.fg1)
-Group.new('typescriptProp', c.fg1)
-Group.new('typescriptCall', c.fg1)
-Group.new('typescriptInterfaceName', c.blue)
-Group.new('typescriptEndColons', c.fg1)
-Group.new('typescriptMember', c.fg1)
-Group.new('typescriptMemberOptionality', c.red)
-Group.new('typescriptObjectLabel', c.fg1)
-Group.new('typescriptDefaultParam', c.fg1)
-Group.new('typescriptArrowFunc', c.red)
-Group.new('typescriptAbstract', c.red)
-Group.new('typescriptObjectColon', c.grey)
-Group.new('typescriptTypeAnnotation', c.grey)
-Group.new('typescriptAssign', c.red)
-Group.new('typescriptBinaryOp', c.red)
-Group.new('typescriptUnaryOp', c.red)
-Group.new('typescriptFuncComma', c.fg1)
-Group.new('typescriptClassName', c.blue)
-Group.new('typescriptClassHeritage', c.blue)
-Group.new('typescriptInterfaceHeritage', c.blue)
-Group.new('typescriptIdentifier', c.orange)
-Group.new('typescriptGlobal', c.blue)
-Group.new('typescriptOperator', c.red)
-Group.new('typescriptNodeGlobal', c.blue)
-Group.new('typescriptExport', c.red)
-Group.new('typescriptImport', c.red)
-Group.new('typescriptTypeParameter', c.blue)
-Group.new('typescriptReadonlyModifier', c.red)
-Group.new('typescriptAccessibilityModifier', c.red)
-Group.new('typescriptAmbientDeclaration', c.red)
-Group.new('typescriptTemplateSubstitution', c.purple)
-Group.new('typescriptTemplateSB', c.purple)
-Group.new('typescriptExceptions', c.red)
-Group.new('typescriptCastKeyword', c.red)
-Group.new('typescriptOptionalMark', c.red)
-Group.new('typescriptNull', c.orange)
-Group.new('typescriptMappedIn', c.red)
-Group.new('typescriptFuncTypeArrow', c.red)
-Group.new('typescriptTernaryOp', c.red)
-Group.new('typescriptParenExp', c.fg1)
-Group.new('typescriptIndexExpr', c.fg1)
-Group.new('typescriptDotNotation', c.grey)
-Group.new('typescriptGlobalNumberDot', c.grey)
-Group.new('typescriptGlobalStringDot', c.grey)
-Group.new('typescriptGlobalArrayDot', c.grey)
-Group.new('typescriptGlobalObjectDot', c.grey)
-Group.new('typescriptGlobalSymbolDot', c.grey)
-Group.new('typescriptGlobalMathDot', c.grey)
-Group.new('typescriptGlobalDateDot', c.grey)
-Group.new('typescriptGlobalJSONDot', c.grey)
-Group.new('typescriptGlobalRegExpDot', c.grey)
-Group.new('typescriptGlobalPromiseDot', c.grey)
-Group.new('typescriptGlobalURLDot', c.grey)
-Group.new('typescriptGlobalMethod', c.green)
-Group.new('typescriptDOMStorageMethod', c.green)
-Group.new('typescriptFileMethod', c.green)
-Group.new('typescriptFileReaderMethod', c.green)
-Group.new('typescriptFileListMethod', c.green)
-Group.new('typescriptBlobMethod', c.green)
-Group.new('typescriptURLStaticMethod', c.green)
-Group.new('typescriptNumberStaticMethod', c.green)
-Group.new('typescriptNumberMethod', c.green)
-Group.new('typescriptDOMNodeMethod', c.green)
-Group.new('typescriptPaymentMethod', c.green)
-Group.new('typescriptPaymentResponseMethod', c.green)
-Group.new('typescriptHeadersMethod', c.green)
-Group.new('typescriptRequestMethod', c.green)
-Group.new('typescriptResponseMethod', c.green)
-Group.new('typescriptES6SetMethod', c.green)
-Group.new('typescriptReflectMethod', c.green)
-Group.new('typescriptBOMWindowMethod', c.green)
-Group.new('typescriptGeolocationMethod', c.green)
-Group.new('typescriptServiceWorkerMethod', c.green)
-Group.new('typescriptCacheMethod', c.green)
-Group.new('typescriptES6MapMethod', c.green)
-Group.new('typescriptFunctionMethod', c.green)
-Group.new('typescriptRegExpMethod', c.green)
-Group.new('typescriptXHRMethod', c.green)
-Group.new('typescriptBOMNavigatorMethod', c.green)
-Group.new('typescriptServiceWorkerMethod', c.green)
-Group.new('typescriptIntlMethod', c.green)
-Group.new('typescriptDOMEventTargetMethod', c.green)
-Group.new('typescriptDOMEventMethod', c.green)
-Group.new('typescriptDOMDocMethod', c.green)
-Group.new('typescriptStringStaticMethod', c.green)
-Group.new('typescriptStringMethod', c.green)
-Group.new('typescriptSymbolStaticMethod', c.green)
-Group.new('typescriptObjectStaticMethod', c.green)
-Group.new('typescriptObjectMethod', c.green)
-Group.new('typescriptJSONStaticMethod', c.green)
-Group.new('typescriptEncodingMethod', c.green)
-Group.new('typescriptBOMLocationMethod', c.green)
-Group.new('typescriptPromiseStaticMethod', c.green)
-Group.new('typescriptPromiseMethod', c.green)
-Group.new('typescriptSubtleCryptoMethod', c.green)
-Group.new('typescriptCryptoMethod', c.green)
-Group.new('typescriptBOMHistoryMethod', c.green)
-Group.new('typescriptDOMFormMethod', c.green)
-Group.new('typescriptConsoleMethod', c.green)
-Group.new('typescriptDateStaticMethod', c.green)
-Group.new('typescriptDateMethod', c.green)
-Group.new('typescriptArrayStaticMethod', c.green)
-Group.new('typescriptArrayMethod', c.green)
-Group.new('typescriptMathStaticMethod', c.green)
-Group.new('typescriptStringProperty', c.fg1)
-Group.new('typescriptDOMStorageProp', c.fg1)
-Group.new('typescriptFileReaderProp', c.fg1)
-Group.new('typescriptURLUtilsProp', c.fg1)
-Group.new('typescriptNumberStaticProp', c.fg1)
-Group.new('typescriptDOMNodeProp', c.fg1)
-Group.new('typescriptBOMWindowProp', c.fg1)
-Group.new('typescriptRequestProp', c.fg1)
-Group.new('typescriptResponseProp', c.fg1)
-Group.new('typescriptPaymentProp', c.fg1)
-Group.new('typescriptPaymentResponseProp', c.fg1)
-Group.new('typescriptPaymentAddressProp', c.fg1)
-Group.new('typescriptPaymentShippingOptionProp', c.fg1)
-Group.new('typescriptES6SetProp', c.fg1)
-Group.new('typescriptServiceWorkerProp', c.fg1)
-Group.new('typescriptES6MapProp', c.fg1)
-Group.new('typescriptRegExpStaticProp', c.fg1)
-Group.new('typescriptRegExpProp', c.fg1)
-Group.new('typescriptBOMNavigatorProp', c.green)
-Group.new('typescriptXHRProp', c.fg1)
-Group.new('typescriptDOMEventProp', c.fg1)
-Group.new('typescriptDOMDocProp', c.fg1)
-Group.new('typescriptBOMNetworkProp', c.fg1)
-Group.new('typescriptSymbolStaticProp', c.fg1)
-Group.new('typescriptEncodingProp', c.fg1)
-Group.new('typescriptBOMLocationProp', c.fg1)
-Group.new('typescriptCryptoProp', c.fg1)
-Group.new('typescriptDOMFormProp', c.fg1)
-Group.new('typescriptBOMHistoryProp', c.fg1)
-Group.new('typescriptMathStaticProp', c.fg1)
-
----------- C++ ----------
-
-Group.new('cLabel', c.red)
-Group.new('cppSTLnamespace', c.blue)
-Group.new('cppSTLtype', c.blue)
-Group.new('cppAccess', c.red)
-Group.new('cppStructure', c.red)
-Group.new('cppSTLios', c.blue)
-Group.new('cppSTLiterator', c.blue)
-Group.new('cppSTLexception', c.red)
-
----------- C# ----------
-
-Group.new('csUnspecifiedStatement', c.red)
-Group.new('csStorage', c.red)
-Group.new('csClass', c.red)
-Group.new('csNewType', c.blue)
-Group.new('csContextualStatement', c.red)
-Group.new('csInterpolationDelimiter', c.purple)
-Group.new('csInterpolation', c.purple)
-Group.new('csEndColon', c.fg1)
-
----------- PYTHON ----------
-
-Group.new('pythonBuiltin', c.blue)
-Group.new('pythonExceptions', c.red)
-Group.new('pythonDecoratorName', c.orange)
-Group.new('pythonExClass', c.blue)
-Group.new('pythonBuiltinType', c.blue)
-Group.new('pythonBuiltinObj', c.orange)
-Group.new('pythonDottedName', c.orange)
-Group.new('pythonBuiltinFunc', c.green)
-Group.new('pythonFunction', c.green)
-Group.new('pythonDecorator', c.orange)
-Group.new('pythonInclude', g.Include, g.Include, g.Include)
-Group.new('pythonImport', g.PreProc, g.PreProc, g.PreProc)
-Group.new('pythonOperator', c.red)
-Group.new('pythonConditional', c.red)
-Group.new('pythonRepeat', c.red)
-Group.new('pythonException', c.red)
-Group.new('pythonNone', c.orange)
-Group.new('pythonCoding', c.grey)
-Group.new('pythonDot', c.grey)
-
----------- LUA ----------
-
-Group.new('luaFunc', c.green)
-Group.new('luaFunction', c.red)
-Group.new('luaTable', c.fg1)
-Group.new('luaIn', c.red)
-Group.new('luaFuncCall', c.green)
-Group.new('luaLocal', c.red)
-Group.new('luaSpecialValue', c.green)
-Group.new('luaBraces', c.fg1)
-Group.new('luaBuiltIn', c.blue)
-Group.new('luaNoise', c.grey)
-Group.new('luaLabel', c.purple)
-Group.new('luaFuncTable', c.blue)
-Group.new('luaFuncArgName', c.fg1)
-Group.new('luaEllipsis', c.red)
-Group.new('luaDocTag', c.green)
-
----------- JAVA ----------
-
-Group.new('javaClassDecl', c.red)
-Group.new('javaMethodDecl', c.red)
-Group.new('javaVarArg', c.fg1)
-Group.new('javaAnnotation', c.purple)
-Group.new('javaUserLabel', c.purple)
-Group.new('javaTypedef', c.orange)
-Group.new('javaParen', c.fg1)
-Group.new('javaParen1', c.fg1)
-Group.new('javaParen2', c.fg1)
-Group.new('javaParen3', c.fg1)
-Group.new('javaParen4', c.fg1)
-Group.new('javaParen5', c.fg1)
-
----------- KOTLIN ----------
-
-Group.new('ktSimpleInterpolation', c.purple)
-Group.new('ktComplexInterpolation', c.purple)
-Group.new('ktComplexInterpolationBrace', c.purple)
-Group.new('ktStructure', c.red)
-Group.new('ktKeyword', c.orange)
-
----------- RUST ----------
-
-Group.new('rustStructure', c.red)
-Group.new('rustIdentifier', c.orange)
-Group.new('rustModPath', c.blue)
-Group.new('rustModPathSep', c.grey)
-Group.new('rustSelf', c.orange)
-Group.new('rustSuper', c.orange)
-Group.new('rustDeriveTrait', c.purple)
-Group.new('rustEnumVariant', c.purple)
-Group.new('rustMacroVariable', c.orange)
-Group.new('rustAssert', c.green)
-Group.new('rustPanic', c.green)
-Group.new('rustPubScopeCrate', c.blue)
-Group.new('rustAttribute', c.purple)
-
----------- SWIFT ----------
-
-Group.new('swiftInterpolatedWrapper', c.purple)
-Group.new('swiftInterpolatedString', c.purple)
-Group.new('swiftProperty', c.fg1)
-Group.new('swiftTypeDeclaration', c.red)
-Group.new('swiftClosureArgument', c.orange)
-Group.new('swiftStructure', c.red)
-
----------- ZSH ----------
-
-Group.new('shRange', c.fg1)
-Group.new('shOption', c.purple)
-Group.new('shQuote', c.yellow)
-Group.new('shVariable', c.blue)
-Group.new('shDerefSimple', c.blue)
-Group.new('shDerefVar', c.blue)
-Group.new('shDerefSpecial', c.blue)
-Group.new('shDerefOff', c.blue)
-Group.new('shVarAssign', c.red)
-Group.new('shFunctionOne', c.green)
-Group.new('shFunctionKey', c.red)
-
-Group.new('zshOption', c.blue)
-Group.new('zshSubst', c.orange)
-Group.new('zshFunction', c.green)
-
----------- VIM ----------
-
-Group.new('vimnotfunc', c.red)
-Group.new('vimcommand', c.red)
-Group.new('vimCommentTitle', c.grey, nil, s.bold)
-Group.new('vimLet', c.red)
-Group.new('vimFunction', c.green)
-Group.new('vimIsCommand', c.fg1)
-Group.new('vimUserFunc', c.green)
-Group.new('vimFuncName', c.green)
-Group.new('vimMap', c.blue)
-Group.new('vimNotation', c.purple)
-Group.new('vimMapLhs', c.green)
-Group.new('vimMapRhs', c.green)
-Group.new('vimSetEqual', c.blue)
-Group.new('vimSetSep', c.fg1)
-Group.new('vimOption', c.blue)
-Group.new('vimUserAttrbKey', c.blue)
-Group.new('vimUserAttrb', c.green)
-Group.new('vimAutoCmdSfxList', c.orange)
-Group.new('vimSynType', c.orange)
-Group.new('vimHiBang', c.orange)
-Group.new('vimSet', c.blue)
-Group.new('vimSetSep', c.grey)
-
----------- MAKE ----------
-
-Group.new('makeIdent', c.purple)
-Group.new('makeSpecTarget', c.blue)
-Group.new('makeTarget', c.orange)
-Group.new('makeCommands', c.red)
-
----------- MARKDOWN ----------
-
-Group.new('markdownH1', c.red, c.none, s.bold)
-Group.new('markdownH2', c.orange, c.none, s.bold)
-Group.new('markdownH3', c.yellow, c.none, s.bold)
-Group.new('markdownH4', c.green, c.none, s.bold)
-Group.new('markdownH5', c.blue, c.none, s.bold)
-Group.new('markdownH6', c.purple, c.none, s.bold)
-Group.new('markdownUrl', c.blue, c.none, s.underline)
-Group.new('markdownItalic', c.none, c.none, s.italic)
-Group.new('markdownBold', c.none, c.none, s.bold)
-Group.new('markdownItalicDelimiter', c.grey, c.none, s.italic)
-Group.new('markdownCode', c.green)
-Group.new('markdownCodeBlock', c.green)
-Group.new('markdownCodeDelimiter', c.green)
-Group.new('markdownBlockquote', c.grey)
-Group.new('markdownListMarker', c.red)
-Group.new('markdownOrderedListMarker', c.red)
-Group.new('markdownRule', c.purple)
-Group.new('markdownHeadingRule', c.grey)
-Group.new('markdownUrlDelimiter', c.grey)
-Group.new('markdownLinkDelimiter', c.grey)
-Group.new('markdownLinkTextDelimiter', c.grey)
-Group.new('markdownHeadingDelimiter', c.grey)
-Group.new('markdownLinkText', c.red)
-Group.new('markdownUrlTitleDelimiter', c.green)
-Group.new('markdownIdDeclaration', g.markdownLinkText, g.markdownLinkText, g.markdownLinkText)
-Group.new('markdownBoldDelimiter', c.grey)
-Group.new('markdownId', c.yellow)
-Group.new('mkdURL', c.blue, c.none, s.underline)
-Group.new('mkdInlineURL', c.blue, c.none, s.underline)
-Group.new('mkdItalic', c.grey, c.none, s.italic)
-Group.new('mkdCodeDelimiter', c.green)
-Group.new('mkdBold', c.grey)
-Group.new('mkdLink', c.red)
-Group.new('mkdHeading', c.grey)
-Group.new('mkdListItem', c.red)
-Group.new('mkdRule', c.purple)
-Group.new('mkdDelimiter', c.grey)
-Group.new('mkdId', c.yellow)
-
----------- JSON ----------
-
-Group.new('jsonKeyword', c.red)
-Group.new('jsonString', c.green)
-Group.new('jsonBoolean', c.blue)
-Group.new('jsonNoise', c.grey)
-Group.new('jsonQuote', c.grey)
-Group.new('jsonBraces', c.fg1)
-
----------- GIT ----------
-
-Group.new('diffAdded', c.green)
-Group.new('diffRemoved', c.red)
-Group.new('diffChanged', c.blue)
-Group.new('diffOldFile', c.yellow)
-Group.new('diffNewFile', c.orange)
-Group.new('diffFile', c.purple)
-Group.new('diffLine', c.grey)
-Group.new('diffIndexLine', c.purple)
-
-Group.new('gitcommitSummary', c.red)
-Group.new('gitcommitUntracked', c.grey)
-Group.new('gitcommitDiscarded', c.grey)
-Group.new('gitcommitSelected', c.grey)
-Group.new('gitcommitUnmerged', c.grey)
-Group.new('gitcommitOnBranch', c.grey)
-Group.new('gitcommitArrow', c.grey)
-Group.new('gitcommitFile', c.green)
-
----------- HELP ----------
-
-Group.new('helpNote', c.purple, c.none, s.bold)
-Group.new('helpHeadline', c.red, c.none, s.bold)
-Group.new('helpHeader', c.orange, c.none, s.bold)
-Group.new('helpURL', c.green, c.none, s.underline)
-Group.new('helpHyperTextEntry', c.blue, c.none, s.bold)
-Group.new('helpHyperTextJump', c.blue)
-Group.new('helpCommand', c.yellow)
-Group.new('helpExample', c.green)
-Group.new('helpSpecial', c.purple)
-Group.new('helpSectionDelim', c.grey)
-
----------- STARTSCREEN ----------
-
-Group.new('DashboardHeader', c.red, c.none)
-Group.new('DashboardCenter', c.blue, c.none)
-
-Group.new('StartifyBracket', c.grey)
-Group.new('StartifyFile', c.green)
-Group.new('StartifyNumber', c.orange)
-Group.new('StartifyPath', c.grey)
-Group.new('StartifySlash', c.grey)
-Group.new('StartifySection', c.blue)
-Group.new('StartifyHeader', c.red)
-Group.new('StartifySpecial', c.grey)
+all {
+    {'Normal', {guifg = c.fg, guibg = c.bg}},
+    {'Terminal', {guifg = c.fg, guibg = c.bg}},
+    {'EndOfBuffer', {guifg = c.bg, guibg = c.bg}},
+    {'Folded', {guifg = c.grey, guibg = c.bg}},
+    {'ToolbarLine', {guifg = c.fg, guibg = c.bg2}},
+    {'SignColumn', {guifg = c.fg, guibg = 'NONE'}},
+    {'FoldColumn', {guifg = c.grey, guibg = 'NONE'}},
+    {'IncSearch', {guifg = c.bg, guibg = c.red}},
+    {'Search', {guifg = c.bg, guibg = c.green}},
+    {'ColorColumn', {guifg = 'NONE', guibg = c.bg}},
+    {'Conceal', {guifg = c.grey, guibg = 'NONE'}},
+    {'Cursor', {guifg = 'NONE', guibg = 'NONE', gui = 'reverse'}},
+
+    {'vCursor', {link = 'Cursor'}},
+    {'iCursor', {link = 'Cursor'}},
+    {'lCursor', {link = 'Cursor'}},
+    {'CursorIM', {link = 'Cursor'}},
+
+    {'CursorLine', {guifg = c.red, guibg = c.bg}},
+    {'CursorColumn', {guifg = 'NONE', guibg = c.bg}},
+    {'LineNr', {guifg = c.grey, guibg = 'NONE'}},
+    {'CursorLineNr', {guifg = c.fg, guibg = 'NONE'}},
+
+    {'DiffAdd', {guifg = 'NONE', guibg = c.diff_green}},
+    {'DiffChange', {guifg = 'NONE', guibg = c.diff_blue}},
+    {'DiffDelete', {guifg = 'NONE', guibg = c.diff_red}},
+    {'DiffText', {guifg = c.bg, guibg = c.diff_orange}},
+    {'Directory', {guifg = c.green, guibg = 'NONE'}},
+    {'ErrorMsg', {guifg = c.red, guibg = 'NONE'}},
+    {'WarningMsg', {guifg = c.yellow, guibg = 'NONE', gui = 'bold'}},
+    {'ModeMsg', {guifg = c.fg, guibg = 'NONE', gui = 'bold'}},
+    {'MoreMsg', {guifg = c.blue, guibg = 'NONE', gui = 'bold'}},
+    {'MatchParen', {guifg = 'NONE', guibg = c.bg2}},
+    {'NonText', {guifg = c.bg2, guibg = 'NONE'}},
+    {'Whitespace', {guifg = c.bg2, guibg = 'NONE'}},
+    {'SpecialKey', {guifg = c.bg2, guibg = 'NONE'}},
+    {'Pmenu', {guifg = c.fg, guibg = c.bg2}},
+    {'PmenuSbar', {guifg = 'NONE', guibg = c.bg2}},
+    {'PmenuSel', {guifg = c.bg, guibg = c.green}},
+    {'WildMenu', {link = 'PmenuSel'}},
+
+    {'PmenuThumb', {guifg = 'NONE', guibg = c.grey}},
+    {'NormalFloat', {guifg = c.fg, guibg = c.bg2}},
+    {'Question', {guifg = c.yellow, guibg = 'NONE'}},
+    {'SpellBad', {guifg = c.red, guibg = 'NONE', gui = 'undercurl', guisp = c.red}},
+    {'SpellCap', {guifg = c.yellow, guibg = 'NONE', gui = 'undercurl', guisp = c.yellow}},
+    {'SpellLocal', {guifg = c.blue, guibg = 'NONE', gui = 'undercurl', guisp = c.blue}},
+    {'SpellRare', {guifg = c.purple, guibg = 'NONE', gui = 'undercurl', guisp = c.purple}},
+    {'StatusLine', {guifg = c.fg, guibg = 'NONE'}},
+    {'StatusLineTerm', {guifg = c.fg, guibg = c.bg2}},
+    {'StatusLineNC', {guifg = c.grey, guibg = c.bg}},
+    {'StatusLineTermNC', {guifg = c.grey, guibg = c.bg}},
+    {'TabLine', {guifg = 'NONE', guibg = c.yellow}},
+    {'TabLineFill', {guifg = c.grey, guibg = c.bg}},
+    {'TabLineSel', {guifg = 'NONE', guibg = c.red}},
+    {'VertSplit', {guifg = c.grey, guibg = 'NONE'}},
+    {'Visual', {guifg = 'NONE', guibg = c.bg2}},
+    {'VisualNOS', {guifg = 'NONE', guibg = c.bg2, gui = 'underline'}},
+    {'QuickFixLine', {guifg = c.blue, guibg = 'NONE', gui = 'bold'}},
+    {'Debug', {guifg = c.yellow, guibg = 'NONE'}},
+    {'debugPC', {guifg = c.bg, guibg = c.green}},
+    {'debugBreakpoint', {guifg = c.bg, guibg = c.red}},
+    {'ToolbarButton', {guifg = c.bg, guibg = c.blue}},
+
+    {'ErrorText', {guifg = c.error, guibg = 'NONE', gui = 'undercurl', guisp = c.red}},
+    {'WarningText', {guifg = c.orange, guibg = 'NONE', gui = 'undercurl', guisp = c.yellow}},
+    {'InfoText', {guifg = c.yellow, guibg = 'NONE', gui = 'undercurl', guisp = c.blue}},
+    {'HintText', {guifg = c.yellow, guibg = 'NONE', gui = 'undercurl', guisp = c.green}},
+    {'ErrorFloat', {guifg = c.red, guibg = c.bg2}},
+    {'WarningFloat', {guifg = c.yellow, guibg = c.bg2}},
+    {'InfoFloat', {guifg = c.blue, guibg = c.bg2}},
+    {'HintFloat', {guifg = c.green, guibg = c.bg2}},
+    {'ErrorLine', {guifg = 'NONE', guibg = 'NONE'}},
+    {'WarningLine', {guifg = 'NONE', guibg = 'NONE'}},
+    {'InfoLine', {guifg = 'NONE', guibg = 'NONE'}},
+    {'HintLine', {guifg = 'NONE', guibg = 'NONE'}},
+
+    {'RedSign', {guifg = c.red, guibg = c.bg}},
+    {'OrangeSign', {guifg = c.orange, guibg = c.bg}},
+    {'YellowSign', {guifg = c.yellow, guibg = c.bg}},
+    {'GreenSign', {guifg = c.green, guibg = c.bg}},
+    {'BlueSign', {guifg = c.blue, guibg = c.bg}},
+    {'PurpleSign', {guifg = c.purple, guibg = c.bg}},
+
+    {'CurrentWord', {guifg = c.bg, guibg = c.green}},
+    {'Substitute', {guifg = c.bg, guibg = c.yellow}},
+    {'TermCursor', {link = 'Cursor'}},
+    {'healthError', {guifg = c.red}},
+    {'healthSuccess', {guifg = c.green}},
+    {'healthWarning', {guifg = c.yellow}},
+
+    {'Type', {guifg = c.blue, guibg = 'NONE'}},
+    {'Structure', {guifg = c.blue, guibg = 'NONE'}},
+    {'StorageClass', {guifg = c.blue, guibg = 'NONE'}},
+    {'Identifier', {guifg = c.orange, guibg = 'NONE'}},
+    {'Constant', {guifg = c.orange, guibg = 'NONE'}},
+
+    {'PreProc', {guifg = c.red, guibg = 'NONE'}},
+    {'PreCondit', {guifg = c.red, guibg = 'NONE'}},
+    {'Include', {guifg = c.red, guibg = 'NONE'}},
+    {'Keyword', {guifg = c.red, guibg = 'NONE'}},
+    {'Define', {guifg = c.red, guibg = 'NONE'}},
+    {'Typedef', {guifg = c.red, guibg = 'NONE'}},
+    {'Exception', {guifg = c.red, guibg = 'NONE'}},
+    {'Conditional', {guifg = c.red, guibg = 'NONE'}},
+    {'Repeat', {guifg = c.red, guibg = 'NONE'}},
+    {'Statement', {guifg = c.red, guibg = 'NONE'}},
+    {'Macro', {guifg = c.purple, guibg = 'NONE'}},
+    {'Error', {guifg = c.red, guibg = 'NONE'}},
+    {'Label', {guifg = c.purple, guibg = 'NONE'}},
+    {'Special', {guifg = c.purple, guibg = 'NONE'}},
+    {'SpecialChar', {guifg = c.purple, guibg = 'NONE'}},
+    {'Boolean', {guifg = c.purple, guibg = 'NONE'}},
+    {'String', {guifg = c.yellow, guibg = 'NONE'}},
+    {'Character', {guifg = c.yellow, guibg = 'NONE'}},
+    {'Number', {guifg = c.purple, guibg = 'NONE'}},
+    {'Float', {guifg = c.purple, guibg = 'NONE'}},
+    {'Function', {guifg = c.green, guibg = 'NONE'}},
+    {'Operator', {guifg = c.red, guibg = 'NONE'}},
+    {'Title', {guifg = c.red, guibg = 'NONE', gui = 'bold'}},
+    {'Tag', {guifg = c.orange, guibg = 'NONE'}},
+    {'Delimiter', {guifg = c.fg, guibg = 'NONE'}},
+
+    {'Comment', {guifg = c.grey, guibg = 'NONE', gui = 'italic'}},
+    {'SpecialComment', {guifg = c.grey, guibg = 'NONE', gui = 'italic'}},
+    {'Todo', {guifg = c.blue, guibg = 'NONE', gui = 'italic'}},
+
+    {'Ignore', {guifg = c.grey, guibg = 'NONE'}},
+    {'Underlined', {guifg = 'NONE', guibg = 'NONE', gui = 'underline'}},
+
+    ---------- TREESITTER ----------
+
+    {'TSAnnotation', {guifg = c.blue}},
+    {'TSAttribute', {guifg = c.blue}},
+    {'TSBoolean', {guifg = c.purple}},
+    {'TSCharacter', {guifg = c.yellow}},
+    {'TSComment', {guifg = c.grey}},
+    {'TSConditional', {guifg = c.red}},
+    {'TSConstBuiltin', {guifg = c.orange}},
+    {'TSConstMacro', {guifg = c.orange}},
+    {'TSConstant', {guifg = c.orange}},
+    {'TSConstructor', {guifg = c.fg}},
+    {'TSCustomType', {guifg = c.purple}},
+    {'TSError', {link = 'Normal'}},
+    {'TSException', {guifg = c.red}},
+    {'TSField', {guifg = c.green}},
+    {'TSFloat', {guifg = c.purple}},
+    {'TSFuncBuiltin', {guifg = c.green}},
+    {'TSFuncMacro', {guifg = c.green}},
+    {'TSFunction', {guifg = c.green}},
+    {'TSInclude', {guifg = c.blue}},
+    {'TSKeyword', {guifg = c.red}},
+    {'TSKeywordFunction', {guifg = c.red}},
+    {'TSLabel', {guifg = c.red}},
+    {'TSMethod', {guifg = c.green}},
+    {'TSNamespace', {guifg = c.purple}},
+    {'TSNumber', {guifg = c.purple}},
+    {'TSOperator', {guifg = c.red}},
+    {'TSParameter', {link = 'NONE'}},
+    {'TSParameterReference', {guifg = c.orange}},
+    {'TSProperty', {link = 'NONE'}},
+    {'tsxTSProperty', {guifg = c.green}},
+    {'TSPunctBracket', {guifg = c.fg}},
+    {'TSPunctDelimiter', {guifg = c.grey}},
+    {'TSPunctSpecial', {guifg = c.fg}},
+    {'TSRepeat', {guifg = c.red}},
+    {'TSString', {guifg = c.yellow}},
+    {'TSStringEscape', {guifg = c.yellow}},
+    {'TSStringRegex', {guifg = c.green}},
+    {'TSStructure', {guifg = c.blue}},
+    {'TSTag', {guifg = c.blue}},
+    {'TSTagDelimiter', {guifg = c.red}},
+    {'TSText', {guifg = c.green}},
+    {'TSEmphasis', {guifg = 'NONE', guibg = 'NONE', gui = 'bold'}},
+    -- {'TSUnderline', {guifg = 'NONE', guibg = 'NONE', gui = 'underline'}},
+    {'TSType', {guifg = c.blue}},
+    {'TSTypeBuiltin', {guifg = c.blue}},
+    {'TSURI', {guifg = c.blue, guibg = 'NONE', gui = 'underline'}},
+    {'TSVariable', {guifg = c.fg}},
+    {'TSVariableBuiltin', {guifg = c.orange}},
+
+    ---------- COC ----------
+
+    -- {'CocHoverRange', {guifg = 'NONE', guibg = 'NONE', gui = 'bold,underline'}},
+    {'CocErrorFloat', {link = 'ErrorFloat'}},
+    {'CocWarningFloat', {link = 'WarningFloat'}},
+    {'CocInfoFloat', {link = 'InfoFloat'}},
+    {'CocHintFloat', {link = 'HintFloat'}},
+    {'CocErrorHighlight', {link = 'ErrorText'}},
+    {'CocWarningHighlight', {link = 'WarningText'}},
+    {'CocInfoHighlight', {link = 'InfoText'}},
+    {'CocHintHighlight', {link = 'HintText'}},
+    {'CocHighlightText', {link = 'CurrentWord'}},
+    {'CocErrorSign', {link = 'RedSign'}},
+    {'CocWarningSign', {link = 'OrangeSign'}},
+    {'CocInfoSign', {link = 'BlueSign'}},
+    {'CocHintSign', {link = 'YellowSign'}},
+    {'CocWarningVirtualText', {guifg = c.grey}},
+    {'CocErrorVirtualText', {guifg = c.grey}},
+    {'CocInfoVirtualText', {guifg = c.grey}},
+    {'CocHintVirtualText', {guifg = c.grey}},
+    {'CocErrorLine', {link = 'ErrorLine'}},
+    {'CocWarningLine', {link = 'WarningLine'}},
+    {'CocInfoLine', {link = 'InfoLine'}},
+    {'CocHintLine', {link = 'HintLine'}},
+    {'CocCodeLens', {guifg = c.grey}},
+    {'HighlightedyankRegion', {link = 'Visual'}},
+    {'CocGitAddedSign', {link = 'GreenSign'}},
+    {'CocGitChangeRemovedSign', {link = 'PurpleSign'}},
+    {'CocGitChangedSign', {link = 'BlueSign'}},
+    {'CocGitRemovedSign', {link = 'RedSign'}},
+    {'CocGitTopRemovedSign', {link = 'RedSign'}},
+    {'CocExplorerBufferRoot', {guifg = c.red}},
+    {'CocExplorerBufferExpandIcon', {guifg = c.blue}},
+    {'CocExplorerBufferBufnr', {guifg = c.yellow}},
+    {'CocExplorerBufferModified', {guifg = c.yellow}},
+    {'CocExplorerBufferReadonly', {guifg = c.red}},
+    {'CocExplorerBufferBufname', {guifg = c.grey}},
+    {'CocExplorerBufferFullpath', {guifg = c.grey}},
+    {'CocExplorerFileRoot', {guifg = c.red}},
+    {'CocExplorerFileRootName', {guifg = c.green}},
+    {'CocExplorerFileExpandIcon', {guifg = c.blue}},
+    {'CocExplorerFileFullpath', {guifg = c.grey}},
+    {'CocExplorerFileDirectory', {guifg = c.green}},
+    {'CocExplorerFileGitStaged', {guifg = c.purple}},
+    {'CocExplorerFileGitUnstaged', {guifg = c.yellow}},
+    {'CocExplorerFileGitRootStaged', {guifg = c.purple}},
+    {'CocExplorerFileGitRootUnstaged', {guifg = c.yellow}},
+    {'CocExplorerGitPathChange', {guifg = c.fg}},
+    {'CocExplorerGitContentChange', {guifg = c.fg}},
+    {'CocExplorerGitRenamed', {guifg = c.purple}},
+    {'CocExplorerGitCopied', {guifg = c.fg}},
+    {'CocExplorerGitAdded', {guifg = c.green}},
+    {'CocExplorerGitUntracked', {guifg = c.blue}},
+    {'CocExplorerGitUnmodified', {guifg = c.fg}},
+    {'CocExplorerGitUnmerged', {guifg = c.orange}},
+    {'CocExplorerGitMixed', {guifg = c.fg}},
+    {'CocExplorerGitModified', {guifg = c.yellow}},
+    {'CocExplorerGitDeleted', {guifg = c.red}},
+    {'CocExplorerGitIgnored', {guifg = c.grey}},
+    {'CocExplorerFileSize', {guifg = c.blue}},
+    {'CocExplorerTimeAccessed', {guifg = c.purple}},
+    {'CocExplorerTimeCreated', {guifg = c.purple}},
+    {'CocExplorerTimeModified', {guifg = c.purple}},
+    {'CocExplorerFileRootName', {guifg = c.orange}},
+    {'CocExplorerBufferNameVisible', {guifg = c.green}},
+    {'CocExplorerIndentLine', {link = 'Conceal'}},
+    {'CocExplorerHelpDescription', {guifg = c.grey}},
+    {'CocExplorerHelpHint', {guifg = c.grey}},
+
+    ---------- NVIM LSPCONFIG ----------
+
+    {'LspDiagnosticsFloatingError', {guifg = c.red, guibg = 'NONE'}},
+    {'LspDiagnosticsFloatingWarning', {guifg = c.orange, guibg = 'NONE'}},
+    {'LspDiagnosticsFloatingInformation', {guifg = c.yellow, guibg = 'NONE'}},
+    {'LspDiagnosticsFloatingHint', {guifg = c.fg, guibg = 'NONE'}},
+    {'LspDiagnosticsDefaultError', {link = 'ErrorText'}},
+    {'LspDiagnosticsDefaultWarning', {link = 'WarningText'}},
+    {'LspDiagnosticsDefaultInformation', {link = 'InfoText'}},
+    {'LspDiagnosticsDefaultHint', {link = 'HintText'}},
+    {'LspDiagnosticsVirtualTextError', {guifg = c.red}},
+    {'LspDiagnosticsVirtualTextWarning', {guifg = c.orange}},
+    {'LspDiagnosticsVirtualTextInformation', {guifg = c.yellow}},
+    {'LspDiagnosticsVirtualTextHint', {guifg = c.yellow}},
+    {'LspDiagnosticsUnderlineError', {link = 'ErrorText'}},
+    {'LspDiagnosticsUnderlineWarning', {link = 'WarningText'}},
+    {'LspDiagnosticsUnderlineInformation', {link = 'InfoText'}},
+    {'LspDiagnosticsUnderlineHint', {link = 'HintText'}},
+    {'LspDiagnosticsSignError', {link = 'RedSign'}},
+    {'LspDiagnosticsSignWarning', {link = 'OrangeSign'}},
+    {'LspDiagnosticsSignInformation', {link = 'BlueSign'}},
+    {'LspDiagnosticsSignHint', {link = 'YellowSign'}},
+    {'LspReferenceText', {link = 'CurrentWord'}},
+    {'LspReferenceRead', {link = 'CurrentWord'}},
+    {'LspReferenceWrite', {link = 'CurrentWord'}},
+
+    ---------- LSPSAGA ----------
+
+    {'LspSagaDiagnosticBorder', {guifg = c.border}},
+    {'LspSagaDiagnosticTruncateLine', {guifg = c.border}},
+    {'LspSagaDiagnosticHeader', {guifg = c.fg}},
+    {'LspSagaRenameBorder', {guifg = c.border}},
+    {'LspSagaHoverBorder', {guifg = c.border}},
+    {'LspSagaCodeActionBorder', {guifg = c.border}},
+    {'LspSagaSignatureHelpBorder', {guifg = c.border}},
+
+    ---------- GITSIGNS ----------
+
+    {'GitGutterAdd', {link = 'GreenSign'}},
+    {'GitGutterChange', {link = 'BlueSign'}},
+    {'GitGutterDelete', {link = 'RedSign'}},
+    {'GitGutterChangeDelete', {link = 'PurpleSign'}},
+
+    ---------- MULTIPLE CURSORS ----------
+
+    {'multiple_cursors_cursor', {link = 'Cursor'}},
+    {'multiple_cursors_visual', {link = 'Visual'}},
+
+    ---------- VIM PLUG ----------
+
+    {'plug1', {guifg = c.red, guibg = 'NONE', gui = 'bold'}},
+    {'plugNumber', {guifg = c.yellow, guibg = 'NONE', gui = 'bold'}},
+    {'plug2', {guifg = c.blue}},
+    {'plugBracket', {guifg = c.blue}},
+    {'plugName', {guifg = c.green}},
+    {'plugDash', {guifg = c.red}},
+    {'plugNotLoaded', {guifg = c.grey}},
+    {'plugH2', {guifg = c.purple}},
+    {'plugMessage', {guifg = c.purple}},
+    {'plugError', {guifg = c.red}},
+    {'plugRelDate', {guifg = c.grey}},
+    {'plugStar', {guifg = c.purple}},
+    {'plugUpdate', {guifg = c.blue}},
+    {'plugDeleted', {guifg = c.grey}},
+    {'plugEdge', {guifg = c.purple}},
+
+    ---------- TEX ----------
+
+    {'texStatement', {guifg = c.blue}},
+    {'texOnlyMath', {guifg = c.grey}},
+    {'texDefName', {guifg = c.yellow}},
+    {'texNewCmd', {guifg = c.orange}},
+    {'texCmdName', {guifg = c.blue}},
+    {'texBeginEnd', {guifg = c.red}},
+    {'texBeginEndName', {guifg = c.green}},
+    {'texDocType', {guifg = c.red}},
+    {'texDocTypeArgs', {guifg = c.orange}},
+    {'texInputFile', {guifg = c.green}},
+    {'texFileArg', {guifg = c.green}},
+    {'texCmd', {guifg = c.blue}},
+    {'texCmdPackage', {guifg = c.blue}},
+    {'texCmdDef', {guifg = c.red}},
+    {'texDefArgName', {guifg = c.yellow}},
+    {'texCmdNewcmd', {guifg = c.red}},
+    {'texCmdClass', {guifg = c.red}},
+    {'texCmdTitle', {guifg = c.red}},
+    {'texCmdAuthor', {guifg = c.red}},
+    {'texCmdEnv', {guifg = c.red}},
+    {'texCmdPart', {guifg = c.red}},
+    {'texEnvArgName', {guifg = c.green}},
+
+    ---------- HTML ----------
+
+    {'htmlH1', {guifg = c.red, guibg = 'NONE', gui = 'bold'}},
+    {'htmlH2', {guifg = c.orange, guibg = 'NONE', gui = 'bold'}},
+    {'htmlH3', {guifg = c.yellow, guibg = 'NONE', gui = 'bold'}},
+    {'htmlH4', {guifg = c.green, guibg = 'NONE', gui = 'bold'}},
+    {'htmlH5', {guifg = c.blue, guibg = 'NONE', gui = 'bold'}},
+    {'htmlH6', {guifg = c.purple, guibg = 'NONE', gui = 'bold'}},
+    {'htmlLink', {guifg = 'NONE', guibg = 'NONE', gui = 'underline'}},
+    {'htmlBold', {guifg = 'NONE', guibg = 'NONE', gui = 'bold'}},
+    {'htmlBoldUnderline', {guifg = 'NONE', guibg = 'NONE', gui = 'bold,underline'}},
+    {'htmlBoldItalic', {guifg = 'NONE', guibg = 'NONE', gui = 'bold,italic'}},
+    {'htmlBoldUnderlineItalic', {guifg = 'NONE', guibg = 'NONE', gui = 'bold,underline,italic'}},
+    {'htmlUnderline', {guifg = 'NONE', guibg = 'NONE', gui = 'underline'}},
+    {'htmlUnderlineItalic', {guifg = 'NONE', guibg = 'NONE', gui = 'underline,italic'}},
+    {'htmlItalic', {guifg = 'NONE', guibg = 'NONE', gui = 'italic'}},
+
+    {'htmlTag', {guifg = c.green}},
+    {'htmlEndTag', {guifg = c.blue}},
+    {'htmlTagN', {guifg = c.red}},
+    {'htmlTagName', {guifg = c.red}},
+    {'htmlArg', {guifg = c.blue}},
+    {'htmlScriptTag', {guifg = c.purple}},
+    {'htmlSpecialTagName', {guifg = c.red}},
+    {'htmlString', {guifg = c.green}},
+
+    ---------- CSS ----------
+
+    {'cssStringQ', {guifg = c.green}},
+    {'cssStringQQ', {guifg = c.green}},
+    {'cssAttrComma', {guifg = c.grey}},
+    {'cssBraces', {guifg = c.grey}},
+    {'cssTagName', {guifg = c.purple}},
+    {'cssClassNameDot', {guifg = c.grey}},
+    {'cssClassName', {guifg = c.red}},
+    {'cssFunctionName', {guifg = c.orange}},
+    {'cssAttr', {guifg = c.green}},
+    {'cssCommonAttr', {guifg = c.green}},
+    {'cssProp', {guifg = c.blue}},
+    {'cssPseudoClassId', {guifg = c.yellow}},
+    {'cssPseudoClassFn', {guifg = c.green}},
+    {'cssPseudoClass', {guifg = c.yellow}},
+    {'cssImportant', {guifg = c.red}},
+    {'cssSelectorOp', {guifg = c.orange}},
+    {'cssSelectorOp2', {guifg = c.orange}},
+    {'cssColor', {guifg = c.green}},
+    {'cssUnitDecorators', {guifg = c.green}},
+    {'cssValueLength', {guifg = c.green}},
+    {'cssValueInteger', {guifg = c.green}},
+    {'cssValueNumber', {guifg = c.green}},
+    {'cssValueAngle', {guifg = c.green}},
+    {'cssValueTime', {guifg = c.green}},
+    {'cssValueFrequency', {guifg = c.green}},
+    {'cssVendor', {guifg = c.grey}},
+    {'cssNoise', {guifg = c.grey}},
+
+    ---------- LESS ----------
+
+    {'lessMixinChar', {guifg = c.grey}},
+    {'lessClass', {guifg = c.red}},
+    {'lessFunction', {guifg = c.orange}},
+
+    ---------- JAVASCRIPT / JSX ----------
+
+    {'javaScriptNull', {guifg = c.orange}},
+    {'javaScriptIdentifier', {guifg = c.blue}},
+    {'javaScriptParens', {guifg = c.fg}},
+    {'javaScriptBraces', {guifg = c.fg}},
+    {'javaScriptNumber', {guifg = c.purple}},
+    {'javaScriptLabel', {guifg = c.red}},
+    {'javaScriptGlobal', {guifg = c.blue}},
+    {'javaScriptMessage', {guifg = c.blue}},
+
+    {'jsNoise', {guifg = c.fg}},
+    {'Noise', {guifg = c.fg}},
+    {'jsParens', {guifg = c.fg}},
+    {'jsBrackets', {guifg = c.fg}},
+    {'jsObjectBraces', {guifg = c.fg}},
+    {'jsThis', {guifg = c.blue}},
+    {'jsUndefined', {guifg = c.orange}},
+    {'jsNull', {guifg = c.orange}},
+    {'jsNan', {guifg = c.orange}},
+    {'jsSuper', {guifg = c.orange}},
+    {'jsPrototype', {guifg = c.orange}},
+    {'jsFunction', {guifg = c.red}},
+    {'jsGlobalNodeObjects', {guifg = c.blue}},
+    {'jsGlobalObjects', {guifg = c.blue}},
+    {'jsArrowFunction', {guifg = c.red}},
+    {'jsArrowFuncArgs', {guifg = c.fg}},
+    {'jsFuncArgs', {guifg = c.fg}},
+    {'jsObjectProp', {guifg = c.fg}},
+    {'jsVariableDef', {guifg = c.fg}},
+    {'jsObjectKey', {guifg = c.fg}},
+    {'jsParen', {guifg = c.fg}},
+    {'jsParenIfElse', {guifg = c.fg}},
+    {'jsParenRepeat', {guifg = c.fg}},
+    {'jsParenSwitch', {guifg = c.fg}},
+    {'jsParenCatch', {guifg = c.fg}},
+    {'jsBracket', {guifg = c.fg}},
+    {'jsObjectValue', {guifg = c.fg}},
+    {'jsDestructuringBlock', {guifg = c.fg}},
+    {'jsBlockLabel', {guifg = c.purple}},
+    {'jsFunctionKey', {guifg = c.green}},
+    {'jsClassDefinition', {guifg = c.blue}},
+    {'jsDot', {guifg = c.grey}},
+    {'jsSpreadExpression', {guifg = c.purple}},
+    {'jsSpreadOperator', {guifg = c.green}},
+    {'jsModuleKeyword', {guifg = c.blue}},
+    {'jsTemplateExpression', {guifg = c.purple}},
+    {'jsTemplateBraces', {guifg = c.purple}},
+    {'jsClassMethodType', {guifg = c.blue}},
+    {'jsExceptions', {guifg = c.blue}},
+
+    {'javascriptOpSymbol', {guifg = c.red}},
+    {'javascriptOpSymbols', {guifg = c.red}},
+    {'javascriptIdentifierName', {guifg = c.fg}},
+    {'javascriptVariable', {guifg = c.blue}},
+    {'javascriptObjectLabel', {guifg = c.fg}},
+    {'javascriptPropertyNameString', {guifg = c.fg}},
+    {'javascriptFuncArg', {guifg = c.fg}},
+    {'javascriptObjectLiteral', {guifg = c.green}},
+    {'javascriptIdentifier', {guifg = c.orange}},
+    {'javascriptArrowFunc', {guifg = c.red}},
+    {'javascriptTemplate', {guifg = c.purple}},
+    {'javascriptTemplateSubstitution', {guifg = c.purple}},
+    {'javascriptTemplateSB', {guifg = c.purple}},
+    {'javascriptNodeGlobal', {guifg = c.blue}},
+    {'javascriptDocTags', {guifg = c.red}},
+    {'javascriptDocNotation', {guifg = c.blue}},
+    {'javascriptClassSuper', {guifg = c.orange}},
+    {'javascriptClassName', {guifg = c.blue}},
+    {'javascriptClassSuperName', {guifg = c.blue}},
+    {'javascriptOperator', {guifg = c.red}},
+    {'javascriptBrackets', {guifg = c.fg}},
+    {'javascriptBraces', {guifg = c.fg}},
+    {'javascriptLabel', {guifg = c.purple}},
+    {'javascriptEndColons', {guifg = c.grey}},
+    {'javascriptObjectLabelColon', {guifg = c.grey}},
+    {'javascriptDotNotation', {guifg = c.grey}},
+    {'javascriptGlobalArrayDot', {guifg = c.grey}},
+    {'javascriptGlobalBigIntDot', {guifg = c.grey}},
+    {'javascriptGlobalDateDot', {guifg = c.grey}},
+    {'javascriptGlobalJSONDot', {guifg = c.grey}},
+    {'javascriptGlobalMathDot', {guifg = c.grey}},
+    {'javascriptGlobalNumberDot', {guifg = c.grey}},
+    {'javascriptGlobalObjectDot', {guifg = c.grey}},
+    {'javascriptGlobalPromiseDot', {guifg = c.grey}},
+    {'javascriptGlobalRegExpDot', {guifg = c.grey}},
+    {'javascriptGlobalStringDot', {guifg = c.grey}},
+    {'javascriptGlobalSymbolDot', {guifg = c.grey}},
+    {'javascriptGlobalURLDot', {guifg = c.grey}},
+    {'javascriptMethod', {guifg = c.green}},
+    {'javascriptMethodName', {guifg = c.green}},
+    {'javascriptObjectMethodName', {guifg = c.green}},
+    {'javascriptGlobalMethod', {guifg = c.green}},
+    {'javascriptDOMStorageMethod', {guifg = c.green}},
+    {'javascriptFileMethod', {guifg = c.green}},
+    {'javascriptFileReaderMethod', {guifg = c.green}},
+    {'javascriptFileListMethod', {guifg = c.green}},
+    {'javascriptBlobMethod', {guifg = c.green}},
+    {'javascriptURLStaticMethod', {guifg = c.green}},
+    {'javascriptNumberStaticMethod', {guifg = c.green}},
+    {'javascriptNumberMethod', {guifg = c.green}},
+    {'javascriptDOMNodeMethod', {guifg = c.green}},
+    {'javascriptES6BigIntStaticMethod', {guifg = c.green}},
+    {'javascriptBOMWindowMethod', {guifg = c.green}},
+    {'javascriptHeadersMethod', {guifg = c.green}},
+    {'javascriptRequestMethod', {guifg = c.green}},
+    {'javascriptResponseMethod', {guifg = c.green}},
+    {'javascriptES6SetMethod', {guifg = c.green}},
+    {'javascriptReflectMethod', {guifg = c.green}},
+    {'javascriptPaymentMethod', {guifg = c.green}},
+    {'javascriptPaymentResponseMethod', {guifg = c.green}},
+    {'javascriptTypedArrayStaticMethod', {guifg = c.green}},
+    {'javascriptGeolocationMethod', {guifg = c.green}},
+    {'javascriptES6MapMethod', {guifg = c.green}},
+    {'javascriptServiceWorkerMethod', {guifg = c.green}},
+    {'javascriptCacheMethod', {guifg = c.green}},
+    {'javascriptFunctionMethod', {guifg = c.green}},
+    {'javascriptXHRMethod', {guifg = c.green}},
+    {'javascriptBOMNavigatorMethod', {guifg = c.green}},
+    {'javascriptServiceWorkerMethod', {guifg = c.green}},
+    {'javascriptDOMEventTargetMethod', {guifg = c.green}},
+    {'javascriptDOMEventMethod', {guifg = c.green}},
+    {'javascriptIntlMethod', {guifg = c.green}},
+    {'javascriptDOMDocMethod', {guifg = c.green}},
+    {'javascriptStringStaticMethod', {guifg = c.green}},
+    {'javascriptStringMethod', {guifg = c.green}},
+    {'javascriptSymbolStaticMethod', {guifg = c.green}},
+    {'javascriptRegExpMethod', {guifg = c.green}},
+    {'javascriptObjectStaticMethod', {guifg = c.green}},
+    {'javascriptObjectMethod', {guifg = c.green}},
+    {'javascriptBOMLocationMethod', {guifg = c.green}},
+    {'javascriptJSONStaticMethod', {guifg = c.green}},
+    {'javascriptGeneratorMethod', {guifg = c.green}},
+    {'javascriptEncodingMethod', {guifg = c.green}},
+    {'javascriptPromiseStaticMethod', {guifg = c.green}},
+    {'javascriptPromiseMethod', {guifg = c.green}},
+    {'javascriptBOMHistoryMethod', {guifg = c.green}},
+    {'javascriptDOMFormMethod', {guifg = c.green}},
+    {'javascriptClipboardMethod', {guifg = c.green}},
+    {'javascriptTypedArrayStaticMethod', {guifg = c.green}},
+    {'javascriptBroadcastMethod', {guifg = c.green}},
+    {'javascriptDateStaticMethod', {guifg = c.green}},
+    {'javascriptDateMethod', {guifg = c.green}},
+    {'javascriptConsoleMethod', {guifg = c.green}},
+    {'javascriptArrayStaticMethod', {guifg = c.green}},
+    {'javascriptArrayMethod', {guifg = c.green}},
+    {'javascriptMathStaticMethod', {guifg = c.green}},
+    {'javascriptSubtleCryptoMethod', {guifg = c.green}},
+    {'javascriptCryptoMethod', {guifg = c.green}},
+    {'javascriptProp', {guifg = c.fg}},
+    {'javascriptBOMWindowProp', {guifg = c.fg}},
+    {'javascriptDOMStorageProp', {guifg = c.fg}},
+    {'javascriptFileReaderProp', {guifg = c.fg}},
+    {'javascriptURLUtilsProp', {guifg = c.fg}},
+    {'javascriptNumberStaticProp', {guifg = c.fg}},
+    {'javascriptDOMNodeProp', {guifg = c.fg}},
+    {'javascriptRequestProp', {guifg = c.fg}},
+    {'javascriptResponseProp', {guifg = c.fg}},
+    {'javascriptES6SetProp', {guifg = c.fg}},
+    {'javascriptPaymentProp', {guifg = c.fg}},
+    {'javascriptPaymentResponseProp', {guifg = c.fg}},
+    {'javascriptPaymentAddressProp', {guifg = c.fg}},
+    {'javascriptPaymentShippingOptionProp', {guifg = c.fg}},
+    {'javascriptTypedArrayStaticProp', {guifg = c.fg}},
+    {'javascriptServiceWorkerProp', {guifg = c.fg}},
+    {'javascriptES6MapProp', {guifg = c.fg}},
+    {'javascriptRegExpStaticProp', {guifg = c.fg}},
+    {'javascriptRegExpProp', {guifg = c.fg}},
+    {'javascriptXHRProp', {guifg = c.fg}},
+    {'javascriptBOMNavigatorProp', {guifg = c.green}},
+    {'javascriptDOMEventProp', {guifg = c.fg}},
+    {'javascriptBOMNetworkProp', {guifg = c.fg}},
+    {'javascriptDOMDocProp', {guifg = c.fg}},
+    {'javascriptSymbolStaticProp', {guifg = c.fg}},
+    {'javascriptSymbolProp', {guifg = c.fg}},
+    {'javascriptBOMLocationProp', {guifg = c.fg}},
+    {'javascriptEncodingProp', {guifg = c.fg}},
+    {'javascriptCryptoProp', {guifg = c.fg}},
+    {'javascriptBOMHistoryProp', {guifg = c.fg}},
+    {'javascriptDOMFormProp', {guifg = c.fg}},
+    {'javascriptDataViewProp', {guifg = c.fg}},
+    {'javascriptBroadcastProp', {guifg = c.fg}},
+    {'javascriptMathStaticProp', {guifg = c.fg}},
+
+    {'jsxTagName', {guifg = c.red}},
+    {'jsxOpenPunct', {guifg = c.green}},
+    {'jsxClosePunct', {guifg = c.blue}},
+    {'jsxEscapeJs', {guifg = c.purple}},
+    {'jsxAttrib', {guifg = c.blue}},
+
+    ---------- TYPESCRIPT / TSX ----------
+
+    {'typescriptStorageClass', {guifg = c.red}},
+    {'typescriptEndColons', {guifg = c.fg}},
+    {'typescriptSource', {guifg = c.blue}},
+    {'typescriptMessage', {guifg = c.green}},
+    {'typescriptGlobalObjects', {guifg = c.blue}},
+    {'typescriptInterpolation', {guifg = c.purple}},
+    {'typescriptInterpolationDelimiter', {guifg = c.purple}},
+    {'typescriptBraces', {guifg = c.fg}},
+    {'typescriptParens', {guifg = c.fg}},
+
+    {'typescriptMethodAccessor', {guifg = c.red}},
+    {'typescriptVariable', {guifg = c.red}},
+    {'typescriptVariableDeclaration', {guifg = c.fg}},
+    {'typescriptTypeReference', {guifg = c.blue}},
+    {'typescriptBraces', {guifg = c.fg}},
+    {'typescriptEnumKeyword', {guifg = c.red}},
+    {'typescriptEnum', {guifg = c.blue}},
+    {'typescriptIdentifierName', {guifg = c.fg}},
+    {'typescriptProp', {guifg = c.fg}},
+    {'typescriptCall', {guifg = c.fg}},
+    {'typescriptInterfaceName', {guifg = c.blue}},
+    {'typescriptEndColons', {guifg = c.fg}},
+    {'typescriptMember', {guifg = c.fg}},
+    {'typescriptMemberOptionality', {guifg = c.red}},
+    {'typescriptObjectLabel', {guifg = c.fg}},
+    {'typescriptDefaultParam', {guifg = c.fg}},
+    {'typescriptArrowFunc', {guifg = c.red}},
+    {'typescriptAbstract', {guifg = c.red}},
+    {'typescriptObjectColon', {guifg = c.grey}},
+    {'typescriptTypeAnnotation', {guifg = c.grey}},
+    {'typescriptAssign', {guifg = c.red}},
+    {'typescriptBinaryOp', {guifg = c.red}},
+    {'typescriptUnaryOp', {guifg = c.red}},
+    {'typescriptFuncComma', {guifg = c.fg}},
+    {'typescriptClassName', {guifg = c.blue}},
+    {'typescriptClassHeritage', {guifg = c.blue}},
+    {'typescriptInterfaceHeritage', {guifg = c.blue}},
+    {'typescriptIdentifier', {guifg = c.orange}},
+    {'typescriptGlobal', {guifg = c.blue}},
+    {'typescriptOperator', {guifg = c.red}},
+    {'typescriptNodeGlobal', {guifg = c.blue}},
+    {'typescriptExport', {guifg = c.red}},
+    {'typescriptImport', {guifg = c.red}},
+    {'typescriptTypeParameter', {guifg = c.blue}},
+    {'typescriptReadonlyModifier', {guifg = c.red}},
+    {'typescriptAccessibilityModifier', {guifg = c.red}},
+    {'typescriptAmbientDeclaration', {guifg = c.red}},
+    {'typescriptTemplateSubstitution', {guifg = c.purple}},
+    {'typescriptTemplateSB', {guifg = c.purple}},
+    {'typescriptExceptions', {guifg = c.red}},
+    {'typescriptCastKeyword', {guifg = c.red}},
+    {'typescriptOptionalMark', {guifg = c.red}},
+    {'typescriptNull', {guifg = c.orange}},
+    {'typescriptMappedIn', {guifg = c.red}},
+    {'typescriptFuncTypeArrow', {guifg = c.red}},
+    {'typescriptTernaryOp', {guifg = c.red}},
+    {'typescriptParenExp', {guifg = c.fg}},
+    {'typescriptIndexExpr', {guifg = c.fg}},
+    {'typescriptDotNotation', {guifg = c.grey}},
+    {'typescriptGlobalNumberDot', {guifg = c.grey}},
+    {'typescriptGlobalStringDot', {guifg = c.grey}},
+    {'typescriptGlobalArrayDot', {guifg = c.grey}},
+    {'typescriptGlobalObjectDot', {guifg = c.grey}},
+    {'typescriptGlobalSymbolDot', {guifg = c.grey}},
+    {'typescriptGlobalMathDot', {guifg = c.grey}},
+    {'typescriptGlobalDateDot', {guifg = c.grey}},
+    {'typescriptGlobalJSONDot', {guifg = c.grey}},
+    {'typescriptGlobalRegExpDot', {guifg = c.grey}},
+    {'typescriptGlobalPromiseDot', {guifg = c.grey}},
+    {'typescriptGlobalURLDot', {guifg = c.grey}},
+    {'typescriptGlobalMethod', {guifg = c.green}},
+    {'typescriptDOMStorageMethod', {guifg = c.green}},
+    {'typescriptFileMethod', {guifg = c.green}},
+    {'typescriptFileReaderMethod', {guifg = c.green}},
+    {'typescriptFileListMethod', {guifg = c.green}},
+    {'typescriptBlobMethod', {guifg = c.green}},
+    {'typescriptURLStaticMethod', {guifg = c.green}},
+    {'typescriptNumberStaticMethod', {guifg = c.green}},
+    {'typescriptNumberMethod', {guifg = c.green}},
+    {'typescriptDOMNodeMethod', {guifg = c.green}},
+    {'typescriptPaymentMethod', {guifg = c.green}},
+    {'typescriptPaymentResponseMethod', {guifg = c.green}},
+    {'typescriptHeadersMethod', {guifg = c.green}},
+    {'typescriptRequestMethod', {guifg = c.green}},
+    {'typescriptResponseMethod', {guifg = c.green}},
+    {'typescriptES6SetMethod', {guifg = c.green}},
+    {'typescriptReflectMethod', {guifg = c.green}},
+    {'typescriptBOMWindowMethod', {guifg = c.green}},
+    {'typescriptGeolocationMethod', {guifg = c.green}},
+    {'typescriptServiceWorkerMethod', {guifg = c.green}},
+    {'typescriptCacheMethod', {guifg = c.green}},
+    {'typescriptES6MapMethod', {guifg = c.green}},
+    {'typescriptFunctionMethod', {guifg = c.green}},
+    {'typescriptRegExpMethod', {guifg = c.green}},
+    {'typescriptXHRMethod', {guifg = c.green}},
+    {'typescriptBOMNavigatorMethod', {guifg = c.green}},
+    {'typescriptServiceWorkerMethod', {guifg = c.green}},
+    {'typescriptIntlMethod', {guifg = c.green}},
+    {'typescriptDOMEventTargetMethod', {guifg = c.green}},
+    {'typescriptDOMEventMethod', {guifg = c.green}},
+    {'typescriptDOMDocMethod', {guifg = c.green}},
+    {'typescriptStringStaticMethod', {guifg = c.green}},
+    {'typescriptStringMethod', {guifg = c.green}},
+    {'typescriptSymbolStaticMethod', {guifg = c.green}},
+    {'typescriptObjectStaticMethod', {guifg = c.green}},
+    {'typescriptObjectMethod', {guifg = c.green}},
+    {'typescriptJSONStaticMethod', {guifg = c.green}},
+    {'typescriptEncodingMethod', {guifg = c.green}},
+    {'typescriptBOMLocationMethod', {guifg = c.green}},
+    {'typescriptPromiseStaticMethod', {guifg = c.green}},
+    {'typescriptPromiseMethod', {guifg = c.green}},
+    {'typescriptSubtleCryptoMethod', {guifg = c.green}},
+    {'typescriptCryptoMethod', {guifg = c.green}},
+    {'typescriptBOMHistoryMethod', {guifg = c.green}},
+    {'typescriptDOMFormMethod', {guifg = c.green}},
+    {'typescriptConsoleMethod', {guifg = c.green}},
+    {'typescriptDateStaticMethod', {guifg = c.green}},
+    {'typescriptDateMethod', {guifg = c.green}},
+    {'typescriptArrayStaticMethod', {guifg = c.green}},
+    {'typescriptArrayMethod', {guifg = c.green}},
+    {'typescriptMathStaticMethod', {guifg = c.green}},
+    {'typescriptStringProperty', {guifg = c.fg}},
+    {'typescriptDOMStorageProp', {guifg = c.fg}},
+    {'typescriptFileReaderProp', {guifg = c.fg}},
+    {'typescriptURLUtilsProp', {guifg = c.fg}},
+    {'typescriptNumberStaticProp', {guifg = c.fg}},
+    {'typescriptDOMNodeProp', {guifg = c.fg}},
+    {'typescriptBOMWindowProp', {guifg = c.fg}},
+    {'typescriptRequestProp', {guifg = c.fg}},
+    {'typescriptResponseProp', {guifg = c.fg}},
+    {'typescriptPaymentProp', {guifg = c.fg}},
+    {'typescriptPaymentResponseProp', {guifg = c.fg}},
+    {'typescriptPaymentAddressProp', {guifg = c.fg}},
+    {'typescriptPaymentShippingOptionProp', {guifg = c.fg}},
+    {'typescriptES6SetProp', {guifg = c.fg}},
+    {'typescriptServiceWorkerProp', {guifg = c.fg}},
+    {'typescriptES6MapProp', {guifg = c.fg}},
+    {'typescriptRegExpStaticProp', {guifg = c.fg}},
+    {'typescriptRegExpProp', {guifg = c.fg}},
+    {'typescriptBOMNavigatorProp', {guifg = c.green}},
+    {'typescriptXHRProp', {guifg = c.fg}},
+    {'typescriptDOMEventProp', {guifg = c.fg}},
+    {'typescriptDOMDocProp', {guifg = c.fg}},
+    {'typescriptBOMNetworkProp', {guifg = c.fg}},
+    {'typescriptSymbolStaticProp', {guifg = c.fg}},
+    {'typescriptEncodingProp', {guifg = c.fg}},
+    {'typescriptBOMLocationProp', {guifg = c.fg}},
+    {'typescriptCryptoProp', {guifg = c.fg}},
+    {'typescriptDOMFormProp', {guifg = c.fg}},
+    {'typescriptBOMHistoryProp', {guifg = c.fg}},
+    {'typescriptMathStaticProp', {guifg = c.fg}},
+
+    ---------- C++ ----------
+
+    {'cLabel', {guifg = c.red}},
+    {'cppSTLnamespace', {guifg = c.blue}},
+    {'cppSTLtype', {guifg = c.blue}},
+    {'cppAccess', {guifg = c.red}},
+    {'cppStructure', {guifg = c.red}},
+    {'cppSTLios', {guifg = c.blue}},
+    {'cppSTLiterator', {guifg = c.blue}},
+    {'cppSTLexception', {guifg = c.red}},
+
+    ---------- C# ----------
+
+    {'csUnspecifiedStatement', {guifg = c.red}},
+    {'csStorage', {guifg = c.red}},
+    {'csClass', {guifg = c.red}},
+    {'csNewType', {guifg = c.blue}},
+    {'csContextualStatement', {guifg = c.red}},
+    {'csInterpolationDelimiter', {guifg = c.purple}},
+    {'csInterpolation', {guifg = c.purple}},
+    {'csEndColon', {guifg = c.fg}},
+
+    ---------- PYTHON ----------
+
+    {'pythonBuiltin', {guifg = c.blue}},
+    {'pythonExceptions', {guifg = c.red}},
+    {'pythonDecoratorName', {guifg = c.orange}},
+    {'pythonExClass', {guifg = c.blue}},
+    {'pythonBuiltinType', {guifg = c.blue}},
+    {'pythonBuiltinObj', {guifg = c.orange}},
+    {'pythonDottedName', {guifg = c.orange}},
+    {'pythonBuiltinFunc', {guifg = c.green}},
+    {'pythonFunction', {guifg = c.green}},
+    {'pythonDecorator', {guifg = c.orange}},
+    {'pythonInclude', {link = 'Include'}},
+    {'pythonImport', {link = 'PreProc'}},
+    {'pythonOperator', {guifg = c.red}},
+    {'pythonConditional', {guifg = c.red}},
+    {'pythonRepeat', {guifg = c.red}},
+    {'pythonException', {guifg = c.red}},
+    {'pythonNone', {guifg = c.orange}},
+    {'pythonCoding', {guifg = c.grey}},
+    {'pythonDot', {guifg = c.grey}},
+
+    ---------- LUA ----------
+
+    {'luaFunc', {guifg = c.green}},
+    {'luaFunction', {guifg = c.red}},
+    {'luaTable', {guifg = c.fg}},
+    {'luaIn', {guifg = c.red}},
+    {'luaFuncCall', {guifg = c.green}},
+    {'luaLocal', {guifg = c.red}},
+    {'luaSpecialValue', {guifg = c.green}},
+    {'luaBraces', {guifg = c.fg}},
+    {'luaBuiltIn', {guifg = c.blue}},
+    {'luaNoise', {guifg = c.grey}},
+    {'luaLabel', {guifg = c.purple}},
+    {'luaFuncTable', {guifg = c.blue}},
+    {'luaFuncArgName', {guifg = c.fg}},
+    {'luaEllipsis', {guifg = c.red}},
+    {'luaDocTag', {guifg = c.green}},
+
+    ---------- JAVA ----------
+
+    {'javaClassDecl', {guifg = c.red}},
+    {'javaMethodDecl', {guifg = c.red}},
+    {'javaVarArg', {guifg = c.fg}},
+    {'javaAnnotation', {guifg = c.purple}},
+    {'javaUserLabel', {guifg = c.purple}},
+    {'javaTypedef', {guifg = c.orange}},
+    {'javaParen', {guifg = c.fg}},
+    {'javaParen1', {guifg = c.fg}},
+    {'javaParen2', {guifg = c.fg}},
+    {'javaParen3', {guifg = c.fg}},
+    {'javaParen4', {guifg = c.fg}},
+    {'javaParen5', {guifg = c.fg}},
+
+    ---------- KOTLIN ----------
+
+    {'ktSimpleInterpolation', {guifg = c.purple}},
+    {'ktComplexInterpolation', {guifg = c.purple}},
+    {'ktComplexInterpolationBrace', {guifg = c.purple}},
+    {'ktStructure', {guifg = c.red}},
+    {'ktKeyword', {guifg = c.orange}},
+
+    ---------- RUST ----------
+
+    {'rustStructure', {guifg = c.red}},
+    {'rustIdentifier', {guifg = c.orange}},
+    {'rustModPath', {guifg = c.blue}},
+    {'rustModPathSep', {guifg = c.grey}},
+    {'rustSelf', {guifg = c.orange}},
+    {'rustSuper', {guifg = c.orange}},
+    {'rustDeriveTrait', {guifg = c.purple}},
+    {'rustEnumVariant', {guifg = c.purple}},
+    {'rustMacroVariable', {guifg = c.orange}},
+    {'rustAssert', {guifg = c.green}},
+    {'rustPanic', {guifg = c.green}},
+    {'rustPubScopeCrate', {guifg = c.blue}},
+    {'rustAttribute', {guifg = c.purple}},
+
+    ---------- SWIFT ----------
+
+    {'swiftInterpolatedWrapper', {guifg = c.purple}},
+    {'swiftInterpolatedString', {guifg = c.purple}},
+    {'swiftProperty', {guifg = c.fg}},
+    {'swiftTypeDeclaration', {guifg = c.red}},
+    {'swiftClosureArgument', {guifg = c.orange}},
+    {'swiftStructure', {guifg = c.red}},
+
+    ---------- ZSH ----------
+
+    {'shRange', {guifg = c.fg}},
+    {'shOption', {guifg = c.purple}},
+    {'shQuote', {guifg = c.yellow}},
+    {'shVariable', {guifg = c.blue}},
+    {'shDerefSimple', {guifg = c.blue}},
+    {'shDerefVar', {guifg = c.blue}},
+    {'shDerefSpecial', {guifg = c.blue}},
+    {'shDerefOff', {guifg = c.blue}},
+    {'shVarAssign', {guifg = c.red}},
+    {'shFunctionOne', {guifg = c.green}},
+    {'shFunctionKey', {guifg = c.red}},
+
+    {'zshOption', {guifg = c.blue}},
+    {'zshSubst', {guifg = c.orange}},
+    {'zshFunction', {guifg = c.green}},
+
+    ---------- VIM ----------
+
+    {'vimnotfunc', {guifg = c.red}},
+    {'vimcommand', {guifg = c.red}},
+    {'vimCommentTitle', {guifg = c.grey, guibg = 'NONE', gui = 'bold'}},
+    {'vimLet', {guifg = c.red}},
+    {'vimFunction', {guifg = c.green}},
+    {'vimIsCommand', {guifg = c.fg}},
+    {'vimUserFunc', {guifg = c.green}},
+    {'vimFuncName', {guifg = c.green}},
+    {'vimMap', {guifg = c.blue}},
+    {'vimNotation', {guifg = c.purple}},
+    {'vimMapLhs', {guifg = c.green}},
+    {'vimMapRhs', {guifg = c.green}},
+    {'vimSetEqual', {guifg = c.blue}},
+    {'vimSetSep', {guifg = c.fg}},
+    {'vimOption', {guifg = c.blue}},
+    {'vimUserAttrbKey', {guifg = c.blue}},
+    {'vimUserAttrb', {guifg = c.green}},
+    {'vimAutoCmdSfxList', {guifg = c.orange}},
+    {'vimSynType', {guifg = c.orange}},
+    {'vimHiBang', {guifg = c.orange}},
+    {'vimSet', {guifg = c.blue}},
+    {'vimSetSep', {guifg = c.grey}},
+
+    ---------- MAKE ----------
+
+    {'makeIdent', {guifg = c.purple}},
+    {'makeSpecTarget', {guifg = c.blue}},
+    {'makeTarget', {guifg = c.orange}},
+    {'makeCommands', {guifg = c.red}},
+
+    ---------- MARKDOWN ----------
+
+    {'markdownH1', {guifg = c.red, guibg = 'NONE', gui = 'bold'}},
+    {'markdownH2', {guifg = c.orange, guibg = 'NONE', gui = 'bold'}},
+    {'markdownH3', {guifg = c.yellow, guibg = 'NONE', gui = 'bold'}},
+    {'markdownH4', {guifg = c.green, guibg = 'NONE', gui = 'bold'}},
+    {'markdownH5', {guifg = c.blue, guibg = 'NONE', gui = 'bold'}},
+    {'markdownH6', {guifg = c.purple, guibg = 'NONE', gui = 'bold'}},
+    {'markdownUrl', {guifg = c.blue, guibg = 'NONE', gui = 'underline'}},
+    {'markdownItalic', {guifg = 'NONE', guibg = 'NONE', gui = 'italic'}},
+    {'markdownBold', {guifg = 'NONE', guibg = 'NONE', gui = 'bold'}},
+    {'markdownItalicDelimiter', {guifg = c.grey, guibg = 'NONE', gui = 'italic'}},
+    {'markdownCode', {guifg = c.green}},
+    {'markdownCodeBlock', {guifg = c.green}},
+    {'markdownCodeDelimiter', {guifg = c.green}},
+    {'markdownBlockquote', {guifg = c.grey}},
+    {'markdownListMarker', {guifg = c.red}},
+    {'markdownOrderedListMarker', {guifg = c.red}},
+    {'markdownRule', {guifg = c.purple}},
+    {'markdownHeadingRule', {guifg = c.grey}},
+    {'markdownUrlDelimiter', {guifg = c.grey}},
+    {'markdownLinkDelimiter', {guifg = c.grey}},
+    {'markdownLinkTextDelimiter', {guifg = c.grey}},
+    {'markdownHeadingDelimiter', {guifg = c.grey}},
+    {'markdownLinkText', {guifg = c.red}},
+    {'markdownUrlTitleDelimiter', {guifg = c.green}},
+    {'markdownIdDeclaration', {link = 'markdownLinkText'}},
+    {'markdownBoldDelimiter', {guifg = c.grey}},
+    {'markdownId', {guifg = c.yellow}},
+    {'mkdURL', {guifg = c.blue, guibg = 'NONE', gui = 'underline'}},
+    {'mkdInlineURL', {guifg = c.blue, guibg = 'NONE', gui = 'underline'}},
+    {'mkdItalic', {guifg = c.grey, guibg = 'NONE', gui = 'italic'}},
+    {'mkdCodeDelimiter', {guifg = c.green}},
+    {'mkdBold', {guifg = c.grey}},
+    {'mkdLink', {guifg = c.red}},
+    {'mkdHeading', {guifg = c.grey}},
+    {'mkdListItem', {guifg = c.red}},
+    {'mkdRule', {guifg = c.purple}},
+    {'mkdDelimiter', {guifg = c.grey}},
+    {'mkdId', {guifg = c.yellow}},
+
+    ---------- JSON ----------
+
+    {'jsonKeyword', {guifg = c.red}},
+    {'jsonString', {guifg = c.green}},
+    {'jsonBoolean', {guifg = c.blue}},
+    {'jsonNoise', {guifg = c.grey}},
+    {'jsonQuote', {guifg = c.grey}},
+    {'jsonBraces', {guifg = c.fg}},
+
+    ---------- GIT ----------
+
+    {'diffAdded', {guifg = c.green}},
+    {'diffRemoved', {guifg = c.red}},
+    {'diffChanged', {guifg = c.blue}},
+    {'diffOldFile', {guifg = c.yellow}},
+    {'diffNewFile', {guifg = c.orange}},
+    {'diffFile', {guifg = c.purple}},
+    {'diffLine', {guifg = c.grey}},
+    {'diffIndexLine', {guifg = c.purple}},
+
+    {'gitcommitSummary', {guifg = c.red}},
+    {'gitcommitUntracked', {guifg = c.grey}},
+    {'gitcommitDiscarded', {guifg = c.grey}},
+    {'gitcommitSelected', {guifg = c.grey}},
+    {'gitcommitUnmerged', {guifg = c.grey}},
+    {'gitcommitOnBranch', {guifg = c.grey}},
+    {'gitcommitArrow', {guifg = c.grey}},
+    {'gitcommitFile', {guifg = c.green}},
+
+    ---------- HELP ----------
+
+    {'helpNote', {guifg = c.purple, guibg = 'NONE', gui = 'bold'}},
+    {'helpHeadline', {guifg = c.red, guibg = 'NONE', gui = 'bold'}},
+    {'helpHeader', {guifg = c.orange, guibg = 'NONE', gui = 'bold'}},
+    {'helpURL', {guifg = c.green, guibg = 'NONE', gui = 'underline'}},
+    {'helpHyperTextEntry', {guifg = c.blue, guibg = 'NONE', gui = 'bold'}},
+    {'helpHyperTextJump', {guifg = c.blue}},
+    {'helpCommand', {guifg = c.yellow}},
+    {'helpExample', {guifg = c.green}},
+    {'helpSpecial', {guifg = c.purple}},
+    {'helpSectionDelim', {guifg = c.grey}},
+
+    ---------- STARTSCREEN ----------
+
+    {'DashboardHeader', {guifg = c.red, guibg = 'NONE'}},
+    {'DashboardCenter', {guifg = c.blue, guibg = 'NONE'}},
+
+    {'StartifyBracket', {guifg = c.grey}},
+    {'StartifyFile', {guifg = c.green}},
+    {'StartifyNumber', {guifg = c.orange}},
+    {'StartifyPath', {guifg = c.grey}},
+    {'StartifySlash', {guifg = c.grey}},
+    {'StartifySection', {guifg = c.blue}},
+    {'StartifyHeader', {guifg = c.red}},
+    {'StartifySpecial', {guifg = c.grey}},
+
+    ---------- GIT CONFLICT ----------
+
+    {'ConflictMarkerBegin', {guifg = c.red, guibg = 'NONE'}},
+    {'ConflictMarkerSeparator', {guifg = c.red, guibg = 'NONE'}},
+    {'ConflictMarkerOurs', {guifg = 'NONE', guibg = c.diff_green}},
+    {'ConflictMarkerTheirs', {guifg = 'NONE', guibg = c.diff_blue}},
+    {'ConflictMarkerEnd', {guifg = c.red, guibg = 'NONE'}},
+}

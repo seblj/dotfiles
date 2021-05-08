@@ -9,6 +9,7 @@ g.startify_commands = {
     {'Dotfiles', 'lua require("seblj.utils").edit_dotfiles()'},
     {'PackerSync', 'PackerSync'},
     {'PackerCompile', 'PackerCompile'},
+    {'StartupTime', 'StartupTime'},
 }
 
 g.startify_lists = {

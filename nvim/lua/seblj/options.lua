@@ -30,16 +30,6 @@ opt('o', 'undolevels', 1000)
 opt('o', 'shortmess', vim.o.shortmess .. 'c')
 
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
-cmd([[autocmd BufRead,BufNewFile .gitignore_global set ft=gitignore]])
-cmd([[autocmd BufRead,BufNewFile .gitconfig.local set ft=gitconfig]])
-cmd([[autocmd BufRead,BufNewFile * if &filetype ==# '' | setlocal spell | endif]])
-vim.api.nvim_exec([[
-augroup highlight_yank
-  autocmd!
-  au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=150}
-augroup END
-]], false)
-
 
 g.vimsyn_embed = 'l'
 g.python3_host_prog = '/usr/local/bin/python3.8'

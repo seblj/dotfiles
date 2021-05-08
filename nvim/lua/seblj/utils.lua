@@ -1,6 +1,6 @@
 ---------- UTILS ----------
 
-local eval, cmd = vim.api.nvim_eval, vim.cmd
+local eval, cmd, fn, exec = vim.api.nvim_eval, vim.cmd, vim.fn, vim.api.nvim_exec
 
 local M = {}
 
@@ -28,26 +28,28 @@ M.edit_dotfiles = function()
     }
 end
 
--- Find tail directory of path
-M.get_path_tail = function(dir)
-    local dir_list = vim.split(dir, '/')
-    return dir_list[#dir_list]
+M.installed_plugins = function()
+    require('telescope.builtin').find_files{
+        cwd = "~/.local/share/nvim/site/pack/packer/",
+        follow = true,
+        prompt_title = "Plugins",
+    }
 end
 
 -- Searches from current dir if not git repo
 -- Searches from root of git dir if git repo.
 -- Set prompt-title to directory searching from
 M.find_files = function()
-    local curr_dir = vim.api.nvim_exec([[pwd]], true)
-    local dir = M.get_path_tail(curr_dir)
+    local curr_dir = exec([[pwd]], true)
+    local dir = fn.fnamemodify(curr_dir, ':t')
     require("telescope.builtin").find_files {
         prompt_title = dir,
     }
 end
 
 M.git_files = function()
-    local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
-    local dir = M.get_path_tail(git_root)
+    local git_root = fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub("%s+", "")
+    local dir = fn.fnamemodify(git_root, ':t')
     require("telescope.builtin").git_files {
         prompt_title = dir,
         recurse_submodules = true,
@@ -58,14 +60,14 @@ end
 -- Live grep from root of git repo, if it is a repo
 -- Else grep current directory
 M.live_grep = function()
-    local git_root = eval("system('git rev-parse --show-toplevel 2> /dev/null')[:-2]")
-    local curr_dir = eval("expand('%:p:h:t')")
+    local git_root = fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub("%s+", "")
+    local curr_dir = fn.expand('%:p:h:t')
     if git_root == '' or git_root == nil then
         require("telescope.builtin").live_grep {
             prompt_title = curr_dir
         }
     else
-        local dir = M.get_path_tail(git_root);
+        local dir = fn.fnamemodify(git_root, ':t')
         require("telescope.builtin").live_grep {
             cwd = git_root,
             prompt_title = dir
@@ -73,6 +75,11 @@ M.live_grep = function()
     end
 end
 
+-- cd to directory of current buffer
+M.cd = function()
+    local dir = fn.expand('%:p:h')
+    cmd('cd ' .. dir)
+end
 
 -- Function to execute macro over a visual range
 M.visual_macro = function()
@@ -96,19 +103,11 @@ M.syn_stack = function()
     end
 end
 
--- Reloads config for nvim so I don't need to reopen buffer
+-- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
     cmd('luafile ~/dotfiles/nvim/init.lua')
-    package.loaded['seblj.options'] = nil
-    package.loaded['seblj.keymaps'] = nil
-    package.loaded['seblj.utils'] = nil
-    package.loaded['seblj.plugins'] = nil
-    require('seblj.options')
-    require('seblj.keymaps')
-    require('seblj.utils')
-    require('seblj.plugins')
     for pack, _ in pairs(package.loaded) do
-        if string.match(pack, "^config") then
+        if pack:match('^config') or pack:match('^seblj') then
             package.loaded[pack] = nil
             require(pack)
         end
@@ -146,6 +145,14 @@ M.save_and_exec = function()
         cmd('sp')
         cmd('term python3 %')
         cmd('startinsert')
+    elseif ft == 'c' then
+        cmd('silent! write')
+        cmd('sp')
+        cmd('term gcc % && ./a.out && rm a.out')
+        cmd('startinsert')
+    -- Not really save and exec, but think it fits nicely in here for mapping
+    elseif ft == 'http' then
+        cmd('lua require("rest-nvim").run()')
     end
 end
 
@@ -160,9 +167,9 @@ local pos_size = "+"..resize_size
 local neg_size = "-"..resize_size
 
 local get_direction = function(pos)
-    local this = vim.fn.winnr()
+    local this = fn.winnr()
     cmd(string.format("wincmd %s", pos))
-    local next = vim.fn.winnr()
+    local next = fn.winnr()
     cmd(string.format("%s wincmd w", this))
     return this == next
 end

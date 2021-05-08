@@ -38,4 +38,13 @@ require'nvim-treesitter.configs'.setup {
             },
         },
     },
+
+    -- Comments
+    context_commentstring = {
+        enable = true
+    },
+
+    autotag = {
+        enable = true,
+    }
 }

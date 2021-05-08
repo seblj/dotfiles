@@ -5,25 +5,6 @@ local cmd, map = vim.cmd, utils.map
 
 ---------- MAPPINGS ----------
 
--- Hover diagnostic
--- cmd("autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()")
--- map('n', '<leader>cd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
-
--- Echo diagnostic
--- cmd("autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()")
--- map('n', '<leader>cd', '<cmd>lua require("echo-diagnostics").echo_entire_diagnostic()<CR>')
-
--- Default
--- map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
--- map('i', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
--- map('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
--- map('n', '<leader>ca', '<cmd>vim.lsp.buf.code_action()<CR>')
--- map('n', 'gh', '<cmd>vim.lsp.buf.hover()<CR>')
--- map('n', 'gR', '<cmd>vim.lsp.buf.rename()<CR>')
--- map('n', 'gr', '<cmd>vim.lsp.buf.references()<CR>')
--- map('n', 'gn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
--- map('n', 'gp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-
 -- Telescope
 map('n', 'gr', '<cmd>lua require("telescope.builtin").lsp_references()<CR>')
 map('n', 'gd', '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
@@ -65,17 +46,51 @@ require('lspkind').init()
 
 ---------- LANGUAGE SERVERS ----------
 
+-- Language specific settings
+local lua_settings = {
+    Lua = {
+        runtime = {
+            version = 'LuaJIT',
+            path = vim.split(package.path, ';'),
+        },
+        diagnostics = {
+            globals = {'vim'},
+        },
+        workspace = {
+            library = {
+                [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+            },
+        },
+    },
+}
+local python_settings = {
+    python = {
+        analysis = {
+            typeCheckingMode = 'off'
+        }
+    }
+}
+
+
+local make_config = function()
+    return {
+        on_attach = require('lsp_signature').on_attach{}
+    }
+end
+
 -- Automatic setup for language servers
-require'lspinstall'.setup() -- important
 local setup_servers = function()
-    require('lspinstall').setup()
+    if package.loaded['lspinstall'] then return end
+    require'lspinstall'.setup()
     local servers = require('lspinstall').installed_servers()
     for _, server in pairs(servers) do
-        require('lspconfig')[server].setup{
-            on_attach = function()
-                require('lsp_signature').on_attach{}
-            end
-        }
+        local config = make_config()
+
+        if server == 'lua' then config.settings = lua_settings end
+        if server == 'python' then config.settings = python_settings end
+
+        require('lspconfig')[server].setup(config)
     end
 end
 
@@ -84,39 +99,11 @@ setup_servers()
 -- Reload after install
 require('lspinstall').post_install_hook = function()
     setup_servers()
-    vim.cmd("bufdo e")
+    cmd("bufdo e")
 end
 
 -- Options and language servers lspinstall can't install
 
 require('lspconfig').sqlls.setup{                   -- SQL
     cmd = {"/usr/local/bin/sql-language-server", "up", "--method", "stdio"};
-}
-require('lspconfig').python.setup{                  -- Python
-    settings = {
-        python = {
-            analysis = {
-                typeCheckingMode = 'off'
-            }
-        }
-    }
-}
-require('lspconfig').lua.setup{                     -- Lua
-    settings = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT',
-                path = vim.split(package.path, ';'),
-            },
-            diagnostics = {
-                globals = {'vim'},
-            },
-            workspace = {
-                library = {
-                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-                },
-            },
-        },
-    },
 }

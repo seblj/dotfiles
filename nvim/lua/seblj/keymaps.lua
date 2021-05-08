@@ -9,7 +9,7 @@ g.maplocalleader = "\\"
 
 ---------- GENERAL MAPPINGS ----------
 
-map('n', 'œ', '<Tab>')                                                          -- Option-o for jumplist
+map('n', 'œ', '<Tab>')                                                          -- Alt-o for jumplist
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})        -- Tab for next completion
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})      -- Shift-tab for previous completion
 map('n', '<Tab>', 'gt')                                                         -- Next tab
@@ -17,11 +17,9 @@ map('n', '<S-TAB>', 'gT')                                                       
 map('n', '<leader>r', ':lua require("seblj.utils").reload_config()<CR>')        -- Reload config
 map('n', '<leader>=', '<C-w>=')                                                 -- Resize windows
 map('n', '<leader>i', 'gg=G')                                                   -- Indent file
-map('n', '<C-s>', ':%s//gI<Left><Left><Left>', {silent = false})                -- Search and replace
-map('v', '<C-s>', ':s//gI<Left><Left><Left>', {silent = false})                 -- Search and replace
+map('n', 'ß', ':%s//gI<Left><Left><Left>', {silent = false})                    -- Search and replace (Alt-s)
+map('v', 'ß', ':s//gI<Left><Left><Left>', {silent = false})                     -- Search and replace (Alt-s)
 map('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', {expr = true})  -- Remove highlights with enter
-map('n', '<leader>d', '"_d')                                                    -- Delete without yank
-map('v', '<leader>d', '"_d')                                                    -- Delete without yank
 map('n', '<C-f>', 'za')                                                         -- Fold
 map('n', '<C-t>', ':tabedit<CR>')                                               -- Create new tab
 
@@ -34,6 +32,7 @@ map('t', '<C-h>', '<C-\\><C-N><C-w>h')                                          
 map('t', '<C-j>', '<C-\\><C-N><C-w>j')                                          -- Navigate to bottom split
 map('t', '<C-k>', '<C-\\><C-N><C-w>k')                                          -- Navigate to top split
 map('t', '<C-l>', '<C-\\><C-N><C-w>l')                                          -- Navigate to right split
+map('t', '<Esc><Esc>', '<C-\\><C-n>')                                           -- Exit term-mode
 
 map('n', '<S-Right>', ':lua require("seblj.utils").resize_right()<CR>')         -- Resize split right
 map('n', '<S-Left>', ':lua require("seblj.utils").resize_left()<CR>')           -- Resize split left
@@ -71,8 +70,7 @@ map('n', '<leader>z', ':lua require("seblj.utils").syn_stack()<CR>')            
 map('n', '<Down>', ':lua require("seblj.utils").quickfix("down")<CR>')          -- Move down in quickfixlist
 map('n', '<Up>', ':lua require("seblj.utils").quickfix("up")<CR>')              -- Move up in quickfixlist
 map('n', '<leader><ESC><leader>', ':cclose<CR> `A')                             -- Close and go to mark
-
-map('t', '<Esc><Esc>', '<C-\\><C-n>')                                           -- Exit term-mode
+map('n', '<leader>@', ':lua require("seblj.utils").cd()<CR>')                   -- cd to directory of open buffer
 
 cmd('cnoreabbrev w!! w suda://%')                                               -- Write with sudo
 cmd('cnoreabbrev Q q')                                                          -- Quit with Q

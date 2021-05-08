@@ -51,69 +51,56 @@ return require('packer').startup(function(use)
         config = [[require('echo-diagnostics').setup{}]],
         cond = nvimlsp
     }
-    local_use {'windwp/nvim-autopairs',                                 -- Auto pairs
-        config = [[require('config.autopairs')]],
-        cond = function() return true end,
-        upstream = true
-    }
 
     -- Installed plugins
+
+    -- Colors / UI
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
         config = [[require('colorizer').setup()]],
     }
-    use {'tjdevries/colorbuddy.nvim'}                                   -- Colorscheme helper
     use {'mhinz/vim-startify',                                          -- Startup screen
         config = [[require('config.startify')]]
-    }
-    use {'prettier/vim-prettier',                                       -- Formatting
-        run = 'yarn install',
-        config = [[require('config.prettier')]],
-        cond = nvimlsp
-    }
-    use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
-    use {'puremourning/vimspector',                                     -- Debugging
-        config = [[require('config.vimspector')]]
-    }
-    use {'szw/vim-maximizer',                                           -- Maximize split
-        config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
-    }
-    use {'lewis6991/gitsigns.nvim',                                     -- Git diff signs
-        config = [[require('config.gitsigns')]],
-
-    }
-    use {'rhysd/git-messenger.vim',                                     -- Show commit message
-        config = map('n', '<leader>cm', '<Plug>(git-messenger)', {noremap = false})
-    }
-    use {'tpope/vim-fugitive',                                          -- Git-wrapper
-        config = [[require('config.fugitive')]]
     }
     use {'glepnir/galaxyline.nvim',                                     -- Statusline
         branch = 'main',
         config = [[require('config.galaxyline')]]
     }
-    use {'neoclide/coc.nvim',                                           -- LSP
-        branch = 'release',
-        config = [[require('config.coc')]],
-        cond = coc
+    use 'kyazdani42/nvim-web-devicons'                                  -- Icons
+
+    -- Git
+    use {'lewis6991/gitsigns.nvim',                                     -- Git diff signs
+        config = [[require('config.gitsigns')]],
     }
+    use {'rhysd/conflict-marker.vim',                                   -- Highlights for git conflict
+        config = function()
+            vim.g.conflict_marker_begin = '^<<<<<<< .*$'
+            vim.g.conflict_marker_end   = '^>>>>>>> .*$'
+            vim.g.conflict_marker_enable_mappings = 0
+        end
+
+    }
+
+    -- Treesitter
     use {'nvim-treesitter/nvim-treesitter',                             -- Parser tool syntax
         run = ':TSUpdate',
         config = [[require('config.treesitter')]]
     }
     use 'nvim-treesitter/playground'                                    -- Display information from treesitter
+    use 'windwp/nvim-ts-autotag'                                        -- Autotag using treesitter
     use 'nvim-treesitter/nvim-treesitter-textobjects'                   -- Manipulate text using treesitter
+    use 'JoosepAlviste/nvim-ts-context-commentstring'                   -- Auto switch commentstring with treesitter
+
+    -- LSP
     use {'neovim/nvim-lspconfig',                                       -- Built-in LSP
         config = [[require('config.lspconfig')]],
         cond = nvimlsp
     }
-    use {'kabouzeid/nvim-lspinstall'}
+    use {'kabouzeid/nvim-lspinstall'}                                   -- Install language servers
     use {'hrsh7th/nvim-compe',                                          -- Completion for nvimlsp
         config = [[require('config.compe')]],
         cond = nvimlsp
     }
-    use {'ray-x/lsp_signature.nvim',
-        cond = nvimlsp
-    }
+    use {'ray-x/lsp_signature.nvim'}
     use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
         config = [[require('config.lspsaga')]],
         cond = nvimlsp
@@ -121,10 +108,13 @@ return require('packer').startup(function(use)
     use {'onsails/lspkind-nvim',                                        -- Icons for completion
         config = nvimlsp
     }
-    use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
-        config = [[require('config.luatree')]]
+    use {'neoclide/coc.nvim',                                           -- LSP
+        branch = 'release',
+        config = [[require('config.coc')]],
+        cond = coc
     }
-    use 'kyazdani42/nvim-web-devicons'                                  -- Icons
+
+    -- Telescope
     use {'nvim-telescope/telescope.nvim',                               -- Fuzzy finder
         requires = {'nvim-lua/popup.nvim',
                     'nvim-lua/plenary.nvim',
@@ -135,18 +125,53 @@ return require('packer').startup(function(use)
         config = [[require('telescope').load_extension('coc')]],
         cond = coc
     }
-    use 'lambdalisue/suda.vim'                                          -- Write with sudo
-    use {'preservim/nerdcommenter',                                     -- Easy commenting
-       config = [[require('config.commentary')]]
+
+    use {'mfussenegger/nvim-dap',                                       -- Debugger
+        config = [[require('config.dap')]]
     }
+    use {'rcarriga/nvim-dap-ui'}                                        -- UI for debugger
+    -- use {'puremourning/vimspector',                                     -- Debugger
+    --     config = [[require('config.vimspector')]]
+    -- }
+    use {'szw/vim-maximizer',                                           -- Maximize split
+        config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
+    }
+    use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
+        config = [[require('config.luatree')]]
+    }
+    use {'tamago324/lir.nvim',                                          -- File explorer
+        config = [[require('config.fileexplorer')]]
+    }
+
+    use 'lambdalisue/suda.vim'                                          -- Write with sudo
+    use 'tpope/vim-commentary'                                          -- Easy commenting
+    -- use {'preservim/nerdcommenter',                                     -- Easy commenting
+    --    config = [[require('config.commentary')]]
+    -- }
+    use {'dstein64/vim-startuptime',                                    -- Measure startuptime
+        config = function()
+            vim.g.startuptime_more_info_key_seq = 'i'
+            vim.g.startuptime_split_edit_key_seq = ''
+        end
+    }
+    use {'windwp/nvim-autopairs',                                       -- Auto pairs
+        config = [[require('config.autopairs')]],
+    }
+    use 'tpope/vim-surround'                                            -- Edit surrounds
+    use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
     use {'mg979/vim-visual-multi',                                      -- Multiple cursors
         config = [[require('config.multicursor')]]
     }
-    use 'tpope/vim-surround'                                            -- Edit surrounds
     use {'lervag/vimtex',                                               -- Latex
         config = [[require('config.vimtex')]]
     }
     use {'iamcco/markdown-preview.nvim',                                -- Markdown preview
         run = 'cd app && yarn install',
+    }
+    use {'NTBBloodbath/rest.nvim'}
+    use {'prettier/vim-prettier',                                       -- Formatting
+        run = 'yarn install',
+        config = [[require('config.prettier')]],
+        cond = nvimlsp
     }
 end)
