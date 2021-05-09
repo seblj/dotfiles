@@ -12,11 +12,18 @@ M.map = function(mode, lhs, rhs, opts)
 end
 
 -- Set options
-M.opt = function(scope, key, value)
-    local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
-    scopes[scope][key] = value
-    if scope ~= 'o' then scopes['o'][key] = value end
-end
+local opts_info = vim.api.nvim_get_all_options_info()
+M.opt = setmetatable({}, {
+  __newindex = function(_, key, value)
+    vim.o[key] = value
+    local scope = opts_info[key].scope
+    if scope == 'win' then
+      vim.wo[key] = value
+    elseif scope == 'buf' then
+      vim.bo[key] = value
+    end
+  end
+})
 
 -- Telescope function for quick edit of dotfiles
 M.edit_dotfiles = function()

@@ -5,29 +5,29 @@ local cmd, g, opt = vim.cmd, vim.g, utils.opt
 cmd('colorscheme custom')
 cmd('filetype plugin indent on')
 
-opt('o', 'splitbelow', true)
-opt('o', 'splitright', true)
-opt('o', 'updatetime', 250)
-opt('o', 'cmdheight', 2)
-opt('o', 'clipboard', 'unnamedplus')
-opt('o', 'mouse', 'a')
-opt('b', 'tabstop', 4)
-opt('b', 'expandtab', true)
-opt('b', 'softtabstop', 4)
-opt('b', 'shiftwidth', 4)
-opt('b', 'autoindent', true)
-opt('b', 'cindent', true)
-opt('b', 'swapfile', false)
-opt('w', 'number', true)
-opt('w', 'relativenumber', true)
-opt('w', 'foldmethod', 'indent')
-opt('o', 'foldlevelstart', 20)
-opt('o', 'ignorecase', true)
-opt('o', 'smartcase', true)
-opt('o', 'termguicolors', true)
-opt('b', 'undofile', true)
-opt('o', 'undolevels', 1000)
-opt('o', 'shortmess', vim.o.shortmess .. 'c')
+opt.splitbelow = true
+opt.splitright = true
+opt.updatetime = 250
+opt.cmdheight = 2
+opt.clipboard = 'unnamedplus'
+opt.mouse = 'a'
+opt.tabstop = 4
+opt.expandtab = true
+opt.softtabstop = 4
+opt.shiftwidth = 4
+opt.autoindent = true
+opt.cindent = true
+opt.swapfile = false
+opt.number = true
+opt.relativenumber = true
+opt.foldmethod = 'indent'
+opt.foldlevelstart = 20
+opt.ignorecase = true
+opt.smartcase = true
+opt.termguicolors = true
+opt.undofile = true
+opt.undolevels = 1000
+opt.shortmess = vim.o.shortmess .. 'c'
 
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
 

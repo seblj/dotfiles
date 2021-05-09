@@ -3,7 +3,7 @@
 local utils = require('seblj.utils')
 local eval, opt, map, cmd, fn = vim.api.nvim_eval, utils.opt, utils.map, vim.cmd, vim.fn
 
-opt('o', 'completeopt', 'menuone,noinsert,noselect')
+opt.completeopt = 'menuone,noinsert,noselect'
 
 map('n', 'gd', ':lua goto_definition()<CR>', {noremap = false})
 map('n', 'gb', '<C-t>')

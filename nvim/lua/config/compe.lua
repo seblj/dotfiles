@@ -1,7 +1,7 @@
 local utils = require('seblj.utils')
 local opt, map = utils.opt, utils.map
 
-opt('o', 'completeopt', 'menuone,noselect')
+opt.completeopt = 'menuone,noselect'
 map('i', '<C-space>', 'compe#complete()', {expr = true})
 
 require'compe'.setup {
