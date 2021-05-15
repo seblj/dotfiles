@@ -1,3 +1,5 @@
+---------- DEBUGGER CONFIG ----------
+
 local utils = require('seblj.utils')
 local map = utils.map
 local cmd = vim.cmd

@@ -214,8 +214,8 @@ all {
     {'TSOperator', {guifg = c.red}},
     {'TSParameter', {link = 'NONE'}},
     {'TSParameterReference', {guifg = c.orange}},
-    {'TSProperty', {link = 'NONE'}},
-    {'tsxTSProperty', {guifg = c.green}},
+    {'TSProperty', {guifg = c.green}},
+    {'cTSProperty', {link = 'NONE'}},
     {'TSPunctBracket', {guifg = c.fg}},
     {'TSPunctDelimiter', {guifg = c.grey}},
     {'TSPunctSpecial', {guifg = c.fg}},
@@ -1065,4 +1065,10 @@ all {
     {'ConflictMarkerOurs', {guifg = 'NONE', guibg = c.diff_green}},
     {'ConflictMarkerTheirs', {guifg = 'NONE', guibg = c.diff_blue}},
     {'ConflictMarkerEnd', {guifg = c.red, guibg = 'NONE'}},
+
+    ---------- NVIM TREE ----------
+
+    {'NvimTreeFolderName', {guifg = c.blue}},
+    {'NvimTreeOpenedFolderName', {link = 'NvimTreeFolderName'}},
+    {'NvimTreeEmptyFolderName', {link = 'NvimTreeFolderName'}},
 }

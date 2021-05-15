@@ -130,9 +130,6 @@ return require('packer').startup(function(use)
         config = [[require('config.dap')]]
     }
     use {'rcarriga/nvim-dap-ui'}                                        -- UI for debugger
-    -- use {'puremourning/vimspector',                                     -- Debugger
-    --     config = [[require('config.vimspector')]]
-    -- }
     use {'szw/vim-maximizer',                                           -- Maximize split
         config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
     }
@@ -145,9 +142,6 @@ return require('packer').startup(function(use)
 
     use 'lambdalisue/suda.vim'                                          -- Write with sudo
     use 'tpope/vim-commentary'                                          -- Easy commenting
-    -- use {'preservim/nerdcommenter',                                     -- Easy commenting
-    --    config = [[require('config.commentary')]]
-    -- }
     use {'dstein64/vim-startuptime',                                    -- Measure startuptime
         config = function()
             vim.g.startuptime_more_info_key_seq = 'i'
@@ -165,13 +159,12 @@ return require('packer').startup(function(use)
     use {'lervag/vimtex',                                               -- Latex
         config = [[require('config.vimtex')]]
     }
+    use {'NTBBloodbath/rest.nvim'}                                      -- HTTP requests
     use {'iamcco/markdown-preview.nvim',                                -- Markdown preview
         run = 'cd app && yarn install',
     }
-    use {'NTBBloodbath/rest.nvim'}
     use {'prettier/vim-prettier',                                       -- Formatting
         run = 'yarn install',
         config = [[require('config.prettier')]],
-        cond = nvimlsp
     }
 end)

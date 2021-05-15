@@ -23,6 +23,8 @@ map('n', 'gn', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next(
 map('n', 'gb', '<C-t>')
 map('v', 'gb', '<C-t>')
 
+-- cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
+-- cmd([[nnoremap <leader>cd <cmd>lua require("echo-diagnostics").echo_entire_diagnostic()<CR>]])
 
 ---------- DIAGNOSTICS ----------
 
@@ -71,6 +73,7 @@ local python_settings = {
         }
     }
 }
+local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
 
 
 local make_config = function()
@@ -89,6 +92,7 @@ local setup_servers = function()
 
         if server == 'lua' then config.settings = lua_settings end
         if server == 'python' then config.settings = python_settings end
+        if server == 'cpp' then config.filetypes = clang_filetypes end
 
         require('lspconfig')[server].setup(config)
     end
@@ -102,8 +106,6 @@ require('lspinstall').post_install_hook = function()
     cmd("bufdo e")
 end
 
--- Options and language servers lspinstall can't install
-
-require('lspconfig').sqlls.setup{                   -- SQL
-    cmd = {"/usr/local/bin/sql-language-server", "up", "--method", "stdio"};
+require'lspconfig'.fsautocomplete.setup{
+  cmd = {'dotnet', '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll', '--background-service-enabled'}
 }

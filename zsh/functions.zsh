@@ -15,11 +15,6 @@ kill_port() {
     kill $(lsof -t -i:$1)
 }
 
-# Push upstream
-gpo() {
-    git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-}
-
 # Extract files
 extract () {
      if [ -f $1 ] ; then
@@ -82,5 +77,4 @@ install_neovim() {
     mv ~/Applications/$NVIM_DIR ~/Applications/nvim-nightly
 
     cd -
-
 }

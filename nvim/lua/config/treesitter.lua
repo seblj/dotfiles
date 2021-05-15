@@ -1,9 +1,10 @@
----------- TREE-SITTER CONFIG ----------
+---------- TREESITTER CONFIG ----------
 
 require('nvim-treesitter.configs').setup {
     ensure_installed = "maintained",
     highlight = {
         enable = true,
+        disable = {"latex"}
     },
 }
 

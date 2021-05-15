@@ -5,9 +5,9 @@ local eval, opt, map, cmd, fn = vim.api.nvim_eval, utils.opt, utils.map, vim.cmd
 
 opt.completeopt = 'menuone,noinsert,noselect'
 
-map('n', 'gd', ':lua goto_definition()<CR>', {noremap = false})
+map('n', 'gd', ':lua require("config.coc").goto_definition()<CR>', {noremap = false})
 map('n', 'gb', '<C-t>')
-map('n', 'gh', ':lua show_documentation()<CR>')
+map('n', 'gh', ':lua require("config.coc").show_documentation()<CR>')
 map('n', 'gR', '<Plug>(coc-rename)', {noremap = false})
 map('n', 'gr', '<cmd>Telescope coc references<CR>', {noremap = false})
 map('n', 'gn', '<Plug>(coc-diagnostic-next)', {noremap = false})
@@ -20,8 +20,9 @@ map('n', '<leader>p', ':CocCommand prettier.formatFile<CR>')
 -- Autoimport packages
 cmd([[inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]])
 
+local M = {}
 -- Show documentation under cursor
-_G.show_documentation = function()
+M.show_documentation = function()
     if (eval("index(['vim','help'], &filetype)") >= 0) then
         cmd([[execute 'h '.expand('<cword>')]])
     else
@@ -30,10 +31,12 @@ _G.show_documentation = function()
 end
 
 -- Use tagstack for go to definition
-_G.goto_definition = function()
+M.goto_definition = function()
     local from = {vim.fn.bufnr('%'), vim.fn.line('.'), vim.fn.col('.'), 0}
     local items = {{tagname = vim.fn.expand('<cword>'), from = from}}
 
     vim.fn.settagstack(vim.fn.win_getid(), {items=items}, 't')
     cmd('Telescope coc definitions')
 end
+
+return M

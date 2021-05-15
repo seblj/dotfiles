@@ -25,5 +25,5 @@ defaults write com.apple.Dock showhidden -bool YES
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
-
-
+# Enable repeating keys if hold down
+defaults write -g ApplePressAndHoldEnabled -bool false

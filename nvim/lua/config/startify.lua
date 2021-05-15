@@ -1,4 +1,4 @@
----------- STARTIFY ----------
+---------- STARTIFY CONFIG ----------
 
 local g = vim.g
 

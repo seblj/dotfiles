@@ -1,3 +1,5 @@
+---------- MULTICURSOR CONFIG ----------
+
 local g = vim.g
 
 g.VM_show_warnings = 0
