@@ -1,2 +1,3 @@
 setlocal nonumber
 setlocal norelativenumber
+startinsert

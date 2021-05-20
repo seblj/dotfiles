@@ -133,6 +133,13 @@ return require('packer').startup(function(use)
     use {'szw/vim-maximizer',                                           -- Maximize split
         config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
     }
+
+    use { "rcarriga/vim-ultest",
+        requires = {"vim-test/vim-test"},
+        run = ":UpdateRemotePlugins",
+        config = [[require('config.test')]]
+    }
+
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
         config = [[require('config.luatree')]]
     }

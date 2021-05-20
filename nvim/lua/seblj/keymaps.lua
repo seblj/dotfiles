@@ -73,6 +73,7 @@ map('n', '<leader><ESC><leader>', ':cclose<CR> `A')                             
 map('n', '<leader>@', ':lua require("seblj.utils").cd()<CR>')                   -- cd to directory of open buffer
 
 cmd('cnoreabbrev w!! w suda://%')                                               -- Write with sudo
+cmd('cnoreabbrev !! <C-r>:')                                                    -- Repeat last command
 cmd('cnoreabbrev Q q')                                                          -- Quit with Q
 cmd('cnoreabbrev W w')                                                          -- Write with W
 cmd('cnoreabbrev WQ wq')                                                        -- Write and quit with WQ
@@ -84,3 +85,7 @@ cmd('cnoreabbrev Wa wa')                                                        
 cmd('cnoreabbrev WA wa')                                                        -- Write all with WA
 cmd('cnoreabbrev Qa qa')                                                        -- Quit all with Qa
 cmd('cnoreabbrev QA qa')                                                        -- Quit all with QA
+
+cmd('command! -nargs=* T split | term <args>')                                  -- Open term in split with T
+cmd('command! -nargs=* VT vsplit | term <args>')                                -- Open term in vsplit with VT
+

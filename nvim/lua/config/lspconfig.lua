@@ -78,7 +78,11 @@ local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
 
 local make_config = function()
     return {
-        on_attach = require('lsp_signature').on_attach{}
+        -- on_attach = require('lsp_signature').on_attach{
+        --     bind = false,
+        --     use_lspsaga = true
+        -- }
+        on_attach = require('config.lspsaga').setup_lspsaga_signature
     }
 end
 

@@ -26,7 +26,7 @@ require('compe').setup {
         buffer = true;
         calc = false;
         nvim_lsp = true;
-        nvim_lua = false; -- Enabled by sumneko
+        nvim_lua = true;
         vsnip = false;
     };
 }

@@ -231,4 +231,29 @@ end
 
 ----------------------------------------
 
+
+---------- HIDE CURSOR ----------
+
+-- https://github.com/tamago324/lir.nvim/blob/master/lua/lir/smart_cursor/init.lua
+
+local guicursor_saved = vim.o.guicursor
+
+M.hide_cursor = function()
+    cmd([[set guicursor+=a:TransparentCursor/lCursor]])
+end
+
+M.restore_cursor = function()
+  cmd([[set guicursor+=a:Cursor/lCursor]])
+  vim.o.guicursor = guicursor_saved
+end
+
+M.setup_hidden_cursor = function()
+    cmd([[autocmd BufEnter,WinEnter,CmdwinLeave,CmdlineLeave <buffer> setlocal cursorline]])
+    cmd([[autocmd BufLeave,WinLeave,CmdwinEnter,CmdlineEnter <buffer> setlocal nocursorline]])
+    cmd([[autocmd BufEnter,WinEnter,CmdwinLeave,CmdlineLeave <buffer> lua require('seblj.utils').hide_cursor()]])
+    cmd([[autocmd BufLeave,WinLeave,CmdwinEnter,CmdlineEnter <buffer> lua require('seblj.utils').restore_cursor()]])
+end
+
+----------------------------------------
+
 return M

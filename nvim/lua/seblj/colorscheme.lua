@@ -38,7 +38,6 @@ local c = {
     diff_red = '#55393d',
     diff_green = '#394634',
     diff_blue = '#354157',
-    diff_orange = '#e5d5ac',
     border = '#80A0C2',
     red = '#fc5d7c',
     orange = '#fea24f',
@@ -47,8 +46,6 @@ local c = {
     blue = '#76cce0',
     purple = '#b39df3',
     grey = '#7f8490',
-    -- git_current = '#2e5049',
-    -- git_incoming = '#344f69',
 }
 
 ---------- GROUPS ----------
@@ -71,6 +68,7 @@ all {
     {'iCursor', {link = 'Cursor'}},
     {'lCursor', {link = 'Cursor'}},
     {'CursorIM', {link = 'Cursor'}},
+    {'TransparentCursor', {gui = 'strikethrough', blend = 100}},
 
     {'CursorLine', {guifg = c.red, guibg = c.bg}},
     {'CursorColumn', {guifg = 'NONE', guibg = c.bg}},
@@ -80,7 +78,7 @@ all {
     {'DiffAdd', {guifg = 'NONE', guibg = c.diff_green}},
     {'DiffChange', {guifg = 'NONE', guibg = c.diff_blue}},
     {'DiffDelete', {guifg = 'NONE', guibg = c.diff_red}},
-    {'DiffText', {guifg = c.bg, guibg = c.diff_orange}},
+    {'DiffText', {guifg = c.bg, guibg = c.fg}},
     {'Directory', {guifg = c.green, guibg = 'NONE'}},
     {'ErrorMsg', {guifg = c.red, guibg = 'NONE'}},
     {'WarningMsg', {guifg = c.yellow, guibg = 'NONE', gui = 'bold'}},

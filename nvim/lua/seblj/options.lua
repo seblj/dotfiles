@@ -32,4 +32,4 @@ opt.shortmess = vim.o.shortmess .. 'c'
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
 
 g.vimsyn_embed = 'l'
-g.python3_host_prog = '/usr/local/bin/python3.8'
+g.python3_host_prog = '/usr/local/bin/python3'

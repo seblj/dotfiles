@@ -68,7 +68,7 @@
                     {
                         "manipulators": [
                             {
-                                "description": "Change command + ´ to backslash",
+                                "description": "Change option + ´ to ´",
                                 "from": {
                                     "key_code": "equal_sign",
                                     "modifiers": {
@@ -76,6 +76,22 @@
                                             "command"
                                         ]
                                     }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "equal_sign"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "manipulators": [
+                            {
+                                "description": "Change ´ to backslash",
+                                "from": {
+                                    "key_code": "equal_sign"
                                 },
                                 "to": [
                                     {

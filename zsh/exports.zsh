@@ -23,3 +23,4 @@ export LC_CTYPE=en_US.UTF-8
 export MANPAGER='nvim +Man!'
 
 export ZSH="$HOME/.oh-my-zsh"
+export ZSH_COMPDUMP="$HOME/.cache/zsh/.zcompdump-${HOST/.*/}-${ZSH_VERSION}"
