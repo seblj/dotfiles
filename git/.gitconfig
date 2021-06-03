@@ -27,6 +27,7 @@
 	sa = submodule add
     amend = commit --amend
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
+    rc = rebase --continue
 
 [delta]
     line-numbers = true

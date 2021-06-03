@@ -1,6 +1,5 @@
 ---------- OPTIONS ----------
-local utils = require('seblj.utils')
-local cmd, g, opt = vim.cmd, vim.g, utils.opt
+local cmd, g, opt = vim.cmd, vim.g, vim.opt
 
 cmd('colorscheme custom')
 cmd('filetype plugin indent on')
@@ -27,7 +26,7 @@ opt.smartcase = true
 opt.termguicolors = true
 opt.undofile = true
 opt.undolevels = 1000
-opt.shortmess = vim.o.shortmess .. 'c'
+opt.shortmess = opt.shortmess + 'c'
 
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
 

@@ -11,20 +11,6 @@ M.map = function(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
--- Set options
-local opts_info = vim.api.nvim_get_all_options_info()
-M.opt = setmetatable({}, {
-  __newindex = function(_, key, value)
-    vim.o[key] = value
-    local scope = opts_info[key].scope
-    if scope == 'win' then
-      vim.wo[key] = value
-    elseif scope == 'buf' then
-      vim.bo[key] = value
-    end
-  end
-})
-
 -- Telescope function for quick edit of dotfiles
 M.edit_dotfiles = function()
     require('telescope.builtin').find_files{
@@ -152,11 +138,16 @@ M.save_and_exec = function()
         cmd('sp')
         cmd('term python3 %')
         cmd('startinsert')
+    -- Use chansend for C, because it won't tell me if I segfault etc by doing 'term ...'
     elseif ft == 'c' then
         cmd('silent! write')
         cmd('sp')
-        cmd('term gcc % && ./a.out && rm a.out')
-        cmd('startinsert')
+        local file = eval('expand("%")')
+        local output = eval('expand("%:r")')
+        cmd('term')
+        cmd(string.format([[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]], eval('b:terminal_job_id'), file, output, output, output))
+        cmd('nmap <silent> q :q<CR>')
+        cmd('stopinsert')
     -- Not really save and exec, but think it fits nicely in here for mapping
     elseif ft == 'http' then
         cmd('lua require("rest-nvim").run()')
@@ -243,8 +234,8 @@ M.hide_cursor = function()
 end
 
 M.restore_cursor = function()
-  cmd([[set guicursor+=a:Cursor/lCursor]])
-  vim.o.guicursor = guicursor_saved
+    cmd([[set guicursor+=a:Cursor/lCursor]])
+    vim.o.guicursor = guicursor_saved
 end
 
 M.setup_hidden_cursor = function()

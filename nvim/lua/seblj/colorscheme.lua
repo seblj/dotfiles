@@ -52,6 +52,7 @@ local c = {
 
 all {
     {'Normal', {guifg = c.fg, guibg = c.bg}},
+    {'FloatBorder', {guifg = c.border}},
     {'Terminal', {guifg = c.fg, guibg = c.bg}},
     {'EndOfBuffer', {guifg = c.bg, guibg = c.bg}},
     {'Folded', {guifg = c.grey, guibg = c.bg}},

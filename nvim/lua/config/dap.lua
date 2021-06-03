@@ -45,8 +45,8 @@ vim.fn.sign_define('DapBreakpoint', {text='', texthl='Error', linehl='', numh
 
 require("dapui").setup({
     icons = {
-        expanded = "",
-        collapsed = "",
+        expanded = "",
+        collapsed = "",
         circular = "↺"
     },
     sidebar = {

@@ -1,9 +1,9 @@
 ---------- COMPE CONFIG ----------
 
 local utils = require('seblj.utils')
-local opt, map = utils.opt, utils.map
+local opt, map = vim.opt, utils.map
 
-opt.completeopt = 'menuone,noselect'
+opt.completeopt = {'menuone', 'noselect'}
 map('i', '<C-space>', 'compe#complete()', {expr = true})
 
 require('compe').setup {
@@ -30,3 +30,20 @@ require('compe').setup {
         vsnip = false;
     };
 }
+
+-- vim.g.loaded_compe_buffer = 1
+-- vim.g.loaded_compe_nvim_lsp = 1
+-- vim.g.loaded_compe_nvim_lua = 1
+-- vim.g.loaded_compe_omni = 1
+-- vim.g.loaded_compe_path = 1
+vim.g.loaded_compe_calc = 0
+vim.g.loaded_compe_emoji = 0
+vim.g.loaded_compe_luasnip = 0
+vim.g.loaded_compe_snippets_nvim = 0
+vim.g.loaded_compe_spell = 0
+vim.g.loaded_compe_tags = 0
+vim.g.loaded_compe_treesitter = 0
+vim.g.loaded_compe_ultisnips = 0
+vim.g.loaded_compe_vim_lsc = 0
+vim.g.loaded_compe_vim_lsp = 0
+vim.g.loaded_compe_vsnip = 0

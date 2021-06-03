@@ -10,31 +10,54 @@ diff_commit() {
     fi
 }
 
+# Opens file in grammarly.
+# Convert to txt temporarily since grammarly don't support .tex and .md
+# Deletes file after opening, or on SIGINT.
+# Sleep to allow grammarly to process the file before it is deleted
+grammarly() {
+    file=${1%.*}.txt
+    trap 'rm file' INT
+    cp $1 $file && open -a Grammarly $file && sleep 10s && rm $file
+}
+
 # Kill specified port
 kill_port() {
     kill $(lsof -t -i:$1)
 }
 
+# Always zip recursively and change how zip command work
+# Default to .zip with same name as folder/file
+zip() {
+    zipname=$1
+    if [ $2 ] ; then
+        case $2 in
+            *.*)            zipname=$2;;
+            *)              zipname=$2.zip;;
+        esac
+    fi
+    command zip -r $zipname $1
+}
+
 # Extract files
 extract () {
-     if [ -f $1 ] ; then
-         case $1 in
-             *.tar.bz2)   tar xjf $1        ;;
-             *.tar.gz)    tar xzf $1     ;;
-             *.bz2)       bunzip2 $1       ;;
-             *.rar)       rar x $1     ;;
-             *.gz)        gunzip $1     ;;
-             *.tar)       tar xf $1        ;;
-             *.tbz2)      tar xjf $1      ;;
-             *.tgz)       tar xzf $1       ;;
-             *.zip)       unzip $1     ;;
-             *.Z)         uncompress $1  ;;
-             *.7z)        7z x $1    ;;
-             *)           echo "'$1' cannot be extracted via extract()" ;;
-         esac
-     else
-         echo "'$1' is not a valid file"
-     fi
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1;;
+            *.tar.gz)    tar xzf $1;;
+            *.bz2)       bunzip2 $1;;
+            *.rar)       rar x $1;;
+            *.gz)        gunzip $1;;
+            *.tar)       tar xf $1;;
+            *.tbz2)      tar xjf $1;;
+            *.tgz)       tar xzf $1;;
+            *.zip)       unzip $1;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1;;
+            *)           echo "'$1' cannot be extracted via extract()";;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
 
 # Syncs pwd with a server over ssh
@@ -48,7 +71,7 @@ share() {
 
     fswatch -r0 -Ie $PWD/4913 --event Created --event Updated --event Removed -0 $PWD | while read -d "" event; do
 
-	rsync -avz -q -e "ssh" $PWD $1 &>/dev/null
+    rsync -avz -q -e "ssh" $PWD $1 &>/dev/null
 
     done &
 }

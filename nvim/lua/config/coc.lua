@@ -1,9 +1,9 @@
 ---------- COC CONFIG ----------
 
 local utils = require('seblj.utils')
-local eval, opt, map, cmd, fn = vim.api.nvim_eval, utils.opt, utils.map, vim.cmd, vim.fn
+local eval, opt, map, cmd, fn = vim.api.nvim_eval, vim.opt, utils.map, vim.cmd, vim.fn
 
-opt.completeopt = 'menuone,noinsert,noselect'
+opt.completeopt = {'menuone', 'noinsert', 'noselect'}
 
 map('n', 'gd', ':lua require("config.coc").goto_definition()<CR>', {noremap = false})
 map('n', 'gb', '<C-t>')
@@ -15,7 +15,6 @@ map('n', 'gp', '<Plug>(coc-diagnostic-prev)', {noremap = false})
 map('n', '<leader>ca', ':CocAction<CR>')
 map('n', '<leader>cd', '<Plug>(coc-diagnostic-info)', {noremap = false})
 map('i', '<c-space>', 'coc#refresh()', {expr = true})
-map('n', '<leader>p', ':CocCommand prettier.formatFile<CR>')
 
 -- Autoimport packages
 cmd([[inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]])

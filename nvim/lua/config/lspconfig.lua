@@ -78,11 +78,21 @@ local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
 
 local make_config = function()
     return {
-        -- on_attach = require('lsp_signature').on_attach{
-        --     bind = false,
-        --     use_lspsaga = true
-        -- }
-        on_attach = require('config.lspsaga').setup_lspsaga_signature
+        on_attach = require('lsp_signature').on_attach{
+            bind = true,
+            hi_parameter = "Title",
+            hint_enable = false,
+            handler_opts = {
+                border = "single"
+            }
+        }
+        -- on_attach = function()
+        --     vim.cmd('augroup LspsagaSignatureHelp')
+        --     vim.cmd('autocmd! * <buffer>')
+        --     vim.cmd('autocmd TextChangedI * lua require("config.lspsaga").open_signature_help()')
+        --     vim.cmd('augroup end')
+        -- end
+
     }
 end
 

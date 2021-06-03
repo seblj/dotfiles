@@ -51,8 +51,14 @@ return require('packer').startup(function(use)
         config = [[require('echo-diagnostics').setup{}]],
         cond = nvimlsp
     }
+    local_use {'seblj/nvim-xamarin',
+        config = [[require('xamarin').setup{}]]
+    }
 
     -- Installed plugins
+    -- use {'akinsho/flutter-tools.nvim',
+    --     config = [[require('flutter-tools').setup{}]]
+    -- }
 
     -- Colors / UI
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
@@ -100,7 +106,8 @@ return require('packer').startup(function(use)
         config = [[require('config.compe')]],
         cond = nvimlsp
     }
-    use {'ray-x/lsp_signature.nvim'}
+    -- use {'ray-x/lsp_signature.nvim'}
+    local_use {'seblj/nvim-signaturehelp'}
     use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
         config = [[require('config.lspsaga')]],
         cond = nvimlsp
@@ -134,10 +141,10 @@ return require('packer').startup(function(use)
         config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
     }
 
-    use { "rcarriga/vim-ultest",
+    use {"rcarriga/vim-ultest",                                         -- Testing
         requires = {"vim-test/vim-test"},
         run = ":UpdateRemotePlugins",
-        config = [[require('config.test')]]
+        config = [[require('config.test')]],
     }
 
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
@@ -159,6 +166,7 @@ return require('packer').startup(function(use)
         config = [[require('config.autopairs')]],
     }
     use 'tpope/vim-surround'                                            -- Edit surrounds
+    use {'godlygeek/tabular'}                                           -- Line up text
     use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
     use {'mg979/vim-visual-multi',                                      -- Multiple cursors
         config = [[require('config.multicursor')]]
