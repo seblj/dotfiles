@@ -11,8 +11,8 @@ map('n', 'gd', '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
 
 -- Lspsaga
 map('n', '<leader>cd', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>')
-map('i', '<C-s>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
-map('n', '<C-s>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
+map('i', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<leader>ca', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
 map('n', 'gh', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
 map('n', 'gR', '<cmd>lua require("lspsaga.rename").rename()<CR>')
@@ -78,21 +78,7 @@ local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
 
 local make_config = function()
     return {
-        on_attach = require('lsp_signature').on_attach{
-            bind = true,
-            hi_parameter = "Title",
-            hint_enable = false,
-            handler_opts = {
-                border = "single"
-            }
-        }
-        -- on_attach = function()
-        --     vim.cmd('augroup LspsagaSignatureHelp')
-        --     vim.cmd('autocmd! * <buffer>')
-        --     vim.cmd('autocmd TextChangedI * lua require("config.lspsaga").open_signature_help()')
-        --     vim.cmd('augroup end')
-        -- end
-
+        on_attach = require('config.lspconfig.signature').setup{}
     }
 end
 

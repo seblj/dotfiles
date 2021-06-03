@@ -107,7 +107,6 @@ return require('packer').startup(function(use)
         cond = nvimlsp
     }
     -- use {'ray-x/lsp_signature.nvim'}
-    local_use {'seblj/nvim-signaturehelp'}
     use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
         config = [[require('config.lspsaga')]],
         cond = nvimlsp
