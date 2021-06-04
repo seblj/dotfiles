@@ -9,16 +9,14 @@ local cmd, map = vim.cmd, utils.map
 map('n', 'gr', '<cmd>lua require("telescope.builtin").lsp_references()<CR>')
 map('n', 'gd', '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
 
--- Lspsaga
-map('n', '<leader>cd', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>')
 map('i', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<leader>ca', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
-map('n', 'gh', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
-map('n', 'gR', '<cmd>lua require("lspsaga.rename").rename()<CR>')
-map('n', '<Esc>', '<cmd>lua require("lspsaga.rename").close_rename_win()<CR>')
-map('n', 'gp', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
-map('n', 'gn', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
+map('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>')
+map('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+map('n', 'gp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+map('n', 'gn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+map('n', '<leader>cd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
 map('n', 'gb', '<C-t>')
 map('v', 'gb', '<C-t>')
@@ -35,6 +33,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         update_in_insert = false,
     }
 )
+
+-- Overwrite defaults
+vim.lsp.handlers["textDocument/hover"] = require('config.lspconfig.hover').handler
+vim.lsp.handlers["textDocument/codeAction"] = require('config.lspconfig.codeaction').codeaction
+vim.lsp.buf.rename = require('config.lspconfig.rename').rename
+vim.lsp.diagnostic.show_line_diagnostics = require('config.lspconfig.diagnostic').line_diagnostics
 
 ---------- SIGNS ----------
 
@@ -75,24 +79,39 @@ local python_settings = {
 }
 local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
 
+local fs_cmd = {'dotnet', '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll', '--background-service-enabled'}
 
 local make_config = function()
     return {
-        on_attach = require('config.lspconfig.signature').setup{}
+        -- Needs to be inside a function or else setup is called even though no lsp is attached
+        on_attach = function()
+            require('config.lspconfig.signature').setup{}
+        end
+        -- on_attach = function()
+        --     require('lsp_signature').on_attach{
+        --         bind = true,
+        --         hint_enable = false,
+        --         hi_parameter = "Title",
+        --     }
+        -- end
     }
 end
+
+local user_servers = {'fsautocomplete'}
 
 -- Automatic setup for language servers
 local setup_servers = function()
     if package.loaded['lspinstall'] then return end
-    require'lspinstall'.setup()
+    require('lspinstall').setup()
     local servers = require('lspinstall').installed_servers()
+    servers = vim.tbl_extend('force', servers, user_servers)
     for _, server in pairs(servers) do
         local config = make_config()
 
         if server == 'lua' then config.settings = lua_settings end
         if server == 'python' then config.settings = python_settings end
         if server == 'cpp' then config.filetypes = clang_filetypes end
+        if server == 'fsautocomplete' then config.cmd = fs_cmd end
 
         require('lspconfig')[server].setup(config)
     end
@@ -105,7 +124,3 @@ require('lspinstall').post_install_hook = function()
     setup_servers()
     cmd("bufdo e")
 end
-
-require'lspconfig'.fsautocomplete.setup{
-  cmd = {'dotnet', '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll', '--background-service-enabled'}
-}

@@ -106,11 +106,7 @@ return require('packer').startup(function(use)
         config = [[require('config.compe')]],
         cond = nvimlsp
     }
-    -- use {'ray-x/lsp_signature.nvim'}
-    use {'glepnir/lspsaga.nvim',                                        -- UI for nvimlsp
-        config = [[require('config.lspsaga')]],
-        cond = nvimlsp
-    }
+    use {'ray-x/lsp_signature.nvim'}
     use {'onsails/lspkind-nvim',                                        -- Icons for completion
         config = nvimlsp
     }

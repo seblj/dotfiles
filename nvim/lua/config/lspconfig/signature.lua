@@ -13,20 +13,25 @@ local match_parameter = function(result)
     end
 
     local signature = signatures[1]
-    if signature.parameters == nil then
+    if not signature.parameters then
+        return nil
+    end
+
+    -- Don't highlight paramter if there is less than 2
+    if #signature.parameters < 2 then
         return nil
     end
 
     if not result.activeParameter then return nil end
     local nextParameter = signature.parameters[result.activeParameter + 1]
-    if nextParameter == nil then
+    if not nextParameter then
         return nil
     end
 
-    return signature.label:find(nextParameter.label)
+    return signature.label:find(nextParameter.label, 1, true)
 end
 
-local function signature_handler(_, _, result, _, bufnr, config)
+local signature_handler = function(_, _, result, _, bufnr, config)
     if not result then return end
     local s, l = match_parameter(result)
 
@@ -78,6 +83,9 @@ M.open_signature = function()
         end
         local triggers = client.server_capabilities.signatureHelpProvider.triggerCharacters
 
+        -- csharp has wrong trigger chars for some odd reason
+        if client.name == 'csharp' then triggers = {'(', ','} end
+
         local pos = vim.api.nvim_win_get_cursor(0)
         local line = vim.api.nvim_get_current_line()
         local line_to_cursor = line:sub(1, pos[2])
@@ -95,10 +103,10 @@ M.open_signature = function()
 end
 
 M.setup = function(cfg)
-    vim.api.nvim_command("augroup Signature")
+    vim.cmd('augroup Signature')
     vim.cmd('autocmd! * <buffer>')
     vim.cmd('autocmd TextChangedI * lua require("config.lspconfig.signature").open_signature()')
-    vim.api.nvim_command("augroup end")
+    vim.cmd('augroup end')
 
     M.options = vim.tbl_extend("force", cfg, M.options)
 

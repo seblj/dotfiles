@@ -328,6 +328,7 @@ all {
     {'LspReferenceText', {link = 'CurrentWord'}},
     {'LspReferenceRead', {link = 'CurrentWord'}},
     {'LspReferenceWrite', {link = 'CurrentWord'}},
+    {'LspRenamePrompt', {guifg = c.red}},
 
     ---------- LSPSAGA ----------
 
