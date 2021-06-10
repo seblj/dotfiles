@@ -1,4 +1,5 @@
 local M = {}
+local ui = require('seblj.utils.ui')
 
 M.handler = function(_, method, result, _, _, config)
     config = config or {}
@@ -11,10 +12,11 @@ M.handler = function(_, method, result, _, _, config)
     if vim.tbl_isempty(markdown_lines) then
         return
     end
-    vim.api.nvim_win_set_option(0, 'winhl', 'Normal:Normal')
-    config.border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
-
-    return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+    config = vim.tbl_extend('keep', config, {
+        syntax = 'markdown',
+        lines = markdown_lines,
+    })
+    return ui.popup_create(config)
 end
 
 return M

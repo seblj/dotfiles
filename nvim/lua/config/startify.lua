@@ -6,7 +6,7 @@ g.startify_enable_special = 0
 g.startify_files_number = 5
 
 g.startify_commands = {
-    {'Dotfiles', 'lua require("seblj.utils").edit_dotfiles()'},
+    {'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()'},
     {'PackerSync', 'PackerSync'},
     {'PackerCompile', 'PackerCompile'},
     {'StartupTime', 'StartupTime'},

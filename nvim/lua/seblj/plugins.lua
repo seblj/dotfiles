@@ -51,14 +51,11 @@ return require('packer').startup(function(use)
         config = [[require('echo-diagnostics').setup{}]],
         cond = nvimlsp
     }
-    local_use {'seblj/nvim-xamarin',
+    local_use {'seblj/nvim-xamarin',                                    -- Build Xamarin from Neovim
         config = [[require('xamarin').setup{}]]
     }
 
     -- Installed plugins
-    -- use {'akinsho/flutter-tools.nvim',
-    --     config = [[require('flutter-tools').setup{}]]
-    -- }
 
     -- Colors / UI
     use {'norcalli/nvim-colorizer.lua',                                 -- Color highlighter
@@ -83,7 +80,6 @@ return require('packer').startup(function(use)
             vim.g.conflict_marker_end   = '^>>>>>>> .*$'
             vim.g.conflict_marker_enable_mappings = 0
         end
-
     }
 
     -- Treesitter
@@ -107,9 +103,8 @@ return require('packer').startup(function(use)
         cond = nvimlsp
     }
     use {'ray-x/lsp_signature.nvim'}
-    use {'onsails/lspkind-nvim',                                        -- Icons for completion
-        config = nvimlsp
-    }
+    use {'onsails/lspkind-nvim'}                                        -- Icons for completion
+
     use {'neoclide/coc.nvim',                                           -- LSP
         branch = 'release',
         config = [[require('config.coc')]],
@@ -123,6 +118,7 @@ return require('packer').startup(function(use)
                     'nvim-telescope/telescope-fzy-native.nvim'},
         config = [[require('config.telescope')]]
     }
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }     -- FZF algorithm for telescope
     use {'fannheyward/telescope-coc.nvim',                              -- Telescope extension for coc
         config = [[require('telescope').load_extension('coc')]],
         cond = coc
@@ -136,10 +132,12 @@ return require('packer').startup(function(use)
         config = map('n', '<leader>m', ':MaximizerToggle!<CR>')
     }
 
-    use {"rcarriga/vim-ultest",                                         -- Testing
-        requires = {"vim-test/vim-test"},
-        run = ":UpdateRemotePlugins",
+    use {"vim-test/vim-test",                                           -- Testing
         config = [[require('config.test')]],
+    }
+    use {"rcarriga/vim-ultest",                                         -- Testing UI
+        run = ":UpdateRemotePlugins",
+        -- cond = function() return false end
     }
 
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
@@ -163,9 +161,6 @@ return require('packer').startup(function(use)
     use 'tpope/vim-surround'                                            -- Edit surrounds
     use {'godlygeek/tabular'}                                           -- Line up text
     use 'tpope/vim-repeat'                                              -- Reapat custom commands with .
-    use {'mg979/vim-visual-multi',                                      -- Multiple cursors
-        config = [[require('config.multicursor')]]
-    }
     use {'lervag/vimtex',                                               -- Latex
         config = [[require('config.vimtex')]]
     }

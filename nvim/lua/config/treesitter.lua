@@ -4,15 +4,14 @@ require('nvim-treesitter.configs').setup {
     ensure_installed = "maintained",
     highlight = {
         enable = true,
-        disable = {"latex"}
+        disable = {'latex', 'markdown'}
     },
 }
 
-require("nvim-treesitter.highlight")
 local hlmap = vim.treesitter.highlighter.hl_map
 hlmap["custom-type"]= "TSCustomType"
 
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
     textobjects = {
         select = {
             enable = true,
@@ -42,7 +41,8 @@ require'nvim-treesitter.configs'.setup {
 
     -- Comments
     context_commentstring = {
-        enable = true
+        enable = true,
+        disable = {'c'}
     },
 
     autotag = {

@@ -1,6 +1,5 @@
 local M = {}
-local pos = {}
-local ui = require('config.lspconfig.ui')
+local ui = require('seblj.utils.ui')
 
 local options = {
     prompt = '> '
@@ -9,10 +8,6 @@ local options = {
 M.confirm = function()
     local new_name = vim.trim(vim.fn.getline('.'):sub(#options.prompt+1, -1))
     vim.api.nvim_win_close(0, true)
-    if not vim.tbl_isempty(pos) then
-        vim.api.nvim_win_set_cursor(0, pos)
-    end
-    pos = {}
     local params = vim.lsp.util.make_position_params()
     local current_name = vim.fn.expand('<cword>')
     vim.cmd('stopinsert')
@@ -24,16 +19,17 @@ M.confirm = function()
 end
 
 M.rename = function()
-
-    pos[1], pos[2] = vim.fn.line('.'),vim.fn.col('.')
-    ui.popup_create({
-        modifiable = true,
+    local popup_bufnr, _ = ui.popup_create({
+        width = 30,
+        height = 1,
         enter = true,
         prompt = {
             enable = true,
-            prefix = options.prompt
+            prefix = options.prompt,
+            highlight = 'LspRenamePrompt'
         }
     })
+    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_set_keymap(0, 'i', '<CR>', '<cmd>lua require("config.lspconfig.rename").confirm()<CR>', {silent = true})
     vim.cmd('startinsert')
 end

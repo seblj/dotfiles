@@ -1,9 +1,7 @@
 local M = {}
-local ui = require('config.lspconfig.ui')
+local ui = require('seblj.utils.ui')
 
-M.line_diagnostics = function()
-    local opts = {}
-
+M.show_line_diagnostics = function()
     local lines = {}
     local highlights = {}
 
@@ -24,17 +22,16 @@ M.line_diagnostics = function()
         end
     end
 
-    opts.border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
-    opts.focus_id = "line_diagnostics"
     local width = ui.calculate_width(lines)
-    lines = { "Diagnostics: ", string.rep('─', width), unpack(lines) }
-    local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, 'plaintext', opts)
-    vim.api.nvim_win_set_option(winnr, "winhl","Normal:Normal")
+    lines = { "Diagnostics: ", string.rep(ui.border_line, width), unpack(lines) }
+    local popup_bufnr, winnr = ui.popup_create({
+        lines = lines,
+        focus_id = "line_diagnostics"
+    })
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
 
     for i, hi in ipairs(highlights) do
         local prefixlen, hiname = unpack(hi)
-        -- Start highlight after the prefix
         vim.api.nvim_buf_add_highlight(popup_bufnr, -1, hiname, i+1, prefixlen, -1)
     end
 

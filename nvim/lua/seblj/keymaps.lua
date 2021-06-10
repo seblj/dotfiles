@@ -50,6 +50,7 @@ map('n', 'ª', ':m.-2<CR>==')                                                   
 map('v', 'ª', ":m '<-2<CR>gv=gv")                                               -- Move line with Alt-k
 map('i' ,'ª', '<Esc>:m .-2<CR>==gi')                                            -- Move line with Alt-k
 
+map('n', 'gca', '<cmd>lua require("seblj.utils").toggle_commenstring()<CR>')
 map('n', '<leader>j', 'J')                                                      -- Join lines
 
 map('n', 'J', '10j')                                                            -- 10 lines down with J

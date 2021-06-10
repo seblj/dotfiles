@@ -19,6 +19,8 @@ source $HOME/.config/zsh/aliases.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/vim.zsh
 
+eval "$(pyenv init -)"
+
 autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 

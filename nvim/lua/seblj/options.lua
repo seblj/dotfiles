@@ -31,4 +31,4 @@ opt.shortmess = opt.shortmess + 'c'
 cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
 
 g.vimsyn_embed = 'l'
-g.python3_host_prog = '/usr/local/bin/python3'
+g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'

@@ -26,5 +26,6 @@ end
 
 npairs.setup({
     ignored_next_char = "[^])}>]",
-    close_triple_quotes = true
+    close_triple_quotes = true,
+    disable_filetype = { 'TelescopePrompt', 'UIPrompt'}
 })

@@ -1,6 +1,6 @@
 ---------- UTILS ----------
 
-local eval, cmd, fn, exec = vim.api.nvim_eval, vim.cmd, vim.fn, vim.api.nvim_exec
+local eval, cmd, fn = vim.api.nvim_eval, vim.cmd, vim.fn
 
 local M = {}
 
@@ -11,67 +11,11 @@ M.map = function(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
--- Telescope function for quick edit of dotfiles
-M.edit_dotfiles = function()
-    require('telescope.builtin').find_files{
-        cwd = "~/dotfiles",
-        prompt_title = "Dotfiles",
-        hidden = true,
-        file_ignore_patterns = { '.git/' }
-    }
-end
-
-M.installed_plugins = function()
-    require('telescope.builtin').find_files{
-        cwd = "~/.local/share/nvim/site/pack/packer/",
-        follow = true,
-        prompt_title = "Plugins",
-    }
-end
-
--- Searches from current dir if not git repo
--- Searches from root of git dir if git repo.
--- Set prompt-title to directory searching from
-M.find_files = function()
-    local curr_dir = exec([[pwd]], true)
-    local dir = fn.fnamemodify(curr_dir, ':t')
-    require("telescope.builtin").find_files {
-        prompt_title = dir,
-    }
-end
-
-M.git_files = function()
-    local git_root = fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub("%s+", "")
-    local dir = fn.fnamemodify(git_root, ':t')
-    require("telescope.builtin").git_files {
-        prompt_title = dir,
-        recurse_submodules = true,
-        show_untracked = false
-    }
-end
-
--- Live grep from root of git repo, if it is a repo
--- Else grep current directory
-M.live_grep = function()
-    local git_root = fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub("%s+", "")
-    local curr_dir = fn.expand('%:p:h:t')
-    if git_root == '' or git_root == nil then
-        require("telescope.builtin").live_grep {
-            prompt_title = curr_dir
-        }
-    else
-        local dir = fn.fnamemodify(git_root, ':t')
-        require("telescope.builtin").live_grep {
-            cwd = git_root,
-            prompt_title = dir
-        }
-    end
-end
-
 -- cd to directory of current buffer
 M.cd = function()
     local dir = fn.expand('%:p:h')
     cmd('cd ' .. dir)
+    vim.api.nvim_echo({{"cd " .. dir}}, false, {})
 end
 
 -- Function to execute macro over a visual range
@@ -105,6 +49,27 @@ M.reload_config = function()
             require(pack)
         end
     end
+    vim.api.nvim_echo({{"Reloaded config"}}, false, {}) -- Don't add to message history
+end
+
+local switch_commentstring = function(commentstrings)
+    local current = vim.api.nvim_buf_get_option(0, 'commentstring')
+    for _, cs in pairs(commentstrings) do
+        if not current:find(cs, 1, true) then
+            return cs
+        end
+    end
+end
+
+M.toggle_commenstring = function()
+    local commentstrings = {
+        c = {'//%s', '/*%s*/'}
+    }
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    if not commentstrings[ft] then return end
+    local commentstring = switch_commentstring(commentstrings[ft])
+    vim.api.nvim_buf_set_option(0, 'commentstring', commentstring)
+    vim.api.nvim_echo({{string.format('Now using %s', commentstring)}}, false, {})
 end
 
 -- Use arrowkeys for cnext and cprev only in quickfixlist
@@ -154,6 +119,29 @@ M.save_and_exec = function()
     end
 end
 
+-- Functions for highlighting
+
+M.highlight = function(name, opts)
+    if not opts.guisp then opts.guisp = 'NONE' end
+    if not opts.gui then opts.gui = 'NONE' end
+    if name and vim.tbl_count(opts) > 0 then
+        if opts.link and opts.link ~= "" then
+            vim.cmd("highlight!" .. " link " .. name .. " " .. opts.link)
+        else
+            local command = {"highlight!", name}
+            for k, v in pairs(opts) do
+                table.insert(command, string.format("%s=", k) .. v)
+            end
+            vim.cmd(table.concat(command, " "))
+        end
+    end
+end
+
+M.highlight_all = function(hls)
+    for _, hl in ipairs(hls) do
+        M.highlight(unpack(hl))
+    end
+end
 
 ---------- RESIZE SPLITS ----------
 
@@ -221,7 +209,6 @@ M.resize_right = function()
 end
 
 ----------------------------------------
-
 
 ---------- HIDE CURSOR ----------
 

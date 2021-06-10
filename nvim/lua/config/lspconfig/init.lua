@@ -34,11 +34,13 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
--- Overwrite defaults
+---------- OVERWRITES ----------
+
 vim.lsp.handlers["textDocument/hover"] = require('config.lspconfig.hover').handler
-vim.lsp.handlers["textDocument/codeAction"] = require('config.lspconfig.codeaction').codeaction
+vim.lsp.handlers["textDocument/codeAction"] = require('config.lspconfig.codeaction').handler
+vim.lsp.handlers["textDocument/signatureHelp"] = require('config.lspconfig.signature').handler
 vim.lsp.buf.rename = require('config.lspconfig.rename').rename
-vim.lsp.diagnostic.show_line_diagnostics = require('config.lspconfig.diagnostic').line_diagnostics
+vim.lsp.diagnostic.show_line_diagnostics = require('config.lspconfig.diagnostic').show_line_diagnostics
 
 ---------- SIGNS ----------
 

@@ -8,30 +8,31 @@ M.options = {
 
 local match_parameter = function(result)
     local signatures = result.signatures
-    if #signatures == 0 then
-        return nil
-    end
+    if #signatures == 0 then return nil end
 
     local signature = signatures[1]
-    if not signature.parameters then
-        return nil
-    end
+    if not signature.parameters then return nil end
 
     -- Don't highlight paramter if there is less than 2
-    if #signature.parameters < 2 then
-        return nil
-    end
+    if #signature.parameters < 2 then return nil end
 
-    if not result.activeParameter then return nil end
-    local nextParameter = signature.parameters[result.activeParameter + 1]
-    if not nextParameter then
-        return nil
-    end
+    local activeParameter = signature.activeParameter or result.activeParameter
+    if not activeParameter then return nil end
 
-    return signature.label:find(nextParameter.label, 1, true)
+    local nextParameter = signature.parameters[activeParameter + 1]
+    if not nextParameter then return nil end
+
+    local parameter = signature.parameters[1]
+    if not parameter or not parameter.label then return nil end
+
+    if type(parameter.label) == 'string' then
+        return signature.label:find(nextParameter.label, 1, true)
+    elseif type(parameter.label) == 'table' then
+        return nextParameter.label[1]+1, nextParameter.label[2]
+    end
 end
 
-local signature_handler = function(_, _, result, _, bufnr, config)
+M.handler = function(_, _, result, _, bufnr, config)
     if not result then return end
     local s, l = match_parameter(result)
 
@@ -42,6 +43,7 @@ local signature_handler = function(_, _, result, _, bufnr, config)
     if not lines then return end
     lines = vim.lsp.util.trim_empty_lines(lines)
 
+    config = config or {}
     config.border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
     config.max_width = M.options.max_width
     config.max_height = M.options.max_height
@@ -97,7 +99,7 @@ M.open_signature = function()
 
     if triggered then
         local params = vim.lsp.util.make_position_params()
-        local handler = vim.lsp.with(signature_handler, {})
+        local handler = vim.lsp.with(M.handler, {})
         vim.lsp.buf_request(0, "textDocument/signatureHelp", params, handler)
     end
 end
@@ -109,8 +111,6 @@ M.setup = function(cfg)
     vim.cmd('augroup end')
 
     M.options = vim.tbl_extend("force", cfg, M.options)
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(signature_handler, {})
 end
 
 return M

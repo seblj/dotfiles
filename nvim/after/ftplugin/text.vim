@@ -1,1 +1,1 @@
-set spell
+setlocal spell
