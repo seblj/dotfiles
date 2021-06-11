@@ -1,5 +1,3 @@
-lua << EOF
-
 local gitmoji = function(text, emoji)
     vim.cmd([[silent! execute('%s/]] .. string.format([[%s/%s/gI')]], text, emoji))
 end
@@ -69,5 +67,3 @@ gitmoji(':passport_control:', '🛂')
 gitmoji(':adhesive_bandage:', '🩹')
 gitmoji(':monocle_face:', '🧐')
 gitmoji(':coffin:', '⚰️')
-
-EOF

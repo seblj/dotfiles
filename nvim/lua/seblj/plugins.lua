@@ -137,7 +137,7 @@ return require('packer').startup(function(use)
     }
     use {"rcarriga/vim-ultest",                                         -- Testing UI
         run = ":UpdateRemotePlugins",
-        -- cond = function() return false end
+        cond = function() return false end
     }
 
     use {'kyazdani42/nvim-tree.lua',                                    -- Filetree
