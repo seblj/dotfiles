@@ -6,13 +6,13 @@ g.startify_enable_special = 0
 g.startify_files_number = 5
 
 g.startify_commands = {
-    {'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()'},
-    {'PackerSync', 'PackerSync'},
-    {'PackerCompile', 'PackerCompile'},
-    {'StartupTime', 'StartupTime'},
+    { 'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()' },
+    { 'PackerSync', 'PackerSync' },
+    { 'PackerCompile', 'PackerCompile' },
+    { 'StartupTime', 'StartupTime' },
 }
 
 g.startify_lists = {
-    {type = 'commands', header = {'   Commands'}},
-    {type = 'files',    header = {'   MRU'}},
+    { type = 'commands', header = { '   Commands' } },
+    { type = 'files', header = { '   MRU' } },
 }

@@ -3,18 +3,18 @@
 local utils = require('seblj.utils')
 local map = utils.map
 
-require('gitsigns').setup {
+require('gitsigns').setup({
     signs = {
-        add = {hl = 'GitGutterAdd'   , text = '+'},
-        change = {hl = 'GitGutterChange', text = '~'},
-        delete = {hl = 'GitGutterDelete', text = '_'},
-        topdelete = {hl = 'GitGutterDelete', text = '‾'},
-        changedelete = {hl = 'GitGutterChangeDelete', text = '~_'},
+        add = { hl = 'GitGutterAdd', text = '+' },
+        change = { hl = 'GitGutterChange', text = '~' },
+        delete = { hl = 'GitGutterDelete', text = '_' },
+        topdelete = { hl = 'GitGutterDelete', text = '‾' },
+        changedelete = { hl = 'GitGutterChangeDelete', text = '~_' },
     },
     use_decoration_api = false,
     max_file_length = 200000,
     keymaps = {},
-}
+})
 
 map('n', '<leader>gm', '<cmd>Gitsigns blame_line<CR>')
 map('n', '<leader>gn', '<cmd>Gitsigns next_hunk<CR>')

@@ -3,33 +3,33 @@
 local utils = require('seblj.utils')
 local opt, map = vim.opt, utils.map
 
-opt.completeopt = {'menuone', 'noselect'}
-map('i', '<C-space>', 'compe#complete()', {expr = true})
+opt.completeopt = { 'menuone', 'noselect' }
+map('i', '<C-space>', 'compe#complete()', { expr = true })
 
-require('compe').setup {
-    enabled = true;
-    autocomplete = true;
-    debug = false;
-    min_length = 1;
-    preselect = 'enable';
-    throttle_time = 80;
-    source_timeout = 200;
-    incomplete_delay = 400;
-    max_abbr_width = 100;
-    max_kind_width = 100;
-    max_menu_width = 100;
-    documentation = true;
-    allow_prefix_unmatch = false;
+require('compe').setup({
+    enabled = true,
+    autocomplete = true,
+    debug = false,
+    min_length = 1,
+    preselect = 'enable',
+    throttle_time = 80,
+    source_timeout = 200,
+    incomplete_delay = 400,
+    max_abbr_width = 100,
+    max_kind_width = 100,
+    max_menu_width = 100,
+    documentation = true,
+    allow_prefix_unmatch = false,
 
     source = {
-        path = true;
-        buffer = true;
-        calc = false;
-        nvim_lsp = true;
-        nvim_lua = true;
-        vsnip = false;
-    };
-}
+        path = true,
+        buffer = true,
+        calc = false,
+        nvim_lsp = true,
+        nvim_lua = true,
+        vsnip = false,
+    },
+})
 
 -- vim.g.loaded_compe_buffer = 1
 -- vim.g.loaded_compe_nvim_lsp = 1

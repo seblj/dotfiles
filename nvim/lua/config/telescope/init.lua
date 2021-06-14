@@ -3,9 +3,9 @@
 local utils = require('seblj.utils')
 local map = utils.map
 
-require('telescope').setup{
+require('telescope').setup({
     defaults = {
-        file_sorter =  require('telescope.sorters').get_fzy_sorter,
+        file_sorter = require('telescope.sorters').get_fzy_sorter,
     },
     extensions = {
         -- fzy_native = {
@@ -15,9 +15,9 @@ require('telescope').setup{
         fzf = {
             override_file_sorter = true,
             override_generic_sorter = true,
-        }
-    }
-}
+        },
+    },
+})
 -- require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('fzf')
 

@@ -10,19 +10,19 @@ local dap = require('dap')
 dap.adapters.cpp = {
     type = 'executable',
     attach = {
-        pidProperty = "pid",
-        pidSelect = "ask"
+        pidProperty = 'pid',
+        pidSelect = 'ask',
     },
     command = 'lldb-vscode',
     env = {
-        LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES"
+        LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = 'YES',
     },
-    name = "lldb"
+    name = 'lldb',
 }
 dap.adapters.python = {
-    type = 'executable';
-    command = '/Users/sebastianlyngjohansen/.virtualenvs/debugpy/bin/python3';
-    args = { '-m', 'debugpy.adapter' };
+    type = 'executable',
+    command = '/Users/sebastianlyngjohansen/.virtualenvs/debugpy/bin/python3',
+    args = { '-m', 'debugpy.adapter' },
 }
 
 ---------- MAPPINGS ----------
@@ -33,39 +33,37 @@ map('n', '<leader>dl', '<cmd>lua require("dap").step_into()<CR>')
 map('n', '<leader>dj', '<cmd>lua require("dap").step_over()<CR>')
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
-    continue = {'.continue', '.c', 'c'},
-    next_ = {'.next', '.n', 'n'},
-    into = {'.into, .i, i'},
+    continue = { '.continue', '.c', 'c' },
+    next_ = { '.next', '.n', 'n' },
+    into = { '.into, .i, i' },
 })
-
 
 ---------- UI ----------
 
-vim.fn.sign_define('DapBreakpoint', {text='', texthl='Error', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'Error', linehl = '', numhl = '' })
 
-require("dapui").setup({
+require('dapui').setup({
     icons = {
-        expanded = "",
-        collapsed = "",
-        circular = "↺"
+        expanded = '',
+        collapsed = '',
+        circular = '↺',
     },
     sidebar = {
         elements = {
-            "scopes",
-            "watches"
+            'scopes',
+            'watches',
         },
         width = 40,
-        position = "left"
+        position = 'left',
     },
     tray = {
         elements = {
-            'repl'
+            'repl',
         },
         height = 10,
-        position = "bottom"
+        position = 'bottom',
     },
 })
-
 
 ---------- COMMANDS ----------
 
@@ -76,10 +74,10 @@ cmd([[command! -complete=file -nargs=* DebugRust lua require "config.dap".start_
 
 dap.configurations.python = {
     {
-        type = 'python';
-        request = 'launch';
-        name = "Launch file";
-        program = "${file}";
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file',
+        program = '${file}',
         pythonPath = function()
             -- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
             local cwd = vim.fn.getcwd()
@@ -90,11 +88,9 @@ dap.configurations.python = {
             else
                 return '/usr/local/bin/python3'
             end
-        end;
+        end,
     },
 }
-
-
 
 local M = {}
 local last_gdb_config
@@ -102,16 +98,16 @@ local last_gdb_config
 M.start_c_debugger = function(args, mi_mode, mi_debugger_path)
     if args and #args > 0 then
         last_gdb_config = {
-            type = "cpp",
+            type = 'cpp',
             name = args[1],
-            request = "launch",
+            request = 'launch',
             program = table.remove(args, 1),
             args = args,
             cwd = vim.fn.getcwd(),
-            env = {"VAR1=value1", "VAR2=value"},
+            env = { 'VAR1=value1', 'VAR2=value' },
             externalConsole = true,
-            MIMode = mi_mode or "gdb",
-            MIDebuggerPath = mi_debugger_path
+            MIMode = mi_mode or 'gdb',
+            MIDebuggerPath = mi_debugger_path,
         }
     end
 

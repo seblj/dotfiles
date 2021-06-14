@@ -6,8 +6,10 @@ local M = {}
 
 -- Set mappings
 M.map = function(mode, lhs, rhs, opts)
-    local options = {noremap = true, silent = true}
-    if opts then options = vim.tbl_extend('force', options, opts) end
+    local options = { noremap = true, silent = true }
+    if opts then
+        options = vim.tbl_extend('force', options, opts)
+    end
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
@@ -15,7 +17,7 @@ end
 M.cd = function()
     local dir = fn.expand('%:p:h')
     cmd('cd ' .. dir)
-    vim.api.nvim_echo({{"cd " .. dir}}, false, {})
+    vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
 end
 
 -- Function to execute macro over a visual range
@@ -28,12 +30,12 @@ end
 -- Should work both with and without tree-sitter.
 -- Dependant on tree-sitter setting syntax to empty
 M.syn_stack = function()
-    if (eval('&syntax') == '') then
-        if (eval("exists(':TSHighlightCapturesUnderCursor')") == 2) then
+    if eval('&syntax') == '' then
+        if eval("exists(':TSHighlightCapturesUnderCursor')") == 2 then
             cmd([[TSHighlightCapturesUnderCursor]])
         end
     else
-        if (eval("!exists('*synstack')") == 1) then
+        if eval("!exists('*synstack')") == 1 then
             return
         end
         cmd([[echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')]])
@@ -49,7 +51,7 @@ M.reload_config = function()
             require(pack)
         end
     end
-    vim.api.nvim_echo({{"Reloaded config"}}, false, {}) -- Don't add to message history
+    vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
 local switch_commentstring = function(commentstrings)
@@ -63,27 +65,29 @@ end
 
 M.toggle_commenstring = function()
     local commentstrings = {
-        c = {'//%s', '/*%s*/'}
+        c = { '//%s', '/*%s*/' },
     }
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    if not commentstrings[ft] then return end
+    if not commentstrings[ft] then
+        return
+    end
     local commentstring = switch_commentstring(commentstrings[ft])
     vim.api.nvim_buf_set_option(0, 'commentstring', commentstring)
-    vim.api.nvim_echo({{string.format('Now using %s', commentstring)}}, false, {})
+    vim.api.nvim_echo({ { string.format('Now using %s', commentstring) } }, false, {})
 end
 
 -- Use arrowkeys for cnext and cprev only in quickfixlist
 M.quickfix = function(key)
-    if (eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1) then
-        if (key == 'down') then
+    if eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1 then
+        if key == 'down' then
             cmd('normal j')
-        elseif (key == 'up') then
+        elseif key == 'up' then
             cmd('normal k')
         end
     else
-        if (key == 'down') then
+        if key == 'down' then
             cmd('silent! cnext')
-        elseif (key == 'up') then
+        elseif key == 'up' then
             cmd('silent! cprev')
         end
     end
@@ -103,17 +107,24 @@ M.save_and_exec = function()
         cmd('sp')
         cmd('term python3 %')
         cmd('startinsert')
-    -- Use chansend for C, because it won't tell me if I segfault etc by doing 'term ...'
+        -- Use chansend for C, because it won't tell me if I segfault etc by doing 'term ...'
     elseif ft == 'c' then
         cmd('silent! write')
         cmd('sp')
         local file = eval('expand("%")')
         local output = eval('expand("%:r")')
         cmd('term')
-        cmd(string.format([[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]], eval('b:terminal_job_id'), file, output, output, output))
+        cmd(string.format(
+            [[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]],
+            eval('b:terminal_job_id'),
+            file,
+            output,
+            output,
+            output
+        ))
         cmd('nmap <silent> q :q<CR>')
         cmd('stopinsert')
-    -- Not really save and exec, but think it fits nicely in here for mapping
+        -- Not really save and exec, but think it fits nicely in here for mapping
     elseif ft == 'http' then
         cmd('lua require("rest-nvim").run()')
     end
@@ -122,17 +133,21 @@ end
 -- Functions for highlighting
 
 M.highlight = function(name, opts)
-    if not opts.guisp then opts.guisp = 'NONE' end
-    if not opts.gui then opts.gui = 'NONE' end
+    if not opts.guisp then
+        opts.guisp = 'NONE'
+    end
+    if not opts.gui then
+        opts.gui = 'NONE'
+    end
     if name and vim.tbl_count(opts) > 0 then
-        if opts.link and opts.link ~= "" then
-            vim.cmd("highlight!" .. " link " .. name .. " " .. opts.link)
+        if opts.link and opts.link ~= '' then
+            vim.cmd('highlight!' .. ' link ' .. name .. ' ' .. opts.link)
         else
-            local command = {"highlight!", name}
+            local command = { 'highlight!', name }
             for k, v in pairs(opts) do
-                table.insert(command, string.format("%s=", k) .. v)
+                table.insert(command, string.format('%s=', k) .. v)
             end
-            vim.cmd(table.concat(command, " "))
+            vim.cmd(table.concat(command, ' '))
         end
     end
 end
@@ -149,35 +164,35 @@ end
 
 local resize_size = 1
 
-local pos_size = "+"..resize_size
-local neg_size = "-"..resize_size
+local pos_size = '+' .. resize_size
+local neg_size = '-' .. resize_size
 
 local get_direction = function(pos)
     local this = fn.winnr()
-    cmd(string.format("wincmd %s", pos))
+    cmd(string.format('wincmd %s', pos))
     local next = fn.winnr()
-    cmd(string.format("%s wincmd w", this))
+    cmd(string.format('%s wincmd w', this))
     return this == next
 end
 
 local is_bottom_window = function()
-    local is_top = get_direction("k")
-    local is_bottom = get_direction("j")
+    local is_top = get_direction('k')
+    local is_bottom = get_direction('j')
     return is_bottom and not is_top
 end
 
 local is_right_window = function()
-    local is_left = get_direction("h")
-    local is_right = get_direction("l")
+    local is_left = get_direction('h')
+    local is_right = get_direction('l')
     return is_right and not is_left
 end
 
 local resize_vertical = function(size)
-    cmd(string.format("vertical resize %s", size))
+    cmd(string.format('vertical resize %s', size))
 end
 
 local resize_horizontal = function(size)
-    cmd(string.format("resize %s", size))
+    cmd(string.format('resize %s', size))
 end
 
 M.resize_up = function()

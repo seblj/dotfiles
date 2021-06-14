@@ -1,17 +1,17 @@
 ---------- TREESITTER CONFIG ----------
 
-require('nvim-treesitter.configs').setup {
-    ensure_installed = "maintained",
+require('nvim-treesitter.configs').setup({
+    ensure_installed = 'maintained',
     highlight = {
         enable = true,
-        disable = {'latex'}
+        disable = { 'latex' },
     },
-}
+})
 
 local hlmap = vim.treesitter.highlighter.hl_map
-hlmap["custom-type"]= "TSCustomType"
+hlmap['custom-type'] = 'TSCustomType'
 
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
     textobjects = {
         select = {
             enable = true,
@@ -42,10 +42,10 @@ require('nvim-treesitter.configs').setup {
     -- Comments
     context_commentstring = {
         enable = true,
-        disable = {'c'}
+        disable = { 'c' },
     },
 
     autotag = {
         enable = true,
-    }
-}
+    },
+})

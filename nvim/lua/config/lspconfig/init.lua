@@ -26,31 +26,37 @@ map('v', 'gb', '<C-t>')
 
 ---------- DIAGNOSTICS ----------
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = true,
-        signs = true,
-        update_in_insert = false,
-    }
-)
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true,
+    signs = true,
+    update_in_insert = false,
+})
 
 ---------- OVERWRITES ----------
 
-vim.lsp.handlers["textDocument/hover"] = require('config.lspconfig.hover').handler
-vim.lsp.handlers["textDocument/codeAction"] = require('config.lspconfig.codeaction').handler
-vim.lsp.handlers["textDocument/signatureHelp"] = require('config.lspconfig.signature').handler
+vim.lsp.handlers['textDocument/hover'] = require('config.lspconfig.hover').handler
+vim.lsp.handlers['textDocument/codeAction'] = require('config.lspconfig.codeaction').handler
+vim.lsp.handlers['textDocument/signatureHelp'] = require('config.lspconfig.signature').handler
 vim.lsp.buf.rename = require('config.lspconfig.rename').rename
 vim.lsp.diagnostic.show_line_diagnostics = require('config.lspconfig.diagnostic').show_line_diagnostics
 
 ---------- SIGNS ----------
 
-vim.api.nvim_call_function("sign_define", {"LspDiagnosticsSignError", {text = "✘", texthl = "LspDiagnosticsSignError"}})
-vim.api.nvim_call_function("sign_define", {"LspDiagnosticsSignWarning", {text = "", texthl = "LspDiagnosticsSignWarning"}})
-vim.api.nvim_call_function("sign_define", {"LspDiagnosticsSignHint", {text = "", texthl = "LspDiagnosticsSignHint"}})
+vim.api.nvim_call_function(
+    'sign_define',
+    { 'LspDiagnosticsSignError', { text = '✘', texthl = 'LspDiagnosticsSignError' } }
+)
+vim.api.nvim_call_function('sign_define', {
+    'LspDiagnosticsSignWarning',
+    { text = '', texthl = 'LspDiagnosticsSignWarning' },
+})
+vim.api.nvim_call_function(
+    'sign_define',
+    { 'LspDiagnosticsSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' } }
+)
 -- vim.api.nvim_call_function("sign_define", {"LspDiagnosticsSignInformation", {text = "", texthl = "LspDiagnosticsSignInformation"}})
 
 require('lspkind').init()
-
 
 ---------- LANGUAGE SERVERS ----------
 
@@ -62,7 +68,7 @@ local lua_settings = {
             path = vim.split(package.path, ';'),
         },
         diagnostics = {
-            globals = {'vim'},
+            globals = { 'vim' },
         },
         workspace = {
             library = {
@@ -75,20 +81,24 @@ local lua_settings = {
 local python_settings = {
     python = {
         analysis = {
-            typeCheckingMode = 'off'
-        }
-    }
+            typeCheckingMode = 'off',
+        },
+    },
 }
-local clang_filetypes = {"c", "cpp", "objc", "objcpp", "cuda"}
+local clang_filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
 
-local fs_cmd = {'dotnet', '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll', '--background-service-enabled'}
+local fs_cmd = {
+    'dotnet',
+    '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll',
+    '--background-service-enabled',
+}
 
 local make_config = function()
     return {
         -- Needs to be inside a function or else setup is called even though no lsp is attached
         on_attach = function()
-            require('config.lspconfig.signature').setup{}
-        end
+            require('config.lspconfig.signature').setup({})
+        end,
         -- on_attach = function()
         --     require('lsp_signature').on_attach{
         --         bind = true,
@@ -99,21 +109,31 @@ local make_config = function()
     }
 end
 
-local user_servers = {'fsautocomplete'}
+local user_servers = { 'fsautocomplete' }
 
 -- Automatic setup for language servers
 local setup_servers = function()
-    if package.loaded['lspinstall'] then return end
+    if package.loaded['lspinstall'] then
+        return
+    end
     require('lspinstall').setup()
     local servers = require('lspinstall').installed_servers()
     servers = vim.tbl_extend('force', servers, user_servers)
     for _, server in pairs(servers) do
         local config = make_config()
 
-        if server == 'lua' then config.settings = lua_settings end
-        if server == 'python' then config.settings = python_settings end
-        if server == 'cpp' then config.filetypes = clang_filetypes end
-        if server == 'fsautocomplete' then config.cmd = fs_cmd end
+        if server == 'lua' then
+            config.settings = lua_settings
+        end
+        if server == 'python' then
+            config.settings = python_settings
+        end
+        if server == 'cpp' then
+            config.filetypes = clang_filetypes
+        end
+        if server == 'fsautocomplete' then
+            config.cmd = fs_cmd
+        end
 
         require('lspconfig')[server].setup(config)
     end
@@ -124,5 +144,5 @@ setup_servers()
 -- Reload after install
 require('lspinstall').post_install_hook = function()
     setup_servers()
-    cmd("bufdo e")
+    cmd('bufdo e')
 end

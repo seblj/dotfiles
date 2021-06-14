@@ -1,8 +1,7 @@
 ---------- OPTIONS ----------
 local cmd, g, opt = vim.cmd, vim.g, vim.opt
 
-cmd('colorscheme custom')
-cmd('filetype plugin indent on')
+cmd('colorscheme colorscheme')
 
 opt.splitbelow = true
 opt.splitright = true
@@ -28,7 +27,7 @@ opt.undofile = true
 opt.undolevels = 1000
 opt.shortmess = opt.shortmess + 'c'
 
-cmd([[autocmd FileType * setlocal formatoptions-=o formatoptions+=r]])
+cmd('autocmd BufEnter * setlocal formatoptions-=o formatoptions+=r')
 
 g.vimsyn_embed = 'l'
 g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'
