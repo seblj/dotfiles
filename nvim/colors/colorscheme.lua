@@ -14,6 +14,7 @@ vim.g.colors_name = 'colorscheme'
 local c = {
     bg = '#1c1c1c',
     bg2 = '#363944',
+    bg3 = '#121212',
     fg = '#eeeeee',
     error = '#ff0033',
     diff_red = '#55393d',
@@ -85,9 +86,9 @@ all({
     { 'StatusLineNC', { guifg = c.grey, guibg = c.bg } },
     { 'StatusLineTermNC', { guifg = c.grey, guibg = c.bg } },
 
-    { 'TabLine', { guifg = 'NONE', guibg = c.yellow } },
-    { 'TabLineFill', { guifg = c.grey, guibg = c.bg } },
-    { 'TabLineSel', { guifg = 'NONE', guibg = c.red } },
+    { 'TabLine', { guifg = c.grey, guibg = c.bg3 } },
+    { 'TabLineFill', { guifg = c.grey, guibg = c.bg3 } },
+    { 'TabLineSel', { guifg = c.fg, guibg = c.bg, gui = 'italic,bold' } },
 
     { 'VertSplit', { guifg = c.grey, guibg = 'NONE' } },
     { 'Visual', { guifg = 'NONE', guibg = c.bg2 } },

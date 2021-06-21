@@ -6,6 +6,10 @@ M.options = {
     max_height = 12,
 }
 
+local handler_config = {
+    check_pumvisible = true,
+}
+
 local match_parameter = function(result)
     local signatures = result.signatures
     if #signatures == 0 then
@@ -46,6 +50,9 @@ end
 
 M.handler = function(_, _, result, _, bufnr, config)
     if not result then
+        return
+    end
+    if config.check_pumvisible and vim.fn.pumvisible() ~= 0 then
         return
     end
     local s, l = match_parameter(result)
@@ -117,18 +124,18 @@ M.open_signature = function()
 
     if triggered then
         local params = vim.lsp.util.make_position_params()
-        local handler = vim.lsp.with(M.handler, {})
+        local handler = vim.lsp.with(M.handler, handler_config)
         vim.lsp.buf_request(0, 'textDocument/signatureHelp', params, handler)
     end
 end
 
-M.setup = function(cfg)
+M.setup = function(config)
     vim.cmd('augroup Signature')
     vim.cmd('autocmd! * <buffer>')
     vim.cmd('autocmd TextChangedI * lua require("config.lspconfig.signature").open_signature()')
     vim.cmd('augroup end')
 
-    M.options = vim.tbl_extend('force', cfg, M.options)
+    M.options = vim.tbl_extend('force', config, M.options)
 end
 
 return M

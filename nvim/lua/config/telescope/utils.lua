@@ -27,6 +27,7 @@ M.find_files = function()
     local dir = vim.fn.fnamemodify(curr_dir, ':t')
     require('telescope.builtin').find_files({
         prompt_title = dir,
+        find_command = { 'rg', '--no-ignore', '--files' },
     })
 end
 
@@ -98,7 +99,7 @@ M.grep_string = function()
     vim.cmd('startinsert')
 end
 
--- Search files in neovim
+-- Search neovim repo
 M.search_neovim = function()
     require('telescope.builtin').find_files({
         cwd = '~/Applications/neovim',

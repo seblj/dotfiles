@@ -28,7 +28,6 @@ require('lir').setup({
         ['r'] = actions.rename,
         ['Y'] = actions.yank_path,
         ['dd'] = actions.delete,
-        ['@'] = actions.cd,
     },
     hide_cursor = true,
 })

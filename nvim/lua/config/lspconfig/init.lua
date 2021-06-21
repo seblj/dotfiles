@@ -100,12 +100,13 @@ local make_config = function()
             require('config.lspconfig.signature').setup({})
         end,
         -- on_attach = function()
-        --     require('lsp_signature').on_attach{
+        --     require('lsp_signature').on_attach({
         --         bind = true,
         --         hint_enable = false,
-        --         hi_parameter = "Title",
-        --     }
-        -- end
+        --         hi_parameter = 'Title',
+        --         fix_pos = true,
+        --     })
+        -- end,
     }
 end
 
