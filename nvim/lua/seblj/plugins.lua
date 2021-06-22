@@ -63,7 +63,6 @@ return require('packer').startup(function(use)
     })
 
     -- Installed plugins
-
     -- Colors / UI
     use({
         'norcalli/nvim-colorizer.lua', -- Color highlighter
@@ -201,8 +200,13 @@ return require('packer').startup(function(use)
         run = 'cd app && yarn install',
     })
     use({
-        'prettier/vim-prettier', -- Formatting
-        run = 'yarn install',
-        config = [[require('config.prettier')]],
+        'sbdchd/neoformat', -- Formatting
+        config = [[require('config.formatter')]],
     })
+    -- Messes with treesitter
+    -- use({
+    --     'prettier/vim-prettier', -- Formatting
+    --     run = 'yarn install',
+    --     config = [[require('config.prettier')]],
+    -- })
 end)

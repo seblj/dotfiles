@@ -49,6 +49,7 @@ local match_parameter = function(result)
 end
 
 M.handler = function(_, _, result, _, bufnr, config)
+    config = config or {}
     if not result then
         return
     end
@@ -66,7 +67,6 @@ M.handler = function(_, _, result, _, bufnr, config)
     end
     lines = vim.lsp.util.trim_empty_lines(lines)
 
-    config = config or {}
     config.border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
     config.max_width = M.options.max_width
     config.max_height = M.options.max_height
