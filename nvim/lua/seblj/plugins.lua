@@ -41,6 +41,9 @@ return require('packer').startup(function(use)
         if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin_name)) == 1 and first['upstream'] ~= true then
             table.insert(use_tbl, plugin_dir .. plugin_name)
         else
+            if first['force_local'] then
+                return
+            end
             table.insert(use_tbl, string.format('%s/%s', username, plugin_name))
         end
 
@@ -60,6 +63,7 @@ return require('packer').startup(function(use)
     local_use({
         'seblj/nvim-xamarin', -- Build Xamarin from Neovim
         config = [[require('xamarin').setup{}]],
+        force_local = true,
     })
 
     -- Installed plugins
