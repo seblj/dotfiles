@@ -156,7 +156,7 @@ local eslint = {
 }
 
 require('lspconfig').efm.setup({
-    root_dir = require('lspconfig.util').root_pattern('.eslintrc', '.eslintrc.json'),
+    root_dir = require('lspconfig.util').root_pattern('.eslintrc', '.eslintrc.json', '.eslintrc.js'),
     settings = {
         languages = {
             javascript = { eslint },
@@ -165,5 +165,12 @@ require('lspconfig').efm.setup({
             typescriptreact = { eslint },
             vue = { eslint },
         },
+    },
+    filetype = {
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'vue',
     },
 })
