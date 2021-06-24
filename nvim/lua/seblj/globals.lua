@@ -15,3 +15,10 @@ if pcall(require, 'plenary') then
         return require(name)
     end
 end
+
+-- Set OS to global variable
+if vim.fn.system('uname') == 'Linux\n' then
+    OS = 'Linux'
+elseif vim.fn.system('uname') == 'Darwin\n' then
+    OS = 'Mac'
+end
