@@ -147,3 +147,23 @@ require('lspinstall').post_install_hook = function()
     setup_servers()
     cmd('bufdo e')
 end
+
+local eslint = {
+    lintCommand = 'eslint_d -f unix --stdin --stdin-filename ${INPUT}',
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = { '%f:%l:%c: %m' },
+}
+
+require('lspconfig').efm.setup({
+    root_dir = require('lspconfig.util').root_pattern('.eslintrc', '.eslintrc.json'),
+    settings = {
+        languages = {
+            javascript = { eslint },
+            javascriptreact = { eslint },
+            typescript = { eslint },
+            typescriptreact = { eslint },
+            vue = { eslint },
+        },
+    },
+})
