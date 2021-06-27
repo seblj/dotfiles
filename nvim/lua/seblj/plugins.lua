@@ -129,6 +129,10 @@ return require('packer').startup(function(use)
         config = [[require('config.coc')]],
         cond = coc,
     })
+    use({
+        'L3MON4D3/LuaSnip',
+        config = [[require('config.luasnip')]],
+    })
 
     -- Telescope
     use({

@@ -28,6 +28,9 @@ require('compe').setup({
         nvim_lsp = true,
         nvim_lua = true,
         vsnip = false,
+        luasnip = {
+            priority = 1000,
+        },
     },
 })
 
@@ -38,7 +41,6 @@ require('compe').setup({
 -- vim.g.loaded_compe_path = 1
 vim.g.loaded_compe_calc = 0
 vim.g.loaded_compe_emoji = 0
-vim.g.loaded_compe_luasnip = 0
 vim.g.loaded_compe_snippets_nvim = 0
 vim.g.loaded_compe_spell = 0
 vim.g.loaded_compe_tags = 0

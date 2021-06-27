@@ -76,6 +76,10 @@ local lua_settings = {
                 [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
             },
         },
+        completion = {
+            -- Snippets doesn't work as it should, so disable it
+            keywordSnippet = 'Disable',
+        },
     },
 }
 local python_settings = {
@@ -166,7 +170,7 @@ require('lspconfig').efm.setup({
             vue = { eslint },
         },
     },
-    filetype = {
+    filetypes = {
         'javascript',
         'javascriptreact',
         'typescript',
