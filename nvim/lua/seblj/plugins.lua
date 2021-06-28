@@ -100,7 +100,12 @@ return require('packer').startup(function(use)
     -- Treesitter
     use({
         'nvim-treesitter/nvim-treesitter', -- Parser tool syntax
-        run = ':TSUpdate',
+        run = function()
+            -- Post install hook to ensure maintained installed instead of in config
+            -- Don't need to waste startuptime on ensuring installed on every start
+            require('nvim-treesitter.install').ensure_installed('maintained')
+            vim.cmd('execute ":TSUpdate"')
+        end,
         config = [[require('config.treesitter')]],
     })
     use('nvim-treesitter/playground') -- Display information from treesitter
