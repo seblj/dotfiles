@@ -21,6 +21,11 @@ source $HOME/.config/zsh/vim.zsh
 
 eval "$(pyenv init -)"
 
+OS=$(uname -s)
+if [[ $OS == "Linux" ]]; then
+    eval $(~/.linuxbrew/bin/brew shellenv)
+fi
+
 autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 
