@@ -1,6 +1,13 @@
 local M = {}
 local ui = require('seblj.utils.ui')
 
+local get_git_root = function()
+    if vim.fn.has('win32') == 1 then
+        return vim.fn.system('git rev-parse --show-toplevel 2> $null'):gsub('%s+', '')
+    end
+    return vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub('%s+', '')
+end
+
 -- Telescope function for quick edit of dotfiles
 M.edit_dotfiles = function()
     require('telescope.builtin').find_files({
@@ -32,7 +39,7 @@ M.find_files = function()
 end
 
 M.git_files = function()
-    local git_root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub('%s+', '')
+    local git_root = get_git_root()
     local dir = vim.fn.fnamemodify(git_root, ':t')
     require('telescope.builtin').git_files({
         prompt_title = dir,
@@ -44,7 +51,7 @@ end
 -- Live grep from root of git repo, if it is a repo
 -- Else grep current directory
 M.live_grep = function()
-    local git_root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub('%s+', '')
+    local git_root = get_git_root()
     local curr_dir = vim.fn.expand('%:p:h:t')
     if git_root == '' or git_root == nil then
         require('telescope.builtin').live_grep({
