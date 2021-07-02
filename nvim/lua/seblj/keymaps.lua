@@ -42,15 +42,7 @@ map('n', '<S-Down>', ':lua require("seblj.utils").resize_down()<CR>') -- Resize 
 map('v', '<', '<gv') -- Keep visual on indent
 map('v', '>', '>gv') -- Keep visual on indent
 
-if OS == 'Linux' then
-    map('n', '<A-j>', ':m.+1<CR>==') -- Move line with Alt-j
-    map('v', '<A-j>', ":m '>+1<CR>gv=gv") -- Move line with Alt-j
-    map('i', '<A-j>', '<Esc>:m .+1<CR>==gi') -- Move line with Alt-j
-
-    map('n', '<A-k>', ':m.-2<CR>==') -- Move line with Alt-k
-    map('v', '<A-k>', ":m '<-2<CR>gv=gv") -- Move line with Alt-k
-    map('i', '<A-k>', '<Esc>:m .-2<CR>==gi') -- Move line with Alt-k
-elseif OS == 'Mac' then
+if vim.fn.has('mac') == 1 then
     map('n', '√', ':m.+1<CR>==') -- Move line with Alt-j
     map('v', '√', ":m '>+1<CR>gv=gv") -- Move line with Alt-j
     map('i', '√', '<Esc>:m .+1<CR>==gi') -- Move line with Alt-j
@@ -58,6 +50,14 @@ elseif OS == 'Mac' then
     map('n', 'ª', ':m.-2<CR>==') -- Move line with Alt-k
     map('v', 'ª', ":m '<-2<CR>gv=gv") -- Move line with Alt-k
     map('i', 'ª', '<Esc>:m .-2<CR>==gi') -- Move line with Alt-k
+else
+    map('n', '<A-j>', ':m.+1<CR>==') -- Move line with Alt-j
+    map('v', '<A-j>', ":m '>+1<CR>gv=gv") -- Move line with Alt-j
+    map('i', '<A-j>', '<Esc>:m .+1<CR>==gi') -- Move line with Alt-j
+
+    map('n', '<A-k>', ':m.-2<CR>==') -- Move line with Alt-k
+    map('v', '<A-k>', ":m '<-2<CR>gv=gv") -- Move line with Alt-k
+    map('i', '<A-k>', '<Esc>:m .-2<CR>==gi') -- Move line with Alt-k
 end
 
 map('n', 'gca', '<cmd>lua require("seblj.utils").toggle_commenstring()<CR>')

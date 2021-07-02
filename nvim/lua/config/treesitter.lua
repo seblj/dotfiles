@@ -10,6 +10,15 @@ require('nvim-treesitter.configs').setup({
 local hlmap = vim.treesitter.highlighter.hl_map
 hlmap['custom-type'] = 'TSCustomType'
 
+-- Override html query to remove the stupid lines before tags
+local function get_ft_query(ft, type)
+  local path = (vim.fn.stdpath("config") .. ("/queries/" .. ft .. "/" .. type .. ".scm"))
+  return vim.fn.join(vim.fn.readfile(path), "\n")
+end
+
+local vim_ts_queries = require("vim.treesitter.query")
+vim_ts_queries.set_query("html", "highlights", get_ft_query("html", "highlights"))
+
 require('nvim-treesitter.configs').setup({
     textobjects = {
         select = {

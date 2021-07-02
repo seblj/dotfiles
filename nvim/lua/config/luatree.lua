@@ -31,9 +31,10 @@ g.nvim_tree_git_hl = 1
 map('n', '<leader>tt', ':NvimTreeToggle<CR>')
 
 g.nvim_tree_bindings = {
-    ['r'] = tree_cb('full_rename'),
-    ['<C-r>'] = tree_cb('rename'),
-    ['J'] = ':exe "normal 10j"<CR>',
-    ['K'] = ':exe "normal 10k"<CR>',
-    ['dd'] = tree_cb('remove'),
+    { key = 'r', cb = tree_cb('full_rename') },
+    { key = '<C-r>', cb = tree_cb('rename') },
+    { key = 'J', cb = ":exe 'normal 10j<CR>" },
+    { key = 'K', cb = ":exe 'normal 10k<CR>" },
+    { key = 'dd', cb = tree_cb('remove') },
+    { key = '<CR>', cb = tree_cb('edit') },
 }
