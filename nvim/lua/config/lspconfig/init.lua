@@ -61,6 +61,19 @@ require('lspkind').init()
 ---------- LANGUAGE SERVERS ----------
 
 local lsp_settings = {
+    vue = {
+        init_options = {
+            config = {
+                vetur = {
+                    completion = {
+                        autoImport = true,
+                        useScaffoldSnippets = true,
+                    }
+                }
+            }
+        }
+    },
+
     lua = {
         settings = {
             Lua = {
