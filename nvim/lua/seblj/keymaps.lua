@@ -99,5 +99,3 @@ cmd('cnoreabbrev QA qa') -- Quit all with QA
 
 cmd('command! -nargs=* T split | term <args>') -- Open term in split with T
 cmd('command! -nargs=* VT vsplit | term <args>') -- Open term in vsplit with VT
-
-cmd('command! -nargs=0 ESLint execute "normal! mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F"')

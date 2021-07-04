@@ -2,15 +2,26 @@
 local Path = require('plenary.path')
 local Job = require('plenary.job')
 
-local lspconfig_util = require('lspconfig.util')
+local scan = require'plenary.scandir'
+
+local root_pattern
+root_pattern = function(start, pattern)
+  if start == '/' then return nil end
+  local res = scan.scan_dir(start, { search_pattern = pattern, hidden = true, add_dirs = true, depth = 1 })
+  if table.getn(res) == 0 then
+    local new = start .. '/../'
+    return root_pattern(vim.loop.fs_realpath(new), pattern)
+  else
+    return start
+  end
+end
 
 local cached_configs = {}
 
-local root_finder = lspconfig_util.root_pattern('.git')
 local stylua_finder = function(path)
     if cached_configs[path] == nil then
         local file_path = Path:new(path)
-        local root_path = Path:new(root_finder(path))
+        local root_path = Path:new(root_pattern(path, '/%.git$'))
 
         local file_parents = file_path:parents()
         local root_parents = root_path:parents()

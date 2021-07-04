@@ -3,14 +3,6 @@ local map = utils.map
 
 Use_coc = false
 
--- Easy switch between nvimlsp and coc
-local coc = function()
-    return Use_coc
-end
-local nvimlsp = function()
-    return not Use_coc
-end
-
 local plugin_dir = '~/projects/plugins/'
 
 vim.cmd([[autocmd BufWritePost init.lua PackerCompile]])
@@ -58,7 +50,7 @@ return require('packer').startup(function(use)
     local_use({
         'seblj/nvim-echo-diagnostics', -- Echo lspconfig diagnostics
         config = [[require('echo-diagnostics').setup{}]],
-        cond = nvimlsp,
+        disable = Use_coc,
     })
     local_use({
         'seblj/nvim-xamarin', -- Build Xamarin from Neovim
@@ -78,7 +70,6 @@ return require('packer').startup(function(use)
     })
     use({
         'glepnir/galaxyline.nvim', -- Statusline
-        branch = 'main',
         config = [[require('config.galaxyline')]],
     })
     use('kyazdani42/nvim-web-devicons') -- Icons
@@ -86,6 +77,7 @@ return require('packer').startup(function(use)
     -- Git
     use({
         'lewis6991/gitsigns.nvim', -- Git diff signs
+        event = { 'BufReadPre', 'BufWritePre' },
         config = [[require('config.gitsigns')]],
     })
     use({
@@ -95,6 +87,7 @@ return require('packer').startup(function(use)
             vim.g.conflict_marker_end = '^>>>>>>> .*$'
             vim.g.conflict_marker_enable_mappings = 0
         end,
+        event = 'BufReadPre',
     })
 
     -- Treesitter
@@ -108,22 +101,39 @@ return require('packer').startup(function(use)
         end,
         config = [[require('config.treesitter')]],
     })
-    use('nvim-treesitter/playground') -- Display information from treesitter
-    use('windwp/nvim-ts-autotag') -- Autotag using treesitter
-    use('nvim-treesitter/nvim-treesitter-textobjects') -- Manipulate text using treesitter
-    use('JoosepAlviste/nvim-ts-context-commentstring') -- Auto switch commentstring with treesitter
+    use({
+        'nvim-treesitter/playground', -- Display information from treesitter
+    })
+    use({
+        'windwp/nvim-ts-autotag', -- Autotag using treesitter
+        after = 'nvim-treesitter',
+    })
+    use({
+        'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
+        after = 'nvim-treesitter',
+    })
+    use({
+        'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
+        after = 'nvim-treesitter',
+    })
 
     -- LSP
     use({
         'neovim/nvim-lspconfig', -- Built-in LSP
+        disable = Use_coc,
         config = [[require('config.lspconfig')]],
-        cond = nvimlsp,
     })
     use({ 'kabouzeid/nvim-lspinstall' }) -- Install language servers
     use({
+        'L3MON4D3/LuaSnip',
+        config = [[require('config.luasnip')]],
+        event = 'InsertEnter',
+    })
+    use({
         'hrsh7th/nvim-compe', -- Completion for nvimlsp
         config = [[require('config.compe')]],
-        cond = nvimlsp,
+        event = 'InsertCharPre',
+        disable = Use_coc,
     })
     use({ 'ray-x/lsp_signature.nvim' })
     use({ 'onsails/lspkind-nvim' }) -- Icons for completion
@@ -132,11 +142,7 @@ return require('packer').startup(function(use)
         'neoclide/coc.nvim', -- LSP
         branch = 'release',
         config = [[require('config.coc')]],
-        cond = coc,
-    })
-    use({
-        'L3MON4D3/LuaSnip',
-        config = [[require('config.luasnip')]],
+        disable = not Use_coc,
     })
 
     -- Telescope
@@ -153,14 +159,19 @@ return require('packer').startup(function(use)
     use({
         'fannheyward/telescope-coc.nvim', -- Telescope extension for coc
         config = [[require('telescope').load_extension('coc')]],
-        cond = coc,
+        after = 'coc.nvim',
+        disable = not Use_coc,
     })
 
     use({
         'mfussenegger/nvim-dap', -- Debugger
         config = [[require('config.dap')]],
+        keys = '<leader>db',
     })
-    use({ 'rcarriga/nvim-dap-ui' }) -- UI for debugger
+    use({
+        'rcarriga/nvim-dap-ui', -- UI for debugger
+        after = 'nvim-dap',
+    })
     use({
         'szw/vim-maximizer', -- Maximize split
         config = map('n', '<leader>m', ':MaximizerToggle!<CR>'),
@@ -181,24 +192,28 @@ return require('packer').startup(function(use)
     use({
         'kyazdani42/nvim-tree.lua', -- Filetree
         config = [[require('config.luatree')]],
+        cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
+        keys = { '<leader>tt' },
     })
     use({
         'tamago324/lir.nvim', -- File explorer
         config = [[require('config.fileexplorer')]],
     })
 
-    use('lambdalisue/suda.vim') -- Write with sudo
-    use('tpope/vim-commentary') -- Easy commenting
+    use({ 'lambdalisue/suda.vim' }) -- Write with sudo
+    use({ 'tpope/vim-commentary' }) -- Easy commenting
     use({
         'dstein64/vim-startuptime', -- Measure startuptime
         config = function()
             vim.g.startuptime_more_info_key_seq = 'i'
             vim.g.startuptime_split_edit_key_seq = ''
         end,
+        cmd = 'StartupTime',
     })
     use({
         'windwp/nvim-autopairs', -- Auto pairs
         config = [[require('config.autopairs')]],
+        event = 'InsertEnter',
     })
     use('tpope/vim-surround') -- Edit surrounds
     use({ 'godlygeek/tabular' }) -- Line up text
@@ -206,16 +221,18 @@ return require('packer').startup(function(use)
     use({
         'lervag/vimtex', -- Latex
         config = [[require('config.vimtex')]],
+        ft = { 'tex', 'bib' },
     })
-    use({ 'NTBBloodbath/rest.nvim' }) -- HTTP requests
+    use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
     use({
         'iamcco/markdown-preview.nvim', -- Markdown preview
         run = 'cd app && yarn install',
+        ft = 'markdown',
     })
-    use({
-        'sbdchd/neoformat', -- Formatting
-        config = [[require('config.formatter')]],
-    })
+    -- use({
+    --     'sbdchd/neoformat', -- Formatting
+    --     config = [[require('config.formatter')]],
+    -- })
     -- Messes with treesitter
     -- use({
     --     'prettier/vim-prettier', -- Formatting

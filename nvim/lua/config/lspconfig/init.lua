@@ -60,48 +60,62 @@ require('lspkind').init()
 
 ---------- LANGUAGE SERVERS ----------
 
--- Language specific settings
-local lua_settings = {
-    Lua = {
-        runtime = {
-            version = 'LuaJIT',
-            path = vim.split(package.path, ';'),
-        },
-        diagnostics = {
-            globals = { 'vim' },
-        },
-        workspace = {
-            library = {
-                [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+local lsp_settings = {
+    lua = {
+        settings = {
+            Lua = {
+                runtime = {
+                    version = 'LuaJIT',
+                    path = vim.split(package.path, ';'),
+                },
+                diagnostics = {
+                    globals = { 'vim' },
+                },
+                workspace = {
+                    library = {
+                        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+                    },
+                },
+                completion = {
+                    -- Snippets doesn't work as it should, so disable it
+                    keywordSnippet = 'Disable',
+                },
             },
         },
-        completion = {
-            -- Snippets doesn't work as it should, so disable it
-            keywordSnippet = 'Disable',
-        },
     },
-}
-local python_settings = {
-    python = {
-        analysis = {
-            typeCheckingMode = 'off',
-        },
-    },
-}
-local clang_filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
 
-local fs_cmd = {
-    'dotnet',
-    '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll',
-    '--background-service-enabled',
+    python = {
+        settings = {
+            python = {
+                analysis = {
+                    typeCheckingMode = 'off',
+                },
+            },
+        },
+    },
+
+    cpp = {
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+    },
+
+    fsautocomplete = {
+        cmd = {
+            'dotnet',
+            '/Users/sebastianlyngjohansen/Applications/FsAutoComplete-0.45.4/bin/release_netcore/fsautocomplete.dll',
+            '--background-service-enabled',
+        },
+    },
 }
 
 local make_config = function()
     return {
         -- Needs to be inside a function or else setup is called even though no lsp is attached
-        on_attach = function()
+        on_attach = function(client)
             require('config.lspconfig.signature').setup({})
+            if client.name == 'typescript' then
+                client.resolved_capabilities.document_formatting = false
+            end
         end,
         -- on_attach = function()
         --     require('lsp_signature').on_attach({
@@ -127,19 +141,12 @@ local setup_servers = function()
     for _, server in pairs(servers) do
         local config = make_config()
 
-        if server == 'lua' then
-            config.settings = lua_settings
+        -- Set user settings for each server
+        if lsp_settings[server] then
+            for k, v in pairs(lsp_settings[server]) do
+                config[k] = v
+            end
         end
-        if server == 'python' then
-            config.settings = python_settings
-        end
-        if server == 'cpp' then
-            config.filetypes = clang_filetypes
-        end
-        if server == 'fsautocomplete' then
-            config.cmd = fs_cmd
-        end
-
         require('lspconfig')[server].setup(config)
     end
 end
@@ -157,17 +164,27 @@ local eslint = {
     lintIgnoreExitCode = true,
     lintStdin = true,
     lintFormats = { '%f:%l:%c: %m' },
+    formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
+    formatStdin = true,
+}
+
+local prettier = {
+    formatCommand = 'prettierd ${INPUT}',
+    formatStdin = true,
 }
 
 require('lspconfig').efm.setup({
-    root_dir = require('lspconfig.util').root_pattern('.eslintrc', '.eslintrc.json', '.eslintrc.js'),
+    on_attach = function(client)
+        client.resolved_capabilities.document_formatting = true
+    end,
+    root_dir = require('lspconfig.util').root_pattern('.eslintrc*', 'package.json'),
     settings = {
         languages = {
-            javascript = { eslint },
-            javascriptreact = { eslint },
-            typescript = { eslint },
-            typescriptreact = { eslint },
-            vue = { eslint },
+            javascript = { prettier, eslint },
+            javascriptreact = { prettier, eslint },
+            typescript = { prettier, eslint },
+            typescriptreact = { prettier, eslint },
+            vue = { prettier, eslint },
         },
     },
     filetypes = {
@@ -178,3 +195,5 @@ require('lspconfig').efm.setup({
         'vue',
     },
 })
+
+vim.cmd([[au BufWritePre *.tsx,*.ts,*.js,*.vue lua vim.lsp.buf.formatting_sync()]])
