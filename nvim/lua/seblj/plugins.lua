@@ -245,4 +245,9 @@ return require('packer').startup({
         --     config = [[require('config.prettier')]],
         -- })
     end,
+    config = {
+        display = {
+            prompt_border = 'rounded',
+        },
+    },
 })

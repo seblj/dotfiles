@@ -67,7 +67,7 @@ M.handler = function(_, _, result, _, bufnr, config)
     end
     lines = vim.lsp.util.trim_empty_lines(lines)
 
-    config.border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
+    config.border = 'rounded'
     config.max_width = M.options.max_width
     config.max_height = M.options.max_height
 

@@ -8,6 +8,9 @@ require('gitsigns').setup({
         topdelete = { hl = 'GitGutterDelete', text = '‾' },
         changedelete = { hl = 'GitGutterChangeDelete', text = '~_' },
     },
+    preview_config = {
+        border = 'rounded',
+    },
     use_decoration_api = false,
     max_file_length = 200000,
     keymaps = {

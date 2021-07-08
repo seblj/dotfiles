@@ -20,7 +20,7 @@ require('compe').setup({
     max_menu_width = 100,
     allow_prefix_unmatch = false,
     documentation = {
-        border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+        border = 'rounded',
     },
 
     source = {

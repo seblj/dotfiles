@@ -24,6 +24,7 @@ end
 M.popup_create = function(opts)
     local lines, syntax = opts.lines or {}, opts.syntax
     opts.border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
+    opts.border = 'rounded'
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
     vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:Normal')

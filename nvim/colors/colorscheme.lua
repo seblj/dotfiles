@@ -34,6 +34,7 @@ local c = {
 
 all({
     { 'Normal', { guifg = c.fg, guibg = c.bg } },
+    { 'NormalFloat', { guifg = c.fg, guibg = c.bg } },
     { 'FloatBorder', { guifg = c.border } },
     { 'Folded', { guifg = c.grey, guibg = c.bg } },
     { 'SignColumn', { guifg = c.fg, guibg = 'NONE' } },
@@ -66,7 +67,7 @@ all({
     { 'MoreMsg', { guifg = c.blue, guibg = 'NONE', gui = 'bold' } },
     { 'Question', { guifg = c.yellow, guibg = 'NONE' } },
 
-    { 'Pmenu', { guifg = c.fg, guibg = c.bg } },
+    { 'Pmenu', { guifg = c.fg, guibg = c.bg2 } },
     { 'PmenuSbar', { guifg = 'NONE', guibg = c.bg2 } },
     { 'PmenuSel', { guifg = c.bg, guibg = c.green } },
     { 'PmenuThumb', { guifg = 'NONE', guibg = c.grey } },
