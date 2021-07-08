@@ -27,6 +27,10 @@ opt.undofile = true
 opt.undolevels = 1000
 opt.shortmess = opt.shortmess + 'c'
 
+-- Disable netrw
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+
 cmd('autocmd BufEnter * setlocal formatoptions-=o formatoptions+=r')
 
 g.vimsyn_embed = 'l'

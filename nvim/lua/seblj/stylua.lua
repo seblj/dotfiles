@@ -2,7 +2,7 @@
 local Path = require('plenary.path')
 local Job = require('plenary.job')
 
-local scan = require'plenary.scandir'
+local scan = require('plenary.scandir')
 
 local root_pattern
 root_pattern = function(start, pattern)
@@ -33,8 +33,14 @@ local stylua_finder = function(path)
             end
 
             local stylua_path = Path:new({ dir, 'stylua.toml' })
+            local dot_stylua_path = Path:new({ dir, '.stylua.toml' })
+
             if stylua_path:exists() then
                 cached_configs[path] = stylua_path:absolute()
+                break
+            end
+            if dot_stylua_path:exists() then
+                cached_configs[path] = dot_stylua_path:absolute()
                 break
             end
         end
@@ -55,13 +61,13 @@ stylua.format = function(bufnr)
         return
     end
 
-  -- stylua: ignore
-  local j = Job:new {
-    "stylua",
-    "--config-path", stylua_toml,
-    "-",
-    writer = vim.api.nvim_buf_get_lines(0, 0, -1, false),
-  }
+    -- stylua: ignore
+    local j = Job:new {
+        "stylua",
+        "--config-path", stylua_toml,
+        "-",
+        writer = vim.api.nvim_buf_get_lines(0, 0, -1, false),
+    }
 
     local output = j:sync()
 

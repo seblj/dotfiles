@@ -1,10 +1,5 @@
 ---------- GITSIGNS CONFIG ----------
 
-local ok = pcall(require, 'gitsigns')
-if not ok then
-    return
-end
-
 require('gitsigns').setup({
     signs = {
         add = { hl = 'GitGutterAdd', text = '+' },

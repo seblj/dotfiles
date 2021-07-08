@@ -68,10 +68,10 @@ local lsp_settings = {
                     completion = {
                         autoImport = true,
                         useScaffoldSnippets = true,
-                    }
-                }
-            }
-        }
+                    },
+                },
+            },
+        },
     },
 
     lua = {
@@ -110,6 +110,10 @@ local lsp_settings = {
 
     cpp = {
         filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+    },
+
+    html = {
+        filetypes = { 'html' },
     },
 
     fsautocomplete = {
