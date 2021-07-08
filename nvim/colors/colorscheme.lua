@@ -66,7 +66,7 @@ all({
     { 'MoreMsg', { guifg = c.blue, guibg = 'NONE', gui = 'bold' } },
     { 'Question', { guifg = c.yellow, guibg = 'NONE' } },
 
-    { 'Pmenu', { guifg = c.fg, guibg = c.bg2 } },
+    { 'Pmenu', { guifg = c.fg, guibg = c.bg } },
     { 'PmenuSbar', { guifg = 'NONE', guibg = c.bg2 } },
     { 'PmenuSel', { guifg = c.bg, guibg = c.green } },
     { 'PmenuThumb', { guifg = 'NONE', guibg = c.grey } },

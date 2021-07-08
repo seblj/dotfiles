@@ -7,12 +7,6 @@ local plugin_dir = '~/projects/plugins/'
 
 vim.cmd([[autocmd BufWritePost init.lua PackerCompile]])
 
--- Override cleanup prompt from packer with background color of window
--- Don't want windows without border to have that background color
--- See if there is another way to set background color easily without this
-local prompt = require('seblj.packer_display').packer_prompt
-require('packer.display').ask_user = require('packer.async').wrap(prompt)
-
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' }) -- Package manager
