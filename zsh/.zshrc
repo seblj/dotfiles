@@ -14,11 +14,14 @@ source $HOME/.config/zsh/aliases.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/vim.zsh
 
-eval "$(pyenv init -)"
+if installed pyenv; then
+    eval "$(pyenv init -)"
+fi
 
-OS=$(uname -s)
 if [[ $OS == "Linux" ]]; then
-    eval $(~/.linuxbrew/bin/brew shellenv)
+    if installed brew; then
+        eval $(~/.linuxbrew/bin/brew shellenv)
+    fi
 fi
 
 autoload -Uz compinit

@@ -17,21 +17,14 @@ install_spaceship(){
         ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
     fi
 
-    # Return if already installed
-    if [[ -d $ZSH_CUSTOM ]]; then
-        return
-    fi
-
     # Plugins
     printf "\n${BLUE}Cloning z plugin for autojump ${NC}\n\n"
     git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
     mkdir -p $HOME/.config/z
 
-    printf "\n${BLUE}Cloning spaceship prompt for OH_MY_ZSH ${NC}\n\n"
-    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-    sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+    printf "\n${BLUE}Configuring prompt ${NC}\n\n"
     sudo mkdir -p /usr/local/share/zsh/site-functions
-    sudo ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
+    sudo ln -sf "$DOTFILES/zsh/prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
 }
 
 setup_zsh(){

@@ -25,6 +25,11 @@ kill_port() {
     kill $(lsof -t -i:$1)
 }
 
+#Check if a package is installed
+installed(){
+    command -v "$1" >/dev/null 2>&1
+}
+
 # Always zip recursively and change how zip command work
 # Default to .zip with same name as folder/file
 zip() {
@@ -77,8 +82,6 @@ share() {
 }
 
 install_neovim() {
-    OS=$(uname -s)
-
     mkdir -p ~/Applications
     cd ~/Applications
 
