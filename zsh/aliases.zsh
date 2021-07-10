@@ -20,3 +20,10 @@ alias icons="~/projects/scripts/replace_icons.sh"
 if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
     alias vim="nvr"
 fi
+
+OS=$(uname -s)
+if [[ $OS == "Darwin" ]]; then
+    alias ls="ls -G"
+elif [[ $OS == "Linux" ]]; then
+    alias ls="ls --color=tty"
+fi

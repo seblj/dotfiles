@@ -13,26 +13,6 @@ export SPACESHIP_VERSION='3.10.0'
 NEWLINE='
 '
 
-# Determination of Spaceship working directory
-# https://git.io/vdBH7
-if [[ -z "$SPACESHIP_ROOT" ]]; then
-  if [[ "${(%):-%N}" == '(eval)' ]]; then
-    if [[ "$0" == '-antigen-load' ]] && [[ -r "${PWD}/spaceship.zsh" ]]; then
-      # Antigen uses eval to load things so it can change the plugin (!!)
-      # https://github.com/zsh-users/antigen/issues/581
-      export SPACESHIP_ROOT=$PWD
-    else
-      print -P "%F{red}You must set SPACESHIP_ROOT to work from within an (eval).%f"
-      return 1
-    fi
-  else
-    # Get the path to file this code is executing in; then
-    # get the absolute path and strip the filename.
-    # See https://stackoverflow.com/a/28336473/108857
-    export SPACESHIP_ROOT=${${(%):-%x}:A:h}
-  fi
-fi
-
 # ------------------------------------------------------------------------------
 # CONFIGURATION
 # The default configuration that can be overridden in .zshrc
@@ -82,13 +62,13 @@ SPACESHIP_PROMPT_DEFAULT_SUFFIX="${SPACESHIP_PROMPT_DEFAULT_SUFFIX=" "}"
 # ------------------------------------------------------------------------------
 
 # Load utils
-source "$SPACESHIP_ROOT/lib/utils.zsh"
+source "$ZDOTDIR/prompt/lib/utils.zsh"
 
 # load hooks
-source "$SPACESHIP_ROOT/lib/hooks.zsh"
+source "$ZDOTDIR/prompt/lib/hooks.zsh"
 
 # load section utils
-source "$SPACESHIP_ROOT/lib/section.zsh"
+source "$ZDOTDIR/prompt/lib/section.zsh"
 
 # ------------------------------------------------------------------------------
 # SECTIONS
@@ -96,8 +76,8 @@ source "$SPACESHIP_ROOT/lib/section.zsh"
 # ------------------------------------------------------------------------------
 
 for section in $(spaceship::union $SPACESHIP_PROMPT_ORDER $SPACESHIP_RPROMPT_ORDER); do
-  if [[ -f "$SPACESHIP_ROOT/sections/$section.zsh" ]]; then
-    source "$SPACESHIP_ROOT/sections/$section.zsh"
+  if [[ -f "$ZDOTDIR/prompt/sections/$section.zsh" ]]; then
+    source "$ZDOTDIR/prompt/sections/$section.zsh"
   elif spaceship::defined "spaceship_$section"; then
     # Custom section is declared, nothing else to do
     continue

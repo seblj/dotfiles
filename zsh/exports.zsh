@@ -27,3 +27,4 @@ export ZSH="$HOME/.oh-my-zsh"
 export ZSH_COMPDUMP="$HOME/.cache/zsh/.zcompdump-${HOST/.*/}-${ZSH_VERSION}"
 
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
