@@ -18,6 +18,7 @@ end
 
 local vim_ts_queries = require('vim.treesitter.query')
 vim_ts_queries.set_query('html', 'highlights', get_ft_query('html', 'highlights'))
+vim_ts_queries.set_query('vue', 'highlights', get_ft_query('vue', 'highlights'))
 
 require('nvim-treesitter.configs').setup({
     textobjects = {

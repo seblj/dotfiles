@@ -1,4 +1,4 @@
-;html tags
+; html-tags
 (tag_name) @tag
 (erroneous_end_tag_name) @error
 (comment) @comment
@@ -42,8 +42,25 @@
 
 "=" @operator
 
-;html
 
-(doctype) @constant
 
-"<!" @tag.delimiter
+;vue
+
+[
+  (template_element)
+  (directive_attribute)
+  (directive_dynamic_argument)
+  (directive_dynamic_argument_value)
+  (component)
+] @tag
+
+(element) @string
+(interpolation) @punctuation.special
+(interpolation
+  (raw_text) @none)
+
+[
+  (directive_modifier)
+  (directive_name)
+  (directive_argument)
+] @method
