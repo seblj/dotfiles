@@ -13,6 +13,64 @@ M.map = function(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
+-- Thanks to @akinsho for this brilliant function white waiting for builtin autocmd in lua
+-- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/globals.lua
+M.augroup = function(name, commands)
+    if #commands == 0 then
+        M.autocmd(commands)
+        return
+    end
+
+    vim.cmd('augroup ' .. name)
+    vim.cmd('autocmd!')
+    for _, c in ipairs(commands) do
+        M.autocmd(c)
+    end
+    vim.cmd('augroup END')
+end
+
+M.autocmd = function(c)
+    local command = c.command
+    if type(command) == 'function' then
+        table.insert(seblj._store, command)
+        local fn_id = #seblj._store
+        command = string.format('lua seblj._store[%s](args)', fn_id)
+    end
+    local event = c.event
+    if type(c.event) == 'table' then
+        event = table.concat(c.event, ',')
+    end
+
+    local pattern = c.pattern or ''
+    if type(c.pattern) == 'table' then
+        pattern = table.concat(c.pattern, ',')
+    end
+
+    local modifier = c.modifier or ''
+    if type(c.modifier) == 'table' then
+        modifier = table.concat(c.modifier, ' ')
+    end
+
+    local once = ''
+    if c.once == true then
+        once = '++once '
+    end
+    local nested = ''
+    if c.nested == true then
+        nested = '++nested '
+    end
+
+    vim.cmd(string.format(
+        'autocmd %s %s %s %s %s %s',
+        event,
+        pattern,
+        modifier,
+        once,
+        nested,
+        command
+    ))
+end
+
 -- cd to directory of current buffer
 M.cd = function()
     local dir = fn.expand('%:p:h')
@@ -114,14 +172,16 @@ M.save_and_exec = function()
         local file = eval('expand("%")')
         local output = eval('expand("%:r")')
         cmd('term')
-        cmd(string.format(
-            [[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]],
-            eval('b:terminal_job_id'),
-            file,
-            output,
-            output,
-            output
-        ))
+        cmd(
+            string.format(
+                [[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]],
+                eval('b:terminal_job_id'),
+                file,
+                output,
+                output,
+                output
+            )
+        )
         cmd('nmap <silent> q :q<CR>')
         cmd('stopinsert')
         -- Not really save and exec, but think it fits nicely in here for mapping

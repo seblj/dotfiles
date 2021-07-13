@@ -246,6 +246,7 @@ all({
     { 'LspReferenceRead', { guifg = c.bg, guibg = c.green } },
     { 'LspReferenceWrite', { guifg = c.bg, guibg = c.green } },
     { 'LspRenamePrompt', { guifg = c.red } },
+    { 'LspSignatureActiveParameter', { guifg = c.red } },
 
     ---------- TEX ----------
 

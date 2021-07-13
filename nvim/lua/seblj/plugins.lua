@@ -137,6 +137,7 @@ return require('packer').startup({
             'hrsh7th/nvim-compe', -- Completion for nvimlsp
             config = [[require('config.compe')]],
             event = 'InsertCharPre',
+            commit = '3ba991f84fa6b3d3ecda072a2c6cf844de76c754',
             disable = Use_coc,
         })
         use({ 'ray-x/lsp_signature.nvim' })

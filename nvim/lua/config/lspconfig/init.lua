@@ -34,11 +34,23 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 
 ---------- OVERWRITES ----------
 
-vim.lsp.handlers['textDocument/hover'] = require('config.lspconfig.hover').handler
+local override = function(handler, override_config)
+    return function(opts, bufnr, line_nr, client_id)
+        return handler(vim.tbl_deep_extend('force', opts or {}, override_config), bufnr, line_nr, client_id)
+    end
+end
+
 vim.lsp.handlers['textDocument/codeAction'] = require('config.lspconfig.codeaction').handler
-vim.lsp.handlers['textDocument/signatureHelp'] = require('config.lspconfig.signature').handler
 vim.lsp.buf.rename = require('config.lspconfig.rename').rename
-vim.lsp.diagnostic.show_line_diagnostics = require('config.lspconfig.diagnostic').show_line_diagnostics
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = 'rounded',
+})
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = 'rounded',
+})
+vim.lsp.diagnostic.show_line_diagnostics = override(vim.lsp.diagnostic.show_line_diagnostics, {
+    border = 'rounded',
+})
 
 ---------- SIGNS ----------
 
