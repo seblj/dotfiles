@@ -18,5 +18,5 @@ alias icons="~/projects/scripts/replace_icons.sh"
 
 # Avoid nesting
 if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-    alias vim="nvr"
+    alias nvim="nvr"
 fi
