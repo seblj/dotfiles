@@ -25,7 +25,7 @@
 	start = !git checkout master && git pull origin
 	lg = !git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)%an%Creset' --abbrev-commit | emojify | less
 	sa = submodule add
-    amend = commit --amend
+    ca = commit --amend
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
     rc = rebase --continue
 
