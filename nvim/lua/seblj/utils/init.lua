@@ -60,15 +60,7 @@ M.autocmd = function(c)
         nested = '++nested '
     end
 
-    vim.cmd(string.format(
-        'autocmd %s %s %s %s %s %s',
-        event,
-        pattern,
-        modifier,
-        once,
-        nested,
-        command
-    ))
+    vim.cmd(string.format('autocmd %s %s %s %s %s %s', event, pattern, modifier, once, nested, command))
 end
 
 -- cd to directory of current buffer
@@ -82,6 +74,22 @@ end
 M.visual_macro = function()
     cmd('echo "@".getcmdline()')
     cmd([[execute ":'<,'>normal @".nr2char(getchar())]])
+end
+
+-- All credit to @tjdevries for this
+-- https://github.com/tjdevries/config_manager/blob/b9490fe7eb47e2bf21e828474787d8b8e8ed5314/xdg_config/nvim/autoload/tj.vim#L161
+M.jump = function(letter)
+    local count = eval('v:count')
+    if count == 0 then
+        cmd(string.format([[call execute('normal! g%s')]], letter))
+        return
+    end
+
+    if count > 10 then
+        cmd([[call execute("normal! m'")]])
+    end
+
+    cmd(string.format([[call execute('normal! %s%s', )]], count, letter))
 end
 
 -- Find syntax on current line.

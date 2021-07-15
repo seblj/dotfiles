@@ -63,6 +63,9 @@ end
 map('n', 'gca', '<cmd>lua require("seblj.utils").toggle_commenstring()<CR>')
 map('n', '<leader>j', 'J') -- Join lines
 
+map('n', 'j', '<cmd>lua require("seblj.utils").jump("j")<CR>') -- Thanks to TJ
+map('n', 'k', '<cmd>lua require("seblj.utils").jump("k")<CR>') -- Thanks to TJ
+
 map('n', 'J', '10j') -- 10 lines down with J
 map('v', 'J', '10j') -- 10 lines down with J
 map('n', 'K', '10k') -- 10 lines up with K

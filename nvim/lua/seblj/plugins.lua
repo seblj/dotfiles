@@ -209,6 +209,14 @@ return require('packer').startup({
         use({ 'lambdalisue/suda.vim' }) -- Write with sudo
         use({ 'tpope/vim-commentary' }) -- Easy commenting
         use({
+            'tpope/vim-scriptease',
+            cmd = {
+                'Messages', --view messages in quickfix list
+                'Verbose', -- view verbose output in preview window.
+                'Time', -- measure how long it takes to run some stuff.
+            },
+        })
+        use({
             'dstein64/vim-startuptime', -- Measure startuptime
             config = function()
                 vim.g.startuptime_more_info_key_seq = 'i'
