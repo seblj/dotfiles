@@ -47,6 +47,7 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 })
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = 'rounded',
+    silent = true,
 })
 vim.lsp.diagnostic.show_line_diagnostics = override(vim.lsp.diagnostic.show_line_diagnostics, {
     border = 'rounded',
@@ -79,36 +80,18 @@ local lsp_settings = {
                 vetur = {
                     completion = {
                         autoImport = true,
-                        useScaffoldSnippets = true,
+                        useScaffoldSnippets = false,
                     },
                 },
             },
         },
     },
 
-    lua = {
-        settings = {
-            Lua = {
-                runtime = {
-                    version = 'LuaJIT',
-                    path = vim.split(package.path, ';'),
-                },
-                diagnostics = {
-                    globals = { 'vim' },
-                },
-                workspace = {
-                    library = {
-                        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-                    },
-                },
-                completion = {
-                    -- Snippets doesn't work as it should, so disable it
-                    keywordSnippet = 'Disable',
-                },
-            },
+    lua = require('lua-dev').setup({
+        library = {
+            plugins = false,
         },
-    },
+    }),
 
     python = {
         settings = {

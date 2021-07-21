@@ -162,12 +162,9 @@ end
 -- Save and execute file based on filetype
 M.save_and_exec = function()
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    if ft == 'vim' then
+    if ft == 'vim' or ft == 'lua' then
         cmd('silent! write')
         cmd('source %')
-    elseif ft == 'lua' then
-        cmd('silent! write')
-        cmd('luafile %')
     elseif ft == 'python' then
         cmd('silent! write')
         cmd('sp')
@@ -180,15 +177,10 @@ M.save_and_exec = function()
         local file = eval('expand("%")')
         local output = eval('expand("%:r")')
         cmd('term')
-        cmd(
-            string.format(
-                [[call chansend(%s, ["gcc %s -o %s && ./%s && rm %s\<CR>"]) ]],
-                eval('b:terminal_job_id'),
-                file,
-                output,
-                output,
-                output
-            )
+        local terminal_id = eval('b:terminal_job_id')
+        vim.api.nvim_chan_send(
+            terminal_id,
+            string.format('gcc %s -o %s && ./%s && rm %s\n', file, output, output, output)
         )
         cmd('nmap <silent> q :q<CR>')
         cmd('stopinsert')

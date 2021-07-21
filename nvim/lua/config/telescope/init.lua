@@ -28,3 +28,4 @@ map('n', '<leader>fo', '<cmd>lua require("telescope.builtin").vim_options()<CR>'
 map('n', '<leader>fe', '<cmd>lua require("telescope.builtin").file_browser()<CR>')
 map('n', '<leader>fa', '<cmd>lua require("telescope.builtin").autocommands()<CR>')
 map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<CR>')
+map('n', '<leader>fr', '<cmd>lua require("telescope.builtin").oldfiles()<CR>')

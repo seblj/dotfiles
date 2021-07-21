@@ -28,7 +28,7 @@ require('compe').setup({
         buffer = true,
         calc = false,
         nvim_lsp = true,
-        nvim_lua = true,
+        nvim_lua = false,
         vsnip = false,
         luasnip = {
             priority = 1000,

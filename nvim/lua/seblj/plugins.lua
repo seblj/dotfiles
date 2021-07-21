@@ -46,17 +46,23 @@ return require('packer').startup({
         -- My plugins/forks
         local_use({
             'seblj/nvim-tabline', -- Tabline
-            config = [[require('tabline').setup{}]],
+            config = function()
+                require('tabline').setup({})
+            end,
         })
         local_use({
             'seblj/nvim-echo-diagnostics', -- Echo lspconfig diagnostics
-            config = [[require('echo-diagnostics').setup{}]],
+            config = function()
+                require('echo-diagnostics').setup({})
+            end,
             after = 'nvim-lspconfig',
             disable = Use_coc,
         })
         local_use({
             'seblj/nvim-xamarin', -- Build Xamarin from Neovim
-            config = [[require('xamarin').setup{}]],
+            config = function()
+                require('xamarin').setup({})
+            end,
             force_local = true,
             disable = true,
         })
@@ -65,15 +71,21 @@ return require('packer').startup({
         -- Colors / UI
         use({
             'norcalli/nvim-colorizer.lua', -- Color highlighter
-            config = [[require('colorizer').setup()]],
+            config = function()
+                require('colorizer').setup()
+            end,
         })
         use({
             'mhinz/vim-startify', -- Startup screen
-            config = [[require('config.startify')]],
+            config = function()
+                require('config.startify')
+            end,
         })
         use({
             'glepnir/galaxyline.nvim', -- Statusline
-            config = [[require('config.galaxyline')]],
+            config = function()
+                require('config.galaxyline')
+            end,
         })
         use('kyazdani42/nvim-web-devicons') -- Icons
 
@@ -81,7 +93,9 @@ return require('packer').startup({
         use({
             'lewis6991/gitsigns.nvim', -- Git diff signs
             event = { 'BufReadPre', 'BufWritePre' },
-            config = [[require('config.gitsigns')]],
+            config = function()
+                require('config.gitsigns')
+            end,
         })
         use({
             'rhysd/conflict-marker.vim', -- Highlights for git conflict
@@ -102,7 +116,9 @@ return require('packer').startup({
                 require('nvim-treesitter.install').ensure_installed('maintained')
                 vim.cmd('execute ":TSUpdate"')
             end,
-            config = [[require('config.treesitter')]],
+            config = function()
+                require('config.treesitter')
+            end,
         })
         use({
             'nvim-treesitter/playground', -- Display information from treesitter
@@ -125,17 +141,24 @@ return require('packer').startup({
         use({
             'neovim/nvim-lspconfig', -- Built-in LSP
             disable = Use_coc,
-            config = [[require('config.lspconfig')]],
+            config = function()
+                require('config.lspconfig')
+            end,
+            requires = 'folke/lua-dev.nvim',
         })
         use({ 'kabouzeid/nvim-lspinstall' }) -- Install language servers
         use({
             'L3MON4D3/LuaSnip',
-            config = [[require('config.luasnip')]],
+            config = function()
+                require('config.luasnip')
+            end,
             event = 'InsertEnter',
         })
         use({
             'hrsh7th/nvim-compe', -- Completion for nvimlsp
-            config = [[require('config.compe')]],
+            config = function()
+                require('config.compe')
+            end,
             event = 'InsertCharPre',
             commit = '3ba991f84fa6b3d3ecda072a2c6cf844de76c754',
             disable = Use_coc,
@@ -146,7 +169,9 @@ return require('packer').startup({
         use({
             'neoclide/coc.nvim', -- LSP
             branch = 'release',
-            config = [[require('config.coc')]],
+            config = function()
+                require('config.coc')
+            end,
             disable = not Use_coc,
         })
 
@@ -158,19 +183,25 @@ return require('packer').startup({
                 'nvim-lua/plenary.nvim',
                 'nvim-telescope/telescope-fzy-native.nvim',
             },
-            config = [[require('config.telescope')]],
+            config = function()
+                require('config.telescope')
+            end,
         })
         use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- FZF algorithm for telescope
         use({
             'fannheyward/telescope-coc.nvim', -- Telescope extension for coc
-            config = [[require('telescope').load_extension('coc')]],
+            config = function()
+                require('telescope').load_extension('coc')
+            end,
             after = 'coc.nvim',
             disable = not Use_coc,
         })
 
         use({
             'mfussenegger/nvim-dap', -- Debugger
-            config = [[require('config.dap')]],
+            config = function()
+                require('config.dap')
+            end,
             keys = '<leader>db',
         })
         use({
@@ -184,7 +215,9 @@ return require('packer').startup({
 
         use({
             'vim-test/vim-test', -- Testing
-            config = [[require('config.test')]],
+            config = function()
+                require('config.test')
+            end,
             cmd = { 'TestFile', 'TestNearest', 'TestLast' },
         })
         use({
@@ -197,13 +230,17 @@ return require('packer').startup({
 
         use({
             'kyazdani42/nvim-tree.lua', -- Filetree
-            config = [[require('config.luatree')]],
+            config = function()
+                require('config.luatree')
+            end,
             cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
             keys = { '<leader>tt' },
         })
         use({
             'tamago324/lir.nvim', -- File explorer
-            config = [[require('config.fileexplorer')]],
+            config = function()
+                require('config.fileexplorer')
+            end,
         })
 
         use({ 'lambdalisue/suda.vim' }) -- Write with sudo
@@ -226,7 +263,9 @@ return require('packer').startup({
         })
         use({
             'windwp/nvim-autopairs', -- Auto pairs
-            config = [[require('config.autopairs')]],
+            config = function()
+                require('config.autopairs')
+            end,
             event = 'InsertEnter',
         })
         use('tpope/vim-surround') -- Edit surrounds
@@ -234,7 +273,9 @@ return require('packer').startup({
         use('tpope/vim-repeat') -- Reapat custom commands with .
         use({
             'lervag/vimtex', -- Latex
-            config = [[require('config.vimtex')]],
+            config = function()
+                require('config.vimtex')
+            end,
             ft = { 'tex', 'bib' },
         })
         use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
