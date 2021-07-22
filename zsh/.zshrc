@@ -18,13 +18,8 @@ if installed pyenv; then
     eval "$(pyenv init -)"
 fi
 
-if [[ $OS == "Linux" ]]; then
-    if installed brew; then
-        eval $(~/.linuxbrew/bin/brew shellenv)
-    fi
-fi
-
 autoload -Uz compinit
 compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 
+[ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
