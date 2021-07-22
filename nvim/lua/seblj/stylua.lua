@@ -6,14 +6,14 @@ local scan = require('plenary.scandir')
 
 local root_pattern
 root_pattern = function(start, pattern)
-  if start == '/' then return nil end
-  local res = scan.scan_dir(start, { search_pattern = pattern, hidden = true, add_dirs = true, depth = 1 })
-  if table.getn(res) == 0 then
-    local new = start .. '/../'
-    return root_pattern(vim.loop.fs_realpath(new), pattern)
-  else
-    return start
-  end
+    if start == '/' then return nil end
+    local res = scan.scan_dir(start, { search_pattern = pattern, hidden = true, add_dirs = true, depth = 1 })
+    if table.getn(res) == 0 then
+        local new = start .. '/../'
+        return root_pattern(vim.loop.fs_realpath(new), pattern)
+    else
+        return start
+    end
 end
 
 local cached_configs = {}
