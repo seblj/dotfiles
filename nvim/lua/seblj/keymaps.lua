@@ -1,104 +1,151 @@
 ---------- MAPPINGS ----------
 
-local utils = require('seblj.utils')
-local cmd, g, map = vim.cmd, vim.g, utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
+local inoremap = map.inoremap
+local vnoremap = map.vnoremap
+local tnoremap = map.tnoremap
+local onoremap = map.onoremap
+local xnoremap = map.xnoremap
 
 -- Leader is space and localleader is \
-g.mapleader = ' '
-g.maplocalleader = '\\'
+vim.g.mapleader = ' '
+vim.g.maplocalleader = '\\'
 
 ---------- GENERAL MAPPINGS ----------
 
-map('n', 'œ', '<Tab>') -- Alt-o for jumplist
-map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', { expr = true }) -- Tab for next completion
-map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', { expr = true }) -- Shift-tab for previous completion
-map('n', '<Tab>', 'gt') -- Next tab
-map('n', '<S-TAB>', 'gT') -- Previous tab
-map('n', '<leader>r', ':lua require("seblj.utils").reload_config()<CR>') -- Reload config
-map('n', '<leader>=', '<C-w>=') -- Resize windows
-map('n', '<leader>i', 'gg=G') -- Indent file
-map('n', 'ß', ':%s//gI<Left><Left><Left>', { silent = false }) -- Search and replace (Alt-s)
-map('v', 'ß', ':s//gI<Left><Left><Left>', { silent = false }) -- Search and replace (Alt-s)
-map('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true }) -- Remove highlights with enter
-map('n', '<C-f>', 'za') -- Fold
-map('n', '<C-t>', ':tabedit<CR>') -- Create new tab
+nnoremap({ 'œ', '<Tab>' }) -- Alt-o for jumplist
+inoremap({ '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', expr = true }) -- Tab for next completion
+inoremap({ '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', expr = true }) -- Shift-tab for previous completion
+nnoremap({ '<Tab>', 'gt' }) -- Next tab
+nnoremap({ '<S-TAB>', 'gT' }) -- Previous tab
+nnoremap({ '<leader>r', require('seblj.utils').reload_config }) -- Reload config
+nnoremap({ '<leader>=', '<C-w>=' }) -- Resize windows
+nnoremap({ '<leader>i', 'gg=G' }) -- Indent file
+nnoremap({ 'ß', ':%s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
+vnoremap({ 'ß', ':s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
+nnoremap({ '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', expr = true }) -- Remove highlights with enter
+nnoremap({ '<C-f>', 'za' }) -- Fold
+nnoremap({ '<C-t>', ':tabedit<CR>' }) -- Create new tab
 
-map('n', '<C-h>', '<C-w>h') -- Navigate to left split
-map('n', '<C-j>', '<C-w>j') -- Navigate to bottom split
-map('n', '<C-k>', '<C-w>k') -- Navigate to top split
-map('n', '<C-l>', '<C-w>l') -- Navigate to right split
+nnoremap({ '<C-h>', '<C-w>h' }) -- Navigate to left split
+nnoremap({ '<C-j>', '<C-w>j' }) -- Navigate to bottom split
+nnoremap({ '<C-k>', '<C-w>k' }) -- Navigate to top split
+nnoremap({ '<C-l>', '<C-w>l' }) -- Navigate to right split
 
-map('t', '<C-h>', '<C-\\><C-N><C-w>h') -- Navigate to left split
-map('t', '<C-j>', '<C-\\><C-N><C-w>j') -- Navigate to bottom split
-map('t', '<C-k>', '<C-\\><C-N><C-w>k') -- Navigate to top split
-map('t', '<C-l>', '<C-\\><C-N><C-w>l') -- Navigate to right split
-map('t', '<Esc><Esc>', '<C-\\><C-n>') -- Exit term-mode
+tnoremap({ '<C-h>', '<C-\\><C-N><C-w>h' }) -- Navigate to left split
+tnoremap({ '<C-j>', '<C-\\><C-N><C-w>j' }) -- Navigate to bottom split
+tnoremap({ '<C-k>', '<C-\\><C-N><C-w>k' }) -- Navigate to top split
+tnoremap({ '<C-l>', '<C-\\><C-N><C-w>l' }) -- Navigate to right split
+tnoremap({ '<Esc><Esc>', '<C-\\><C-n>' }) -- Exit term-mode
 
-map('n', '<S-Right>', ':lua require("seblj.utils").resize_right()<CR>') -- Resize split right
-map('n', '<S-Left>', ':lua require("seblj.utils").resize_left()<CR>') -- Resize split left
-map('n', '<S-Up>', ':lua require("seblj.utils").resize_up()<CR>') -- Resize split up
-map('n', '<S-Down>', ':lua require("seblj.utils").resize_down()<CR>') -- Resize split down
+nnoremap({ '<S-Right>', require('seblj.utils.resize').resize_right }) -- Resize split right
+nnoremap({ '<S-Left>', require('seblj.utils.resize').resize_left }) -- Resize split left
+nnoremap({ '<S-Up>', require('seblj.utils.resize').resize_up }) -- Resize split up
+nnoremap({ '<S-Down>', require('seblj.utils.resize').resize_down }) -- Resize split down
 
-map('v', '<', '<gv') -- Keep visual on indent
-map('v', '>', '>gv') -- Keep visual on indent
+vnoremap({ '<', '<gv' }) -- Keep visual on indent
+vnoremap({ '>', '>gv' }) -- Keep visual on indent
 
 if vim.fn.has('mac') == 1 then
-    map('n', '√', ':m.+1<CR>==') -- Move line with Alt-j
-    map('v', '√', ":m '>+1<CR>gv=gv") -- Move line with Alt-j
-    map('i', '√', '<Esc>:m .+1<CR>==gi') -- Move line with Alt-j
+    nnoremap({ '√', ':m.+1<CR>==' }) -- Move line with Alt-j
+    vnoremap({ '√', ":m '>+1<CR>gv=gv" }) -- Move line with Alt-j
+    inoremap({ '√', '<Esc>:m .+1<CR>==gi' }) -- Move line with Alt-j
 
-    map('n', 'ª', ':m.-2<CR>==') -- Move line with Alt-k
-    map('v', 'ª', ":m '<-2<CR>gv=gv") -- Move line with Alt-k
-    map('i', 'ª', '<Esc>:m .-2<CR>==gi') -- Move line with Alt-k
+    nnoremap({ 'ª', ':m.-2<CR>==' }) -- Move line with Alt-k
+    vnoremap({ 'ª', ":m '<-2<CR>gv=gv" }) -- Move line with Alt-k
+    inoremap({ 'ª', '<Esc>:m .-2<CR>==gi' }) -- Move line with Alt-k
 else
-    map('n', '<A-j>', ':m.+1<CR>==') -- Move line with Alt-j
-    map('v', '<A-j>', ":m '>+1<CR>gv=gv") -- Move line with Alt-j
-    map('i', '<A-j>', '<Esc>:m .+1<CR>==gi') -- Move line with Alt-j
+    nnoremap({ '<A-j>', ':m.+1<CR>==' }) -- Move line with Alt-j
+    vnoremap({ '<A-j>', ":m '>+1<CR>gv=gv" }) -- Move line with Alt-j
+    inoremap({ '<A-j>', '<Esc>:m .+1<CR>==gi' }) -- Move line with Alt-j
 
-    map('n', '<A-k>', ':m.-2<CR>==') -- Move line with Alt-k
-    map('v', '<A-k>', ":m '<-2<CR>gv=gv") -- Move line with Alt-k
-    map('i', '<A-k>', '<Esc>:m .-2<CR>==gi') -- Move line with Alt-k
+    nnoremap({ '<A-k>', ':m.-2<CR>==' }) -- Move line with Alt-k
+    vnoremap({ '<A-k>', ":m '<-2<CR>gv=gv" }) -- Move line with Alt-k
+    inoremap({ '<A-k>', '<Esc>:m .-2<CR>==gi' }) -- Move line with Alt-k
 end
 
-map('n', 'gca', '<cmd>lua require("seblj.utils").toggle_commenstring()<CR>')
-map('n', '<leader>j', 'J') -- Join lines
+nnoremap({ 'gca', require('seblj.utils').toggle_commenstring })
+nnoremap({ '<leader>j', 'J' }) -- Join lines
 
-map('n', 'j', '<cmd>lua require("seblj.utils").jump("j")<CR>') -- Thanks to TJ
-map('n', 'k', '<cmd>lua require("seblj.utils").jump("k")<CR>') -- Thanks to TJ
+-- Thanks to TJ
+nnoremap({
+    'j',
+    function()
+        require('seblj.utils').jump('j')
+    end,
+})
+nnoremap({
+    'k',
+    function()
+        require('seblj.utils').jump('k')
+    end,
+})
 
-map('n', 'J', '10j') -- 10 lines down with J
-map('v', 'J', '10j') -- 10 lines down with J
-map('n', 'K', '10k') -- 10 lines up with K
-map('v', 'K', '10k') -- 10 lines up with K
+nnoremap({ 'J', '10j' }) -- 10 lines down with J
+vnoremap({ 'J', '10j' }) -- 10 lines down with J
+nnoremap({ 'K', '10k' }) -- 10 lines up with K
+vnoremap({ 'K', '10k' }) -- 10 lines up with K
 
-map('n', 'H', '^') -- Beginning of line
-map('n', 'L', '$') -- End of line
-map('v', 'H', '^') -- Beginning of line
-map('v', 'L', '$') -- End of line
-map('o', 'H', '^') -- Beginning of line
-map('o', 'L', '$') -- End of line
+nnoremap({ 'H', '^' }) -- Beginning of line
+nnoremap({ 'L', '$' }) -- End of line
+vnoremap({ 'H', '^' }) -- Beginning of line
+vnoremap({ 'L', '$' }) -- End of line
+onoremap({ 'H', '^' }) -- Beginning of line
+onoremap({ 'L', '$' }) -- End of line
 
-map('n', '<leader>x', ':lua require("seblj.utils").save_and_exec()<CR>') -- Save and execute vim or lua file
-map('x', '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>') -- Macro over visual range
-map('n', '<leader>z', ':lua require("seblj.utils").syn_stack()<CR>') -- Get syntax group
-map('n', '<Down>', ':lua require("seblj.utils").quickfix("down")<CR>') -- Move down in quickfixlist
-map('n', '<Up>', ':lua require("seblj.utils").quickfix("up")<CR>') -- Move up in quickfixlist
-map('n', '<leader><ESC><leader>', ':cclose<CR> `A') -- Close and go to mark
-map('n', '<leader>@', ':lua require("seblj.utils").cd()<CR>') -- cd to directory of open buffer
+nnoremap({ '<leader>x', require('seblj.utils').save_and_exec }) -- Save and execute vim or lua file
+xnoremap({ '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>' }) -- Macro over visual range
+nnoremap({
+    '<leader>z',
+    function()
+        if vim.api.nvim_eval('&syntax') == '' then
+            if vim.api.nvim_eval("exists(':TSHighlightCapturesUnderCursor')") == 2 then
+                vim.cmd('TSHighlightCapturesUnderCursor')
+            end
+        else
+            if vim.api.nvim_eval("!exists('*synstack')") == 1 then
+                return
+            end
+            vim.cmd([[echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')]])
+        end
+    end,
+})
+nnoremap({
+    '<Down>',
+    function()
+        require('seblj.utils').quickfix('down')
+    end,
+}) -- Move down in quickfixlist
+nnoremap({
+    '<Up>',
+    function()
+        require('seblj.utils').quickfix('up')
+    end,
+}) -- Move up in quickfixlist
+nnoremap({ '<leader><ESC><leader>', ':cclose<CR> `A' }) -- Close and go to mark
+nnoremap({
+    '<leader>@',
+    function()
+        local dir = vim.fn.expand('%:p:h')
+        vim.cmd('cd ' .. dir)
+        vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
+    end,
+}) -- cd to directory of open buffer
 
-cmd('cnoreabbrev w!! w suda://%') -- Write with sudo
-cmd('cnoreabbrev !! <C-r>:') -- Repeat last command
-cmd('cnoreabbrev Q q') -- Quit with Q
-cmd('cnoreabbrev W w') -- Write with W
-cmd('cnoreabbrev WQ wq') -- Write and quit with WQ
-cmd('cnoreabbrev Wq wq') -- Write and quit with Wq
-cmd('cnoreabbrev Wqa wqa') -- Write and quit all with Wqa
-cmd('cnoreabbrev WQa wqa') -- Write and quit all with WQa
-cmd('cnoreabbrev WQA wqa') -- Write and quit all with WQA
-cmd('cnoreabbrev Wa wa') -- Write all with Wa
-cmd('cnoreabbrev WA wa') -- Write all with WA
-cmd('cnoreabbrev Qa qa') -- Quit all with Qa
-cmd('cnoreabbrev QA qa') -- Quit all with QA
+vim.cmd('cnoreabbrev w!! w suda://%') -- Write with sudo
+vim.cmd('cnoreabbrev !! <C-r>:') -- Repeat last command
+vim.cmd('cnoreabbrev Q q') -- Quit with Q
+vim.cmd('cnoreabbrev W w') -- Write with W
+vim.cmd('cnoreabbrev WQ wq') -- Write and quit with WQ
+vim.cmd('cnoreabbrev Wq wq') -- Write and quit with Wq
+vim.cmd('cnoreabbrev Wqa wqa') -- Write and quit all with Wqa
+vim.cmd('cnoreabbrev WQa wqa') -- Write and quit all with WQa
+vim.cmd('cnoreabbrev WQA wqa') -- Write and quit all with WQA
+vim.cmd('cnoreabbrev Wa wa') -- Write all with Wa
+vim.cmd('cnoreabbrev WA wa') -- Write all with WA
+vim.cmd('cnoreabbrev Qa qa') -- Quit all with Qa
+vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
 
-cmd('command! -nargs=* T split | term <args>') -- Open term in split with T
-cmd('command! -nargs=* VT vsplit | term <args>') -- Open term in vsplit with VT
+vim.cmd('command! -nargs=* T split | term <args>') -- Open term in split with T
+vim.cmd('command! -nargs=* VT vsplit | term <args>') -- Open term in vsplit with VT

@@ -1,5 +1,9 @@
 local M = {}
 local ui = require('seblj.utils.ui')
+local utils = require('seblj.utils')
+local autocmd = utils.autocmd
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 local codeactions, bufnr
 
 M.confirm = function(key)
@@ -54,24 +58,24 @@ M.handler = function(_, _, actions)
     -- Keymap for selecting option with number
     for k, _ in ipairs(lines) do
         if k > 2 then
-            vim.api.nvim_buf_set_keymap(
-                popup_bufnr,
-                'n',
+            nnoremap({
                 string.format('%d', k - 2),
-                string.format('<cmd>lua require("config.lspconfig.codeaction").confirm(%d)<CR>', k - 2),
-                {}
-            )
+                function()
+                    M.confirm(k - 2)
+                end,
+                buffer = true,
+            })
         end
     end
 
-    vim.api.nvim_command('autocmd CursorMoved <buffer> lua require("seblj.utils.ui").set_cursor()')
-    vim.api.nvim_buf_set_keymap(
-        popup_bufnr,
-        'n',
-        '<CR>',
-        '<cmd>lua require("config.lspconfig.codeaction").confirm()<CR>',
-        { silent = true }
-    )
+    autocmd({
+        event = 'CursorMoved',
+        pattern = '<buffer>',
+        command = function()
+            require('seblj.utils.ui').set_cursor()
+        end,
+    })
+    nnoremap({ '<CR>', M.confirm, buffer = true })
 end
 
 return M

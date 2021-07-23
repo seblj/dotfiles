@@ -1,8 +1,7 @@
 ---------- DEBUGGER CONFIG ----------
 
-local utils = require('seblj.utils')
-local map = utils.map
-local cmd = vim.cmd
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
 --------- ADAPTERS ----------
 
@@ -27,10 +26,10 @@ dap.adapters.python = {
 
 ---------- MAPPINGS ----------
 
-map('n', '<leader>db', '<cmd>lua require("dap").toggle_breakpoint()<CR>')
-map('n', '<leader>d<leader>', '<cmd>lua require("dap").continue()<CR>')
-map('n', '<leader>dl', '<cmd>lua require("dap").step_into()<CR>')
-map('n', '<leader>dj', '<cmd>lua require("dap").step_over()<CR>')
+nnoremap({ '<leader>db', require('dap').toggle_breakpoint })
+nnoremap({ '<leader>d<leader>', require('dap').continue })
+nnoremap({ '<leader>dl', require('dap').step_into })
+nnoremap({ '<leader>dj', require('dap').step_over })
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     continue = { '.continue', '.c', 'c' },
@@ -67,8 +66,10 @@ require('dapui').setup({
 
 ---------- COMMANDS ----------
 
-cmd([[command! -complete=file -nargs=* DebugC lua require "config.dap".start_c_debugger({<f-args>}, "gdb")]])
-cmd([[command! -complete=file -nargs=* DebugRust lua require "config.dap".start_c_debugger({<f-args>}, "gdb", "rust-gdb")]])
+vim.cmd([[command! -complete=file -nargs=* DebugC lua require "config.dap".start_c_debugger({<f-args>}, "gdb")]])
+vim.cmd(
+    [[command! -complete=file -nargs=* DebugRust lua require "config.dap".start_c_debugger({<f-args>}, "gdb", "rust-gdb")]]
+)
 
 ---------- CONFIG ----------
 

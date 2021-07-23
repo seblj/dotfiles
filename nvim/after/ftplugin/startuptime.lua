@@ -1,4 +1,4 @@
-local utils = require('seblj.utils')
-local map = utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
-map('n', 'q', '<cmd>q<CR>')
+nnoremap({ 'q', '<cmd>q<CR>' })

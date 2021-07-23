@@ -1,3 +1,5 @@
+local utils = require('seblj.utils')
+local augroup = utils.augroup
 local M = {}
 
 local check_trigger_char = function(line_to_cursor, triggers)
@@ -48,10 +50,13 @@ M.open_signature = function()
 end
 
 M.setup = function()
-    vim.cmd('augroup Signature')
-    vim.cmd('autocmd! * <buffer>')
-    vim.cmd('autocmd TextChangedI * lua require("config.lspconfig.signature").open_signature()')
-    vim.cmd('augroup end')
+    augroup('Signature', {
+        event = 'TextChangedI',
+        pattern = '*',
+        command = function()
+            require('config.lspconfig.signature').open_signature()
+        end,
+    })
 end
 
 return M

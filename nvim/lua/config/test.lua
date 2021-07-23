@@ -1,14 +1,15 @@
 ---------- TEST CONFIG ----------
 
-local map = require('seblj.utils').map
+local map = require('seblj.utils.keymap')
+local nnoremmap = map.nnoremap
 
 vim.cmd([[let test#enabled_runners = ["python#djangotest", "python#pyunit"] ]])
 
 if packer_plugins['vim-ultest'] and packer_plugins['vim-ultest'].loaded then
-    map('n', '<leader>tf', '<cmd>Ultest<CR>')
-    map('n', '<leader>tn', '<cmd>UltestNearest<CR>')
-    map('n', '<leader>tc', '<cmd>UltestClear<CR>')
+    nnoremmap({ '<leader>tf', '<cmd>Ultest<CR>' })
+    nnoremmap({ '<leader>tn', '<cmd>UltestNearest<CR>' })
+    nnoremmap({ '<leader>tc', '<cmd>UltestClear<CR>' })
 else
-    map('n', '<leader>tf', '<cmd>TestFile<CR>')
-    map('n', '<leader>tn', '<cmd>TestNearest<CR>')
+    nnoremmap({ '<leader>tf', '<cmd>TestFile<CR>' })
+    nnoremmap({ '<leader>tn', '<cmd>TestNearest<CR>' })
 end

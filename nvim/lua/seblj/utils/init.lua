@@ -1,17 +1,8 @@
 ---------- UTILS ----------
 
-local eval, cmd, fn = vim.api.nvim_eval, vim.cmd, vim.fn
+local eval = vim.api.nvim_eval
 
 local M = {}
-
--- Set mappings
-M.map = function(mode, lhs, rhs, opts)
-    local options = { noremap = true, silent = true }
-    if opts then
-        options = vim.tbl_extend('force', options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
 
 -- Thanks to @akinsho for this brilliant function white waiting for builtin autocmd in lua
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/globals.lua
@@ -46,11 +37,6 @@ M.autocmd = function(c)
         pattern = table.concat(c.pattern, ',')
     end
 
-    local modifier = c.modifier or ''
-    if type(c.modifier) == 'table' then
-        modifier = table.concat(c.modifier, ' ')
-    end
-
     local once = ''
     if c.once == true then
         once = '++once '
@@ -60,20 +46,13 @@ M.autocmd = function(c)
         nested = '++nested '
     end
 
-    vim.cmd(string.format('autocmd %s %s %s %s %s %s', event, pattern, modifier, once, nested, command))
-end
-
--- cd to directory of current buffer
-M.cd = function()
-    local dir = fn.expand('%:p:h')
-    cmd('cd ' .. dir)
-    vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
+    vim.cmd(string.format('autocmd %s %s %s %s %s', event, pattern, once, nested, command))
 end
 
 -- Function to execute macro over a visual range
 M.visual_macro = function()
-    cmd('echo "@".getcmdline()')
-    cmd([[execute ":'<,'>normal @".nr2char(getchar())]])
+    vim.cmd('echo "@".getcmdline()')
+    vim.cmd([[execute ":'<,'>normal @".nr2char(getchar())]])
 end
 
 -- All credit to @tjdevries for this
@@ -81,36 +60,20 @@ end
 M.jump = function(letter)
     local count = eval('v:count')
     if count == 0 then
-        cmd(string.format([[call execute('normal! g%s')]], letter))
+        vim.cmd(string.format([[call execute('normal! g%s')]], letter))
         return
     end
 
     if count > 10 then
-        cmd([[call execute("normal! m'")]])
+        vim.cmd([[call execute("normal! m'")]])
     end
 
-    cmd(string.format([[call execute('normal! %s%s', )]], count, letter))
-end
-
--- Find syntax on current line.
--- Should work both with and without tree-sitter.
--- Dependant on tree-sitter setting syntax to empty
-M.syn_stack = function()
-    if eval('&syntax') == '' then
-        if eval("exists(':TSHighlightCapturesUnderCursor')") == 2 then
-            cmd([[TSHighlightCapturesUnderCursor]])
-        end
-    else
-        if eval("!exists('*synstack')") == 1 then
-            return
-        end
-        cmd([[echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')]])
-    end
+    vim.cmd(string.format([[call execute('normal! %s%s', )]], count, letter))
 end
 
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
-    cmd('luafile ~/dotfiles/nvim/init.lua')
+    vim.cmd('luafile ~/dotfiles/nvim/init.lua')
     for pack, _ in pairs(package.loaded) do
         if pack:match('^config') or pack:match('^seblj') then
             package.loaded[pack] = nil
@@ -146,47 +109,47 @@ end
 M.quickfix = function(key)
     if eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1 then
         if key == 'down' then
-            cmd('normal j')
+            vim.cmd('normal j')
         elseif key == 'up' then
-            cmd('normal k')
+            vim.cmd('normal k')
         end
     else
         if key == 'down' then
-            cmd('silent! cnext')
+            vim.cmd('silent! cnext')
         elseif key == 'up' then
-            cmd('silent! cprev')
+            vim.cmd('silent! cprev')
         end
     end
+end
+
+local run_term = function(command, ...)
+    vim.cmd('term')
+    local terminal_id = eval('b:terminal_job_id')
+    vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
+    vim.cmd('nmap <silent> q :q<CR>')
+    vim.cmd('stopinsert')
 end
 
 -- Save and execute file based on filetype
 M.save_and_exec = function()
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
     if ft == 'vim' or ft == 'lua' then
-        cmd('silent! write')
-        cmd('source %')
+        vim.cmd('silent! write')
+        vim.cmd('source %')
     elseif ft == 'python' then
-        cmd('silent! write')
-        cmd('sp')
-        cmd('term python3 %')
-        cmd('startinsert')
-        -- Use chansend for C, because it won't tell me if I segfault etc by doing 'term ...'
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        run_term('python3 %s', vim.fn.expand('%'))
     elseif ft == 'c' then
-        cmd('silent! write')
-        cmd('sp')
-        local file = eval('expand("%")')
-        local output = eval('expand("%:r")')
-        cmd('term')
-        local terminal_id = eval('b:terminal_job_id')
-        vim.api.nvim_chan_send(
-            terminal_id,
-            string.format('gcc %s -o %s && ./%s && rm %s\n', file, output, output, output)
-        )
-        cmd('nmap <silent> q :q<CR>')
-        cmd('stopinsert')
-        -- Not really save and exec, but think it fits nicely in here for mapping
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        local file = vim.fn.expand('%')
+        local output = vim.fn.expand('%:t:r')
+        local command = 'gcc %s -o %s && ./%s; rm %s'
+        run_term(command, file, output, output, output)
     elseif ft == 'http' then
-        cmd('lua require("rest-nvim").run()')
+        -- Not really save and exec, but think it fits nicely in here for mapping
+        require('rest-nvim').run()
     end
 end
 
@@ -218,93 +181,52 @@ M.highlight_all = function(hls)
     end
 end
 
----------- RESIZE SPLITS ----------
-
--- https://github.com/ahonn/resize.vim/blob/master/plugin/resize.vim rewritten in lua
-
-local resize_size = 1
-
-local pos_size = '+' .. resize_size
-local neg_size = '-' .. resize_size
-
-local get_direction = function(pos)
-    local this = fn.winnr()
-    cmd(string.format('wincmd %s', pos))
-    local next = fn.winnr()
-    cmd(string.format('%s wincmd w', this))
-    return this == next
-end
-
-local is_bottom_window = function()
-    local is_top = get_direction('k')
-    local is_bottom = get_direction('j')
-    return is_bottom and not is_top
-end
-
-local is_right_window = function()
-    local is_left = get_direction('h')
-    local is_right = get_direction('l')
-    return is_right and not is_left
-end
-
-local resize_vertical = function(size)
-    cmd(string.format('vertical resize %s', size))
-end
-
-local resize_horizontal = function(size)
-    cmd(string.format('resize %s', size))
-end
-
-M.resize_up = function()
-    if is_bottom_window() then
-        return resize_horizontal(pos_size)
-    end
-    return resize_horizontal(neg_size)
-end
-
-M.resize_down = function()
-    if is_bottom_window() then
-        return resize_horizontal(neg_size)
-    end
-    return resize_horizontal(pos_size)
-end
-
-M.resize_left = function()
-    if is_right_window() then
-        return resize_vertical(pos_size)
-    end
-    return resize_vertical(neg_size)
-end
-
-M.resize_right = function()
-    if is_right_window() then
-        return resize_vertical(neg_size)
-    end
-    return resize_vertical(pos_size)
-end
-
-----------------------------------------
-
 ---------- HIDE CURSOR ----------
 
 -- https://github.com/tamago324/lir.nvim/blob/master/lua/lir/smart_cursor/init.lua
 
-local guicursor_saved = vim.o.guicursor
+local guicursor_saved = vim.opt.guicursor
 
 M.hide_cursor = function()
-    cmd([[set guicursor+=a:TransparentCursor/lCursor]])
+    vim.opt.guicursor = vim.opt.guicursor + 'a:TransparentCursor/lCursor'
 end
 
 M.restore_cursor = function()
-    cmd([[set guicursor+=a:Cursor/lCursor]])
-    vim.o.guicursor = guicursor_saved
+    vim.opt.guicursor = vim.opt.guicursor + 'a:Cursor/lCursor'
+    vim.opt.guicursor = guicursor_saved
 end
 
 M.setup_hidden_cursor = function()
-    cmd([[autocmd BufEnter,WinEnter,CmdwinLeave,CmdlineLeave <buffer> setlocal cursorline]])
-    cmd([[autocmd BufLeave,WinLeave,CmdwinEnter,CmdlineEnter <buffer> setlocal nocursorline]])
-    cmd([[autocmd BufEnter,WinEnter,CmdwinLeave,CmdlineLeave <buffer> lua require('seblj.utils').hide_cursor()]])
-    cmd([[autocmd BufLeave,WinLeave,CmdwinEnter,CmdlineEnter <buffer> lua require('seblj.utils').restore_cursor()]])
+    M.augroup('HiddenCursor', {
+        {
+            event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
+            pattern = '<buffer>',
+            command = function()
+                vim.cmd('setlocal cursorline')
+            end,
+        },
+        {
+            event = { 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' },
+            pattern = '<buffer>',
+            command = function()
+                vim.cmd('setlocal nocursorline')
+            end,
+        },
+        {
+            event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
+            pattern = '<buffer>',
+            command = function()
+                M.hide_cursor()
+            end,
+        },
+        {
+            event = { 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' },
+            pattern = '<buffer>',
+            command = function()
+                M.restore_cursor()
+            end,
+        },
+    })
 end
 
 ----------------------------------------

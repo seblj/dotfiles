@@ -1,5 +1,7 @@
 local M = {}
 local ui = require('seblj.utils.ui')
+local map = require('seblj.utils.keymap')
+local inoremap = map.inoremap
 
 local options = {
     prompt = '> ',
@@ -30,13 +32,7 @@ M.rename = function()
         },
     })
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    vim.api.nvim_buf_set_keymap(
-        0,
-        'i',
-        '<CR>',
-        '<cmd>lua require("config.lspconfig.rename").confirm()<CR>',
-        { silent = true }
-    )
+    inoremap({ '<CR>', M.confirm, buffer = true })
     vim.cmd('startinsert')
 end
 

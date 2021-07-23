@@ -1,5 +1,9 @@
 local M = {}
 local ui = require('seblj.utils.ui')
+local map = require('seblj.utils.keymap')
+local inoremap = map.inoremap
+local utils = require('seblj.utils')
+local autocmd = utils.autocmd
 
 local get_git_root = function()
     if vim.fn.has('win32') == 1 then
@@ -67,12 +71,24 @@ M.live_grep = function()
 end
 
 -- Grep string with using ui
-M.grep_confirm = function()
+local grep_confirm = function()
     local new_name = vim.trim(vim.fn.getline('.'):sub(#'> ' + 1, -1))
     vim.api.nvim_win_close(0, true)
-    require('telescope.builtin').grep_string({
-        search = new_name,
-    })
+    local git_root = get_git_root()
+    local curr_dir = vim.fn.expand('%:p:h:t')
+    if git_root == '' or git_root == nil then
+        require('telescope.builtin').grep_string({
+            search = new_name,
+            prompt_title = curr_dir,
+        })
+    else
+        local dir = vim.fn.fnamemodify(git_root, ':t')
+        require('telescope.builtin').grep_string({
+            cwd = git_root,
+            search = new_name,
+            prompt_title = dir,
+        })
+    end
 end
 
 M.grep_string = function()
@@ -95,14 +111,14 @@ M.grep_string = function()
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    vim.api.nvim_buf_set_keymap(
-        popup_bufnr,
-        'i',
-        '<CR>',
-        '<cmd>lua require("config.telescope.utils").grep_confirm()<CR>',
-        { silent = true }
-    )
-    vim.api.nvim_command('autocmd CursorMoved <buffer> lua require("seblj.utils.ui").set_cursor()')
+    inoremap({ '<CR>', grep_confirm, buffer = true })
+    autocmd({
+        event = 'CursorMoved',
+        pattern = '<buffer>',
+        command = function()
+            require('seblj.utils.ui').set_cursor()
+        end,
+    })
     vim.cmd('startinsert')
 end
 

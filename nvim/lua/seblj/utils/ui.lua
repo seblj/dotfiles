@@ -1,4 +1,6 @@
 local M = {}
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
 M.border_line = '─'
 
@@ -30,13 +32,13 @@ M.popup_create = function(opts)
     vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:Normal')
     if opts.enter then
         vim.api.nvim_set_current_win(winnr)
-        vim.api.nvim_buf_set_keymap(
-            popup_bufnr,
-            'n',
+        nnoremap({
             '<ESC>',
-            '<cmd>lua vim.api.nvim_win_close(0, true)<CR>',
-            { silent = true }
-        )
+            function()
+                vim.api.nvim_win_close(0, true)
+            end,
+            buffer = true,
+        })
     end
     if opts.prompt and opts.prompt.enable then
         vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')

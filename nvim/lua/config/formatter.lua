@@ -1,4 +1,4 @@
-local utils = require('seblj.utils')
-local map = utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
-map('n', '<leader>p', '<cmd>Neoformat prettier<CR>')
+nnoremap({ '<leader>p', '<cmd>Neoformat prettier<CR>' })

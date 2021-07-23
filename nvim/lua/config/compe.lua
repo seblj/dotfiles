@@ -1,10 +1,10 @@
 ---------- COMPE CONFIG ----------
 
-local utils = require('seblj.utils')
-local opt, map = vim.opt, utils.map
+local map = require('seblj.utils.keymap')
+local inoremap = map.inoremap
 
-opt.completeopt = { 'menuone', 'noselect' }
-map('i', '<C-space>', 'compe#complete()', { expr = true })
+vim.opt.completeopt = { 'menuone', 'noselect' }
+inoremap({ '<C-space>', 'compe#complete()', expr = true })
 
 require('compe').setup({
     enabled = true,

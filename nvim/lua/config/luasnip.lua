@@ -1,5 +1,5 @@
-local utils = require('seblj.utils')
-local map = utils.map
+local map = require('seblj.utils.keymap')
+local imap = map.imap
 
 local ls = require('luasnip')
 local s = ls.snippet
@@ -87,5 +87,5 @@ _G.s_tab_complete = function()
     end
 end
 
-map('i', '<Tab>', 'v:lua.tab_complete()', { expr = true, noremap = false })
-map('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true, noremap = false })
+imap({ '<Tab>', 'v:lua.tab_complete()', expr = true })
+imap({ '<S-Tab>', 'v:lua.s_tab_complete()', expr = true })

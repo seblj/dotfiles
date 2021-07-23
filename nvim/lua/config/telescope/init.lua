@@ -1,7 +1,7 @@
 ---------- TELESCOPE CONFIG ----------
 
-local utils = require('seblj.utils')
-local map = utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
 require('telescope').setup({
     defaults = {
@@ -16,16 +16,16 @@ require('telescope').setup({
 })
 require('telescope').load_extension('fzf')
 
-map('n', '<leader>ff', '<cmd>lua require("config.telescope.utils").find_files()<CR>')
-map('n', '<leader>fg', '<cmd>lua require("config.telescope.utils").git_files()<CR>')
-map('n', '<leader>fw', '<cmd>lua require("config.telescope.utils").live_grep()<CR>')
-map('n', '<leader>fs', '<cmd>lua require("config.telescope.utils").grep_string()<CR>')
-map('n', '<leader>fd', '<cmd>lua require("config.telescope.utils").edit_dotfiles()<CR>')
-map('n', '<leader>fp', '<cmd>lua require("config.telescope.utils").installed_plugins()<CR>')
-map('n', '<leader>fn', '<cmd>lua require("config.telescope.utils").search_neovim()<CR>')
-map('n', '<leader>fk', '<cmd>lua require("telescope.builtin").keymaps()<CR>')
-map('n', '<leader>fo', '<cmd>lua require("telescope.builtin").vim_options()<CR>')
-map('n', '<leader>fe', '<cmd>lua require("telescope.builtin").file_browser()<CR>')
-map('n', '<leader>fa', '<cmd>lua require("telescope.builtin").autocommands()<CR>')
-map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<CR>')
-map('n', '<leader>fr', '<cmd>lua require("telescope.builtin").oldfiles()<CR>')
+nnoremap({ '<leader>ff', require('config.telescope.utils').find_files })
+nnoremap({ '<leader>fg', require('config.telescope.utils').git_files })
+nnoremap({ '<leader>fw', require('config.telescope.utils').live_grep })
+nnoremap({ '<leader>fs', require('config.telescope.utils').grep_string })
+nnoremap({ '<leader>fd', require('config.telescope.utils').edit_dotfiles })
+nnoremap({ '<leader>fp', require('config.telescope.utils').installed_plugins })
+nnoremap({ '<leader>fn', require('config.telescope.utils').search_neovim })
+nnoremap({ '<leader>fk', require('telescope.builtin').keymaps })
+nnoremap({ '<leader>fo', require('telescope.builtin').vim_options })
+nnoremap({ '<leader>fe', require('telescope.builtin').file_browser })
+nnoremap({ '<leader>fa', require('telescope.builtin').autocommands })
+nnoremap({ '<leader>fh', require('telescope.builtin').help_tags })
+nnoremap({ '<leader>fr', require('telescope.builtin').oldfiles })

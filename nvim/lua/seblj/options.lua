@@ -1,37 +1,45 @@
 ---------- OPTIONS ----------
-local cmd, g, opt = vim.cmd, vim.g, vim.opt
 
-cmd('colorscheme colorscheme')
+local utils = require('seblj.utils')
+local autocmd = utils.autocmd
 
-opt.splitbelow = true
-opt.splitright = true
-opt.updatetime = 250
-opt.cmdheight = 2
-opt.clipboard = 'unnamedplus'
-opt.mouse = 'a'
-opt.tabstop = 4
-opt.expandtab = true
-opt.softtabstop = 4
-opt.shiftwidth = 4
-opt.autoindent = true
-opt.cindent = true
-opt.swapfile = false
-opt.number = true
-opt.relativenumber = true
-opt.foldmethod = 'indent'
-opt.foldlevelstart = 20
-opt.ignorecase = true
-opt.smartcase = true
-opt.termguicolors = true
-opt.undofile = true
-opt.undolevels = 1000
-opt.shortmess = opt.shortmess + 'c'
+vim.cmd('colorscheme colorscheme')
+
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.updatetime = 250
+vim.opt.cmdheight = 2
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.mouse = 'a'
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.autoindent = true
+vim.opt.cindent = true
+vim.opt.swapfile = false
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.foldmethod = 'indent'
+vim.opt.foldlevelstart = 20
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.termguicolors = true
+vim.opt.undofile = true
+vim.opt.undolevels = 1000
+vim.opt.shortmess = vim.opt.shortmess + 'c'
 
 -- Disable netrw
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
-cmd('autocmd BufEnter * setlocal formatoptions-=o formatoptions+=r')
+autocmd({
+    event = 'BufEnter',
+    pattern = '*',
+    command = function()
+        vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r'
+    end,
+})
 
-g.vimsyn_embed = 'l'
-g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'
+vim.g.vimsyn_embed = 'l'
+vim.g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'

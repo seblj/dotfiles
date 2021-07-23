@@ -1,11 +1,19 @@
+local map = require('seblj.utils.keymap')
 local utils = require('seblj.utils')
-local map = utils.map
+local autocmd = utils.autocmd
+local nnoremap = map.nnoremap
 
 Use_coc = false
 
 local plugin_dir = '~/projects/plugins/'
 
-vim.cmd([[autocmd BufWritePost init.lua PackerCompile]])
+autocmd({
+    event = 'BufWritePost',
+    pattern = 'plugins.lua',
+    command = function()
+        vim.cmd('PackerCompile')
+    end,
+})
 
 return require('packer').startup({
     function(use)
@@ -210,7 +218,7 @@ return require('packer').startup({
         })
         use({
             'szw/vim-maximizer', -- Maximize split
-            config = map('n', '<leader>m', ':MaximizerToggle!<CR>'),
+            config = nnoremap({ '<leader>m', ':MaximizerToggle!<CR>' }),
         })
 
         use({

@@ -1,28 +1,43 @@
 ---------- LSP CONFIG ----------
 
 local utils = require('seblj.utils')
-local cmd, map = vim.cmd, utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
+local inoremap = map.inoremap
+local vnoremap = map.vnoremap
+local autocmd = utils.autocmd
 
 ---------- MAPPINGS ----------
 
 -- Telescope
-map('n', 'gr', '<cmd>lua require("telescope.builtin").lsp_references()<CR>')
-map('n', 'gd', '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
+nnoremap({ 'gr', require('telescope.builtin').lsp_references })
+nnoremap({ 'gd', require('telescope.builtin').lsp_definitions })
 
-map('i', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-map('n', 'gp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-map('n', 'gn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-map('n', '<leader>cd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+inoremap({ '<C-s>', vim.lsp.buf.signature_help })
+nnoremap({ '<C-s>', vim.lsp.buf.signature_help })
+nnoremap({ 'gh', vim.lsp.buf.hover })
+nnoremap({
+    'gR',
+    function()
+        vim.lsp.buf.rename()
+    end,
+})
+nnoremap({ '<leader>ca', vim.lsp.buf.code_action })
+nnoremap({ 'gp', vim.lsp.diagnostic.goto_prev })
+nnoremap({ 'gn', vim.lsp.diagnostic.goto_next })
+nnoremap({ '<leader>cd', vim.lsp.diagnostic.show_line_diagnostics })
 
-map('n', 'gb', '<C-t>')
-map('v', 'gb', '<C-t>')
+nnoremap({ 'gb', '<C-t>' })
+vnoremap({ 'gb', '<C-t>' })
 
--- cmd([[autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()]])
--- cmd([[nnoremap <leader>cd <cmd>lua require("echo-diagnostics").echo_entire_diagnostic()<CR>]])
+-- autocmd({
+--     event = 'CursorHold',
+--     pattern = '*',
+--     command = function()
+--         require('echo-diagnostics').echo_line_diagnostic()
+--     end,
+-- })
+-- nnoremap({ '<leader>cd', require('echo-diagnostics').echo_entire_diagnostic })
 
 ---------- DIAGNOSTICS ----------
 
@@ -48,6 +63,7 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = 'rounded',
     silent = true,
+    focusable = false, -- Sometimes gets set to true if not set explicitly to false for some reason
 })
 vim.lsp.diagnostic.show_line_diagnostics = override(vim.lsp.diagnostic.show_line_diagnostics, {
     border = 'rounded',
@@ -124,7 +140,7 @@ local make_config = function()
     return {
         -- Needs to be inside a function or else setup is called even though no lsp is attached
         on_attach = function(client)
-            require('config.lspconfig.signature').setup({})
+            require('config.lspconfig.signature').setup()
             if client.name == 'typescript' then
                 client.resolved_capabilities.document_formatting = false
             end
@@ -168,7 +184,7 @@ setup_servers()
 -- Reload after install
 require('lspinstall').post_install_hook = function()
     setup_servers()
-    cmd('bufdo e')
+    vim.cmd('bufdo e')
 end
 
 local eslint = {
@@ -208,4 +224,10 @@ require('lspconfig').efm.setup({
     },
 })
 
-vim.cmd([[au BufWritePre *.tsx,*.ts,*.js,*.vue lua vim.lsp.buf.formatting_sync()]])
+autocmd({
+    event = 'BufWritePre',
+    pattern = { '*.tsx', '*.ts', '*.js', '*.vue' },
+    command = function()
+        vim.lsp.buf.formatting_sync()
+    end,
+})

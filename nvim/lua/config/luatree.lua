@@ -1,10 +1,10 @@
 ---------- LUATREE CONFIG ----------
 
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
-local utils = require('seblj.utils')
-local g, map = vim.g, utils.map
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
-g.nvim_tree_icons = {
+vim.g.nvim_tree_icons = {
     default = '',
     git = {
         unstaged = '!',
@@ -16,7 +16,7 @@ g.nvim_tree_icons = {
     },
 }
 
-g.nvim_tree_special_files = {
+vim.g.nvim_tree_special_files = {
     {
         ['Cargo.toml'] = false,
         Makefile = false,
@@ -25,12 +25,12 @@ g.nvim_tree_special_files = {
     },
 }
 
-g.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '.DS_Store' }
-g.nvim_tree_git_hl = 1
+vim.g.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '.DS_Store' }
+vim.g.nvim_tree_git_hl = 1
 
-map('n', '<leader>tt', ':NvimTreeToggle<CR>')
+nnoremap({ '<leader>tt', ':NvimTreeToggle<CR>' })
 
-g.nvim_tree_bindings = {
+vim.g.nvim_tree_bindings = {
     { key = 'r', cb = tree_cb('full_rename') },
     { key = '<C-r>', cb = tree_cb('rename') },
     { key = 'J', cb = ":exe 'normal 10j'<CR>" },
