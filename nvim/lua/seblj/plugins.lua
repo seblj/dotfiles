@@ -122,7 +122,7 @@ return require('packer').startup({
                 -- Post install hook to ensure maintained installed instead of in config
                 -- Don't need to waste startuptime on ensuring installed on every start
                 require('nvim-treesitter.install').ensure_installed('maintained')
-                vim.cmd('execute ":TSUpdate"')
+                vim.cmd('TSUpdate')
             end,
             config = function()
                 require('config.treesitter')
@@ -213,7 +213,6 @@ return require('packer').startup({
         })
         use({
             'rcarriga/nvim-dap-ui', -- UI for debugger
-            after = 'nvim-dap',
         })
         use({
             'szw/vim-maximizer', -- Maximize split

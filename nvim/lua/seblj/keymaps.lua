@@ -44,6 +44,8 @@ nnoremap({ '<S-Left>', require('seblj.utils.resize').resize_left }) -- Resize sp
 nnoremap({ '<S-Up>', require('seblj.utils.resize').resize_up }) -- Resize split up
 nnoremap({ '<S-Down>', require('seblj.utils.resize').resize_down }) -- Resize split down
 
+nnoremap({ '<leader>tf', require('config.lspconfig').toggle_format }) -- Toggle autoformat on save
+
 vnoremap({ '<', '<gv' }) -- Keep visual on indent
 vnoremap({ '>', '>gv' }) -- Keep visual on indent
 

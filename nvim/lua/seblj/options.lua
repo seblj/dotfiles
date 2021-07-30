@@ -9,6 +9,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.updatetime = 250
 vim.opt.cmdheight = 2
+vim.opt.inccommand = 'split'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.mouse = 'a'
 vim.opt.tabstop = 4
