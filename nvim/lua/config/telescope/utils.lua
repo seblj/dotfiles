@@ -4,12 +4,15 @@ local map = require('seblj.utils.keymap')
 local inoremap = map.inoremap
 local utils = require('seblj.utils')
 local autocmd = utils.autocmd
+local utils = require('telescope.utils')
 
 local get_git_root = function()
-    if vim.fn.has('win32') == 1 then
-        return vim.fn.system('git rev-parse --show-toplevel 2> $null'):gsub('%s+', '')
+    local git_root, ret = utils.get_os_command_output({ "git", "rev-parse", "--show-toplevel" }, vim.loop.cwd())
+
+    if ret ~= 0 then
+        return vim.loop.cwd()
     end
-    return vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):gsub('%s+', '')
+    return git_root[1]
 end
 
 -- Telescope function for quick edit of dotfiles

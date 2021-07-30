@@ -3,19 +3,20 @@
 local eval = vim.api.nvim_eval
 local map = require('seblj.utils.keymap')
 local nnoremap = map.nnoremap
+local nmap = map.nmap
 local inoremap = map.inoremap
 
 vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 
-nnoremap({ 'gd', require('config.coc').goto_definition(), noremap = false })
+nnoremap({ 'gd', function() goto_definition() end })
 nnoremap({ 'gb', '<C-t>' })
-nnoremap({ 'gh', require('config.coc').show_documentation })
-nnoremap({ 'gR', '<Plug>(coc-rename})', noremap = false })
-nnoremap({ 'gr', '<cmd>Telescope coc references<CR>', noremap = false })
-nnoremap({ 'gn', '<Plug>(coc-diagnostic-next)', noremap = false })
-nnoremap({ 'gp', '<Plug>(coc-diagnostic-prev)', noremap = false })
+nnoremap({ 'gh', function() show_documentation() end })
+nmap({ 'gR', '<Plug>(coc-rename})' })
+nmap({ 'gr', '<cmd>Telescope coc references<CR>' })
+nmap({ 'gn', '<Plug>(coc-diagnostic-next)' })
+nmap({ 'gp', '<Plug>(coc-diagnostic-prev)' })
 nnoremap({ '<leader>ca', ':CocAction<CR>' })
-nnoremap({ '<leader>cd', '<Plug>(coc-diagnostic-info)', noremap = false })
+nmap({ '<leader>cd', '<Plug>(coc-diagnostic-info)' })
 inoremap({ '<c-space>', 'coc#refresh()', expr = true })
 
 -- Autoimport packages
@@ -25,7 +26,7 @@ vim.cmd(
 
 local M = {}
 -- Show documentation under cursor
-M.show_documentation = function()
+local show_documentation = function()
     if eval("index(['vim','help'], &filetype)") >= 0 then
         vim.cmd([[execute 'h '.expand('<cword>')]])
     else
@@ -34,7 +35,7 @@ M.show_documentation = function()
 end
 
 -- Use tagstack for go to definition
-M.goto_definition = function()
+local goto_definition = function()
     local from = { vim.fn.bufnr('%'), vim.fn.line('.'), vim.fn.col('.'), 0 }
     local items = { { tagname = vim.fn.expand('<cword>'), from = from } }
 
