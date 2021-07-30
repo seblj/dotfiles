@@ -168,7 +168,6 @@ return require('packer').startup({
                 require('config.compe')
             end,
             event = 'InsertCharPre',
-            commit = '3ba991f84fa6b3d3ecda072a2c6cf844de76c754',
             disable = Use_coc,
         })
         use({ 'ray-x/lsp_signature.nvim' })

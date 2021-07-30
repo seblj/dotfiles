@@ -7,7 +7,6 @@ local npairs = require('nvim-autopairs')
 _G.MUtils = {}
 
 if not Use_coc then
-    vim.g.completion_confirm_key = ''
     MUtils.completion_confirm = function()
         if vim.fn.pumvisible() ~= 0 then
             if vim.fn.complete_info()['selected'] ~= -1 then
@@ -23,7 +22,14 @@ if not Use_coc then
 end
 
 npairs.setup({
-    ignored_next_char = '[^])}>]',
-    close_triple_quotes = true,
     disable_filetype = { 'TelescopePrompt', 'UIPrompt' },
 })
+
+-- Ugly fix for compes bug https://github.com/hrsh7th/nvim-compe/issues/436
+local parenthesis_rule = npairs.get_rule('(')
+parenthesis_rule:with_pair(function()
+    if vim.fn.pumvisible() == 1 then
+        vim.cmd([[ call timer_start(0, { -> luaeval('require"compe"._close()') }) ]])
+    end
+    return true
+end)

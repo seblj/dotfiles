@@ -2,6 +2,7 @@
 
 local map = require('seblj.utils.keymap')
 local inoremap = map.inoremap
+local imap = map.imap
 
 vim.opt.completeopt = { 'menuone', 'noselect' }
 inoremap({ '<C-space>', 'compe#complete()', expr = true })
@@ -51,3 +52,23 @@ vim.g.loaded_compe_ultisnips = 0
 vim.g.loaded_compe_vim_lsc = 0
 vim.g.loaded_compe_vim_lsp = 0
 vim.g.loaded_compe_vsnip = 0
+
+-- Ugly fix for compes bug https://github.com/hrsh7th/nvim-compe/issues/436
+local t = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+_G.compe_close = function()
+    require('compe')._close()
+end
+
+_G.compe_fix_bug = function(character)
+    if vim.fn.pumvisible() == 1 then
+        vim.cmd('call timer_start(0, { -> v:lua.compe_close() })')
+        return t(character)
+    end
+    return t(character)
+end
+
+imap({ ',', 'v:lua.compe_fix_bug(",")', expr = true })
+imap({ '<space>', 'v:lua.compe_fix_bug("<space>")', expr = true })
