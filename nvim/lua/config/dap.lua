@@ -2,6 +2,7 @@
 
 local map = require('seblj.utils.keymap')
 local nnoremap = map.nnoremap
+local nmap = map.nmap
 
 --------- ADAPTERS ----------
 
@@ -26,10 +27,40 @@ dap.adapters.python = {
 
 ---------- MAPPINGS ----------
 
-nnoremap({ '<leader>db', require('dap').toggle_breakpoint })
-nnoremap({ '<leader>d<leader>', require('dap').continue })
-nnoremap({ '<leader>dl', require('dap').step_into })
-nnoremap({ '<leader>dj', require('dap').step_over })
+-- Use vim.repeat to enable repeat with .
+nnoremap({
+    'DapBreakpointRepeat',
+    function()
+        require('dap').toggle_breakpoint()
+        vim.cmd('call repeat#set("DapBreakpointRepeat")')
+    end,
+})
+nnoremap({
+    'DapContinueRepeat',
+    function()
+        require('dap').continue()
+        vim.cmd('call repeat#set("DapContinueRepeat")')
+    end,
+})
+nnoremap({
+    'DapStepIntoRepeat',
+    function()
+        require('dap').step_into()
+        vim.cmd('call repeat#set("DapStepIntoRepeat")')
+    end,
+})
+nnoremap({
+    'DapStepOverRepeat',
+    function()
+        require('dap').step_over()
+        vim.cmd('call repeat#set("DapStepOverRepeat")')
+    end,
+})
+
+nmap({ '<leader>db', 'DapBreakpointRepeat' })
+nmap({ '<leader>d<leader>', 'DapContinueRepeat' })
+nmap({ '<leader>dl', 'DapStepIntoRepeat' })
+nmap({ '<leader>dj', 'DapStepOverRepeat' })
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     continue = { '.continue', '.c', 'c' },
@@ -40,6 +71,7 @@ dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
 ---------- UI ----------
 
 vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'Error', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = '→', texthl = 'Error', linehl = 'DiffAdd', numhl = '' })
 
 require('dapui').setup({
     icons = {
