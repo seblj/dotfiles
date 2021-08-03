@@ -19,7 +19,12 @@ inoremap({ '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', expr = true }) -- Ta
 inoremap({ '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', expr = true }) -- Shift-tab for previous completion
 nnoremap({ '<Tab>', 'gt' }) -- Next tab
 nnoremap({ '<S-TAB>', 'gT' }) -- Previous tab
-nnoremap({ '<leader>r', require('seblj.utils').reload_config }) -- Reload config
+nnoremap({
+    '<leader>r',
+    function()
+        require('seblj.utils').reload_config()
+    end,
+}) -- Reload config
 nnoremap({ '<leader>=', '<C-w>=' }) -- Resize windows
 nnoremap({ '<leader>i', 'gg=G' }) -- Indent file
 nnoremap({ 'ß', ':%s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
@@ -39,12 +44,30 @@ tnoremap({ '<C-k>', '<C-\\><C-N><C-w>k' }) -- Navigate to top split
 tnoremap({ '<C-l>', '<C-\\><C-N><C-w>l' }) -- Navigate to right split
 tnoremap({ '<Esc><Esc>', '<C-\\><C-n>' }) -- Exit term-mode
 
-nnoremap({ '<S-Right>', require('seblj.utils.resize').resize_right }) -- Resize split right
-nnoremap({ '<S-Left>', require('seblj.utils.resize').resize_left }) -- Resize split left
-nnoremap({ '<S-Up>', require('seblj.utils.resize').resize_up }) -- Resize split up
-nnoremap({ '<S-Down>', require('seblj.utils.resize').resize_down }) -- Resize split down
-
-nnoremap({ '<leader>tf', require('config.lspconfig').toggle_format }) -- Toggle autoformat on save
+nnoremap({
+    '<S-Right>',
+    function()
+        require('seblj.utils.resize').resize_right()
+    end,
+}) -- Resize split right
+nnoremap({
+    '<S-Left>',
+    function()
+        require('seblj.utils.resize').resize_left()
+    end,
+}) -- Resize split left
+nnoremap({
+    '<S-Up>',
+    function()
+        require('seblj.utils.resize').resize_up()
+    end,
+}) -- Resize split up
+nnoremap({
+    '<S-Down>',
+    function()
+        require('seblj.utils.resize').resize_down()
+    end,
+}) -- Resize split down
 
 vnoremap({ '<', '<gv' }) -- Keep visual on indent
 vnoremap({ '>', '>gv' }) -- Keep visual on indent
@@ -67,7 +90,12 @@ else
     inoremap({ '<A-k>', '<Esc>:m .-2<CR>==gi' }) -- Move line with Alt-k
 end
 
-nnoremap({ 'gca', require('seblj.utils').toggle_commenstring })
+nnoremap({
+    'gca',
+    function()
+        require('seblj.utils').toggle_commenstring()
+    end,
+})
 nnoremap({ '<leader>j', 'J' }) -- Join lines
 
 -- Thanks to TJ
@@ -96,7 +124,12 @@ vnoremap({ 'L', '$' }) -- End of line
 onoremap({ 'H', '^' }) -- Beginning of line
 onoremap({ 'L', '$' }) -- End of line
 
-nnoremap({ '<leader>x', require('seblj.utils').save_and_exec }) -- Save and execute vim or lua file
+nnoremap({
+    '<leader>x',
+    function()
+        require('seblj.utils').save_and_exec()
+    end,
+}) -- Save and execute vim or lua file
 xnoremap({ '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>' }) -- Macro over visual range
 nnoremap({
     '<leader>z',

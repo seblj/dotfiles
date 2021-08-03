@@ -7,7 +7,7 @@ local options = {
     prompt = '> ',
 }
 
-M.confirm = function()
+local confirm = function()
     local new_name = vim.trim(vim.fn.getline('.'):sub(#options.prompt + 1, -1))
     vim.api.nvim_win_close(0, true)
     local params = vim.lsp.util.make_position_params()
@@ -32,7 +32,13 @@ M.rename = function()
         },
     })
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    inoremap({ '<CR>', M.confirm, buffer = true })
+    inoremap({
+        '<CR>',
+        function()
+            confirm()
+        end,
+        buffer = true,
+    })
     vim.cmd('startinsert')
 end
 

@@ -4,10 +4,13 @@ local map = require('seblj.utils.keymap')
 local inoremap = map.inoremap
 local utils = require('seblj.utils')
 local autocmd = utils.autocmd
-local utils = require('telescope.utils')
+local telescope_utils = require('telescope.utils')
 
 local get_git_root = function()
-    local git_root, ret = utils.get_os_command_output({ "git", "rev-parse", "--show-toplevel" }, vim.loop.cwd())
+    local git_root, ret = telescope_utils.get_os_command_output(
+        { 'git', 'rev-parse', '--show-toplevel' },
+        vim.loop.cwd()
+    )
 
     if ret ~= 0 then
         return vim.loop.cwd()
@@ -114,7 +117,13 @@ M.grep_string = function()
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    inoremap({ '<CR>', grep_confirm, buffer = true })
+    inoremap({
+        '<CR>',
+        function()
+            grep_confirm()
+        end,
+        buffer = true,
+    })
     autocmd({
         event = 'CursorMoved',
         pattern = '<buffer>',

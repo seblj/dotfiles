@@ -1,6 +1,7 @@
 ---------- LANGUAGE SERVERS ----------
 
 local M = {}
+local Path = require('plenary.path')
 
 local stylua_path = function()
     local path = vim.fn.findfile('stylua.toml', '.;')
@@ -10,7 +11,7 @@ local stylua_path = function()
             path = '~/dotfiles/nvim/stylua.toml'
         end
     end
-    return path
+    return Path:new(path):absolute()
 end
 
 local eslint = {

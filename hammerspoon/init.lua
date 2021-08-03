@@ -1,11 +1,11 @@
 -- Use Caps as hyper key.
 -- Remapped Caps with karabiner
-local hyper = {"cmd", "alt", "ctrl", "shift"}
+local hyper = { 'cmd', 'alt', 'ctrl', 'shift' }
 
 -- Switch application with hyper + key
 local applications = {
     t = 'iTerm',
-    s = 'Safari Technology Preview'
+    s = 'Safari Technology Preview',
 }
 
 for key, app in pairs(applications) do
@@ -16,8 +16,8 @@ end
 
 -- Automatically open minimized app with app switcher
 hs.application.watcher.new(function(appName, eventType, _)
-    if (eventType == hs.application.watcher.activated) then
-        if (appName ~= "Finder") then
+    if eventType == hs.application.watcher.activated then
+        if appName ~= 'Finder' then
             local app = hs.application.frontmostApplication()
             local name = app:name()
             hs.application.launchOrFocus(name)
@@ -26,8 +26,8 @@ hs.application.watcher.new(function(appName, eventType, _)
 end):start()
 
 -- Annotations for completion
-hs.loadSpoon("EmmyLua")
+hs.loadSpoon('EmmyLua')
 
 -- Reload on file edit
 hs.pathwatcher.new(hs.configdir, hs.reload):start()
-hs.alert.show("Hammerspoon🔨")
+hs.alert.show('Hammerspoon🔨')

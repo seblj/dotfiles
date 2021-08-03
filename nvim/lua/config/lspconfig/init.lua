@@ -20,26 +20,78 @@ M.toggle_format = function()
     end
 end
 
+nnoremap({
+    '<leader>tf',
+    function()
+        require('config.lspconfig').toggle_format()
+    end,
+}) -- Toggle autoformat on save
+
 ---------- MAPPINGS ----------
 
 local mappings = function()
     -- Telescope
-    nnoremap({ 'gr', require('telescope.builtin').lsp_references })
-    nnoremap({ 'gd', require('telescope.builtin').lsp_definitions })
+    nnoremap({
+        'gr',
+        function()
+            require('telescope.builtin').lsp_references()
+        end,
+    })
+    nnoremap({
+        'gd',
+        function()
+            require('telescope.builtin').lsp_definitions()
+        end,
+    })
 
-    inoremap({ '<C-s>', vim.lsp.buf.signature_help })
-    nnoremap({ '<C-s>', vim.lsp.buf.signature_help })
-    nnoremap({ 'gh', vim.lsp.buf.hover })
+    inoremap({
+        '<C-s>',
+        function()
+            vim.lsp.buf.signature_help()
+        end,
+    })
+    nnoremap({
+        '<C-s>',
+        function()
+            vim.lsp.buf.signature_help()
+        end,
+    })
+    nnoremap({
+        'gh',
+        function()
+            vim.lsp.buf.hover()
+        end,
+    })
     nnoremap({
         'gR',
         function()
             vim.lsp.buf.rename()
         end,
     })
-    nnoremap({ '<leader>ca', vim.lsp.buf.code_action })
-    nnoremap({ 'gp', vim.lsp.diagnostic.goto_prev })
-    nnoremap({ 'gn', vim.lsp.diagnostic.goto_next })
-    nnoremap({ '<leader>cd', vim.lsp.diagnostic.show_line_diagnostics })
+    nnoremap({
+        '<leader>ca',
+        function()
+            vim.lsp.buf.code_action()
+        end,
+    })
+    nnoremap({
+        'gp',
+        function()
+            vim.lsp.diagnostic.goto_prev()
+        end,
+    })
+    nnoremap({
+        'gn',
+        function()
+            vim.lsp.diagnostic.goto_next()
+        end,
+    })
+    nnoremap({
+        '<leader>cd',
+        function()
+            vim.lsp.diagnostic.show_line_diagnostics()
+        end,
+    })
 
     nnoremap({ 'gb', '<C-t>' })
     vnoremap({ 'gb', '<C-t>' })

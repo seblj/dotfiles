@@ -148,10 +148,10 @@ return require('packer').startup({
         -- LSP
         use({
             'neovim/nvim-lspconfig', -- Built-in LSP
-            disable = Use_coc,
             config = function()
                 require('config.lspconfig')
             end,
+            disable = Use_coc,
             requires = 'folke/lua-dev.nvim',
         })
         use({ 'kabouzeid/nvim-lspinstall' }) -- Install language servers
