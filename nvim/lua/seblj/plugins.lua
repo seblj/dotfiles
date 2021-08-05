@@ -154,6 +154,10 @@ return require('packer').startup({
             disable = Use_coc,
             requires = 'folke/lua-dev.nvim',
         })
+        use({
+            'jose-elias-alvarez/null-ls.nvim',
+            disable = Use_coc,
+        })
         use({ 'kabouzeid/nvim-lspinstall' }) -- Install language servers
         use({
             'L3MON4D3/LuaSnip',

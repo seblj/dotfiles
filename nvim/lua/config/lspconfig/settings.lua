@@ -1,37 +1,22 @@
 ---------- LANGUAGE SERVERS ----------
 
 local M = {}
-local Path = require('plenary.path')
+local nls = require('null-ls')
+local formatter = nls.builtins.formatting
+local diagnostics = nls.builtins.diagnostics
 
-local stylua_path = function()
-    local path = vim.fn.findfile('stylua.toml', '.;')
-    if path == '' then
-        path = vim.fn.findfile('.stylua.toml', '.;')
-        if path == '' then
-            path = vim.fn.getenv('HOME') .. '/dotfiles/nvim/stylua.toml'
-        end
-    end
-    return Path:new(path):absolute()
+M.nls_setup = function()
+    nls.config({
+        debounce = 150,
+        save_after_format = false,
+        sources = {
+            -- formatter.prettierd,
+            formatter.stylua,
+            formatter.eslint_d,
+            diagnostics.eslint,
+        },
+    })
 end
-
-local eslint = {
-    lintCommand = 'eslint_d -f unix --stdin --stdin-filename ${INPUT}',
-    lintIgnoreExitCode = true,
-    lintStdin = true,
-    lintFormats = { '%f:%l:%c: %m' },
-    formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
-    formatStdin = true,
-}
-
-local stylua = {
-    formatCommand = 'stylua --config-path ' .. stylua_path() .. ' -',
-    formatStdin = true,
-}
-
-local prettier = {
-    formatCommand = 'prettierd ${INPUT}',
-    formatStdin = true,
-}
 
 M.settings = {
     vue = {
@@ -80,27 +65,6 @@ M.settings = {
 
     html = {
         filetypes = { 'html' },
-    },
-
-    efm = {
-        settings = {
-            languages = {
-                javascript = { prettier, eslint },
-                javascriptreact = { prettier, eslint },
-                typescript = { prettier, eslint },
-                typescriptreact = { prettier, eslint },
-                vue = { prettier, eslint },
-                lua = { stylua },
-            },
-        },
-        filetypes = {
-            'javascript',
-            'javascriptreact',
-            'typescript',
-            'typescriptreact',
-            'vue',
-            'lua',
-        },
     },
 }
 

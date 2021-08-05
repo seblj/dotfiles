@@ -137,20 +137,13 @@ local make_config = function()
             if client.name == 'typescript' or client.name == 'lua' then
                 client.resolved_capabilities.document_formatting = false
             end
-            if client.name == 'efm' then
-                client.resolved_capabilities.document_formatting = true
-            end
         end,
-        -- on_attach = function()
-        --     require('lsp_signature').on_attach({
-        --         bind = true,
-        --         hint_enable = false,
-        --         hi_parameter = 'Title',
-        --         fix_pos = true,
-        --     })
-        -- end,
     }
 end
+
+-- Setup null-ls
+local custom_servers = { 'null-ls' }
+require('config.lspconfig.settings').nls_setup()
 
 -- Automatic setup for language servers
 local setup_servers = function()
@@ -159,6 +152,7 @@ local setup_servers = function()
     end
     require('lspinstall').setup()
     local servers = require('lspinstall').installed_servers()
+    servers = vim.tbl_extend('force', servers, custom_servers)
     for _, server in pairs(servers) do
         local config = make_config()
 
