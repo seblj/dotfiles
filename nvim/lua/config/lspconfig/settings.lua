@@ -8,7 +8,7 @@ local stylua_path = function()
     if path == '' then
         path = vim.fn.findfile('.stylua.toml', '.;')
         if path == '' then
-            path = '~/dotfiles/nvim/stylua.toml'
+            path = vim.fn.getenv('HOME') .. '/dotfiles/nvim/stylua.toml'
         end
     end
     return Path:new(path):absolute()
