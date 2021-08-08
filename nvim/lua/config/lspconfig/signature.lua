@@ -20,14 +20,10 @@ local check_trigger_char = function(line_to_cursor, triggers)
     return false
 end
 
-M.open_signature = function()
-    local clients = vim.lsp.buf_get_clients(0)
+M.open_signature = function(clients)
     local triggered = false
 
     for _, client in pairs(clients) do
-        if not client.server_capabilities.signatureHelpProvider then
-            return
-        end
         local triggers = client.server_capabilities.signatureHelpProvider.triggerCharacters
 
         -- csharp has wrong trigger chars for some odd reason
@@ -50,11 +46,18 @@ M.open_signature = function()
 end
 
 M.setup = function()
+    local all_clients = vim.lsp.buf_get_clients(0)
+    local clients = {}
+    for _, client in pairs(all_clients) do
+        if client.server_capabilities.signatureHelpProvider then
+            table.insert(clients, client)
+        end
+    end
     augroup('Signature', {
         event = 'TextChangedI',
         pattern = '*',
         command = function()
-            require('config.lspconfig.signature').open_signature()
+            require('config.lspconfig.signature').open_signature(clients)
         end,
     })
 end

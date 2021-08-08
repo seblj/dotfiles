@@ -11,7 +11,6 @@ require('gitsigns').setup({
     preview_config = {
         border = 'rounded',
     },
-    use_decoration_api = false,
     max_file_length = 200000,
     keymaps = {
         noremap = true,

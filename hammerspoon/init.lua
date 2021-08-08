@@ -15,15 +15,14 @@ for key, app in pairs(applications) do
 end
 
 -- Automatically open minimized app with app switcher
-hs.application.watcher.new(function(appName, eventType, _)
+local appWatcher = hs.application.watcher.new(function(appName, eventType, _)
     if eventType == hs.application.watcher.activated then
         if appName ~= 'Finder' then
-            local app = hs.application.frontmostApplication()
-            local name = app:name()
-            hs.application.launchOrFocus(name)
+            hs.application.launchOrFocus(appName)
         end
     end
-end):start()
+end)
+appWatcher:start()
 
 -- Annotations for completion
 hs.loadSpoon('EmmyLua')

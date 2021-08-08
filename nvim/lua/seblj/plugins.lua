@@ -280,6 +280,13 @@ return require('packer').startup({
         })
         use('tpope/vim-surround') -- Edit surrounds
         use({ 'godlygeek/tabular' }) -- Line up text
+        use({
+            'vuki656/package-info.nvim',
+            config = function()
+                require('package-info').setup()
+            end,
+            ft = 'json',
+        })
         use('tpope/vim-repeat') -- Reapat custom commands with .
         use({
             'lervag/vimtex', -- Latex
@@ -294,16 +301,6 @@ return require('packer').startup({
             run = 'cd app && yarn install',
             ft = 'markdown',
         })
-        -- use({
-        --     'sbdchd/neoformat', -- Formatting
-        --     config = [[require('config.formatter')]],
-        -- })
-        -- Messes with treesitter
-        -- use({
-        --     'prettier/vim-prettier', -- Formatting
-        --     run = 'yarn install',
-        --     config = [[require('config.prettier')]],
-        -- })
     end,
     config = {
         display = {
