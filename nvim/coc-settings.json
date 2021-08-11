@@ -6,7 +6,7 @@
     "diagnostic.virtualText": true,
     "diagnostic.checkCurrentLine": true,
     "diagnostic.virtualTextCurrentLineOnly": false,
-    "diagnostic.virtualTextPrefix": "    ■ ",
+    "diagnostic.virtualTextPrefix": "    ● ",
     "diagnostic.enableMessage": "jump",
     "python.analysis.typeCheckingMode": "off",
     "coc.preferences.useQuickfixForLocations": true,
