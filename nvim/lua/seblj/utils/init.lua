@@ -1,6 +1,8 @@
 ---------- UTILS ----------
 
 local eval = vim.api.nvim_eval
+local map = require('seblj.utils.keymap')
+local nnoremap = map.nnoremap
 
 local M = {}
 
@@ -126,7 +128,8 @@ local run_term = function(command, ...)
     vim.cmd('term')
     local terminal_id = eval('b:terminal_job_id')
     vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
-    vim.cmd('nmap <silent> q :q<CR>')
+
+    nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
     vim.cmd('stopinsert')
 end
 
