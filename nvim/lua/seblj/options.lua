@@ -21,6 +21,7 @@ vim.opt.cindent = true
 vim.opt.swapfile = false
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.hidden = true
 vim.opt.foldmethod = 'indent'
 vim.opt.foldlevelstart = 20
 vim.opt.ignorecase = true

@@ -1,7 +1,6 @@
-local map = require('seblj.utils.keymap')
 local utils = require('seblj.utils')
 local autocmd = utils.autocmd
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 
 Use_coc = false
 
@@ -174,6 +173,17 @@ return require('packer').startup({
             event = 'InsertCharPre',
             disable = Use_coc,
         })
+        -- use({
+        --     'hrsh7th/nvim-cmp',
+        --     config = function()
+        --         require('config.cmp')
+        --     end,
+        --     requires = {
+        --         'hrsh7th/cmp-buffer',
+        --         'hrsh7th/cmp-nvim-lsp',
+        --         'hrsh7th/cmp-path',
+        --     },
+        -- })
         use({ 'ray-x/lsp_signature.nvim' })
         use({ 'onsails/lspkind-nvim' }) -- Icons for completion
 
@@ -279,7 +289,12 @@ return require('packer').startup({
             event = 'InsertEnter',
         })
         use('tpope/vim-surround') -- Edit surrounds
-        use({ 'godlygeek/tabular' }) -- Line up text
+        use({
+            'godlygeek/tabular',
+            config = function()
+                vim.g.no_default_tabular_maps = 1
+            end,
+        }) -- Line up text
         use({
             'vuki656/package-info.nvim',
             config = function()

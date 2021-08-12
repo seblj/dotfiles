@@ -2,8 +2,7 @@ local M = {}
 local ui = require('seblj.utils.ui')
 local utils = require('seblj.utils')
 local autocmd = utils.autocmd
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 local codeactions, bufnr
 
 M.confirm = function(key)

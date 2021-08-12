@@ -1,5 +1,4 @@
-local map = require('seblj.utils.keymap')
-local imap = map.imap
+local imap = vim.keymap.imap
 
 local ls = require('luasnip')
 local s = ls.snippet

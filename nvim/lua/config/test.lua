@@ -1,7 +1,6 @@
 ---------- TEST CONFIG ----------
 
-local map = require('seblj.utils.keymap')
-local nnoremmap = map.nnoremap
+local nnoremmap = vim.keymap.nnoremap
 
 vim.cmd([[let test#enabled_runners = ["python#djangotest", "python#pyunit"] ]])
 

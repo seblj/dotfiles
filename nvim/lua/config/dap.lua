@@ -1,8 +1,7 @@
 ---------- DEBUGGER CONFIG ----------
 
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
-local nmap = map.nmap
+local nnoremap = vim.keymap.nnoremap
+local nmap = vim.keymap.nmap
 
 --------- ADAPTERS ----------
 

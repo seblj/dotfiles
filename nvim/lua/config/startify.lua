@@ -1,18 +1,16 @@
 ---------- STARTIFY CONFIG ----------
 
-local g = vim.g
+vim.g.startify_enable_special = 0
+vim.g.startify_files_number = 5
 
-g.startify_enable_special = 0
-g.startify_files_number = 5
-
-g.startify_commands = {
+vim.g.startify_commands = {
     { 'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()' },
     { 'PackerSync', 'PackerSync' },
     { 'PackerCompile', 'PackerCompile' },
     { 'StartupTime', 'StartupTime' },
 }
 
-g.startify_lists = {
+vim.g.startify_lists = {
     { type = 'commands', header = { '   Commands' } },
     { type = 'files', header = { '   MRU' } },
 }

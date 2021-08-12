@@ -1,7 +1,6 @@
 local M = {}
 local ui = require('seblj.utils.ui')
-local map = require('seblj.utils.keymap')
-local inoremap = map.inoremap
+local inoremap = vim.keymap.inoremap
 
 local options = {
     prompt = '> ',

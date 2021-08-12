@@ -1,6 +1,5 @@
 local M = {}
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 
 M.border_line = '─'
 

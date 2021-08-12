@@ -1,4 +1,3 @@
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 
-nnoremap({ 'q', '<cmd>q<CR>' })
+nnoremap({ 'q', '<cmd>q<CR>', buffer = true })

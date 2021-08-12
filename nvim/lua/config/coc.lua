@@ -1,10 +1,9 @@
 ---------- COC CONFIG ----------
 
 local eval = vim.api.nvim_eval
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
-local nmap = map.nmap
-local inoremap = map.inoremap
+local nnoremap = vim.keymap.nnoremap
+local nmap = vim.keymap.nmap
+local inoremap = vim.keymap.inoremap
 
 vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 
@@ -25,19 +24,10 @@ local goto_definition = function()
     vim.cmd('Telescope coc definitions')
 end
 
-nnoremap({
-    'gd',
-    function()
-        goto_definition()
-    end,
-})
+-- stylua: ignore start
+nnoremap({ 'gd', function() goto_definition() end })
 nnoremap({ 'gb', '<C-t>' })
-nnoremap({
-    'gh',
-    function()
-        show_documentation()
-    end,
-})
+nnoremap({ 'gh', function() show_documentation() end })
 nmap({ 'gR', '<Plug>(coc-rename})' })
 nmap({ 'gr', '<cmd>Telescope coc references<CR>' })
 nmap({ 'gn', '<Plug>(coc-diagnostic-next)' })
@@ -45,6 +35,7 @@ nmap({ 'gp', '<Plug>(coc-diagnostic-prev)' })
 nnoremap({ '<leader>ca', ':CocAction<CR>' })
 nmap({ '<leader>cd', '<Plug>(coc-diagnostic-info)' })
 inoremap({ '<c-space>', 'coc#refresh()', expr = true })
+-- stylua: ignore end
 
 -- Autoimport packages
 vim.cmd(

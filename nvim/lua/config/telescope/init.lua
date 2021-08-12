@@ -1,7 +1,6 @@
 ---------- TELESCOPE CONFIG ----------
 
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 
 require('telescope').setup({
     defaults = {

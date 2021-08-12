@@ -1,12 +1,11 @@
 ---------- MAPPINGS ----------
 
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
-local inoremap = map.inoremap
-local vnoremap = map.vnoremap
-local tnoremap = map.tnoremap
-local onoremap = map.onoremap
-local xnoremap = map.xnoremap
+local nnoremap = vim.keymap.nnoremap
+local inoremap = vim.keymap.inoremap
+local vnoremap = vim.keymap.vnoremap
+local tnoremap = vim.keymap.tnoremap
+local onoremap = vim.keymap.onoremap
+local xnoremap = vim.keymap.xnoremap
 
 -- Leader is space and localleader is \
 vim.g.mapleader = ' '

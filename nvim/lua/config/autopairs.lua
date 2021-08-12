@@ -1,13 +1,10 @@
 ---------- AUTOPAIRS CONFIG ----------
 
-local remap = vim.api.nvim_set_keymap
+local inoremap = vim.keymap.inoremap
 local npairs = require('nvim-autopairs')
 
--- skip it, if you use another global object
-_G.MUtils = {}
-
 if not Use_coc then
-    MUtils.completion_confirm = function()
+    seblj.completion_confirm = function()
         if vim.fn.pumvisible() ~= 0 then
             if vim.fn.complete_info()['selected'] ~= -1 then
                 return vim.fn['compe#confirm'](npairs.esc('<cr>'))
@@ -18,7 +15,7 @@ if not Use_coc then
             return npairs.autopairs_cr()
         end
     end
-    remap('i', '<CR>', 'v:lua.MUtils.completion_confirm()', { expr = true, noremap = true })
+    inoremap({ '<CR>', 'v:lua.seblj.completion_confirm()', expr = true })
 end
 
 npairs.setup({

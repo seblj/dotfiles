@@ -1,8 +1,7 @@
 ---------- UTILS ----------
 
 local eval = vim.api.nvim_eval
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
+local nnoremap = vim.keymap.nnoremap
 
 local M = {}
 
@@ -75,7 +74,7 @@ end
 
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
-    vim.cmd('luafile ~/dotfiles/nvim/init.lua')
+    vim.cmd('source ~/dotfiles/nvim/init.lua')
     for pack, _ in pairs(package.loaded) do
         if pack:match('^config') or pack:match('^seblj') then
             package.loaded[pack] = nil

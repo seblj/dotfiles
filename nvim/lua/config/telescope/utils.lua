@@ -1,7 +1,6 @@
 local M = {}
 local ui = require('seblj.utils.ui')
-local map = require('seblj.utils.keymap')
-local inoremap = map.inoremap
+local inoremap = vim.keymap.inoremap
 local utils = require('seblj.utils')
 local autocmd = utils.autocmd
 local telescope_utils = require('telescope.utils')
@@ -36,14 +35,10 @@ M.installed_plugins = function()
     })
 end
 
--- Searches from current dir if not git repo
--- Searches from root of git dir if git repo.
--- Set prompt-title to directory searching from
 M.find_files = function()
-    local curr_dir = vim.api.nvim_exec('pwd', true)
-    local dir = vim.fn.fnamemodify(curr_dir, ':t')
+    local curr_dir = vim.fn.expand('%:p:h:t')
     require('telescope.builtin').find_files({
-        prompt_title = dir,
+        prompt_title = curr_dir,
         find_command = { 'rg', '--no-ignore', '--files' },
     })
 end

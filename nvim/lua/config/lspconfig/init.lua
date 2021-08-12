@@ -2,10 +2,9 @@
 
 local M = {}
 local utils = require('seblj.utils')
-local map = require('seblj.utils.keymap')
-local nnoremap = map.nnoremap
-local inoremap = map.inoremap
-local vnoremap = map.vnoremap
+local nnoremap = vim.keymap.nnoremap
+local inoremap = vim.keymap.inoremap
+local vnoremap = vim.keymap.vnoremap
 local autocmd = utils.autocmd
 local lsp_settings = require('config.lspconfig.settings').settings
 

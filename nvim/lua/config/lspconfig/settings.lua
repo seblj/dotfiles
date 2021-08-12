@@ -10,7 +10,7 @@ M.nls_setup = function()
         debounce = 150,
         save_after_format = false,
         sources = {
-            -- formatter.prettierd,
+            formatter.prettierd,
             formatter.stylua,
             formatter.eslint_d,
             diagnostics.eslint,
