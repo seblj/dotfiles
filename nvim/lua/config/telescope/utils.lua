@@ -29,7 +29,7 @@ end
 
 M.installed_plugins = function()
     require('telescope.builtin').find_files({
-        cwd = '~/.local/share/nvim/site/pack/packer/',
+        cwd = vim.fn.stdpath('data') .. '/site/pack/packer/',
         follow = true,
         prompt_title = 'Plugins',
     })
