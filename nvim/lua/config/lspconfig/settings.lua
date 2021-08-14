@@ -19,7 +19,7 @@ M.nls_setup = function()
 end
 
 M.settings = {
-    vue = {
+    vuels = {
         init_options = {
             config = {
                 vetur = {
@@ -32,11 +32,12 @@ M.settings = {
         },
     },
 
-    lua = require('lua-dev').setup({
+    sumneko_lua = require('lua-dev').setup({
         library = {
             plugins = false,
         },
         lspconfig = {
+            cmd = { 'lua-language-server' },
             settings = {
                 Lua = {
                     workspace = {
@@ -49,7 +50,7 @@ M.settings = {
         },
     }),
 
-    python = {
+    pyright = {
         settings = {
             python = {
                 analysis = {
@@ -59,12 +60,8 @@ M.settings = {
         },
     },
 
-    cpp = {
+    clangd = {
         filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-    },
-
-    html = {
-        filetypes = { 'html' },
     },
 }
 

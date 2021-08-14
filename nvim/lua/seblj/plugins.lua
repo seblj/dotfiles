@@ -157,7 +157,6 @@ return require('packer').startup({
             'jose-elias-alvarez/null-ls.nvim',
             disable = Use_coc,
         })
-        use({ 'kabouzeid/nvim-lspinstall' }) -- Install language servers
         use({
             'L3MON4D3/LuaSnip',
             config = function()

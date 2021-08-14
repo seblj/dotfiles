@@ -42,7 +42,7 @@
     "omnisharp.version": "v1.37.3",
     "languageserver": {
         "lua": {
-            "command": "~/.local/share/nvim/lspinstall/lua/./sumneko-lua-language-server",
+            "command": "~/.local/bin/lua-language-server",
             "filetypes": ["lua"],
             "rootPatterns": [".git/"],
             "settings": {

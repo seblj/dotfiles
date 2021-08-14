@@ -8,6 +8,8 @@ local vnoremap = vim.keymap.vnoremap
 local autocmd = utils.autocmd
 local lsp_settings = require('config.lspconfig.settings').settings
 
+require('config.lspconfig.install')
+
 local autoformat = true
 
 M.toggle_format = function()
@@ -89,14 +91,25 @@ end
 local custom_servers = { 'null-ls' }
 require('config.lspconfig.settings').nls_setup()
 
+local servers = {
+    'null-ls',
+    'pyright',
+    'rust_analyzer',
+    'cssls',
+    'vimls',
+    'texlab',
+    'html',
+    'bashls',
+    'vuels',
+    'jsonls',
+    'graphql',
+    'tsserver',
+    'sumneko_lua',
+    'clangd',
+}
+
 -- Automatic setup for language servers
 local setup_servers = function()
-    if package.loaded['lspinstall'] then
-        return
-    end
-    require('lspinstall').setup()
-    local servers = require('lspinstall').installed_servers()
-    servers = vim.tbl_extend('force', servers, custom_servers)
     for _, server in pairs(servers) do
         local config = make_config()
 
@@ -111,11 +124,5 @@ local setup_servers = function()
 end
 
 setup_servers()
-
--- Reload after install
-require('lspinstall').post_install_hook = function()
-    setup_servers()
-    vim.cmd('bufdo e')
-end
 
 return M
