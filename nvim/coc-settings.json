@@ -38,39 +38,5 @@
         "typeParameter": "\uf278",
         "default": "\uf29c"
     },
-    "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
-    "omnisharp.version": "v1.37.3",
-    "languageserver": {
-        "lua": {
-            "command": "~/.local/bin/lua-language-server",
-            "filetypes": ["lua"],
-            "rootPatterns": [".git/"],
-            "settings": {
-                "Lua": {
-                    "telemetry": {
-                        "enable": true
-                    },
-                    "workspace": {
-                        "library": {
-                            "/usr/local/share/nvim/runtime/lua": true,
-                            "/usr/local/share/nvim/runtime/lua/vim/lsp": true
-                        },
-                        "maxPreload": 2000,
-                        "preloadFileSize": 1000
-                    },
-                    "runtime": {
-                        "version": "LuaJIT"
-                    },
-                    "diagnostics": {
-                        "enable": true,
-                        "globals": ["hs", "vim", "it", "describe", "before_each", "after_each"],
-                        "disable": ["lowercase-global"]
-                    },
-                    "completion": {
-                        "keywordSnippet": "Disable"
-                    }
-                }
-            }
-        }
-    }
+    "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer"
 }
