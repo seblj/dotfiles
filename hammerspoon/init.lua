@@ -6,6 +6,7 @@ local hyper = { 'cmd', 'alt', 'ctrl', 'shift' }
 local applications = {
     t = 'iTerm',
     s = 'Safari Technology Preview',
+    m = 'Spotify',
 }
 
 for key, app in pairs(applications) do
@@ -29,4 +30,7 @@ hs.loadSpoon('EmmyLua')
 
 -- Reload on file edit
 hs.pathwatcher.new(hs.configdir, hs.reload):start()
+hs.hotkey.bind(hyper, 'R', function()
+    hs.reload()
+end)
 hs.alert.show('Hammerspoon🔨')
