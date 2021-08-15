@@ -9,6 +9,7 @@
     "diagnostic.virtualTextPrefix": "    ● ",
     "diagnostic.enableMessage": "jump",
     "python.analysis.typeCheckingMode": "off",
+    "eslint.autoFixOnSave": true,
     "coc.preferences.useQuickfixForLocations": true,
     "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "typescriptreact", "typescript"],
     "suggest.completionItemKindLabels": {

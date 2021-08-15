@@ -56,6 +56,7 @@ return require('packer').startup({
             config = function()
                 require('tabline').setup({})
             end,
+            event = 'TabNew',
         })
         local_use({
             'seblj/nvim-echo-diagnostics', -- Echo lspconfig diagnostics
@@ -200,6 +201,7 @@ return require('packer').startup({
             config = function()
                 require('config.refactoring')
             end,
+            keys = '<leader>fr',
         })
 
         -- Telescope
@@ -317,7 +319,6 @@ return require('packer').startup({
             ft = { 'tex', 'bib' },
         })
         use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
-        use({ 'mbbill/undotree' })
         use({
             'iamcco/markdown-preview.nvim', -- Markdown preview
             run = 'cd app && yarn install',

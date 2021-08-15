@@ -10,7 +10,9 @@ local function confirm(prompt_bufnr)
 end
 
 -- Telescope picker to display refactor methods
-local refactors = function()
+local M = {}
+
+M.refactors = function()
     local opts = require('telescope.themes').get_cursor()
     require('telescope.pickers').new(opts, {
         prompt_title = 'Refactors',
@@ -26,11 +28,6 @@ local refactors = function()
     }):find()
 end
 
-vnoremap({
-    '<leader>fr',
-    function()
-        refactors()
-        -- Escape out of (insert) VISUAL LINE when doing vnoremap
-        vim.cmd([[call feedkeys("\<C-[>")]])
-    end,
-})
+vnoremap({ '<leader>fr', '<Esc><cmd>lua require("config.refactoring").refactors()<CR>' })
+
+return M

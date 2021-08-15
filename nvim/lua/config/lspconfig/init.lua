@@ -80,7 +80,7 @@ local make_config = function()
             mappings()
             signs()
             require('config.lspconfig.signature').setup()
-            if client.name == 'typescript' or client.name == 'lua' then
+            if client.name == 'tsserver' or client.name == 'lua' or client.name == 'vue' then
                 client.resolved_capabilities.document_formatting = false
             end
         end,
@@ -88,7 +88,6 @@ local make_config = function()
 end
 
 -- Setup null-ls
-local custom_servers = { 'null-ls' }
 require('config.lspconfig.settings').nls_setup()
 
 local servers = {
