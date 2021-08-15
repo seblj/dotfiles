@@ -13,17 +13,13 @@ vim.g.maplocalleader = '\\'
 
 ---------- GENERAL MAPPINGS ----------
 
+-- stylua: ignore
+nnoremap({ '<leader>r', function() require('seblj.utils').reload_config() end }) -- Reload config
 nnoremap({ 'œ', '<Tab>' }) -- Alt-o for jumplist
 inoremap({ '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', expr = true }) -- Tab for next completion
 inoremap({ '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', expr = true }) -- Shift-tab for previous completion
 nnoremap({ '<Tab>', 'gt' }) -- Next tab
 nnoremap({ '<S-TAB>', 'gT' }) -- Previous tab
-nnoremap({
-    '<leader>r',
-    function()
-        require('seblj.utils').reload_config()
-    end,
-}) -- Reload config
 nnoremap({ '<leader>=', '<C-w>=' }) -- Resize windows
 nnoremap({ '<leader>i', 'gg=G' }) -- Indent file
 nnoremap({ 'ß', ':%s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
@@ -43,30 +39,12 @@ tnoremap({ '<C-k>', '<C-\\><C-N><C-w>k' }) -- Navigate to top split
 tnoremap({ '<C-l>', '<C-\\><C-N><C-w>l' }) -- Navigate to right split
 tnoremap({ '<Esc><Esc>', '<C-\\><C-n>' }) -- Exit term-mode
 
-nnoremap({
-    '<S-Right>',
-    function()
-        require('seblj.utils.resize').resize_right()
-    end,
-}) -- Resize split right
-nnoremap({
-    '<S-Left>',
-    function()
-        require('seblj.utils.resize').resize_left()
-    end,
-}) -- Resize split left
-nnoremap({
-    '<S-Up>',
-    function()
-        require('seblj.utils.resize').resize_up()
-    end,
-}) -- Resize split up
-nnoremap({
-    '<S-Down>',
-    function()
-        require('seblj.utils.resize').resize_down()
-    end,
-}) -- Resize split down
+-- stylua: ignore start
+nnoremap({ '<S-Right>', function() require('seblj.utils.resize').resize_right() end }) -- Resize split right
+nnoremap({ '<S-Left>', function() require('seblj.utils.resize').resize_left() end }) -- Resize split left
+nnoremap({ '<S-Up>', function() require('seblj.utils.resize').resize_up() end }) -- Resize split up
+nnoremap({ '<S-Down>', function() require('seblj.utils.resize').resize_down() end }) -- Resize split down
+-- stylua: ignore end
 
 vnoremap({ '<', '<gv' }) -- Keep visual on indent
 vnoremap({ '>', '>gv' }) -- Keep visual on indent
@@ -89,27 +67,14 @@ else
     inoremap({ '<A-k>', '<Esc>:m .-2<CR>==gi' }) -- Move line with Alt-k
 end
 
-nnoremap({
-    'gca',
-    function()
-        require('seblj.utils').toggle_commenstring()
-    end,
-})
+-- stylua: ignore start
+nnoremap({ 'gca', function() require('seblj.utils').toggle_commenstring() end })
 nnoremap({ '<leader>j', 'J' }) -- Join lines
 
 -- Thanks to TJ
-nnoremap({
-    'j',
-    function()
-        require('seblj.utils').jump('j')
-    end,
-})
-nnoremap({
-    'k',
-    function()
-        require('seblj.utils').jump('k')
-    end,
-})
+nnoremap({ 'j', function() require('seblj.utils').jump('j') end })
+nnoremap({ 'k', function() require('seblj.utils').jump('k') end })
+-- stylua: ignore end
 
 nnoremap({ 'J', '10j' }) -- 10 lines down with J
 vnoremap({ 'J', '10j' }) -- 10 lines down with J
@@ -123,13 +88,10 @@ vnoremap({ 'L', '$' }) -- End of line
 onoremap({ 'H', '^' }) -- Beginning of line
 onoremap({ 'L', '$' }) -- End of line
 
-nnoremap({
-    '<leader>x',
-    function()
-        require('seblj.utils').save_and_exec()
-    end,
-}) -- Save and execute vim or lua file
+-- stylua: ignore
+nnoremap({ '<leader>x', function() require('seblj.utils').save_and_exec() end }) -- Save and execute vim or lua file
 xnoremap({ '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>' }) -- Macro over visual range
+
 nnoremap({
     '<leader>z',
     function()
@@ -145,19 +107,12 @@ nnoremap({
         end
     end,
 })
-nnoremap({
-    '<Down>',
-    function()
-        require('seblj.utils').quickfix('down')
-    end,
-}) -- Move down in quickfixlist
-nnoremap({
-    '<Up>',
-    function()
-        require('seblj.utils').quickfix('up')
-    end,
-}) -- Move up in quickfixlist
+-- stylua: ignore start
+nnoremap({ '<Down>', function() require('seblj.utils').quickfix('down') end }) -- Move down in quickfixlist
+nnoremap({ '<Up>', function() require('seblj.utils').quickfix('up') end }) -- Move up in quickfixlist
 nnoremap({ '<leader><ESC><leader>', ':cclose<CR> `A' }) -- Close and go to mark
+-- stylua: ignore end
+
 nnoremap({
     '<leader>@',
     function()
