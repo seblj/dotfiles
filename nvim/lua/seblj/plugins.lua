@@ -195,6 +195,13 @@ return require('packer').startup({
             disable = not Use_coc,
         })
 
+        use({
+            'ThePrimeagen/refactoring.nvim',
+            config = function()
+                require('config.refactoring')
+            end,
+        })
+
         -- Telescope
         use({
             'nvim-telescope/telescope.nvim', -- Fuzzy finder
@@ -310,6 +317,7 @@ return require('packer').startup({
             ft = { 'tex', 'bib' },
         })
         use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
+        use({ 'mbbill/undotree' })
         use({
             'iamcco/markdown-preview.nvim', -- Markdown preview
             run = 'cd app && yarn install',
