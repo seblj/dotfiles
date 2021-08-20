@@ -1,7 +1,7 @@
 ---------- STARTIFY CONFIG ----------
 
 vim.g.startify_enable_special = 0
-vim.g.startify_files_number = 5
+vim.g.startify_files_number = 6
 
 vim.g.startify_commands = {
     { 'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()' },

@@ -44,7 +44,7 @@ local mappings = function()
 
     autocmd({
         event = 'BufWritePre',
-        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua' },
+        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go' },
         command = function()
             if autoformat then
                 vim.lsp.buf.formatting_sync()
@@ -105,6 +105,7 @@ local servers = {
     'tsserver',
     'sumneko_lua',
     'clangd',
+    'gopls',
 }
 
 -- Automatic setup for language servers

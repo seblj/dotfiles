@@ -324,6 +324,7 @@ return require('packer').startup({
             run = 'cd app && yarn install',
             ft = 'markdown',
         })
+        use({ 'mbbill/undotree' })
     end,
     config = {
         display = {

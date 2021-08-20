@@ -13,7 +13,7 @@ M.nls_setup = function()
             -- formatter.prettierd,
             formatter.stylua,
             formatter.eslint_d,
-            diagnostics.eslint,
+            diagnostics.eslint_d,
         },
     })
 end
