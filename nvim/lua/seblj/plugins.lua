@@ -184,7 +184,6 @@ return require('packer').startup({
         --         'hrsh7th/cmp-path',
         --     },
         -- })
-        use({ 'ray-x/lsp_signature.nvim' })
         use({ 'onsails/lspkind-nvim' }) -- Icons for completion
 
         use({
@@ -210,7 +209,6 @@ return require('packer').startup({
             requires = {
                 'nvim-lua/popup.nvim',
                 'nvim-lua/plenary.nvim',
-                'nvim-telescope/telescope-fzy-native.nvim',
             },
             config = function()
                 require('config.telescope')
@@ -324,9 +322,12 @@ return require('packer').startup({
             run = 'cd app && yarn install',
             ft = 'markdown',
         })
-        use({ 'mbbill/undotree' })
+        use({ 'mbbill/undotree', cmd = 'UndotreeToggle' })
     end,
     config = {
+        profile = {
+            enable = true,
+        },
         display = {
             prompt_border = 'rounded',
         },
