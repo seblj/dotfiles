@@ -2,6 +2,7 @@ local gitmoji = function(text, emoji)
     vim.cmd([[silent! execute('%s/]] .. string.format([[%s/%s/gI')]], text, emoji))
 end
 
+vim.api.nvim_buf_set_option(0, 'modifiable', true)
 gitmoji(':sparkles:', '✨')
 gitmoji(':art:', '🎨')
 gitmoji(':zap:', '⚡️')
@@ -67,3 +68,4 @@ gitmoji(':passport_control:', '🛂')
 gitmoji(':adhesive_bandage:', '🩹')
 gitmoji(':monocle_face:', '🧐')
 gitmoji(':coffin:', '⚰️')
+vim.api.nvim_buf_set_option(0, 'modifiable', false)
