@@ -73,14 +73,25 @@ local signs = function()
     require('lspkind').init()
 end
 
+-- Use null-ls formatting instead of builtin
+local disabled_formatting = {
+    'tsserver', -- eslint/prettier
+    'vue', -- eslint/prettier
+    'lua', -- stylua
+    'gopls', -- goimports
+}
+
 local make_config = function()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
     return {
+        capabilities = capabilities,
         on_attach = function(client)
             require('config.lspconfig.handlers').handlers()
             mappings()
             signs()
             require('config.lspconfig.signature').setup()
-            if client.name == 'tsserver' or client.name == 'lua' or client.name == 'vue' then
+            if vim.tbl_contains(disabled_formatting, client.name) then
                 client.resolved_capabilities.document_formatting = false
             end
         end,

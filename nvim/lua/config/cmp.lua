@@ -32,7 +32,7 @@ cmp.setup({
     mapping = {
         ['<cr>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
+            select = false,
         }),
     },
 
@@ -43,6 +43,7 @@ cmp.setup({
             item.menu = ({
                 nvim_lsp = '[LSP]',
                 buffer = '[Buffer]',
+                luasnip = '[Luasnip]',
             })[entry.source.name]
 
             -- Append '...' if the entry is wider than max length
