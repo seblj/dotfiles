@@ -197,6 +197,7 @@ return require('packer').startup({
             disable = not Use_coc,
         })
 
+        use({ 'tjdevries/sg.nvim' })
         use({
             'ThePrimeagen/refactoring.nvim',
             config = function()
