@@ -74,6 +74,8 @@ return require('packer').startup({
             disable = true,
         })
 
+        use({ 'lewis6991/impatient.nvim' })
+
         -- Installed plugins
         -- Colors / UI
         use({
