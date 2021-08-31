@@ -1,5 +1,5 @@
-local autocmd = require('seblj.utils').autocmd
-autocmd({
+local augroup = require('seblj.utils').augroup
+augroup('GitignoreDetect', {
     event = { 'BufRead', 'BufNewFile' },
     pattern = '.gitignore_global',
     command = function()

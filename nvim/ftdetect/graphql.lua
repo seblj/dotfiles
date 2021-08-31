@@ -1,9 +1,8 @@
-local autocmd = require('seblj.utils').autocmd
-
-autocmd({
-    event = {'BufRead', 'BufNewFile'},
-    pattern = {'*.graphql', '*.gql'},
+local augroup = require('seblj.utils').augroup
+augroup('GraphQLDetect', {
+    event = { 'BufRead', 'BufNewFile' },
+    pattern = { '*.graphql', '*.gql' },
     command = function()
         vim.opt.ft = 'graphql'
-    end
+    end,
 })

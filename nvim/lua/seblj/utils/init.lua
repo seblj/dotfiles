@@ -8,15 +8,14 @@ local M = {}
 -- Thanks to @akinsho for this brilliant function white waiting for builtin autocmd in lua
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/globals.lua
 M.augroup = function(name, commands)
-    if #commands == 0 then
-        M.autocmd(commands)
-        return
-    end
-
     vim.cmd('augroup ' .. name)
-    vim.cmd('autocmd!')
-    for _, c in ipairs(commands) do
-        M.autocmd(c)
+    vim.cmd('au!')
+    if #commands > 0 then
+        for _, c in ipairs(commands) do
+            M.autocmd(c)
+        end
+    else
+        M.autocmd(commands)
     end
     vim.cmd('augroup END')
 end

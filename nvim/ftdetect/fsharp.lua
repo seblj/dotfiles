@@ -1,5 +1,5 @@
-local autocmd = require('seblj.utils').autocmd
-autocmd({
+local augroup = require('seblj.utils').augroup
+augroup('FsharpDetect', {
     event = { 'BufRead', 'BufNewFile' },
     pattern = '*.fs',
     command = function()

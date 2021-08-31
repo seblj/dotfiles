@@ -1,12 +1,11 @@
-local utils = require('seblj.utils')
-local autocmd = utils.autocmd
+local augroup = require('seblj.utils').augroup
 local nnoremap = vim.keymap.nnoremap
 
 Use_coc = false
 
 local plugin_dir = '~/projects/plugins/'
 
-autocmd({
+augroup('CompilePacker', {
     event = 'BufWritePost',
     pattern = 'plugins.lua',
     command = function()

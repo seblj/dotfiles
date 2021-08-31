@@ -2,7 +2,7 @@ local M = {}
 local ui = require('seblj.utils.ui')
 local inoremap = vim.keymap.inoremap
 local utils = require('seblj.utils')
-local autocmd = utils.autocmd
+local augroup = utils.augroup
 local telescope_utils = require('telescope.utils')
 
 local get_git_root = function()
@@ -119,7 +119,7 @@ M.grep_string = function()
         end,
         buffer = true,
     })
-    autocmd({
+    augroup('TelescopeInvisibleCursor', {
         event = 'CursorMoved',
         pattern = '<buffer>',
         command = function()

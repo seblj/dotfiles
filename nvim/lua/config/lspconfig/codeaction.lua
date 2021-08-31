@@ -1,7 +1,7 @@
 local M = {}
 local ui = require('seblj.utils.ui')
 local utils = require('seblj.utils')
-local autocmd = utils.autocmd
+local augroup = utils.augroup
 local nnoremap = vim.keymap.nnoremap
 local codeactions, bufnr
 
@@ -67,7 +67,7 @@ M.handler = function(_, _, actions)
         end
     end
 
-    autocmd({
+    augroup('CodeActionInvisibleCursor', {
         event = 'CursorMoved',
         pattern = '<buffer>',
         command = function()

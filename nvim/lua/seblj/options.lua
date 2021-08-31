@@ -1,7 +1,7 @@
 ---------- OPTIONS ----------
 
 local utils = require('seblj.utils')
-local autocmd = utils.autocmd
+local augroup = utils.augroup
 
 vim.cmd('colorscheme colorscheme')
 
@@ -35,7 +35,7 @@ vim.opt.shortmess = vim.opt.shortmess + 'c'
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-autocmd({
+augroup('CustomFormatOptions', {
     event = 'BufEnter',
     pattern = '*',
     command = function()

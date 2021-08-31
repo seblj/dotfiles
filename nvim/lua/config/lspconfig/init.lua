@@ -5,7 +5,7 @@ local utils = require('seblj.utils')
 local nnoremap = vim.keymap.nnoremap
 local inoremap = vim.keymap.inoremap
 local vnoremap = vim.keymap.vnoremap
-local autocmd = utils.autocmd
+local augroup = utils.augroup
 local lsp_settings = require('config.lspconfig.settings').settings
 
 require('config.lspconfig.install')
@@ -42,7 +42,7 @@ local mappings = function()
     vnoremap({ 'gb', '<C-t>' })
     -- stylua: ignore end
 
-    autocmd({
+    augroup('AutoFormat', {
         event = 'BufWritePre',
         pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go' },
         command = function()
