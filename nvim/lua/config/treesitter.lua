@@ -20,6 +20,15 @@ local vim_ts_queries = require('vim.treesitter.query')
 vim_ts_queries.set_query('html', 'highlights', get_ft_query('html', 'highlights'))
 vim_ts_queries.set_query('vue', 'highlights', get_ft_query('vue', 'highlights'))
 
+local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+parser_configs.http = {
+    install_info = {
+        url = 'https://github.com/NTBBloodbath/tree-sitter-http',
+        files = { 'src/parser.c' },
+        branch = 'main',
+    },
+}
+
 require('nvim-treesitter.configs').setup({
     textobjects = {
         select = {

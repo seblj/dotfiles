@@ -181,12 +181,11 @@ return require('packer').startup({
             end,
             requires = {
                 { 'hrsh7th/cmp-nvim-lsp' },
-                { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-                { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-                { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
+                { 'hrsh7th/cmp-buffer' },
+                { 'hrsh7th/cmp-path' },
+                { 'saadparwaiz1/cmp_luasnip' },
             },
             disable = Use_coc,
-            event = 'InsertCharPre',
         })
         use({ 'onsails/lspkind-nvim' }) -- Icons for completion
 

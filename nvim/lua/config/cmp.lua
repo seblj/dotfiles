@@ -32,7 +32,6 @@ cmp.setup({
     mapping = {
         ['<cr>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
-            select = false,
         }),
     },
 
