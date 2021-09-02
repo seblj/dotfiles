@@ -99,7 +99,9 @@ local make_config = function()
 end
 
 -- Setup null-ls
-require('config.lspconfig.settings').nls_setup()
+if pcall(require, 'null-ls') then
+    require('config.lspconfig.settings').nls_setup()
+end
 
 local servers = {
     'null-ls',

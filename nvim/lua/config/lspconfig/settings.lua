@@ -1,11 +1,11 @@
 ---------- LANGUAGE SERVERS ----------
 
 local M = {}
-local nls = require('null-ls')
-local formatter = nls.builtins.formatting
-local diagnostics = nls.builtins.diagnostics
 
 M.nls_setup = function()
+    local nls = require('null-ls')
+    local formatter = nls.builtins.formatting
+    local diagnostics = nls.builtins.diagnostics
     nls.config({
         debounce = 150,
         save_after_format = false,
