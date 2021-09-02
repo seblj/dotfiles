@@ -109,6 +109,26 @@
                     {
                         "manipulators": [
                             {
+                                "description": "Lock with eject",
+                                "from": {
+                                    "key_code": "eject"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "eject",
+                                        "modifiers": [
+                                            "left_shift",
+                                            "left_control"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "manipulators": [
+                            {
                                 "type": "basic",
                                 "description": "Caps to hyper key if pressed together with other keys",
                                 "from": {
