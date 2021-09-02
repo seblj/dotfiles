@@ -4,7 +4,7 @@ if require('seblj.first_load')() then
     return
 end
 
-require('impatient')
+pcall(require, 'impatient')
 require('seblj.globals')
 require('seblj.utils.keymap')
 require('seblj.options')
