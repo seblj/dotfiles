@@ -30,11 +30,14 @@ snippets.lua = {
         i(0),
         t({ '', 'end' }),
     }),
+    s({ trig = 'ignore' }, {
+        t({ '-- stylua: ignore' }),
+    }),
 }
 
 snippets.vue = {
-    -- Create template for SmartDok Vue file
-    s({ trig = 'smartdok' }, {
+    -- Create component template for vue file
+    s({ trig = 'component' }, {
         i(0),
         t({
             '<template>',
