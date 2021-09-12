@@ -28,6 +28,7 @@ install_spaceship(){
 }
 
 setup_zsh(){
+    chsh -s $(which zsh)
     if [[ -d $HOME/.config/zsh ]]; then
         printf "\n${RED}Are you sure you want to override $HOME/config/.zsh? [y/n]: ${NC}"
         read -p "" confirm
