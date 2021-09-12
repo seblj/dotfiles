@@ -25,7 +25,7 @@ M.confirm = function(key)
     vim.api.nvim_win_close(0, true)
 end
 
-M.handler = function(_, _, actions)
+M.handler = function(_, actions)
     bufnr = vim.fn.bufnr()
     codeactions = actions
     if actions == nil or vim.tbl_isempty(actions) then
@@ -74,7 +74,8 @@ M.handler = function(_, _, actions)
             require('seblj.utils.ui').set_cursor()
         end,
     })
-    nnoremap({ '<CR>', M.confirm, buffer = true })
+    -- stylua: ignore
+    nnoremap({ '<CR>', function() M.confirm() end, buffer = true })
 end
 
 return M

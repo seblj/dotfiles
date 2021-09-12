@@ -135,6 +135,7 @@ vim.cmd('cnoreabbrev Wa wa') -- Write all with Wa
 vim.cmd('cnoreabbrev WA wa') -- Write all with WA
 vim.cmd('cnoreabbrev Qa qa') -- Quit all with Qa
 vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
+vim.cmd('cnoreabbrev E e') -- Edit file with E
 
 vim.cmd('command! -nargs=* T split | term <args>') -- Open term in split with T
 vim.cmd('command! -nargs=* VT vsplit | term <args>') -- Open term in vsplit with VT

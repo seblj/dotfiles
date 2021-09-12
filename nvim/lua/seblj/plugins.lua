@@ -100,6 +100,12 @@ return require('packer').startup({
 
         -- Git
         use({
+            'pwntester/octo.nvim',
+            config = function()
+                require('octo').setup()
+            end,
+        })
+        use({
             'lewis6991/gitsigns.nvim', -- Git diff signs
             event = { 'BufReadPre', 'BufWritePre' },
             config = function()
