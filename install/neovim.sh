@@ -5,7 +5,7 @@ DOTFILES=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd .. && pw
 source $DOTFILES/utils/variables.sh
 source $DOTFILES/utils/colors.sh
 
-# Install neovim head
+# Install neovim appimage
 install_neovim(){
     printf "\n${BLUE}Installing Neovim HEAD ${NC}\n\n"
 
@@ -32,6 +32,31 @@ install_neovim(){
     cd -
 }
 
+clone_neovim(){
+    case "$OS" in 
+        Linux*) sudo apt-get -y install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl;;
+        Darwin*) sudo port install ninja libtool autoconf automake cmake pkgconfig gettext;;
+        *)
+            echo "$OS not supported to download dependencies for neovim"
+            return;;
+    esac
+
+    mkdir -p ~/Applications
+    cd ~/Applications
+
+    git clone https://github.com/neovim/neovim.git
+}
+
+build_neovim(){
+    if [[ -d $HOME/Applications/neovim ]]; then
+        printf "\n${BLUE}Starting to build neovim ${NC}"
+        cd ~/Applications/neovim
+        sudo make install
+    else
+        printf "\n${RED}Couldn't build neovim because $HOME/Applications/neovim was not found ${NC}"
+    fi
+}
+
 setup_neovim(){
     # Create directory if not exist
     mkdir -p $HOME/.config
@@ -47,5 +72,7 @@ setup_neovim(){
     ln -sf $DOTFILES/nvim $HOME/.config
 }
 
-install_neovim
+# install_neovim
+clone_neovim
+build_neovim
 setup_neovim

@@ -50,6 +50,13 @@ setup_zsh(){
     fi
 }
 
+install_zsh_async(){
+    cd $DOTFILES/zsh/prompt
+    rm -rf zsh-async
+    git clone https://github.com/mafredri/zsh-async.git
+}
+
+install_zsh_async
 install_oh_my_zsh
 install_spaceship
 setup_zsh
