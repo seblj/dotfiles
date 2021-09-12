@@ -45,6 +45,8 @@ setup_zsh(){
                 printf "\n${BLUE}$Setting up .zshenv ${NC}\n\n"
                 ln -sf $DOTFILES/home/.zshenv ~/.zshenv
             fi
+        else
+            ln -sf $DOTFILES/home/.zshenv ~/.zshenv
         fi
 
     fi
