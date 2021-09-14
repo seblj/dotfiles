@@ -294,7 +294,7 @@ return require('packer').startup({
             config = function()
                 require('config.autopairs')
             end,
-            event = 'InsertEnter',
+            -- event = 'InsertEnter',
         })
         use('tpope/vim-surround') -- Edit surrounds
         use({
