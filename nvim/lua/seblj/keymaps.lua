@@ -76,10 +76,10 @@ nnoremap({ 'j', function() require('seblj.utils').jump('j') end })
 nnoremap({ 'k', function() require('seblj.utils').jump('k') end })
 -- stylua: ignore end
 
-nnoremap({ 'J', '10j' }) -- 10 lines down with J
-vnoremap({ 'J', '10j' }) -- 10 lines down with J
-nnoremap({ 'K', '10k' }) -- 10 lines up with K
-vnoremap({ 'K', '10k' }) -- 10 lines up with K
+nnoremap({ 'J', '10gj' }) -- 10 lines down with J
+vnoremap({ 'J', '10gj' }) -- 10 lines down with J
+nnoremap({ 'K', '10gk' }) -- 10 lines up with K
+vnoremap({ 'K', '10gk' }) -- 10 lines up with K
 
 nnoremap({ 'H', '^' }) -- Beginning of line
 nnoremap({ 'L', '$' }) -- End of line
