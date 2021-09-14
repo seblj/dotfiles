@@ -30,4 +30,5 @@ nnoremap({ '<leader>fk', function() require('telescope.builtin').keymaps() end }
 nnoremap({ '<leader>fa', function() require('telescope.builtin').autocommands() end })
 nnoremap({ '<leader>fh', function() require('telescope.builtin').help_tags() end })
 nnoremap({ '<leader>vo', function() require('telescope.builtin').vim_options() end })
+nnoremap({ '<leader>fq', function() require('seblj.cht').telescope_cht() end })
 -- stylua: ignore end
