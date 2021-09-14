@@ -15,6 +15,7 @@ install_packages(){
         nodejs
         ctags
         tmux
+        ripgrep
         )
 
     for package in "${packages[@]}"; do
