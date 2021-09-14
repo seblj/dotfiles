@@ -122,7 +122,7 @@ M.quickfix = function(key)
     end
 end
 
-local run_term = function(command, ...)
+M.run_term = function(command, ...)
     vim.cmd('term')
     local terminal_id = eval('b:terminal_job_id')
     vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
@@ -140,14 +140,14 @@ M.save_and_exec = function()
     elseif ft == 'python' then
         vim.cmd('silent! write')
         vim.cmd('sp')
-        run_term('python3 %s', vim.fn.expand('%'))
+        M.run_term('python3 %s', vim.fn.expand('%'))
     elseif ft == 'c' then
         vim.cmd('silent! write')
         vim.cmd('sp')
         local file = vim.fn.expand('%')
         local output = vim.fn.expand('%:t:r')
         local command = 'gcc %s -o %s && ./%s; rm %s'
-        run_term(command, file, output, output, output)
+        M.run_term(command, file, output, output, output)
     elseif ft == 'http' then
         -- Not really save and exec, but think it fits nicely in here for mapping
         require('rest-nvim').run()
