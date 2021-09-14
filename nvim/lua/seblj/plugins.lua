@@ -172,14 +172,6 @@ return require('packer').startup({
             end,
             event = 'InsertEnter',
         })
-        -- use({
-        --     'hrsh7th/nvim-compe', -- Completion for nvimlsp
-        --     config = function()
-        --         require('config.compe')
-        --     end,
-        --     event = 'InsertCharPre',
-        --     disable = Use_coc,
-        -- })
         use({
             'hrsh7th/nvim-cmp', -- Completion
             config = function()
