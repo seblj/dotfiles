@@ -14,6 +14,8 @@ M.handlers = function()
         signs = true,
         update_in_insert = false,
     })
+    vim.lsp.buf.definition = require('telescope.builtin').lsp_definitions
+    vim.lsp.buf.references = require('telescope.builtin').lsp_references
 
     vim.lsp.handlers['textDocument/codeAction'] = require('config.lspconfig.codeaction').handler
     vim.lsp.buf.rename = require('config.lspconfig.rename').rename

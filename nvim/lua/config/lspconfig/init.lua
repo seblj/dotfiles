@@ -27,16 +27,21 @@ nnoremap({ '<leader>tf', function() require('config.lspconfig').toggle_format() 
 ---------- MAPPINGS ----------
 
 local mappings = function()
+    local popupopts = {
+        popup_opts = {
+            border = 'rounded',
+        },
+    }
     -- stylua: ignore start
-    nnoremap({ 'gr', function() require('telescope.builtin').lsp_references() end })
-    nnoremap({ 'gd', function() require('telescope.builtin').lsp_definitions() end })
+    nnoremap({ 'gr', function() vim.lsp.buf.references() end })
+    nnoremap({ 'gd', function() vim.lsp.buf.definition() end })
     inoremap({ '<C-s>', function() vim.lsp.buf.signature_help() end })
     nnoremap({ '<C-s>', function() vim.lsp.buf.signature_help() end })
     nnoremap({ 'gh', function() vim.lsp.buf.hover() end })
     nnoremap({ 'gR', function() vim.lsp.buf.rename() end })
     nnoremap({ '<leader>ca', function() vim.lsp.buf.code_action() end })
-    nnoremap({ 'gp', function() vim.lsp.diagnostic.goto_prev() end })
-    nnoremap({ 'gn', function() vim.lsp.diagnostic.goto_next() end })
+    nnoremap({ 'gp', function() vim.lsp.diagnostic.goto_prev(popupopts) end })
+    nnoremap({ 'gn', function() vim.lsp.diagnostic.goto_next(popupopts) end })
     nnoremap({ '<leader>cd', function() vim.lsp.diagnostic.show_line_diagnostics() end })
     nnoremap({ 'gb', '<C-t>' })
     vnoremap({ 'gb', '<C-t>' })
