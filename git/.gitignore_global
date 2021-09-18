@@ -32,3 +32,4 @@ vim-markdown-preview.html
 *.token
 .ccls-cache
 *.passwd
+*.dSYM
