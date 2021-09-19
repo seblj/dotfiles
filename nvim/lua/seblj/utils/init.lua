@@ -83,28 +83,6 @@ M.reload_config = function()
     vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
-local switch_commentstring = function(commentstrings)
-    local current = vim.api.nvim_buf_get_option(0, 'commentstring')
-    for _, cs in pairs(commentstrings) do
-        if not current:find(cs, 1, true) then
-            return cs
-        end
-    end
-end
-
-M.toggle_commenstring = function()
-    local commentstrings = {
-        c = { '//%s', '/*%s*/' },
-    }
-    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    if not commentstrings[ft] then
-        return
-    end
-    local commentstring = switch_commentstring(commentstrings[ft])
-    vim.api.nvim_buf_set_option(0, 'commentstring', commentstring)
-    vim.api.nvim_echo({ { string.format('Now using %s', commentstring) } }, false, {})
-end
-
 -- Use arrowkeys for cnext and cprev only in quickfixlist
 M.quickfix = function(key)
     if eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1 then

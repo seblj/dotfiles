@@ -67,11 +67,10 @@ else
     inoremap({ '<A-k>', '<Esc>:m .-2<CR>==gi' }) -- Move line with Alt-k
 end
 
--- stylua: ignore start
-nnoremap({ 'gca', function() require('seblj.utils').toggle_commenstring() end })
 nnoremap({ '<leader>j', 'J' }) -- Join lines
 
 -- Thanks to TJ
+-- stylua: ignore start
 nnoremap({ 'j', function() require('seblj.utils').jump('j') end })
 nnoremap({ 'k', function() require('seblj.utils').jump('k') end })
 -- stylua: ignore end
