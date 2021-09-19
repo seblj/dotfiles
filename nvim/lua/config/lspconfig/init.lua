@@ -63,17 +63,14 @@ end
 local signs = function()
     vim.api.nvim_call_function(
         'sign_define',
-        { 'LspDiagnosticsSignError', { text = '✘', texthl = 'LspDiagnosticsSignError' } }
+        { 'DiagnosticSignError', { text = '✘', texthl = 'DiagnosticSignError' } }
     )
     vim.api.nvim_call_function('sign_define', {
-        'LspDiagnosticsSignWarning',
-        { text = '', texthl = 'LspDiagnosticsSignWarning' },
+        'DiagnosticSignWarn',
+        { text = '', texthl = 'DiagnosticSignWarn' },
     })
-    vim.api.nvim_call_function(
-        'sign_define',
-        { 'LspDiagnosticsSignHint', { text = '', texthl = 'LspDiagnosticsSignHint' } }
-    )
-    -- vim.api.nvim_call_function("sign_define", {"LspDiagnosticsSignInformation", {text = "", texthl = "LspDiagnosticsSignInformation"}})
+    vim.api.nvim_call_function('sign_define', { 'DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' } })
+    -- vim.api.nvim_call_function("sign_define", {"DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"}})
 
     require('lspkind').init()
 end
