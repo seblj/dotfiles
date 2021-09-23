@@ -27,7 +27,7 @@ M.handlers = function()
         silent = true,
         focusable = false, -- Sometimes gets set to true if not set explicitly to false for some reason
     })
-    vim.lsp.diagnostic.show_line_diagnostics = override(vim.lsp.diagnostic.show_line_diagnostics, {
+    vim.diagnostic.show_line_diagnostics = override(vim.diagnostic.show_line_diagnostics, {
         border = 'rounded',
     })
 end
