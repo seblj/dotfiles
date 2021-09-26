@@ -22,8 +22,6 @@ nnoremap({ '<Tab>', 'gt' }) -- Next tab
 nnoremap({ '<S-TAB>', 'gT' }) -- Previous tab
 nnoremap({ '<leader>=', '<C-w>=' }) -- Resize windows
 nnoremap({ '<leader>i', 'gg=G' }) -- Indent file
-nnoremap({ 'ß', ':%s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
-vnoremap({ 'ß', ':s//gI<Left><Left><Left>', silent = false }) -- Search and replace (Alt-s)
 nnoremap({ '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', expr = true }) -- Remove highlights with enter
 nnoremap({ '<C-f>', 'za' }) -- Fold
 nnoremap({ '<C-t>', ':tabedit<CR>' }) -- Create new tab
@@ -49,7 +47,8 @@ nnoremap({ '<S-Down>', function() require('seblj.utils.resize').resize_down() en
 vnoremap({ '<', '<gv' }) -- Keep visual on indent
 vnoremap({ '>', '>gv' }) -- Keep visual on indent
 
-if vim.fn.has('mac') == 1 then
+-- has('mac') is not enough if using ssh
+if vim.fn.has('mac') == 1 or vim.fn.getenv('TERM_PROGRAM') == 'iTerm.app' then
     nnoremap({ '√', ':m.+1<CR>==' }) -- Move line with Alt-j
     vnoremap({ '√', ":m '>+1<CR>gv=gv" }) -- Move line with Alt-j
     inoremap({ '√', '<Esc>:m .+1<CR>==gi' }) -- Move line with Alt-j

@@ -9,6 +9,10 @@ local f = ls.function_node
 local c = ls.choice_node
 local d = ls.dynamic_node
 
+local term = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 local snippets = {}
 
 snippets.all = {}
@@ -63,12 +67,36 @@ snippets.vue = {
     }),
 }
 
-ls.snippets = snippets
-
--- Map <Tab> and <S-Tab> to jump when not pumvisible
-local term = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
+local filename = function(_, _)
+    return vim.fn.expand('%:t:r')
 end
+
+local tab = function(_, _)
+    return term('<Tab>')
+end
+
+local react_component = s('component', {
+    t({ "import React from 'react';", '', '' }),
+    t({ 'const ' }),
+    f(filename, {}, ''),
+    t({ ' = () => {', '' }),
+    f(tab, {}, ''),
+    i(0),
+    t({ '', '};', '', '' }),
+    t({ 'export default ' }),
+    f(filename, {}, ''),
+    t({ ';' }),
+})
+
+snippets.typescriptreact = {
+    react_component,
+}
+
+snippets.javascriptreact = {
+    react_component,
+}
+
+ls.snippets = snippets
 
 _G.tab_complete = function()
     if vim.fn.pumvisible() == 1 then
