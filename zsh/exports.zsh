@@ -15,7 +15,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export UPCXX_INSTALL="$HOME/Applications/UPC"
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 export GOPATH=$HOME/go
