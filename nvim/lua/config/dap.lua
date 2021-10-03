@@ -104,7 +104,8 @@ dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
 vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'Error', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = '→', texthl = 'Error', linehl = 'DiffAdd', numhl = '' })
 
-require('dapui').setup({
+local dapui = require('dapui')
+dapui.setup({
     icons = {
         expanded = '',
         collapsed = '',
@@ -112,20 +113,30 @@ require('dapui').setup({
     },
     sidebar = {
         elements = {
-            'scopes',
-            'watches',
+            { id = 'scopes', size = 0.25 },
+            { id = 'watches', size = 0.25 },
         },
-        width = 40,
+        size = 40,
         position = 'left',
     },
     tray = {
         elements = {
             'repl',
         },
-        height = 10,
+        size = 10,
         position = 'bottom',
     },
 })
+
+dap.listeners.after.event_initialized['dapui_config'] = function()
+    dapui.open()
+end
+dap.listeners.before.event_terminated['dapui_config'] = function()
+    dapui.close()
+end
+dap.listeners.before.event_exited['dapui_config'] = function()
+    dapui.close()
+end
 
 ---------- COMMANDS ----------
 
