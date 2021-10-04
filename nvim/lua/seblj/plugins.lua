@@ -305,8 +305,9 @@ return require('packer').startup({
         }) -- Line up text
         use({
             'vuki656/package-info.nvim',
+            requires = 'MunifTanjim/nui.nvim',
             config = function()
-                require('package-info').setup()
+                require('config.packageinfo')
             end,
             ft = 'json',
         })
