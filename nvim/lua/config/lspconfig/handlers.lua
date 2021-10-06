@@ -17,7 +17,6 @@ M.handlers = function()
     vim.lsp.buf.definition = require('telescope.builtin').lsp_definitions
     vim.lsp.buf.references = require('telescope.builtin').lsp_references
 
-    vim.lsp.handlers['textDocument/codeAction'] = require('config.lspconfig.codeaction').handler
     vim.lsp.buf.rename = require('config.lspconfig.rename').rename
     vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = 'rounded',
