@@ -6,7 +6,8 @@ local nnoremap = vim.keymap.nnoremap
 local inoremap = vim.keymap.inoremap
 local vnoremap = vim.keymap.vnoremap
 local augroup = utils.augroup
-local lsp_settings = require('config.lspconfig.settings').settings
+local settings = require('config.lspconfig.settings')
+local nls = require('config.lspconfig.null-ls')
 
 require('config.lspconfig.install')
 
@@ -75,14 +76,6 @@ local signs = function()
     require('lspkind').init()
 end
 
--- Use null-ls formatting instead of builtin
-local disabled_formatting = {
-    'tsserver', -- eslint/prettier
-    'vue', -- eslint/prettier
-    'lua', -- stylua
-    'gopls', -- goimports
-}
-
 local make_config = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -93,16 +86,21 @@ local make_config = function()
             mappings()
             signs()
             require('config.lspconfig.signature').setup()
-            if vim.tbl_contains(disabled_formatting, client.name) then
-                client.resolved_capabilities.document_formatting = false
+            local ft = vim.api.nvim_buf_get_option(0, 'ft')
+            local enabled = false
+            if nls.nls_has_formatter(ft) then
+                enabled = client.name == 'null-ls'
+            else
+                enabled = not (client.name == 'null-ls')
             end
+            client.resolved_capabilities.document_formatting = enabled
         end,
     }
 end
 
 -- Setup null-ls
 if pcall(require, 'null-ls') then
-    require('config.lspconfig.settings').nls_setup()
+    nls.nls_setup()
 end
 
 local servers = {
@@ -129,8 +127,8 @@ local setup_servers = function()
         local config = make_config()
 
         -- Set user settings for each server
-        if lsp_settings[server] then
-            for k, v in pairs(lsp_settings[server]) do
+        if settings[server] then
+            for k, v in pairs(settings[server]) do
                 config[k] = v
             end
         end

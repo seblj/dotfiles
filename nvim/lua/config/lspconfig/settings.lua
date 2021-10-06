@@ -1,25 +1,8 @@
 ---------- LANGUAGE SERVERS ----------
 
-local M = {}
+local util = require('lspconfig/util')
 
-M.nls_setup = function()
-    local nls = require('null-ls')
-    local formatter = nls.builtins.formatting
-    local diagnostics = nls.builtins.diagnostics
-    nls.config({
-        debounce = 150,
-        save_after_format = false,
-        sources = {
-            -- formatter.prettierd,
-            formatter.stylua,
-            formatter.eslint_d,
-            formatter.goimports,
-            diagnostics.eslint_d,
-        },
-    })
-end
-
-M.settings = {
+return {
     vuels = {
         init_options = {
             config = {
