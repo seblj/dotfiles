@@ -3,6 +3,10 @@ local utils = require('seblj.utils')
 local augroup = utils.augroup
 local nnoremap = vim.keymap.nnoremap
 
+if not vim.ui then
+    return
+end
+
 local confirm = function(items, on_choice, key)
     local choice = tonumber(vim.fn.expand('<cword>'))
     if key then
