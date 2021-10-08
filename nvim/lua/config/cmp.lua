@@ -1,9 +1,14 @@
 local inoremap = vim.keymap.inoremap
+local imap = vim.keymap.imap
 local lspkind = require('lspkind')
 local cmp = require('cmp')
 
 -- stylua: ignore
 inoremap({ '<C-space>', function() require('cmp').complete() end })
+
+local term = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
 
 cmp.setup({
     sources = {
@@ -14,6 +19,11 @@ cmp.setup({
         } },
         { name = 'path' },
     },
+
+    -- Turn of custom pumvisible
+    -- experimental = {
+    --     native_menu = true,
+    -- },
 
     snippet = {
         expand = function(args)
@@ -57,3 +67,28 @@ require('nvim-autopairs.completion.cmp').setup({
 })
 
 vim.opt.completeopt = { 'menuone', 'noselect' }
+
+local ls = require('luasnip')
+
+_G.tab_complete = function()
+    if require('cmp').visible() then
+        return term('<C-n>')
+    elseif ls.expand_or_jumpable() then
+        return term('<Plug>luasnip-expand-or-jump')
+    else
+        return term('<Tab>')
+    end
+end
+
+_G.s_tab_complete = function()
+    if cmp.visible() then
+        return term('<C-p>')
+    elseif ls.jumpable(-1) then
+        return term('<Plug>luasnip-jump-prev')
+    else
+        return term('<S-Tab>')
+    end
+end
+
+imap({ '<Tab>', 'v:lua.tab_complete()', expr = true })
+imap({ '<S-Tab>', 'v:lua.s_tab_complete()', expr = true })

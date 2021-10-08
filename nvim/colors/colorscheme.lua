@@ -412,4 +412,10 @@ all({
     ---------- TELESCOPE ----------
 
     { 'TelescopePromptPrefix', { guifg = c.red } },
+
+    ---------- CMP ----------
+
+    { 'CmpItemMenu', { guifg = c.fg, guibg = c.bg2 } },
+    { 'CmpItemAbbr', { guifg = c.fg, guibg = c.bg2 } },
+    { 'CmpItemAbbrMatch', { guifg = c.purple, guibg = c.bg2 } },
 })
