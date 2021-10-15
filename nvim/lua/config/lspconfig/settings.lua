@@ -1,7 +1,5 @@
 ---------- LANGUAGE SERVERS ----------
 
-local util = require('lspconfig/util')
-
 return {
     vuels = {
         init_options = {
@@ -45,7 +43,19 @@ return {
     },
 
     clangd = {
-        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
     },
 
+    eslint = {
+        filetypes = { 'vue', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+    },
+
+    omnisharp = {
+        cmd = {
+            '/Users/sebastianlyngjohansen/.local/omnisharp-osx/run',
+            '--languageserver',
+            '--hostPID',
+            tostring(vim.fn.getpid()),
+        },
+    },
 }

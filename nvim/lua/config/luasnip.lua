@@ -1,5 +1,3 @@
-local imap = vim.keymap.imap
-
 local ls = require('luasnip')
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -97,25 +95,3 @@ snippets.javascriptreact = {
 }
 
 ls.snippets = snippets
-
-_G.tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-        return term('<C-n>')
-    elseif ls.expand_or_jumpable() then
-        return term('<Plug>luasnip-expand-or-jump')
-    else
-        return term('<Tab>')
-    end
-end
-_G.s_tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-        return term('<C-p>')
-    elseif ls.jumpable(-1) then
-        return term('<Plug>luasnip-jump-prev')
-    else
-        return term('<S-Tab>')
-    end
-end
-
-imap({ '<Tab>', 'v:lua.tab_complete()', expr = true })
-imap({ '<S-Tab>', 'v:lua.s_tab_complete()', expr = true })

@@ -76,6 +76,11 @@ local signs = function()
     require('lspkind').init()
 end
 
+local disable_formatters = {
+    'vuels',
+    'tsserver',
+}
+
 local make_config = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -94,6 +99,9 @@ local make_config = function()
                 enabled = not (client.name == 'null-ls')
             end
             client.resolved_capabilities.document_formatting = enabled
+            if vim.tbl_contains(disable_formatters, client.name) then
+                client.resolved_capabilities.document_formatting = false
+            end
         end,
     }
 end
@@ -119,6 +127,9 @@ local servers = {
     'sumneko_lua',
     'clangd',
     'gopls',
+    'omnisharp',
+    'dockerls',
+    'eslint',
 }
 
 -- Automatic setup for language servers

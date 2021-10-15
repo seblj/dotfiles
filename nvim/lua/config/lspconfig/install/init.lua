@@ -14,6 +14,7 @@ local servers = {
     graphql = 'npm install -g graphql-language-service-cli',
     tsserver = 'npm install -g typescript typescript-language-server',
     sumneko_lua = require('config.lspconfig.install.lua'),
+    dockerls = 'npm install -g dockerfile-language-server-nodejs',
 }
 
 local find_command = function(ls)
