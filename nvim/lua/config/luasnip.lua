@@ -1,14 +1,24 @@
 local ls = require('luasnip')
 local s = ls.snippet
-local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
-local c = ls.choice_node
-local d = ls.dynamic_node
 
 local term = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local filename = function(_, _)
+    return vim.fn.expand('%:t:r')
+end
+
+local tab = function(num_times)
+    if not num_times then
+        num_times = 1
+    end
+    return function(_, _)
+        return term(string.rep('<Tab>', num_times))
+    end
 end
 
 local snippets = {}
@@ -18,17 +28,20 @@ snippets.all = {}
 snippets.lua = {
     -- Some lua snippets because the ones from LSP doesn't work
     s({ trig = 'function' }, {
-        t({ 'function()', '    ' }),
+        t({ 'function()', '' }),
+        f(tab(), {}),
         i(0),
         t({ '', 'end' }),
     }),
     s({ trig = 'then' }, {
-        t({ 'then', '    ' }),
+        t({ 'then', '' }),
+        f(tab(), {}),
         i(0),
         t({ '', 'end' }),
     }),
     s({ trig = 'do' }, {
-        t({ 'do', '    ' }),
+        t({ 'do', '' }),
+        f(tab(), {}),
         i(0),
         t({ '', 'end' }),
     }),
@@ -38,23 +51,34 @@ snippets.lua = {
 }
 
 snippets.vue = {
-    -- Create component template for vue file
-    s({ trig = 'component' }, {
-        i(0),
+    s('component', {
+        t({ '<template>', '' }),
+        f(tab(), {}),
+        t({ '<div>', '', '' }),
+        f(tab(), {}),
         t({
-            '<template>',
-            '  <div>',
-            '',
-            '  </div>',
+            '</div>',
             '</template>',
             '',
             '<script lang="ts">',
-            "import { defineComponent } from 'vue-demi';",
+            '',
+            "import { defineComponent } from 'vue';",
             '',
             'export default defineComponent({',
-            '  setup() {',
             '',
-            '  },',
+        }),
+        f(tab(), {}),
+        t({ "name: '" }),
+        f(filename, {}),
+        t({ "',", '', '' }),
+        f(tab(), {}),
+        t({ 'setup() {', '' }),
+        f(tab(2), {}),
+        i(0),
+        t({ '', '' }),
+        f(tab(), {}),
+        t({
+            '},',
             '});',
             '</script>',
             '',
@@ -65,24 +89,14 @@ snippets.vue = {
     }),
 }
 
-local filename = function(_, _)
-    return vim.fn.expand('%:t:r')
-end
-
-local tab = function(_, _)
-    return term('<Tab>')
-end
-
 local react_component = s('component', {
-    t({ "import React from 'react';", '', '' }),
-    t({ 'const ' }),
-    f(filename, {}, ''),
+    t({ "import React from 'react';", '', 'const ' }),
+    f(filename, {}),
     t({ ' = () => {', '' }),
-    f(tab, {}, ''),
+    f(tab(), {}),
     i(0),
-    t({ '', '};', '', '' }),
-    t({ 'export default ' }),
-    f(filename, {}, ''),
+    t({ '', '};', '', 'export default ' }),
+    f(filename, {}),
     t({ ';' }),
 })
 
