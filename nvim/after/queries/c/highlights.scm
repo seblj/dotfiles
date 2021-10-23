@@ -1,3 +1,3 @@
  [
  (type_identifier)
-] @custom-type
+] @custom_type
