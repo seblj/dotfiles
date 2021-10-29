@@ -31,6 +31,13 @@ cmp.setup({
         end,
     },
 
+    mapping = {
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+        }),
+    },
+
     preselect = cmp.PreselectMode.None,
 
     -- Rounded borders on popup
@@ -58,12 +65,6 @@ cmp.setup({
             return item
         end,
     },
-})
-
-require('nvim-autopairs.completion.cmp').setup({
-    map_cr = true, --  map <CR> on insert mode
-    map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
-    auto_select = false, -- automatically select the first item
 })
 
 vim.opt.completeopt = { 'menuone', 'noselect' }
