@@ -122,6 +122,9 @@ return require('packer').startup({
             event = 'BufReadPre',
         })
 
+        -- Disable until I hopefully get a copilot technical preview
+        -- use({ 'github/copilot.vim' })
+
         -- Treesitter
         use({
             'nvim-treesitter/nvim-treesitter', -- Parser tool syntax
@@ -134,22 +137,12 @@ return require('packer').startup({
             config = function()
                 require('config.treesitter')
             end,
-        })
-        use({
-            'nvim-treesitter/playground', -- Display information from treesitter
-            after = 'nvim-treesitter',
-        })
-        use({
-            'windwp/nvim-ts-autotag', -- Autotag using treesitter
-            after = 'nvim-treesitter',
-        })
-        use({
-            'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
-            after = 'nvim-treesitter',
-        })
-        use({
-            'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
-            after = 'nvim-treesitter',
+            requires = {
+                'nvim-treesitter/playground', -- Display information from treesitter
+                'windwp/nvim-ts-autotag', -- Autotag using treesitter
+                'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
+                'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
+            },
         })
 
         -- LSP
@@ -170,7 +163,6 @@ return require('packer').startup({
             config = function()
                 require('config.luasnip')
             end,
-            event = 'InsertEnter',
         })
         use({
             'hrsh7th/nvim-cmp', -- Completion
@@ -204,19 +196,25 @@ return require('packer').startup({
             end,
             keys = '<leader>fr',
         })
+        use({
+            'ThePrimeagen/harpoon',
+            config = function()
+                require('config.harpoon')
+            end,
+            requires = 'nvim-lua/popup.nvim',
+        })
 
         -- Telescope
         use({
             'nvim-telescope/telescope.nvim', -- Fuzzy finder
             requires = {
-                'nvim-lua/popup.nvim',
-                'nvim-lua/plenary.nvim',
+                { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+                { 'nvim-lua/plenary.nvim' },
             },
             config = function()
                 require('config.telescope')
             end,
         })
-        use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }) -- FZF algorithm for telescope
         use({
             'fannheyward/telescope-coc.nvim', -- Telescope extension for coc
             config = function()
@@ -231,10 +229,8 @@ return require('packer').startup({
             config = function()
                 require('config.dap')
             end,
+            requires = 'rcarriga/nvim-dap-ui',
             keys = '<leader>db',
-        })
-        use({
-            'rcarriga/nvim-dap-ui', -- UI for debugger
         })
         use({
             'szw/vim-maximizer', -- Maximize split
@@ -247,13 +243,15 @@ return require('packer').startup({
                 require('config.test')
             end,
             cmd = { 'TestFile', 'TestNearest', 'TestLast' },
-        })
-        use({
-            'rcarriga/vim-ultest', -- Testing UI
-            run = ':UpdateRemotePlugins',
-            cond = function()
-                return false
-            end,
+            requires = {
+                {
+                    'rcarriga/vim-ultest', -- Testing UI
+                    run = ':UpdateRemotePlugins',
+                    cond = function()
+                        return false
+                    end,
+                },
+            },
         })
 
         use({
@@ -310,6 +308,25 @@ return require('packer').startup({
                 require('config.packageinfo')
             end,
             ft = 'json',
+        })
+        use({
+            'rcarriga/nvim-notify',
+            config = function()
+                vim.notify = require('notify')
+                require('notify').setup({
+                    on_open = function(win)
+                        -- Don't like when it shows after packer sync and blocks the
+                        -- commits from plugins. So print normal if ft is packer
+                        local ft = vim.api.nvim_buf_get_option(0, 'ft')
+                        if ft == 'packer' then
+                            vim.api.nvim_win_close(win, true)
+                            local history = require('notify').history()
+                            local last = history[#history]
+                            print(unpack(last.message))
+                        end
+                    end,
+                })
+            end,
         })
         use('tpope/vim-repeat') -- Reapat custom commands with .
         use({

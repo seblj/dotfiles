@@ -79,8 +79,6 @@ vnoremap({ 'J', '10gj' }) -- 10 lines down with J
 nnoremap({ 'K', '10gk' }) -- 10 lines up with K
 vnoremap({ 'K', '10gk' }) -- 10 lines up with K
 
-nnoremap({ 'H', '^' }) -- Beginning of line
-nnoremap({ 'L', '$' }) -- End of line
 vnoremap({ 'H', '^' }) -- Beginning of line
 vnoremap({ 'L', '$' }) -- End of line
 onoremap({ 'H', '^' }) -- Beginning of line
