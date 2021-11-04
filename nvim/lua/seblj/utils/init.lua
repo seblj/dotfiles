@@ -132,18 +132,18 @@ M.save_and_exec = function()
     end
 end
 
--- Functions for highlighting
+-- Function for highlighting
 
-M.highlight = function(name, opts)
-    if not opts.guisp then
-        opts.guisp = 'NONE'
-    end
-    if not opts.gui then
-        opts.gui = 'NONE'
-    end
-    if name and vim.tbl_count(opts) > 0 then
-        if opts.link and opts.link ~= '' then
-            vim.cmd('highlight!' .. ' link ' .. name .. ' ' .. opts.link)
+M.highlight = function(colors)
+    for name, opts in pairs(colors) do
+        if not opts.guisp then
+            opts.guisp = 'NONE'
+        end
+        if not opts.gui then
+            opts.gui = 'NONE'
+        end
+        if opts.link then
+            vim.cmd('highlight! link ' .. name .. ' ' .. opts.link)
         else
             local command = { 'highlight!', name }
             for k, v in pairs(opts) do
@@ -151,12 +151,6 @@ M.highlight = function(name, opts)
             end
             vim.cmd(table.concat(command, ' '))
         end
-    end
-end
-
-M.highlight_all = function(hls)
-    for _, hl in ipairs(hls) do
-        M.highlight(unpack(hl))
     end
 end
 
