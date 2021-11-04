@@ -74,6 +74,7 @@ local function go_result_type(info)
             return handlers[node:type()](node, info)
         end
     end
+    return {}
 end
 
 local go_ret_vals = function(_)
