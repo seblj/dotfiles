@@ -47,7 +47,9 @@
     - nvim
 
 - name: Build Neovim
-  shell: "cd ~/Applications/neovim && sudo make install"
+  shell: |
+    cd "{{ lookup('env', 'HOME') }}/Applications/neovim"
+    sudo make install
   become: True
   tags:
     - install

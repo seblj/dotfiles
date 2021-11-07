@@ -7,16 +7,18 @@
     - install
     - zsh
 
-- name: Change shell to zsh
-  shell: sudo chsh -s $(which zsh)
+- name: Check if Oh-My-Zsh is installed
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.oh-my-zsh"
+  register: oh_my_zsh
+
   tags:
     - install
     - zsh
-  become: True
 
-# TODO: Look into only installing when not exists
 - name: Install Oh-My-Zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  when: not oh_my_zsh.stat.exists
   tags:
     - install
     - zsh
@@ -32,13 +34,22 @@
     - zsh
 
 - name: Install zsh-async
+  shell: git submodule update --init
+  tags:
+    - install
+    - zsh
+
+- name: Install zsh-z
   ansible.builtin.git:
-    repo: 'https://github.com/mafredri/zsh-async.git'
-    dest: "{{ lookup('env', 'HOME') }}/dotfiles/zsh/prompt/zsh-async"
+    repo: 'https://github.com/agkozak/zsh-z.git'
+    dest: "{{ lookup('env', 'HOME') }}/.oh-my-zsh/custom/plugins/zsh-z"
+  tags:
+    - install
+    - zsh
 
 - name: Symlink zsh config
   file:
-    path: "{{ lookup('env', 'HOME') }}/dotfiles/zsh"
+    src: "{{ lookup('env', 'HOME') }}/dotfiles/zsh"
     dest: "{{ lookup('env', 'HOME') }}/.config/zsh"
     state: link
   tags:
