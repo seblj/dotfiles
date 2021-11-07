@@ -1,0 +1,46 @@
+- name: Install zsh
+  ansible.builtin.package:
+    name:
+      - zsh
+    state: present
+  tags:
+    - install
+    - zsh
+
+- name: Change shell to zsh
+  shell: sudo chsh -s $(which zsh)
+  tags:
+    - install
+    - zsh
+  become: True
+
+# TODO: Look into only installing when not exists
+- name: Install Oh-My-Zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  tags:
+    - install
+    - zsh
+
+- name: Setup propmt
+  file:
+    src: "{{ lookup('env', 'HOME') }}/dotfiles/zsh/prompt/spaceship.zsh"
+    dest: /usr/local/share/zsh/site-functions/prompt_spaceship_setup
+    state: link
+  become: True
+  tags:
+    - install
+    - zsh
+
+- name: Install zsh-async
+  ansible.builtin.git:
+    repo: 'https://github.com/mafredri/zsh-async.git'
+    dest: "{{ lookup('env', 'HOME') }}/dotfiles/zsh/prompt/zsh-async"
+
+- name: Symlink zsh config
+  file:
+    path: "{{ lookup('env', 'HOME') }}/dotfiles/zsh"
+    dest: "{{ lookup('env', 'HOME') }}/.config/zsh"
+    state: link
+  tags:
+    - install
+    - zsh

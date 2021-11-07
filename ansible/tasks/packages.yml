@@ -1,0 +1,33 @@
+- name: Check gh exists
+  shell: "which gh"
+  register: gh_result
+  ignore_errors: true
+  when: ansible_facts['os_family'] == "Debian"
+  tags:
+    - install
+
+- name: Ensure gh cli is available in apt
+  shell: |
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt update
+  when: (gh_result.rc != 0) and (ansible_facts['os_family'] == "Debian")
+  tags:
+    - install
+
+- name: Install common packages
+  vars: 
+      should_be_root: "{{ False if ansible_pkg_mgr == 'homebrew' else True }}"
+  ansible.builtin.package:
+    name:
+      - zsh
+      - gcc
+      - nodejs
+      - ctags
+      - tmux
+      - ripgrep
+      - gh
+    state: present
+  become: "{{ should_be_root }}"
+  tags:
+    - install

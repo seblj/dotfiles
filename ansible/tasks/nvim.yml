@@ -1,0 +1,65 @@
+- name: Install Neovim dependencies for macOS
+  homebrew:
+    name:
+      - ninja
+      - libtool
+      - automake
+      - cmake
+      - pkg-config
+      - gettext
+      - curl
+  when: ansible_facts['os_family'] == "Darwin"
+  tags:
+    - install
+    - neovim
+    - nvim
+
+- name: Install Neovim dependencies for Ubuntu
+  apt:
+    name:
+      - ninja-build
+      - gettext
+      - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake
+      - g++
+      - pkg-config
+      - unzip
+      - curl
+      - doxygen
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+  become: True
+  tags:
+    - install
+    - neovim
+    - nvim
+
+- name: Clone Neovim
+  ansible.builtin.git:
+    repo: 'https://github.com/neovim/neovim.git'
+    dest: "{{ lookup('env', 'HOME') }}/Applications/neovim"
+  tags:
+    - install
+    - neovim
+    - nvim
+
+- name: Build Neovim
+  shell: "cd ~/Applications/neovim && sudo make install"
+  become: True
+  tags:
+    - install
+    - neovim
+    - nvim
+
+- name: Symlink Neovim config
+  file:
+    src: "{{ lookup('env', 'HOME') }}/dotfiles/nvim"
+    dest: "{{ lookup('env', 'HOME') }}/.config/nvim"
+    state: link
+  tags:
+    - install
+    - neovim
+    - nvim

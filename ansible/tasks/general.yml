@@ -1,0 +1,32 @@
+- name: Create ~/.config
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.config"
+    state: directory
+  tags:
+    - install
+    - home
+
+- name: Find files to symlink to home
+  find:
+    paths:
+      - "{{ lookup('env', 'HOME') }}/dotfiles/home"
+      - "{{ lookup('env', 'HOME') }}/dotfiles/git"
+    recurse: no
+    file_type: any
+    hidden: yes
+  register: home_config
+  tags:
+    - install
+    - home
+
+- name: Symlink files to home
+  file:
+    src: "{{item.path}}"
+    dest: "~/{{item.path | basename}}"
+    state: link
+  loop: "{{ home_config.files }}"
+  loop_control:
+    label: "~/{{item.path | basename}}"
+  tags:
+    - install
+    - home
