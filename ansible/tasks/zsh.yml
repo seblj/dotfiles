@@ -47,6 +47,14 @@
     - install
     - zsh
 
+- name: Create folder for zsh-z data
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.config/z"
+    state: directory
+  tags:
+    - install
+    - zsh
+
 - name: Symlink zsh config
   file:
     src: "{{ lookup('env', 'HOME') }}/dotfiles/zsh"
@@ -55,3 +63,4 @@
   tags:
     - install
     - zsh
+    - link

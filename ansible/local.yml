@@ -2,7 +2,7 @@
   hosts: localhost
   
   tasks:
+    - import_tasks: tasks/general.yml
     - import_tasks: tasks/packages.yml
     - import_tasks: tasks/nvim.yml
-    - import_tasks: tasks/general.yml
     - import_tasks: tasks/zsh.yml

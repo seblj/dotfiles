@@ -5,6 +5,7 @@
   tags:
     - install
     - home
+    - link
 
 - name: Find files to symlink to home
   find:
@@ -18,6 +19,7 @@
   tags:
     - install
     - home
+    - link
 
 - name: Symlink files to home
   file:
@@ -30,3 +32,4 @@
   tags:
     - install
     - home
+    - link
