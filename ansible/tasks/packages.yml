@@ -31,3 +31,24 @@
   become: "{{ should_be_root }}"
   tags:
     - install
+
+- name: Install cargo
+  shell: curl https://sh.rustup.rs -sSf | sh
+  tags:
+    - install
+
+- name: Install stylua
+  shell: cargo install stylua
+  tags:
+    - install
+
+- name: Install delta
+  shell: cargo install git-delta
+  tags:
+    - install
+
+- name: Install emojify
+  shell: sh -c "curl https://raw.githubusercontent.com/mrowa44/emojify/master/emojify -o /usr/local/bin/emojify && chmod +x /usr/local/bin/emojify"
+  become: True
+  tags:
+    - install
