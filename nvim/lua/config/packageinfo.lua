@@ -8,7 +8,6 @@ nnoremap({
     function()
         require('package-info').update()
         require('seblj.utils').setup_hidden_cursor()
-        require('seblj.utils').hide_cursor()
     end,
 })
 nnoremap({
@@ -16,7 +15,6 @@ nnoremap({
     function()
         require('package-info').delete()
         require('seblj.utils').setup_hidden_cursor()
-        require('seblj.utils').hide_cursor()
     end,
 })
 nnoremap({
@@ -24,7 +22,6 @@ nnoremap({
     function()
         require('package-info').install()
         require('seblj.utils').setup_hidden_cursor()
-        require('seblj.utils').hide_cursor()
     end,
 })
 nnoremap({
@@ -32,6 +29,5 @@ nnoremap({
     function()
         require('package-info').change_version()
         require('seblj.utils').setup_hidden_cursor()
-        require('seblj.utils').hide_cursor()
     end,
 })

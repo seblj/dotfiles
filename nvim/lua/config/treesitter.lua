@@ -90,14 +90,12 @@ local find_commentstring_under_cursor = function()
     end
 
     -- Only continue if uncommenting
-    local type = node:type()
-    if type ~= 'comment' then
+    if node:type() ~= 'comment' then
         return nil
     end
 
     -- Find current language and possible commentstrings for the language based on config
-    local language = language_tree:lang()
-    local commentstrings = language_commentstrings[language]
+    local commentstrings = language_commentstrings[language_tree:lang()]
 
     -- No config for commentstrings so use default
     if not commentstrings then
@@ -127,8 +125,7 @@ context_commentstring.update_commentstring = function()
         vim.api.nvim_buf_set_option(0, 'commentstring', found_commentstring)
     else
         -- No commentstring was found, default to the
-        local original_commentstring = vim.b.ts_original_commentstring
-        if original_commentstring then
+        if vim.b.ts_original_commentstring then
             vim.api.nvim_buf_set_option(0, 'commentstring', vim.b.ts_original_commentstring)
         end
     end

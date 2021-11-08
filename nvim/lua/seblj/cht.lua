@@ -62,24 +62,13 @@ local input_query = function(selected)
             -- Probably an upstream error as there are other weird behaviours with prompt
             highlight = 'LspRenamePrompt',
         },
+        on_confirm = function()
+            run_cht(selected)
+        end,
     })
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    inoremap({
-        '<CR>',
-        function()
-            run_cht(selected)
-        end,
-        buffer = true,
-    })
-    augroup('ChtInvisibleCursor', {
-        event = 'CursorMoved',
-        pattern = '<buffer>',
-        command = function()
-            require('seblj.utils.ui').set_cursor()
-        end,
-    })
     vim.cmd('norm! i')
 end
 

@@ -1,8 +1,5 @@
 local ui = require('seblj.utils.ui')
-local utils = require('seblj.utils')
-local augroup = utils.augroup
 local nnoremap = vim.keymap.nnoremap
-local inoremap = vim.keymap.inoremap
 
 if not vim.ui then
     return
@@ -39,24 +36,16 @@ vim.ui.select = function(items, opts, on_choice)
     local width = ui.calculate_width(choices)
     choices = { title, string.rep(ui.border_line, width), unpack(choices) }
 
-    local popup_bufnr, winnr = ui.popup_create({
+    local popup_bufnr, _ = ui.popup_create({
         lines = choices,
         enter = true,
+        set_cursor = true,
+        on_confirm = function()
+            confirm(items, on_choice)
+        end,
     })
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    vim.api.nvim_win_set_cursor(winnr, { 3, 1 })
-    vim.api.nvim_win_set_option(winnr, 'cursorline', true)
-    require('seblj.utils').setup_hidden_cursor()
-    require('seblj.utils').hide_cursor()
-
-    augroup('UISelectInvisibleCursor', {
-        event = 'CursorMoved',
-        pattern = '<buffer>',
-        command = function()
-            require('seblj.utils.ui').set_cursor()
-        end,
-    })
 
     -- Keymap for selecting option with number
     for k, _ in ipairs(choices) do
@@ -70,9 +59,6 @@ vim.ui.select = function(items, opts, on_choice)
             })
         end
     end
-
-    -- stylua: ignore
-    nnoremap({ '<CR>', function() confirm(items, on_choice) end, buffer = true })
 end
 
 -- Override vim.ui.input to use popup
@@ -96,20 +82,15 @@ vim.ui.input = function(opts, on_confirm)
             prefix = options.prefix,
             highlight = 'LspRenamePrompt',
         },
-    })
-    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-
-    inoremap({
-        '<CR>',
-        function()
+        on_confirm = function()
             local input = vim.trim(vim.fn.getline('.'):sub(#options.prefix + 1, -1))
             vim.api.nvim_win_close(0, true)
             on_confirm(input)
             vim.cmd('stopinsert')
         end,
-        buffer = true,
     })
+    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
     vim.cmd('startinsert')
 end

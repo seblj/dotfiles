@@ -2,12 +2,6 @@
 
 local M = {}
 
-local override = function(handler, override_config)
-    return function(opts, bufnr, line_nr, client_id)
-        return handler(vim.tbl_deep_extend('force', opts or {}, override_config), bufnr, line_nr, client_id)
-    end
-end
-
 M.handlers = function()
     vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = { spacing = 4, prefix = '●' },
@@ -24,9 +18,6 @@ M.handlers = function()
         border = 'rounded',
         silent = true,
         focusable = false, -- Sometimes gets set to true if not set explicitly to false for some reason
-    })
-    vim.diagnostic.show_line_diagnostics = override(vim.diagnostic.show_line_diagnostics, {
-        border = 'rounded',
     })
 end
 

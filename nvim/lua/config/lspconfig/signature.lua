@@ -20,7 +20,7 @@ local check_trigger_char = function(line_to_cursor, triggers)
     return false
 end
 
-M.open_signature = function(clients)
+local open_signature = function(clients)
     local triggered = false
 
     for _, client in pairs(clients) do
@@ -57,7 +57,7 @@ M.setup = function()
         event = 'TextChangedI',
         pattern = '*',
         command = function()
-            require('config.lspconfig.signature').open_signature(clients)
+            open_signature(clients)
         end,
     })
 end

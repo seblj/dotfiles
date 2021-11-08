@@ -1,6 +1,5 @@
 local M = {}
 local ui = require('seblj.utils.ui')
-local inoremap = vim.keymap.inoremap
 local utils = require('seblj.utils')
 local augroup = utils.augroup
 local telescope_utils = require('telescope.utils')
@@ -108,24 +107,13 @@ M.grep_string = function()
             -- Probably an upstream error as there are other weird behaviours with prompt
             highlight = 'LspRenamePrompt',
         },
+        on_confirm = function()
+            grep_confirm()
+        end,
     })
     vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    inoremap({
-        '<CR>',
-        function()
-            grep_confirm()
-        end,
-        buffer = true,
-    })
-    augroup('TelescopeInvisibleCursor', {
-        event = 'CursorMoved',
-        pattern = '<buffer>',
-        command = function()
-            require('seblj.utils.ui').set_cursor()
-        end,
-    })
     vim.cmd('startinsert')
 end
 

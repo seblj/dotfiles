@@ -160,16 +160,18 @@ end
 
 local guicursor_saved = vim.opt.guicursor
 
-M.hide_cursor = function()
+local hide_cursor = function()
     vim.opt.guicursor = vim.opt.guicursor + 'a:TransparentCursor/lCursor'
 end
 
-M.restore_cursor = function()
+local restore_cursor = function()
     vim.opt.guicursor = vim.opt.guicursor + 'a:Cursor/lCursor'
     vim.opt.guicursor = guicursor_saved
 end
 
 M.setup_hidden_cursor = function()
+    hide_cursor()
+    vim.cmd('setlocal cursorline')
     M.augroup('HiddenCursor', {
         {
             event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
@@ -189,14 +191,14 @@ M.setup_hidden_cursor = function()
             event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
             pattern = '<buffer>',
             command = function()
-                M.hide_cursor()
+                hide_cursor()
             end,
         },
         {
             event = { 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' },
             pattern = '<buffer>',
             command = function()
-                M.restore_cursor()
+                restore_cursor()
             end,
         },
     })

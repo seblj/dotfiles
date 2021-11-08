@@ -122,8 +122,10 @@ return require('packer').startup({
             event = 'BufReadPre',
         })
 
-        -- Disable until I hopefully get a copilot technical preview
-        -- use({ 'github/copilot.vim' })
+        use({
+            'github/copilot.vim',
+            cmd = 'Copilot',
+        })
 
         -- Treesitter
         use({
@@ -201,7 +203,6 @@ return require('packer').startup({
             config = function()
                 require('config.harpoon')
             end,
-            requires = 'nvim-lua/popup.nvim',
         })
 
         -- Telescope

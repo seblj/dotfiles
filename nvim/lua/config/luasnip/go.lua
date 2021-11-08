@@ -68,12 +68,21 @@ local function go_result_type(info)
         end
     end
 
+    -- I should probably never use the snippet in this case
+    -- But I just don't want it to error so return empty table
+    -- if I for some reason trigger the snippet outside a function
+    if not function_node then
+        return {}
+    end
+
     local query = vim.treesitter.get_query('go', 'LuaSnip_Result')
     for _, node in query:iter_captures(function_node, 0) do
         if handlers[node:type()] then
             return handlers[node:type()](node, info)
         end
     end
+
+    -- Just return empty table if no return values are expected
     return {}
 end
 

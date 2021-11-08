@@ -18,5 +18,6 @@ os=$(uname -s | tr "[:upper:]" "[:lower:]")
   chmod +x sumneko-lua-language-server
   mkdir -p ~/.local/bin
   mv sumneko-lua ~/.local/bin
+  rm -rf ~/.local/bin/sumneko-lua
   mv sumneko-lua-language-server ~/.local/bin/lua-language-server
 ]]

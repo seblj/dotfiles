@@ -4,7 +4,6 @@ local M = {}
 local utils = require('seblj.utils')
 local nnoremap = vim.keymap.nnoremap
 local inoremap = vim.keymap.inoremap
-local vnoremap = vim.keymap.vnoremap
 local augroup = utils.augroup
 local settings = require('config.lspconfig.settings')
 local nls = require('config.lspconfig.null-ls')
@@ -13,7 +12,7 @@ require('config.lspconfig.install')
 
 local autoformat = true
 
-M.toggle_format = function()
+local toggle_format = function()
     autoformat = not autoformat
     if autoformat then
         vim.api.nvim_echo({ { 'Enabled autoformat on save' } }, false, {})
@@ -23,13 +22,13 @@ M.toggle_format = function()
 end
 
 -- stylua: ignore
-nnoremap({ '<leader>tf', function() require('config.lspconfig').toggle_format() end }) -- Toggle autoformat on save
+nnoremap({ '<leader>tf', function() toggle_format() end }) -- Toggle autoformat on save
 
 ---------- MAPPINGS ----------
 
 local mappings = function()
     local popupopts = {
-        popup_opts = {
+        float = {
             border = 'rounded',
         },
     }
@@ -43,9 +42,8 @@ local mappings = function()
     nnoremap({ '<leader>ca', function() vim.lsp.buf.code_action() end })
     nnoremap({ 'gp', function() vim.diagnostic.goto_prev(popupopts) end })
     nnoremap({ 'gn', function() vim.diagnostic.goto_next(popupopts) end })
-    nnoremap({ '<leader>cd', function() vim.diagnostic.show_line_diagnostics() end })
+    nnoremap({ '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end })
     nnoremap({ 'gb', '<C-t>' })
-    vnoremap({ 'gb', '<C-t>' })
     -- stylua: ignore end
 
     augroup('AutoFormat', {
