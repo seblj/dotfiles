@@ -29,6 +29,7 @@
       - tmux
       - ripgrep
       - gh
+      - fzf
     state: present
   become: "{{ should_be_root }}"
   tags:
