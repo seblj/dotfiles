@@ -1,8 +1,5 @@
 local M = {}
-local ui = require('seblj.utils.ui')
-local inoremap = vim.keymap.inoremap
 local utils = require('seblj.utils')
-local augroup = utils.augroup
 local run_term = utils.run_term
 
 local languages = {
@@ -18,6 +15,8 @@ local core_utils = {
     'find',
 }
 
+local telescope_selected = {}
+
 local merge_lists = function(a, b)
     local list = {}
     list = a
@@ -31,8 +30,8 @@ end
 
 local total = merge_lists(languages, core_utils)
 
-local run_cht = function(selected)
-    local query = vim.trim(vim.fn.getline('.'):sub(#'> ' + 1, -1))
+local run_cht = function(query)
+    local selected = telescope_selected[1]
     local input = vim.split(query, ' ')
 
     if vim.tbl_contains(languages, selected) then
@@ -41,41 +40,19 @@ local run_cht = function(selected)
         query = table.concat(input, '~')
     end
 
-    vim.api.nvim_win_close(0, true)
     vim.cmd('tabnew')
     run_term('curl cht.sh/' .. selected .. '/' .. query)
-end
-
-local input_query = function(selected)
-    local lines = {}
-    local title = 'Query'
-    lines = { title, string.rep(ui.border_line, 30), unpack(lines) }
-    local popup_bufnr, _ = ui.popup_create({
-        lines = lines,
-        width = 30,
-        height = 3,
-        enter = true,
-        prompt = {
-            enable = true,
-            prefix = '> ',
-            -- Highlight doesn't work with title title and border line.
-            -- Probably an upstream error as there are other weird behaviours with prompt
-            highlight = 'LspRenamePrompt',
-        },
-        on_confirm = function()
-            run_cht(selected)
-        end,
-    })
-    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    vim.cmd('norm! i')
 end
 
 local function confirm(prompt_bufnr)
     local content = require('telescope.actions.state').get_selected_entry(prompt_bufnr)
     require('telescope.actions').close(prompt_bufnr)
-    input_query(content.value)
+    table.insert(telescope_selected, content.value)
+    -- Schedule this so we can enter insert mode in the popup
+    -- Assumen it is because telescope calls stopinsert after the callback has ended
+    vim.schedule(function()
+        vim.ui.input({ prompt = 'Query: ' }, run_cht)
+    end)
 end
 
 M.telescope_cht = function()

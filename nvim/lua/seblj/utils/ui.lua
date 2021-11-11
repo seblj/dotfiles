@@ -27,8 +27,7 @@ end
 
 M.popup_create = function(opts)
     local lines, syntax = opts.lines or {}, opts.syntax
-    opts.border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
-    opts.border = 'rounded'
+    opts.border = opts.border or 'rounded'
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
     vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:Normal')
@@ -41,15 +40,34 @@ M.popup_create = function(opts)
             end,
             buffer = true,
         })
+        nnoremap({
+            'q',
+            function()
+                vim.api.nvim_win_close(0, true)
+            end,
+            buffer = true,
+        })
     end
     if opts.on_confirm then
         inoremap({
             '<CR>',
             function()
                 opts.on_confirm()
+                vim.cmd('stopinsert')
             end,
             buffer = true,
         })
+        nnoremap({
+            '<CR>',
+            function()
+                opts.on_confirm()
+            end,
+            buffer = true,
+        })
+    end
+    if opts.input then
+        vim.cmd('startinsert')
+        vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     end
     if opts.prompt and opts.prompt.enable then
         vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')

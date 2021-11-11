@@ -77,6 +77,7 @@ vim.ui.input = function(opts, on_confirm)
         lines = lines,
         height = 3,
         enter = true,
+        input = true,
         prompt = {
             enable = true,
             prefix = options.prefix,
@@ -86,11 +87,8 @@ vim.ui.input = function(opts, on_confirm)
             local input = vim.trim(vim.fn.getline('.'):sub(#options.prefix + 1, -1))
             vim.api.nvim_win_close(0, true)
             on_confirm(input)
-            vim.cmd('stopinsert')
         end,
     })
-    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    vim.cmd('startinsert')
 end

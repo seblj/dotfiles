@@ -1,7 +1,4 @@
 local M = {}
-local ui = require('seblj.utils.ui')
-local utils = require('seblj.utils')
-local augroup = utils.augroup
 local telescope_utils = require('telescope.utils')
 
 local get_git_root = function()
@@ -71,50 +68,26 @@ M.live_grep = function()
 end
 
 -- Grep string with using ui
-local grep_confirm = function()
-    local new_name = vim.trim(vim.fn.getline('.'):sub(#'> ' + 1, -1))
-    vim.api.nvim_win_close(0, true)
+local grep_confirm = function(input)
     local git_root = get_git_root()
     local curr_dir = vim.fn.expand('%:p:h:t')
     if git_root == '' or git_root == nil then
         require('telescope.builtin').grep_string({
-            search = new_name,
+            search = input,
             prompt_title = curr_dir,
         })
     else
         local dir = vim.fn.fnamemodify(git_root, ':t')
         require('telescope.builtin').grep_string({
             cwd = git_root,
-            search = new_name,
+            search = input,
             prompt_title = dir,
         })
     end
 end
 
 M.grep_string = function()
-    local lines = {}
-    local title = 'Grep String'
-    lines = { title, string.rep(ui.border_line, 30), unpack(lines) }
-    local popup_bufnr, _ = ui.popup_create({
-        lines = lines,
-        width = 30,
-        height = 3,
-        enter = true,
-        prompt = {
-            enable = true,
-            prefix = '> ',
-            -- Highlight doesn't work with title title and border line.
-            -- Probably an upstream error as there are other weird behaviours with prompt
-            highlight = 'LspRenamePrompt',
-        },
-        on_confirm = function()
-            grep_confirm()
-        end,
-    })
-    vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-    vim.cmd('startinsert')
+    vim.ui.input({ prompt = 'Grep String: ' }, grep_confirm)
 end
 
 -- Search neovim repo

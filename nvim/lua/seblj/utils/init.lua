@@ -111,6 +111,7 @@ end
 
 -- Save and execute file based on filetype
 M.save_and_exec = function()
+    vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
     if ft == 'vim' or ft == 'lua' then
         vim.cmd('silent! write')
