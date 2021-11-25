@@ -89,26 +89,12 @@ onoremap({ 'L', '$' }) -- End of line
 nnoremap({ '<leader>x', function() require('seblj.utils').save_and_exec() end }) -- Save and execute vim or lua file
 xnoremap({ '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>' }) -- Macro over visual range
 
-nnoremap({
-    '<leader>z',
-    function()
-        if vim.api.nvim_eval('&syntax') == '' then
-            if vim.api.nvim_eval("exists(':TSHighlightCapturesUnderCursor')") == 2 then
-                vim.cmd('TSHighlightCapturesUnderCursor')
-            end
-        else
-            if vim.api.nvim_eval("!exists('*synstack')") == 1 then
-                return
-            end
-            vim.cmd([[echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')]])
-        end
-    end,
-})
 -- stylua: ignore start
 nnoremap({ '<Down>', function() require('seblj.utils').quickfix('down') end }) -- Move down in quickfixlist
 nnoremap({ '<Up>', function() require('seblj.utils').quickfix('up') end }) -- Move up in quickfixlist
-nnoremap({ '<leader><ESC><leader>', ':cclose<CR> `A' }) -- Close and go to mark
+nnoremap({ '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>' }) -- Print syntax under cursor
 -- stylua: ignore end
+nnoremap({ '<leader><ESC><leader>', ':cclose<CR> `A' }) -- Close and go to mark
 
 nnoremap({
     '<leader>@',
