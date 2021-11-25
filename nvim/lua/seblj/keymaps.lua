@@ -23,6 +23,7 @@ nnoremap({ '<S-TAB>', 'gT' }) -- Previous tab
 nnoremap({ '<leader>=', '<C-w>=' }) -- Resize windows
 nnoremap({ '<leader>i', 'gg=G' }) -- Indent file
 nnoremap({ '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', expr = true }) -- Remove highlights with enter
+nnoremap({ 'gp', '`[v`]' }) -- Reselect pasted text
 nnoremap({ '<C-f>', 'za' }) -- Fold
 nnoremap({ '<C-t>', ':tabedit<CR>' }) -- Create new tab
 

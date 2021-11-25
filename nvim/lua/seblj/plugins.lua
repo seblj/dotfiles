@@ -123,6 +123,13 @@ return require('packer').startup({
         })
 
         use({
+            'sindrets/diffview.nvim',
+            config = function()
+                require('config.diffview')
+            end,
+        })
+
+        use({
             'github/copilot.vim',
             cmd = 'Copilot',
         })
@@ -144,6 +151,14 @@ return require('packer').startup({
                 'windwp/nvim-ts-autotag', -- Autotag using treesitter
                 'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
                 'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
+                {
+                    'lewis6991/spellsitter.nvim',
+                    config = function()
+                        require('spellsitter').setup({
+                            enable = { 'tex' },
+                        })
+                    end,
+                },
             },
         })
 
@@ -272,14 +287,14 @@ return require('packer').startup({
 
         use({ 'lambdalisue/suda.vim' }) -- Write with sudo
         use({ 'tpope/vim-commentary' }) -- Easy commenting
-        use({
-            'tpope/vim-scriptease',
-            cmd = {
-                'Messages', --view messages in quickfix list
-                'Verbose', -- view verbose output in preview window.
-                'Time', -- measure how long it takes to run some stuff.
-            },
-        })
+        use({ 'tpope/vim-scriptease' }) -- Great commands
+        use({ 'wellle/targets.vim' })
+        -- use({
+        --     'numToStr/Comment.nvim',
+        --     config = function()
+        --         require('Comment').setup()
+        --     end,
+        -- })
         use({
             'dstein64/vim-startuptime', -- Measure startuptime
             config = function()

@@ -14,16 +14,18 @@ M.nls_setup = function()
     })
 end
 
--- Gotten from folke's config
--- https://github.com/folke/dot/blob/master/config/nvim/lua/config/lsp/formatting.lua
 function M.nls_has_formatter(ft)
     local config = require('null-ls.config').get()
-    local formatters = config._generators['NULL_LS_FORMATTING']
-    for _, f in ipairs(formatters) do
-        if vim.tbl_contains(f.filetypes, ft) then
-            return true
+    for _, source in ipairs(config.sources) do
+        if vim.tbl_contains(source.filetypes, ft) then
+            if type(source.method) == 'string' and source.method == 'NULL_LS_FORMATTING' then
+                return true
+            elseif type(source.method) == 'table' and vim.tbl_contains(source.method, 'NULL_LS_FORMATTING') then
+                return true
+            end
         end
     end
+    return false
 end
 
 return M

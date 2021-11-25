@@ -89,6 +89,7 @@ local make_config = function()
             mappings()
             signs()
             require('config.lspconfig.signature').setup()
+            require('config.lspconfig.lightbulb').setup()
             local ft = vim.api.nvim_buf_get_option(0, 'ft')
             local enabled = false
             if nls.nls_has_formatter(ft) then

@@ -3,37 +3,37 @@ local make = utils.make
 local filename = utils.filename
 local ls = require('luasnip')
 local i = ls.insert_node
-local t = ls.text_node
 local f = ls.function_node
+local fmt = require('luasnip.extras.fmt').fmt
 
 return make({
-    component = {
-        t({
-            '<template>',
-            '\t<div>',
-            '',
-            '\t<div>',
-            '</template>',
-            '',
-            '<script lang="ts">',
-            '',
-            "import { defineComponent } from 'vue';",
-            '',
-            'export default defineComponent({',
-            "\tname: '",
-        }),
-        f(filename, {}),
-        t({ "',", '', '\tsetup() {', '\t\t' }),
-        i(0),
-        t({
-            '',
-            '\t},',
-            '});',
-            '</script>',
-            '',
-            '<style lang="scss">',
-            '',
-            '</style>',
-        }),
-    },
+    component = fmt(
+        [[
+            <template>
+            {tab}<div>
+
+            {tab}<div>
+            </template>
+
+            <script lang="ts">
+
+            import {{ defineComponent }} from 'vue';
+
+            export default defineComponent({{
+            {tab}name: '{filename}',
+            {tab}{tab}{insert}
+            {tab}}},
+            }});
+            </script>
+
+            <style lang="scss">
+
+            </style>
+        ]],
+        {
+            tab = '\t',
+            filename = f(filename, {}),
+            insert = i(0),
+        }
+    ),
 })

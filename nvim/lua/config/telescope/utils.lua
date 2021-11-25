@@ -1,4 +1,5 @@
 local M = {}
+local utils = require('seblj.utils')
 local telescope_utils = require('telescope.utils')
 
 local get_git_root = function()
@@ -72,17 +73,21 @@ local grep_confirm = function(input)
     local git_root = get_git_root()
     local curr_dir = vim.fn.expand('%:p:h:t')
     if git_root == '' or git_root == nil then
-        require('telescope.builtin').grep_string({
-            search = input,
-            prompt_title = curr_dir,
-        })
+        vim.schedule(function()
+            require('telescope.builtin').grep_string({
+                search = input,
+                prompt_title = curr_dir,
+            })
+        end)
     else
         local dir = vim.fn.fnamemodify(git_root, ':t')
-        require('telescope.builtin').grep_string({
-            cwd = git_root,
-            search = input,
-            prompt_title = dir,
-        })
+        vim.schedule(function()
+            require('telescope.builtin').grep_string({
+                cwd = git_root,
+                search = input,
+                prompt_title = dir,
+            })
+        end)
     end
 end
 

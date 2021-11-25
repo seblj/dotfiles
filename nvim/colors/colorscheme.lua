@@ -43,6 +43,7 @@ highlight({
     Search = { guifg = c.bg, guibg = c.green },
     IncSearch = { guifg = c.bg, guibg = c.red },
     Conceal = { guifg = c.grey, guibg = 'NONE' },
+    Whitespace = { guifg = c.bg2, guibg = 'NONE' },
 
     Cursor = { guifg = 'NONE', guibg = 'NONE', gui = 'reverse' },
     vCursor = { link = 'Cursor' },

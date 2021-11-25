@@ -5,7 +5,6 @@ local i = ls.insert_node
 local t = ls.text_node
 
 return make({
-    -- Some lua snippets because the ones from LSP doesn't work
     ['function'] = {
         t({ 'function()', '' }),
         t({ '\t' }),

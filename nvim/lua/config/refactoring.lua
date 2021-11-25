@@ -6,7 +6,12 @@ refactor.setup()
 local function confirm(prompt_bufnr)
     local content = require('telescope.actions.state').get_selected_entry(prompt_bufnr)
     require('telescope.actions').close(prompt_bufnr)
-    require('refactoring').refactor(content.value)
+    -- Let telescope finish and do stopinsert before vim.ui.input
+    -- is called, and startinsert is done there. If not, telescope
+    -- will make the popup start in normal mode
+    vim.schedule(function()
+        require('refactoring').refactor(content.value)
+    end)
 end
 
 -- Telescope picker to display refactor methods

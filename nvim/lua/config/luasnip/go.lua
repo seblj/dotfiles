@@ -7,6 +7,7 @@ local d = ls.d
 local snippet_from_nodes = ls.sn
 local ts_locals = require('nvim-treesitter.locals')
 local ts_utils = require('nvim-treesitter.ts_utils')
+local fmt = require('luasnip.extras.fmt').fmt
 
 vim.treesitter.set_query(
     'go',
@@ -93,16 +94,31 @@ end
 
 return make({
     -- Template file
-    new = {
-        t({ 'package main', '', 'func main() {', '\t' }),
-        i(0),
-        t({ '', '}' }),
-    },
+    new = fmt(
+        [[
+        package main
 
-    ier = {
-        t({ 'if err != nil {', '\treturn ' }),
-        d(0, go_ret_vals, {}),
-        t({ '', '}', '' }),
-        i(0),
-    },
+        func main() {{
+        {tab}{insert}
+        }}
+    ]],
+        {
+            insert = i(0),
+            tab = '\t',
+        }
+    ),
+
+    ier = fmt(
+        [[
+        if err != nil {{
+        {tab}return {go_ret_vals}
+        }}
+        {insert}
+    ]],
+        {
+            tab = '\t',
+            go_ret_vals = d(0, go_ret_vals, {}),
+            insert = i(0),
+        }
+    ),
 })

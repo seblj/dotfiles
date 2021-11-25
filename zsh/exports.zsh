@@ -6,6 +6,7 @@ export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 
 export _Z_DATA="$HOME/.config/z/.z."
+export FZF_DEFAULT_OPTS='--height 40%'
 
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
