@@ -113,19 +113,24 @@ end
 M.save_and_exec = function()
     vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    local file = vim.fn.expand('%')
+    local output = vim.fn.expand('%:t:r')
     if ft == 'vim' or ft == 'lua' then
         vim.cmd('silent! write')
         vim.cmd('source %')
     elseif ft == 'python' then
         vim.cmd('silent! write')
         vim.cmd('sp')
-        M.run_term('python3 %s', vim.fn.expand('%'))
+        M.run_term('python3 %s', file)
     elseif ft == 'c' then
         vim.cmd('silent! write')
         vim.cmd('sp')
-        local file = vim.fn.expand('%')
-        local output = vim.fn.expand('%:t:r')
         local command = 'gcc %s -o %s && ./%s; rm %s'
+        M.run_term(command, file, output, output, output)
+    elseif ft == 'rust' then
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        local command = 'rustc %s && ./%s; rm %s'
         M.run_term(command, file, output, output, output)
     elseif ft == 'http' then
         -- Not really save and exec, but think it fits nicely in here for mapping
@@ -154,6 +159,32 @@ M.highlight = function(colors)
         end
     end
 end
+
+-- Workaround to be able to backspace after exiting normal mode in prompt buffer
+M.augroup('PromptFix', {
+    event = 'OptionSet',
+    pattern = 'buftype',
+    command = function()
+        if vim.api.nvim_eval("v:option_new == 'prompt'") ~= 1 then
+            return
+        end
+        inoremap({
+            '<BS>',
+            function()
+                local cursor = vim.api.nvim_win_get_cursor(0)
+                local line = cursor[1]
+                local col = cursor[2]
+
+                -- Length of prefix
+                if col ~= 2 then
+                    vim.api.nvim_buf_set_text(0, line - 1, col - 1, line - 1, col, { '' })
+                    vim.api.nvim_win_set_cursor(0, { line, col - 1 })
+                end
+            end,
+            buffer = true,
+        })
+    end,
+})
 
 ---------- HIDE CURSOR ----------
 

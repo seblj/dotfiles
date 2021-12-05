@@ -1,10 +1,3 @@
--- Tries to load colorscheme twice if syntax on or syntax enable is not set in config
--- Syntax on or syntax enable in config messes with treesitter after my reload function
--- Live changing of colors with luafile won't work. Using lua require('seblj.utils').reload_config()
-if Loaded_colorscheme then
-    return
-end
-Loaded_colorscheme = true
 local highlight = require('seblj.utils').highlight
 
 vim.g.colors_name = 'colorscheme'

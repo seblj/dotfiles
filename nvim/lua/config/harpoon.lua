@@ -22,6 +22,7 @@ nnoremap({
     end,
 })
 
-nnoremap({ 'L', '<cmd>lua require("harpoon.ui").nav_file(1)<CR>' })
-nnoremap({ 'Ø', '<cmd>lua require("harpoon.ui").nav_file(2)<CR>' })
-nnoremap({ 'Æ', '<cmd>lua require("harpoon.ui").nav_file(3)<CR>' })
+-- TODO: Find better mappings for harpoon
+-- nnoremap({ 'L', '<cmd>lua require("harpoon.ui").nav_file(1)<CR>' })
+-- nnoremap({ 'Ø', '<cmd>lua require("harpoon.ui").nav_file(2)<CR>' })
+-- nnoremap({ 'Æ', '<cmd>lua require("harpoon.ui").nav_file(3)<CR>' })

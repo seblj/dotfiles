@@ -151,14 +151,14 @@ return require('packer').startup({
                 'windwp/nvim-ts-autotag', -- Autotag using treesitter
                 'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
                 'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
-                {
-                    'lewis6991/spellsitter.nvim',
-                    config = function()
-                        require('spellsitter').setup({
-                            enable = { 'tex' },
-                        })
-                    end,
-                },
+                -- {
+                --     'lewis6991/spellsitter.nvim',
+                --     config = function()
+                --         require('spellsitter').setup({
+                --             enable = { 'tex' },
+                --         })
+                --     end,
+                -- },
             },
         })
 

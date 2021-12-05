@@ -8,6 +8,7 @@ local languages = {
     'python',
     'lua',
     'c',
+    'rust',
 }
 
 local core_utils = {

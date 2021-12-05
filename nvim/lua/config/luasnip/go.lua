@@ -14,9 +14,9 @@ vim.treesitter.set_query(
     'LuaSnip_Result',
     [[
   [
-    (method_declaration result: (*) @id)
-    (function_declaration result: (*) @id)
-    (func_literal result: (*) @id)
+    (method_declaration result: (_) @id)
+    (function_declaration result: (_) @id)
+    (func_literal result: (_) @id)
   ]
 ]]
 )

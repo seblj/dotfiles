@@ -48,7 +48,7 @@ local mappings = function()
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
-        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go' },
+        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs' },
         command = function()
             if autoformat then
                 vim.lsp.buf.formatting_sync()

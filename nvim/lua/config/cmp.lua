@@ -36,6 +36,8 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,
         }),
+        ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     },
 
     preselect = cmp.PreselectMode.None,
