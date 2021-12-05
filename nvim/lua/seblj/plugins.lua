@@ -1,8 +1,6 @@
 local augroup = require('seblj.utils').augroup
 local nnoremap = vim.keymap.nnoremap
 
-Use_coc = false
-
 local plugin_dir = '~/projects/plugins/'
 
 augroup('CompilePacker', {
@@ -168,7 +166,6 @@ return require('packer').startup({
             config = function()
                 require('config.lspconfig')
             end,
-            disable = Use_coc,
             requires = 'folke/lua-dev.nvim',
         })
         use({
@@ -192,18 +189,9 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-path' },
                 { 'saadparwaiz1/cmp_luasnip' },
             },
-            disable = Use_coc,
         })
         use({ 'onsails/lspkind-nvim' }) -- Icons for completion
 
-        use({
-            'neoclide/coc.nvim', -- LSP
-            branch = 'release',
-            config = function()
-                require('config.coc')
-            end,
-            disable = not Use_coc,
-        })
 
         -- use({ 'tjdevries/sg.nvim' })
         use({
@@ -230,14 +218,6 @@ return require('packer').startup({
             config = function()
                 require('config.telescope')
             end,
-        })
-        use({
-            'fannheyward/telescope-coc.nvim', -- Telescope extension for coc
-            config = function()
-                require('telescope').load_extension('coc')
-            end,
-            after = 'coc.nvim',
-            disable = not Use_coc,
         })
 
         use({

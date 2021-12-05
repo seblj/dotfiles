@@ -171,23 +171,9 @@ gls.right[2] = {
         highlight = { colors.orange, colors.line_bg },
     },
 }
--- Info in coc is the same as hint for nvim lspconfig
-gls.right[3] = {
-    DiagnosticInfo = { -- Show info for coc
-        provider = 'DiagnosticInfo',
-        condition = function()
-            return Use_coc
-        end,
-        icon = '  ',
-        highlight = { colors.yellow, colors.line_bg },
-    },
-}
 gls.right[3] = { -- Show hint for nvim lspconfig
     DiagnosticHint = {
         provider = 'DiagnosticHint',
-        condition = function()
-            return not Use_coc
-        end,
         icon = '  ',
         highlight = { colors.yellow, colors.line_bg },
     },
