@@ -53,13 +53,16 @@ M.setup = function()
             table.insert(clients, client)
         end
     end
+    if #clients == 0 then
+        return
+    end
     augroup('Signature', {
         event = 'TextChangedI',
-        pattern = '*',
+        pattern = '<buffer>',
         command = function()
             open_signature(clients)
         end,
-    })
+    }, true)
 end
 
 return M

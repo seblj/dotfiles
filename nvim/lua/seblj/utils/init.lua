@@ -2,14 +2,19 @@
 
 local eval = vim.api.nvim_eval
 local nnoremap = vim.keymap.nnoremap
+local inoremap = vim.keymap.inoremap
 
 local M = {}
 
 -- Thanks to @akinsho for this brilliant function white waiting for builtin autocmd in lua
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/globals.lua
-M.augroup = function(name, commands)
+M.augroup = function(name, commands, buffer)
     vim.cmd('augroup ' .. name)
-    vim.cmd('au!')
+    if buffer then
+        vim.cmd('au! * <buffer>')
+    else
+        vim.cmd('au!')
+    end
     if #commands > 0 then
         for _, c in ipairs(commands) do
             M.autocmd(c)

@@ -8,9 +8,28 @@ local M = {}
 
 local config = {
     icon = '',
+    diagnostic_only = true,
 }
 
+local changed_line = function()
+    local line = vim.fn.line('.')
+    if line == old_line[1] then
+        return false
+    end
+    old_line = {}
+    table.insert(old_line, line)
+    return true
+end
+
+local remove_icon = function()
+    M.icon_opts.showing = false
+    vim.fn.sign_unplace(sign_group)
+end
+
 local set_icon = function()
+    if changed_line() then
+        remove_icon()
+    end
     local bufnr = vim.api.nvim_get_current_buf()
     local line = vim.fn.line('.')
     M.icon_opts.showing = true
@@ -36,15 +55,21 @@ local handler = function(results, ctx)
             table.insert(action_tuples, { client_id, action })
         end
     end
+    -- No actions
     if #action_tuples == 0 then
+        remove_icon()
         return
     end
-    M.icon_opts.num_actions = #action_tuples
-    local diagnostics = get_line_diagnostics()
-    if #diagnostics == 0 then
-        return
+    -- Only show actions if there are diagnostics
+    if config.diagnostic_only then
+        local diagnostics = get_line_diagnostics()
+        if #diagnostics == 0 then
+            remove_icon()
+            return
+        end
     end
 
+    M.icon_opts.num_actions = #action_tuples
     set_icon()
 end
 
@@ -75,38 +100,23 @@ local support_code_action = function()
     return false
 end
 
-local changed_line = function()
-    local line = vim.fn.line('.')
-    if line == old_line[1] then
-        return false
-    end
-    old_line = {}
-    table.insert(old_line, line)
-    return true
-end
-
 M.setup = function()
     -- If I want to use it in galaxyline for example
     M.icon_opts = {
         showing = false,
         num_actions = 0,
     }
+    if not support_code_action() then
+        return
+    end
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'YellowSign' })
     augroup('SetupLightbulb', {
         event = { 'CursorHold', 'CursorMoved' },
-        pattern = '*',
+        pattern = '<buffer>',
         command = function()
-            if not support_code_action() then
-                return
-            end
-            if not changed_line() then
-                return
-            end
-            vim.fn.sign_unplace(sign_group)
-            M.icon_opts.showing = false
             check_code_action()
         end,
-    })
+    }, true)
 end
 
 return M
