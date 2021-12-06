@@ -11,6 +11,14 @@ augroup('CompilePacker', {
     end,
 })
 
+local setup = function(name)
+    require(name).setup()
+end
+
+local conf = function(name)
+    return string.format([[require('config.%s')]], name)
+end
+
 return require('packer').startup({
     function(use)
         use({ 'wbthomason/packer.nvim' }) -- Package manager
@@ -48,297 +56,82 @@ return require('packer').startup({
         end
 
         -- My plugins/forks
-        local_use({
-            'seblj/nvim-tabline', -- Tabline
-            config = function()
-                require('tabline').setup({})
-            end,
-            event = 'TabNew',
-        })
-        local_use({
-            'seblj/nvim-echo-diagnostics', -- Echo lspconfig diagnostics
-            config = function()
-                require('echo-diagnostics').setup({})
-            end,
-            after = 'nvim-lspconfig',
-            disable = Use_coc,
-        })
-        local_use({
-            'seblj/nvim-xamarin', -- Build Xamarin from Neovim
-            config = function()
-                require('xamarin').setup({})
-            end,
-            force_local = true,
-            disable = true,
-        })
-
-        use({ 'lewis6991/impatient.nvim' })
-
-        -- Installed plugins
-        -- Colors / UI
-        use({
-            'norcalli/nvim-colorizer.lua', -- Color highlighter
-            config = function()
-                require('colorizer').setup()
-            end,
-        })
-        use({
-            'mhinz/vim-startify', -- Startup screen
-            config = function()
-                require('config.startify')
-            end,
-        })
-        use({
-            'glepnir/galaxyline.nvim', -- Statusline
-            config = function()
-                require('config.galaxyline')
-            end,
-        })
-        use('kyazdani42/nvim-web-devicons') -- Icons
-
-        -- Git
-        use({
-            'pwntester/octo.nvim',
-            config = function()
-                require('octo').setup()
-            end,
-        })
-        use({
-            'lewis6991/gitsigns.nvim', -- Git diff signs
-            event = { 'BufReadPre', 'BufWritePre' },
-            config = function()
-                require('config.gitsigns')
-            end,
-        })
-        use({
-            'rhysd/conflict-marker.vim', -- Highlights for git conflict
-            config = function()
-                vim.g.conflict_marker_begin = '^<<<<<<< .*$'
-                vim.g.conflict_marker_end = '^>>>>>>> .*$'
-                vim.g.conflict_marker_enable_mappings = 0
-            end,
-            event = 'BufReadPre',
-        })
-
-        use({
-            'sindrets/diffview.nvim',
-            config = function()
-                require('config.diffview')
-            end,
-        })
-
-        use({
-            'github/copilot.vim',
-            cmd = 'Copilot',
-        })
-
-        -- Treesitter
-        use({
-            'nvim-treesitter/nvim-treesitter', -- Parser tool syntax
-            run = function()
-                -- Post install hook to ensure maintained installed instead of in config
-                -- Don't need to waste startuptime on ensuring installed on every start
-                require('nvim-treesitter.install').ensure_installed('maintained')
-                vim.cmd('TSUpdate')
-            end,
-            config = function()
-                require('config.treesitter')
-            end,
-            requires = {
-                'nvim-treesitter/playground', -- Display information from treesitter
-                'windwp/nvim-ts-autotag', -- Autotag using treesitter
-                'nvim-treesitter/nvim-treesitter-textobjects', -- Manipulate text using treesitter
-                'JoosepAlviste/nvim-ts-context-commentstring', -- Auto switch commentstring with treesitter
-                -- {
-                --     'lewis6991/spellsitter.nvim',
-                --     config = function()
-                --         require('spellsitter').setup({
-                --             enable = { 'tex' },
-                --         })
-                --     end,
-                -- },
-            },
-        })
-
-        -- LSP
-        use({
-            'neovim/nvim-lspconfig', -- Built-in LSP
-            config = function()
-                require('config.lspconfig')
-            end,
-            requires = 'folke/lua-dev.nvim',
-        })
-        use({
-            'jose-elias-alvarez/null-ls.nvim',
-            disable = Use_coc,
-        })
-        use({
-            'L3MON4D3/LuaSnip',
-            config = function()
-                require('config.luasnip')
-            end,
-        })
-        use({
-            'hrsh7th/nvim-cmp', -- Completion
-            config = function()
-                require('config.cmp')
-            end,
-            requires = {
-                { 'hrsh7th/cmp-nvim-lsp' },
-                { 'hrsh7th/cmp-buffer' },
-                { 'hrsh7th/cmp-path' },
-                { 'saadparwaiz1/cmp_luasnip' },
-            },
-        })
-        use({ 'onsails/lspkind-nvim' }) -- Icons for completion
-
-
-        -- use({ 'tjdevries/sg.nvim' })
-        use({
-            'ThePrimeagen/refactoring.nvim',
-            config = function()
-                require('config.refactoring')
-            end,
-            keys = '<leader>fr',
-        })
-        use({
-            'ThePrimeagen/harpoon',
-            config = function()
-                require('config.harpoon')
-            end,
-        })
+        local_use({ 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' }) -- Tabline
+        local_use({ 'seblj/nvim-echo-diagnostics', config = setup('echo-diagnostics') }) -- Echo lspconfig diagnostics
 
         -- Telescope
-        use({
-            'nvim-telescope/telescope.nvim', -- Fuzzy finder
-            requires = {
-                { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-                { 'nvim-lua/plenary.nvim' },
-            },
-            config = function()
-                require('config.telescope')
-            end,
-        })
+        use({ 'nvim-telescope/telescope.nvim', config = conf('telescope') })
+        use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+        use({ 'nvim-lua/plenary.nvim' })
 
-        use({
-            'mfussenegger/nvim-dap', -- Debugger
-            config = function()
-                require('config.dap')
-            end,
-            requires = 'rcarriga/nvim-dap-ui',
-            keys = '<leader>db',
-        })
-        use({
-            'szw/vim-maximizer', -- Maximize split
-            config = nnoremap({ '<leader>m', ':MaximizerToggle!<CR>' }),
-        })
+        -- Treesitter
+        use({ 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = "vim.cmd('TSUpdate')" }) -- Parser tool syntax
+        use({ 'nvim-treesitter/playground' }) -- Display information from treesitter
+        use({ 'windwp/nvim-ts-autotag' }) -- Autotag using treesitter
+        use({ 'nvim-treesitter/nvim-treesitter-textobjects' }) -- Manipulate text using treesitter
+        use({ 'JoosepAlviste/nvim-ts-context-commentstring' }) -- Auto switch commentstring with treesitter
 
-        use({
-            'vim-test/vim-test', -- Testing
-            config = function()
-                require('config.test')
-            end,
-            cmd = { 'TestFile', 'TestNearest', 'TestLast' },
-            requires = {
-                {
-                    'rcarriga/vim-ultest', -- Testing UI
-                    run = ':UpdateRemotePlugins',
-                    cond = function()
-                        return false
-                    end,
-                },
-            },
-        })
+        -- LSP
+        use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') }) -- Built-in LSP
+        use({ 'jose-elias-alvarez/null-ls.nvim' })
+        use({ 'folke/lua-dev.nvim' })
+        use({ 'L3MON4D3/LuaSnip', config = conf('luasnip') })
 
-        use({
-            'kyazdani42/nvim-tree.lua', -- Filetree
-            config = function()
-                require('config.luatree')
-            end,
-            cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
-            keys = { '<leader>tt' },
-        })
-        use({
-            'tamago324/lir.nvim', -- File explorer
-            config = function()
-                require('config.fileexplorer')
-            end,
-        })
+        -- Completion
+        use({ 'hrsh7th/nvim-cmp', config = conf('cmp') }) -- Completion
+        use({ 'hrsh7th/cmp-nvim-lsp' })
+        use({ 'hrsh7th/cmp-buffer' })
+        use({ 'hrsh7th/cmp-path' })
+        use({ 'saadparwaiz1/cmp_luasnip' })
 
+        -- Git
+        use({ 'pwntester/octo.nvim', config = setup('octo') })
+        use({ 'sindrets/diffview.nvim', config = conf('diffview'), cmd = { 'DiffviewOpen', 'DiffviewFileHistory' } })
+        use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
+        use({ 'rhysd/conflict-marker.vim', config = conf('conflict'), event = 'BufReadPre' })
+
+        -- Test
+        use({ 'vim-test/vim-test', config = conf('test'), cmd = { 'TestFile', 'TestNearest', 'TestLast' } })
+        use({ 'rcarriga/vim-ultest', run = ':UpdateRemotePlugins', cond = false })
+
+        -- Packageinfo
+        use({ 'vuki656/package-info.nvim', config = conf('packageinfo'), ft = 'json' })
+        use({ 'MunifTanjim/nui.nvim' })
+
+        -- Latex
+        use({ 'lervag/vimtex', config = conf('vimtex'), ft = { 'tex', 'bib' } })
+
+        -- Debugging
+        use({ 'mfussenegger/nvim-dap', config = conf('dap'), keys = '<leader>db' })
+        use({ 'rcarriga/nvim-dap-ui' })
+
+        -- Others
+        use({ 'ThePrimeagen/refactoring.nvim', config = conf('refactoring'), keys = '<leader>fr' })
+
+        use({ 'kyazdani42/nvim-tree.lua', config = conf('luatree'), keys = { '<leader>tt' } })
+        use({ 'ThePrimeagen/harpoon', config = conf('harpoon') })
+        use({ 'norcalli/nvim-colorizer.lua', config = setup('colorizer') }) -- Color highlighter
+        use({ 'mhinz/vim-startify', config = conf('startify') }) -- Startup screen
+        use({ 'glepnir/galaxyline.nvim', config = conf('galaxyline') }) -- Statusline
+        use({ 'tamago324/lir.nvim', config = conf('lir') }) -- File explorer
+        use({ 'windwp/nvim-autopairs', config = conf('autopairs') }) -- Auto pairs
+        use({ 'rcarriga/nvim-notify', config = conf('notify') }) -- Pretty notifications
+        use({ 'godlygeek/tabular', config = 'vim.g.no_default_tabular_maps = 1' }) -- Line up text
+        use({ 'github/copilot.vim', cmd = 'Copilot' }) -- Github copilot
+        use({ 'kyazdani42/nvim-web-devicons' }) -- Icons
+        use({ 'lewis6991/impatient.nvim' }) -- Fast startup
+        use({ 'onsails/lspkind-nvim' }) -- Icons for completion
+        use({ 'szw/vim-maximizer', config = nnoremap({ '<leader>m', ':MaximizerToggle!<CR>' }) }) -- Maximize split
+        use({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' }) -- Markdown preview
+        use({ 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' }) -- Measure startuptime
+        use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
+        use({ 'mbbill/undotree', cmd = 'UndotreeToggle' }) -- Undotree
+        use({ 'tpope/vim-repeat' }) -- Reapat custom commands with .
+        use({ 'tpope/vim-surround' }) -- Edit surrounds
         use({ 'lambdalisue/suda.vim' }) -- Write with sudo
         use({ 'tpope/vim-commentary' }) -- Easy commenting
         use({ 'tpope/vim-scriptease' }) -- Great commands
-        use({ 'wellle/targets.vim' })
-        -- use({
-        --     'numToStr/Comment.nvim',
-        --     config = function()
-        --         require('Comment').setup()
-        --     end,
-        -- })
-        use({
-            'dstein64/vim-startuptime', -- Measure startuptime
-            config = function()
-                vim.g.startuptime_more_info_key_seq = 'i'
-                vim.g.startuptime_split_edit_key_seq = ''
-            end,
-            cmd = 'StartupTime',
-        })
-        use({
-            'windwp/nvim-autopairs', -- Auto pairs
-            config = function()
-                require('config.autopairs')
-            end,
-            -- event = 'InsertEnter',
-        })
-        use('tpope/vim-surround') -- Edit surrounds
-        use({
-            'godlygeek/tabular',
-            config = function()
-                vim.g.no_default_tabular_maps = 1
-            end,
-        }) -- Line up text
-        use({
-            'vuki656/package-info.nvim',
-            requires = 'MunifTanjim/nui.nvim',
-            config = function()
-                require('config.packageinfo')
-            end,
-            ft = 'json',
-        })
-        use({
-            'rcarriga/nvim-notify',
-            config = function()
-                vim.notify = require('notify')
-                require('notify').setup({
-                    on_open = function(win)
-                        -- Don't like when it shows after packer sync and blocks the
-                        -- commits from plugins. So print normal if ft is packer
-                        local ft = vim.api.nvim_buf_get_option(0, 'ft')
-                        if ft == 'packer' then
-                            vim.api.nvim_win_close(win, true)
-                            local history = require('notify').history()
-                            local last = history[#history]
-                            print(unpack(last.message))
-                        end
-                    end,
-                })
-            end,
-        })
-        use('tpope/vim-repeat') -- Reapat custom commands with .
-        use({
-            'lervag/vimtex', -- Latex
-            config = function()
-                require('config.vimtex')
-            end,
-            ft = { 'tex', 'bib' },
-        })
-        use({ 'NTBBloodbath/rest.nvim', ft = 'http' }) -- HTTP requests
-        use({
-            'iamcco/markdown-preview.nvim', -- Markdown preview
-            run = 'cd app && yarn install',
-            ft = 'markdown',
-        })
-        use({ 'mbbill/undotree', cmd = 'UndotreeToggle' })
+        use({ 'wellle/targets.vim' }) -- Fix some motions
     end,
     config = {
         profile = {

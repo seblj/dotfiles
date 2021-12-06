@@ -144,9 +144,6 @@ local setup_servers = function()
         end
         require('lspconfig')[server].setup(config)
     end
-    -- if not package.loaded['sg.lsp'] then
-    --     require('sg.lsp').setup(make_config())
-    -- end
 end
 
 setup_servers()
