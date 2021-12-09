@@ -19,7 +19,6 @@ return {
             plugins = false,
         },
         lspconfig = {
-            cmd = { 'lua-language-server' },
             settings = {
                 Lua = {
                     workspace = {

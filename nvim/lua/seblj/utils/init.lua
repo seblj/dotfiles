@@ -147,6 +147,9 @@ end
 
 M.highlight = function(colors)
     for name, opts in pairs(colors) do
+        if type(opts) == 'string' then
+            opts = colors[opts]
+        end
         if not opts.guisp then
             opts.guisp = 'NONE'
         end

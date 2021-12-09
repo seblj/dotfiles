@@ -10,5 +10,14 @@ require('notify').setup({
             local last = history[#history]
             print(unpack(last.message))
         end
+        -- Hopefully less annoying interrupts from rust_analyzer
+        if ft == 'rust' then
+            local history = require('notify').history()
+            local last = history[#history]
+            if string.match(unpack(last.message), 'rust_analyzer') then
+                vim.api.nvim_win_close(win, true)
+                print(unpack(last.message))
+            end
+        end
     end,
 })

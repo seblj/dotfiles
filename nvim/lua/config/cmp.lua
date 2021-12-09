@@ -20,11 +20,6 @@ cmp.setup({
         { name = 'path' },
     },
 
-    -- Turn of custom pumvisible
-    -- experimental = {
-    --     native_menu = true,
-    -- },
-
     snippet = {
         expand = function(args)
             require('luasnip').lsp_expand(args.body)
@@ -68,6 +63,35 @@ cmp.setup({
         end,
     },
 })
+
+cmp.setup.cmdline('/', {
+    completion = {
+        autocomplete = false,
+    },
+    sources = {
+        { name = 'buffer' },
+    },
+})
+
+cmp.setup.cmdline('?', {
+    completion = {
+        autocomplete = false,
+    },
+    sources = {
+        { name = 'buffer' },
+    },
+})
+
+-- cmp.setup.cmdline(':', {
+--     completion = {
+--         autocomplete = false,
+--     },
+--     sources = cmp.config.sources({
+--         { name = 'path' },
+--     }, {
+--         { name = 'cmdline' },
+--     }),
+-- })
 
 vim.opt.completeopt = { 'menuone', 'noselect' }
 

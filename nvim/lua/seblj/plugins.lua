@@ -29,14 +29,12 @@ return require('packer').startup({
             if type(opts) == 'table' then
                 plugin = table.remove(opts, 1)
             end
-            local plugin_list = vim.split(plugin, '/')
-            local username = plugin_list[1]
-            local plugin_name = plugin_list[2]
+            local plugin_name = vim.split(plugin, '/')[2]
 
             if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin_name)) == 1 then
                 use(vim.tbl_extend('error', { plugin_dir .. plugin_name }, opts))
             else
-                use(vim.tbl_extend('error', { username .. plugin_name }, opts))
+                use(vim.tbl_extend('error', { plugin }, opts))
             end
         end
 
@@ -50,7 +48,7 @@ return require('packer').startup({
         use({ 'nvim-lua/plenary.nvim' })
 
         -- Treesitter
-        use({ 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = "vim.cmd('TSUpdate')" })
+        use({ 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate' })
         use({ 'nvim-treesitter/playground' })
         use({ 'windwp/nvim-ts-autotag' })
         use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
@@ -63,6 +61,7 @@ return require('packer').startup({
 
         -- Completion
         use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
+        use({ 'hrsh7th/cmp-cmdline' })
         use({ 'hrsh7th/cmp-nvim-lsp' })
         use({ 'hrsh7th/cmp-buffer' })
         use({ 'hrsh7th/cmp-path' })
