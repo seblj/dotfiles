@@ -1,6 +1,5 @@
 local augroup = require('seblj.utils').augroup
 local nnoremap = vim.keymap.nnoremap
-
 local plugin_dir = '~/projects/plugins/'
 
 augroup('CompilePacker', {
@@ -58,6 +57,7 @@ return require('packer').startup({
         use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
         use({ 'jose-elias-alvarez/null-ls.nvim' })
         use({ 'folke/lua-dev.nvim' })
+        use({ 'b0o/schemastore.nvim' })
 
         -- Completion
         use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
@@ -98,7 +98,7 @@ return require('packer').startup({
         use({ 'tamago324/lir.nvim', config = conf('lir') })
         use({ 'norcalli/nvim-colorizer.lua', config = setup('colorizer') })
         use({ 'mhinz/vim-startify', config = conf('startify') })
-        use({ 'glepnir/galaxyline.nvim', config = conf('galaxyline') })
+        use({ 'NTBBloodbath/galaxyline.nvim', config = conf('galaxyline') })
         use({ 'windwp/nvim-autopairs', config = conf('autopairs') })
         use({ 'rcarriga/nvim-notify', config = conf('notify') })
         use({ 'godlygeek/tabular', config = 'vim.g.no_default_tabular_maps = 1' })

@@ -48,7 +48,7 @@ local mappings = function()
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
-        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs' },
+        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs', '*.json' },
         command = function()
             if autoformat then
                 vim.lsp.buf.formatting_sync()
@@ -59,19 +59,12 @@ end
 
 ---------- SIGNS ----------
 
+-- stylua: ignore
 local signs = function()
-    vim.api.nvim_call_function(
-        'sign_define',
-        { 'DiagnosticSignError', { text = '✘', texthl = 'DiagnosticSignError' } }
-    )
-    vim.api.nvim_call_function('sign_define', {
-        'DiagnosticSignWarn',
-        { text = '', texthl = 'DiagnosticSignWarn' },
-    })
+    vim.api.nvim_call_function('sign_define', { 'DiagnosticSignError', { text = '✘', texthl = 'DiagnosticSignError' } })
+    vim.api.nvim_call_function('sign_define', { 'DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' } })
     vim.api.nvim_call_function('sign_define', { 'DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' } })
-    -- vim.api.nvim_call_function("sign_define", {"DiagnosticSignInfo", {text = "", texthl = "DiagnosticSignInfo"}})
-
-    require('lspkind').init()
+    -- vim.api.nvim_call_function('sign_define', { 'DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' } })
 end
 
 local disable_formatters = {
@@ -111,7 +104,6 @@ if pcall(require, 'null-ls') then
 end
 
 local servers = {
-    'null-ls',
     'pyright',
     'rust_analyzer',
     'cssls',

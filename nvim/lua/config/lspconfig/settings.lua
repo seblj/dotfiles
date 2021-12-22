@@ -31,6 +31,14 @@ return {
         },
     }),
 
+    jsonls = {
+        settings = {
+            json = {
+                schemas = require('schemastore').json.schemas(),
+            },
+        },
+    },
+
     pyright = {
         settings = {
             python = {
@@ -39,14 +47,6 @@ return {
                 },
             },
         },
-    },
-
-    clangd = {
-        filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
-    },
-
-    eslint = {
-        filetypes = { 'vue', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
     },
 
     omnisharp = {

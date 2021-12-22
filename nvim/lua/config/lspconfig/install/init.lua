@@ -1,4 +1,4 @@
-vim.cmd('source ~/dotfiles/nvim/lua/config/lspconfig/install/commands.vim')
+vim.cmd(string.format('source %s/lua/config/lspconfig/install/commands.vim', vim.fn.stdpath('config')))
 local nnoremap = vim.keymap.nnoremap
 
 local servers = {

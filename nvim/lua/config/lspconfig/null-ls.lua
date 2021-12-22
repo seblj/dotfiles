@@ -3,7 +3,7 @@ local M = {}
 M.nls_setup = function()
     local nls = require('null-ls')
     local formatter = nls.builtins.formatting
-    nls.config({
+    nls.setup({
         debounce = 150,
         save_after_format = false,
         sources = {

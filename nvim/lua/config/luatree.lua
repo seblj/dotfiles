@@ -16,6 +16,7 @@ require('nvim-tree').setup({
             },
         },
     },
+    ignore_ft_on_setup = { '.git', 'node_modules', '.cache', '.DS_Store' },
 })
 
 vim.g.nvim_tree_icons = {
@@ -38,7 +39,5 @@ vim.g.nvim_tree_special_files = {
         ['readme.md'] = false,
     },
 }
-
-vim.g.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '.DS_Store' }
 
 nnoremap({ '<leader>tt', ':NvimTreeToggle<CR>' })

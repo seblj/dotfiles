@@ -2,7 +2,6 @@
 
 local eval = vim.api.nvim_eval
 local nnoremap = vim.keymap.nnoremap
-local inoremap = vim.keymap.inoremap
 
 local M = {}
 
@@ -167,32 +166,6 @@ M.highlight = function(colors)
         end
     end
 end
-
--- Workaround to be able to backspace after exiting normal mode in prompt buffer
-M.augroup('PromptFix', {
-    event = 'OptionSet',
-    pattern = 'buftype',
-    command = function()
-        if vim.api.nvim_eval("v:option_new == 'prompt'") ~= 1 then
-            return
-        end
-        inoremap({
-            '<BS>',
-            function()
-                local cursor = vim.api.nvim_win_get_cursor(0)
-                local line = cursor[1]
-                local col = cursor[2]
-
-                -- Length of prefix
-                if col ~= 2 then
-                    vim.api.nvim_buf_set_text(0, line - 1, col - 1, line - 1, col, { '' })
-                    vim.api.nvim_win_set_cursor(0, { line, col - 1 })
-                end
-            end,
-            buffer = true,
-        })
-    end,
-})
 
 ---------- HIDE CURSOR ----------
 

@@ -96,7 +96,7 @@ gls.left[2] = {
     FileIcon = {
         provider = 'FileIcon',
         condition = buffer_not_empty,
-        highlight = { require('galaxyline.provider_fileinfo').get_file_icon_color, colors.line_bg },
+        highlight = { require('galaxyline.providers.fileinfo').get_file_icon_color, colors.line_bg },
     },
 }
 gls.left[3] = {
@@ -112,14 +112,14 @@ gls.left[4] = {
         provider = function()
             return '  '
         end,
-        condition = require('galaxyline.provider_vcs').get_git_branch,
+        condition = require('galaxyline.providers.vcs').get_git_branch,
         highlight = { colors.red, colors.line_bg, 'bold' },
     },
 }
 gls.left[5] = {
     GitBranch = {
         provider = 'GitBranch',
-        condition = require('galaxyline.provider_vcs').get_git_branch,
+        condition = require('galaxyline.providers.vcs').get_git_branch,
         highlight = { colors.red, colors.line_bg, 'bold' },
         separator = ' ',
         separator_highlight = { colors.bg, colors.line_bg },
@@ -210,8 +210,8 @@ gls.right[6] = {
 gls.short_line_left[1] = {
     BufferType = {
         provider = function()
-            local ft = require('galaxyline.provider_buffer').get_buffer_filetype()
-            local fname = require('galaxyline.provider_fileinfo').get_current_file_name()
+            local ft = require('galaxyline.providers.buffer').get_buffer_filetype()
+            local fname = require('galaxyline.providers.fileinfo').get_current_file_name()
             if fname ~= '' then
                 return fname
             else

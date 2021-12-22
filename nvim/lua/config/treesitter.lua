@@ -42,6 +42,10 @@ require('nvim-treesitter.configs').setup({
     -- Comments
     context_commentstring = {
         enable = true,
+        config = {
+            rust = '// %s',
+            c = '// %s',
+        },
         custom_calculation = function(node, language_tree)
             local language_commentstrings = {
                 c = { '//%s', '/*%s*/' },
