@@ -2,6 +2,7 @@
 
 local nnoremap = vim.keymap.nnoremap
 local nmap = vim.keymap.nmap
+local command = vim.api.nvim_add_user_command
 
 --------- ADAPTERS ----------
 
@@ -138,13 +139,6 @@ dap.listeners.before.event_exited['dapui_config'] = function()
     dapui.close()
 end
 
----------- COMMANDS ----------
-
-vim.cmd([[command! -complete=file -nargs=* DebugC lua require "config.dap".start_c_debugger({<f-args>}, "gdb")]])
-vim.cmd(
-    [[command! -complete=file -nargs=* DebugRust lua require "config.dap".start_c_debugger({<f-args>}, "gdb", "rust-gdb")]]
-)
-
 ---------- CONFIG ----------
 
 dap.configurations.python = {
@@ -184,10 +178,8 @@ dap.configurations.go = {
     },
 }
 
-local M = {}
 local last_gdb_config
-
-M.start_c_debugger = function(args, mi_mode, mi_debugger_path)
+local start_c_debugger = function(args, mi_mode, mi_debugger_path)
     if args and #args > 0 then
         last_gdb_config = {
             type = 'cpp',
@@ -211,4 +203,18 @@ M.start_c_debugger = function(args, mi_mode, mi_debugger_path)
     dap.run(last_gdb_config)
 end
 
-return M
+---------- COMMANDS ----------
+
+command('DebugC', function(opts)
+    start_c_debugger({ opts.args }, 'gdb')
+end, {
+    nargs = '*',
+    complete = 'file',
+})
+
+command('DebugRust', function(opts)
+    start_c_debugger({ opts.args }, 'gdb', 'rust-gdb')
+end, {
+    nargs = '*',
+    complete = 'file',
+})

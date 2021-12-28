@@ -6,6 +6,7 @@ local vnoremap = vim.keymap.vnoremap
 local tnoremap = vim.keymap.tnoremap
 local onoremap = vim.keymap.onoremap
 local xnoremap = vim.keymap.xnoremap
+local command = vim.api.nvim_add_user_command
 
 -- Leader is space and localleader is \
 vim.g.mapleader = ' '
@@ -122,5 +123,6 @@ vim.cmd('cnoreabbrev Qa qa') -- Quit all with Qa
 vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
 vim.cmd('cnoreabbrev E e') -- Edit file with E
 
-vim.cmd('command! -nargs=* T split | term <args>') -- Open term in split with T
-vim.cmd('command! -nargs=* VT vsplit | term <args>') -- Open term in vsplit with VT
+-- Open term in splits
+command('T', 'split | term <args>', { nargs = '*', bang = true })
+command('VT', 'vsplit | term <args>', { nargs = '*', bang = true })

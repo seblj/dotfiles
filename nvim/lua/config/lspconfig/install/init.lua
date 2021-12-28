@@ -1,4 +1,3 @@
-vim.cmd(string.format('source %s/lua/config/lspconfig/install/commands.vim', vim.fn.stdpath('config')))
 local nnoremap = vim.keymap.nnoremap
 
 local servers = {
@@ -17,27 +16,23 @@ local servers = {
     dockerls = 'npm install -g dockerfile-language-server-nodejs',
 }
 
-local find_command = function(ls)
-    for language, cmd in pairs(servers) do
-        if ls == language then
-            return cmd
-        end
-    end
-end
-
-local M = {}
-
-M.available_servers = function()
-    return vim.tbl_keys(servers)
-end
-
-M.install_server = function(ls)
+local install_server = function(ls)
     vim.cmd('new')
-    local command = find_command(ls)
+    local command = servers[ls]
+    if true then
+        return
+    end
     vim.fn.termopen('set -e\n' .. command)
 
     nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
     vim.cmd('startinsert')
 end
 
-return M
+vim.api.nvim_add_user_command('LspInstall', function(opts)
+    install_server(opts.args)
+end, {
+    complete = function()
+        return vim.tbl_keys(servers)
+    end,
+    nargs = 1,
+})
