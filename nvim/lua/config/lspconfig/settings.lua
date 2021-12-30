@@ -31,6 +31,10 @@ return {
         },
     }),
 
+    grammarly = {
+        filetypes = { 'tex', 'markdown' },
+    },
+
     jsonls = {
         settings = {
             json = {

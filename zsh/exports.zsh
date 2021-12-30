@@ -13,7 +13,6 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="$HOME/Applications/UPC/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export UPCXX_INSTALL="$HOME/Applications/UPC"
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"

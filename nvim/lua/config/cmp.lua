@@ -1,9 +1,6 @@
 local inoremap = vim.keymap.inoremap
 local imap = vim.keymap.imap
-local ok, lspkind = pcall(require, 'lspkind')
-if not ok then
-    return
-end
+local lspkind = require('lspkind')
 local cmp = require('cmp')
 
 -- stylua: ignore

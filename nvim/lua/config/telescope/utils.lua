@@ -1,6 +1,6 @@
 local M = {}
-local utils = require('seblj.utils')
 local telescope_utils = require('telescope.utils')
+local Job = require('plenary.job')
 
 local get_git_root = function()
     local git_root, ret = telescope_utils.get_os_command_output(
@@ -36,7 +36,6 @@ M.find_files = function()
     local curr_dir = vim.fn.expand('%:p:h:t')
     require('telescope.builtin').find_files({
         prompt_title = curr_dir,
-        find_command = { 'rg', '--no-ignore', '--files' },
     })
 end
 
@@ -102,6 +101,37 @@ M.search_neovim = function()
         prompt_title = 'Neovim',
         hidden = true,
         file_ignore_patterns = { '.git/' },
+    })
+end
+
+-- See if I can find a mapping for this
+M.find_node_modules = function()
+    local git_root = get_git_root()
+    local curr_dir = vim.fn.expand('%:p:h:t')
+    local cwd
+    if git_root == '' or git_root == nil then
+        cwd = curr_dir
+    end
+
+    local path
+
+    Job
+        :new({
+            command = 'fd',
+            args = { '-t', 'd', '-I', '-d', '2', '-a', 'node_modules' },
+            cwd = cwd,
+            on_exit = function(j, _)
+                path = j:result()[1]
+            end,
+        })
+        :sync()
+
+    if not path then
+        return
+    end
+    require('telescope.builtin').find_files({
+        cwd = path,
+        prompt_title = 'Node Modules',
     })
 end
 

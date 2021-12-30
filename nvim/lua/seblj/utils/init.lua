@@ -105,9 +105,17 @@ M.quickfix = function(key)
 end
 
 M.run_term = function(command, ...)
-    vim.cmd('term')
-    local terminal_id = eval('b:terminal_job_id')
-    vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
+    local terminal_id
+    if vim.fn.exists('b:run') ~= 0 then
+        local run = eval('b:run')
+        vim.cmd('term')
+        terminal_id = eval('b:terminal_job_id')
+        vim.api.nvim_chan_send(terminal_id, run .. '\n')
+    else
+        vim.cmd('term')
+        terminal_id = eval('b:terminal_job_id')
+        vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
+    end
 
     nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
     vim.cmd('stopinsert')
@@ -149,6 +157,11 @@ M.highlight = function(colors)
         if type(opts) == 'string' then
             opts = colors[opts]
         end
+        for k, v in pairs(opts) do
+            if k ~= 'link' and colors[v] then
+                opts[k] = colors[v][k]
+            end
+        end
         if not opts.guisp then
             opts.guisp = 'NONE'
         end
@@ -166,6 +179,15 @@ M.highlight = function(colors)
         end
     end
 end
+
+M.augroup('AfterPackerCompile', {
+    event = 'User',
+    pattern = 'PackerComplete',
+    command = function()
+        vim.cmd('PackerLoad vim-test vim-ultest')
+        vim.cmd('silent UpdateRemotePlugins')
+    end,
+})
 
 ---------- HIDE CURSOR ----------
 

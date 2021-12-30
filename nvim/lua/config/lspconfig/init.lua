@@ -121,6 +121,7 @@ local servers = {
     'omnisharp',
     'dockerls',
     'eslint',
+    -- 'grammarly',
 }
 
 -- Automatic setup for language servers

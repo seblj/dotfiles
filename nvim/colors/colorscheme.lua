@@ -439,4 +439,6 @@ highlight({
     CmpItemKindUnit = { guifg = c.purple },
     CmpItemKindValue = { guifg = c.purple },
     CmpItemKindVariable = 'TSVariable',
+
+    UltestBorder = 'FloatBorder',
 })
