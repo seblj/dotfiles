@@ -1,143 +1,59 @@
 local keymap = {}
 
--- Credits to TJ https://github.com/tjdevries/astronauta.nvim
+function keymap.set(mode, lhs, rhs, opts)
+    vim.validate({
+        mode = { mode, { 's', 't' } },
+        lhs = { lhs, 's' },
+        rhs = { rhs, { 's', 'f' } },
+        opts = { opts, 't', true },
+    })
 
--- Have to use a global to handle re-requiring this file and losing all of the keymap.
---  In the future, the C code will handle this.
-__KeymapStore = __KeymapStore or {}
-keymap._store = __KeymapStore
+    opts = opts or {}
 
-keymap._create = function(f)
-    table.insert(keymap._store, f)
-    return #keymap._store
-end
+    if opts.silent == nil then
+        opts.silent = true
+    end
 
-keymap._execute = function(id)
-    keymap._store[id]()
-end
+    local buffer = false
+    local is_rhs_lua = type(rhs) == 'function'
+    mode = type(mode) == 'string' and { mode } or mode
 
-local make_mapper = function(mode, defaults, opts)
-    -- Like it when it is silent by default
-    defaults = vim.tbl_extend('force', defaults, { silent = true })
+    if opts.buffer ~= nil then
+        buffer = opts.buffer == true and 0 or opts.buffer
+        opts.buffer = nil
+    end
 
-    local args, map_args = {}, {}
-    for k, v in pairs(opts) do
-        if type(k) == 'number' then
-            args[k] = v
-        else
-            map_args[k] = v
+    if opts.replace_termcodes ~= nil then
+        if opts.replace_termcodes and is_rhs_lua then
+            local user_rhs = rhs
+            rhs = function()
+                return vim.api.nvim_replace_termcodes(user_rhs(), true, true, true)
+            end
+        end
+        opts.replace_termcodes = nil
+    end
+
+    -- remap defaults to false
+    opts.noremap = true
+    if opts.remap ~= nil then
+        opts.noremap = not opts.remap
+        opts.remap = nil
+    end
+
+    if is_rhs_lua then
+        opts.callback = rhs
+        rhs = ''
+    end
+
+    if buffer == false then
+        for _, m in ipairs(mode) do
+            vim.api.nvim_set_keymap(m, lhs, rhs, opts)
+        end
+    else
+        for _, m in ipairs(mode) do
+            vim.api.nvim_buf_set_keymap(buffer, m, lhs, rhs, opts)
         end
     end
-
-    local lhs = opts.lhs or args[1]
-    local rhs = opts.rhs or args[2]
-    local map_opts = vim.tbl_extend('force', defaults, map_args)
-
-    local mapping
-    if type(rhs) == 'string' then
-        mapping = rhs
-    elseif type(rhs) == 'function' then
-        assert(map_opts.noremap, 'If `rhs` is a function, `opts.noremap` must be true')
-
-        local func_id = keymap._create(rhs)
-        mapping = string.format([[<cmd>lua vim.keymap._execute(%s)<CR>]], func_id)
-    else
-        error('Unexpected type for rhs:' .. tostring(rhs))
-    end
-
-    if not map_opts.buffer then
-        vim.api.nvim_set_keymap(mode, lhs, mapping, map_opts)
-    else
-        -- Clear the buffer after saving it
-        local buffer = map_opts.buffer
-        if buffer == true then
-            buffer = 0
-        end
-
-        map_opts.buffer = nil
-
-        vim.api.nvim_buf_set_keymap(buffer, mode, lhs, mapping, map_opts)
-    end
-end
-
-function keymap.map(opts)
-    return make_mapper('', { noremap = false }, opts)
-end
-
-function keymap.noremap(opts)
-    return make_mapper('', { noremap = true }, opts)
-end
-
-function keymap.nmap(opts)
-    return make_mapper('n', { noremap = false }, opts)
-end
-
-function keymap.nnoremap(opts)
-    return make_mapper('n', { noremap = true }, opts)
-end
-
-function keymap.vmap(opts)
-    return make_mapper('v', { noremap = false }, opts)
-end
-
-function keymap.vnoremap(opts)
-    return make_mapper('v', { noremap = true }, opts)
-end
-
-function keymap.xmap(opts)
-    return make_mapper('x', { noremap = false }, opts)
-end
-
-function keymap.xnoremap(opts)
-    return make_mapper('x', { noremap = true }, opts)
-end
-
-function keymap.smap(opts)
-    return make_mapper('s', { noremap = false }, opts)
-end
-
-function keymap.snoremap(opts)
-    return make_mapper('s', { noremap = true }, opts)
-end
-
-function keymap.omap(opts)
-    return make_mapper('o', { noremap = false }, opts)
-end
-
-function keymap.onoremap(opts)
-    return make_mapper('o', { noremap = true }, opts)
-end
-
-function keymap.imap(opts)
-    return make_mapper('i', { noremap = false }, opts)
-end
-
-function keymap.inoremap(opts)
-    return make_mapper('i', { noremap = true }, opts)
-end
-
-function keymap.lmap(opts)
-    return make_mapper('l', { noremap = false }, opts)
-end
-
-function keymap.lnoremap(opts)
-    return make_mapper('l', { noremap = true }, opts)
-end
-
-function keymap.cmap(opts)
-    return make_mapper('c', { noremap = false }, opts)
-end
-
-function keymap.cnoremap(opts)
-    return make_mapper('c', { noremap = true }, opts)
-end
-
-function keymap.tmap(opts)
-    return make_mapper('t', { noremap = false }, opts)
-end
-
-function keymap.tnoremap(opts)
-    return make_mapper('t', { noremap = true }, opts)
 end
 
 vim.keymap = vim.keymap or keymap

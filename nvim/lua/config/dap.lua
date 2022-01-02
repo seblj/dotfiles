@@ -1,7 +1,6 @@
 ---------- DEBUGGER CONFIG ----------
 
-local nnoremap = vim.keymap.nnoremap
-local nmap = vim.keymap.nmap
+local keymap = vim.keymap.set
 local command = vim.api.nvim_add_user_command
 
 --------- ADAPTERS ----------
@@ -60,39 +59,27 @@ end
 ---------- MAPPINGS ----------
 
 -- Use vim.repeat to enable repeat with .
-nnoremap({
-    'DapBreakpointRepeat',
-    function()
-        require('dap').toggle_breakpoint()
-        vim.cmd('call repeat#set("DapBreakpointRepeat")')
-    end,
-})
-nnoremap({
-    'DapContinueRepeat',
-    function()
-        require('dap').continue()
-        vim.cmd('call repeat#set("DapContinueRepeat")')
-    end,
-})
-nnoremap({
-    'DapStepIntoRepeat',
-    function()
-        require('dap').step_into()
-        vim.cmd('call repeat#set("DapStepIntoRepeat")')
-    end,
-})
-nnoremap({
-    'DapStepOverRepeat',
-    function()
-        require('dap').step_over()
-        vim.cmd('call repeat#set("DapStepOverRepeat")')
-    end,
-})
+keymap('n', 'DapBreakpointRepeat', function()
+    require('dap').toggle_breakpoint()
+    vim.cmd('call repeat#set("DapBreakpointRepeat")')
+end)
+keymap('n', 'DapContinueRepeat', function()
+    require('dap').continue()
+    vim.cmd('call repeat#set("DapContinueRepeat")')
+end)
+keymap('n', 'DapStepIntoRepeat', function()
+    require('dap').step_into()
+    vim.cmd('call repeat#set("DapStepIntoRepeat")')
+end)
+keymap('n', 'DapStepOverRepeat', function()
+    require('dap').step_over()
+    vim.cmd('call repeat#set("DapStepOverRepeat")')
+end)
 
-nmap({ '<leader>db', 'DapBreakpointRepeat' })
-nmap({ '<leader>d<leader>', 'DapContinueRepeat' })
-nmap({ '<leader>dl', 'DapStepIntoRepeat' })
-nmap({ '<leader>dj', 'DapStepOverRepeat' })
+keymap('n', '<leader>db', 'DapBreakpointRepeat', { remap = true })
+keymap('n', '<leader>d<leader>', 'DapContinueRepeat', { remap = true })
+keymap('n', '<leader>dl', 'DapStepIntoRepeat', { remap = true })
+keymap('n', '<leader>dj', 'DapStepOverRepeat', { remap = true })
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     continue = { '.continue', '.c', 'c' },

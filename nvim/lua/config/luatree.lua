@@ -1,7 +1,7 @@
 ---------- LUATREE CONFIG ----------
 
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
 require('nvim-tree').setup({
     view = {
@@ -40,4 +40,4 @@ vim.g.nvim_tree_special_files = {
     },
 }
 
-nnoremap({ '<leader>tt', ':NvimTreeToggle<CR>' })
+keymap('n', '<leader>tt', ':NvimTreeToggle<CR>')

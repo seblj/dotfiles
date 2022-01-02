@@ -1,3 +1,3 @@
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
-nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
+keymap('n', 'q', '<cmd>q<CR>', { buffer = true })

@@ -1,10 +1,9 @@
-local inoremap = vim.keymap.inoremap
-local imap = vim.keymap.imap
+local keymap = vim.keymap.set
 local lspkind = require('lspkind')
 local cmp = require('cmp')
 
 -- stylua: ignore
-inoremap({ '<C-space>', function() require('cmp').complete() end })
+keymap('i', '<C-space>', function() require('cmp').complete() end)
 
 local term = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -117,5 +116,5 @@ _G.s_tab_complete = function()
     end
 end
 
-imap({ '<Tab>', 'v:lua.tab_complete()', expr = true })
-imap({ '<S-Tab>', 'v:lua.s_tab_complete()', expr = true })
+keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true, remap = true })
+keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true, remap = true })

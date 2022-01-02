@@ -1,4 +1,4 @@
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
 local servers = {
     pyright = 'npm install -g pyright',
@@ -24,7 +24,7 @@ local install_server = function(ls)
     end
     vim.fn.termopen('set -e\n' .. command)
 
-    nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
+    keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
     vim.cmd('startinsert')
 end
 

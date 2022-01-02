@@ -2,8 +2,7 @@
 
 local M = {}
 local utils = require('seblj.utils')
-local nnoremap = vim.keymap.nnoremap
-local inoremap = vim.keymap.inoremap
+local keymap = vim.keymap.set
 local augroup = utils.augroup
 local settings = require('config.lspconfig.settings')
 local nls = require('config.lspconfig.null-ls')
@@ -22,7 +21,7 @@ local toggle_format = function()
 end
 
 -- stylua: ignore
-nnoremap({ '<leader>tf', function() toggle_format() end }) -- Toggle autoformat on save
+keymap('n', '<leader>tf', function() toggle_format() end) -- Toggle autoformat on save
 
 ---------- MAPPINGS ----------
 
@@ -33,17 +32,16 @@ local mappings = function()
         },
     }
     -- stylua: ignore start
-    nnoremap({ 'gr', function() vim.lsp.buf.references() end })
-    nnoremap({ 'gd', function() vim.lsp.buf.definition() end })
-    inoremap({ '<C-s>', function() vim.lsp.buf.signature_help() end })
-    nnoremap({ '<C-s>', function() vim.lsp.buf.signature_help() end })
-    nnoremap({ 'gh', function() vim.lsp.buf.hover() end })
-    nnoremap({ 'gR', function() vim.lsp.buf.rename() end })
-    nnoremap({ '<leader>ca', function() vim.lsp.buf.code_action() end })
-    nnoremap({ 'gp', function() vim.diagnostic.goto_prev(popupopts) end })
-    nnoremap({ 'gn', function() vim.diagnostic.goto_next(popupopts) end })
-    nnoremap({ '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end })
-    nnoremap({ 'gb', '<C-t>' })
+    keymap('n', 'gr', function() vim.lsp.buf.references() end)
+    keymap('n', 'gd', function() vim.lsp.buf.definition() end)
+    keymap({ 'n', 'i' }, '<C-s>', function() vim.lsp.buf.signature_help() end)
+    keymap('n', 'gh', function() vim.lsp.buf.hover() end)
+    keymap('n', 'gR', function() vim.lsp.buf.rename() end)
+    keymap('n', '<leader>ca', function() vim.lsp.buf.code_action() end)
+    keymap('n', 'gp', function() vim.diagnostic.goto_prev(popupopts) end)
+    keymap('n', 'gn', function() vim.diagnostic.goto_next(popupopts) end)
+    keymap('n', '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end)
+    keymap('n', 'gb', '<C-t>' )
     -- stylua: ignore end
 
     augroup('AutoFormat', {

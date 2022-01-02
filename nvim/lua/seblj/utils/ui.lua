@@ -1,6 +1,5 @@
 local M = {}
-local nnoremap = vim.keymap.nnoremap
-local inoremap = vim.keymap.inoremap
+local keymap = vim.keymap.set
 local utils = require('seblj.utils')
 local augroup = utils.augroup
 
@@ -33,37 +32,23 @@ M.popup_create = function(opts)
     vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:Normal')
     if opts.enter then
         vim.api.nvim_set_current_win(winnr)
-        nnoremap({
-            '<ESC>',
-            function()
-                vim.api.nvim_win_close(0, true)
-            end,
-            buffer = true,
-        })
-        nnoremap({
-            'q',
-            function()
-                vim.api.nvim_win_close(0, true)
-            end,
-            buffer = true,
-        })
+        keymap('n', '<ESC>', function()
+            vim.api.nvim_win_close(0, true)
+        end, { buffer = true })
+        keymap('n', 'q', function()
+            vim.api.nvim_win_close(0, true)
+        end, { buffer = true })
     end
     if opts.on_confirm then
-        inoremap({
-            '<CR>',
-            function()
-                opts.on_confirm()
-                vim.cmd('stopinsert')
-            end,
+        keymap('i', '<CR>', function()
+            opts.on_confirm()
+            vim.cmd('stopinsert')
+        end, {
             buffer = true,
         })
-        nnoremap({
-            '<CR>',
-            function()
-                opts.on_confirm()
-            end,
-            buffer = true,
-        })
+        keymap('n', '<CR>', function()
+            opts.on_confirm()
+        end, { buffer = true })
     end
     if opts.input then
         vim.cmd('startinsert')

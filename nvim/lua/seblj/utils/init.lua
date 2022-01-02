@@ -1,7 +1,7 @@
 ---------- UTILS ----------
 
 local eval = vim.api.nvim_eval
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
 local M = {}
 
@@ -117,7 +117,7 @@ M.run_term = function(command, ...)
         vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
     end
 
-    nnoremap({ 'q', '<cmd>q<CR>', buffer = true })
+    keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
     vim.cmd('stopinsert')
 end
 

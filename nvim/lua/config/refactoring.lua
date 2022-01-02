@@ -1,6 +1,5 @@
-local vnoremap = vim.keymap.vnoremap
-local refactor = require('refactoring')
-refactor.setup()
+local keymap = vim.keymap.set
+require('refactoring').setup()
 
 -- Confirm function when pressing enter in telescope
 local function confirm(prompt_bufnr)
@@ -33,6 +32,6 @@ M.refactors = function()
     }):find()
 end
 
-vnoremap({ '<leader>fr', '<Esc><cmd>lua require("config.refactoring").refactors()<CR>' })
+keymap('v', '<leader>fr', '<Esc><cmd>lua require("config.refactoring").refactors()<CR>')
 
 return M

@@ -1,5 +1,5 @@
 local ui = require('seblj.utils.ui')
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
 if not vim.ui then
     return
@@ -50,11 +50,9 @@ vim.ui.select = function(items, opts, on_choice)
     -- Keymap for selecting option with number
     for k, _ in ipairs(choices) do
         if k > 2 then
-            nnoremap({
-                string.format('%d', k - 2),
-                function()
-                    confirm(items, on_choice, k - 2)
-                end,
+            keymap(string.format('%d'), function()
+                confirm(items, on_choice, k - 2)
+            end, {
                 buffer = true,
             })
         end

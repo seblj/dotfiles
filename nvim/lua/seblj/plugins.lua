@@ -1,5 +1,5 @@
 local augroup = require('seblj.utils').augroup
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
 augroup('CompilePacker', {
@@ -104,7 +104,7 @@ local plugins = function(use)
     use({ 'github/copilot.vim', cmd = 'Copilot' })
     use({ 'kyazdani42/nvim-web-devicons' })
     use({ 'lewis6991/impatient.nvim' })
-    use({ 'szw/vim-maximizer', config = nnoremap({ '<leader>m', ':MaximizerToggle!<CR>' }) })
+    use({ 'szw/vim-maximizer', config = keymap('n', '<leader>m', ':MaximizerToggle!<CR>') })
     use({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' })
     use({ 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' })
     use({ 'NTBBloodbath/rest.nvim', ft = 'http' })

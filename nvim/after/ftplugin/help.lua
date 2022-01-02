@@ -1,3 +1,3 @@
-local nnoremap = vim.keymap.nnoremap
+local keymap = vim.keymap.set
 
-nnoremap({ 'gd', 'K', buffer = true })
+keymap('n', 'gd', 'K', { buffer = true })
