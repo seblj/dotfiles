@@ -116,6 +116,7 @@ local plugins = function(use)
     use({ 'tpope/vim-surround' })
     use({ 'tpope/vim-commentary' })
     use({ 'tpope/vim-scriptease' })
+    use({ 'tpope/vim-sleuth' })
 end
 
 return require('packer').startup({

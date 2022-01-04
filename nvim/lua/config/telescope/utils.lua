@@ -49,45 +49,27 @@ M.git_files = function()
     })
 end
 
--- Live grep from root of git repo, if it is a repo
--- Else grep current directory
+-- Live grep from root of git repo
 M.live_grep = function()
     local git_root = get_git_root()
-    local curr_dir = vim.fn.expand('%:p:h:t')
-    if git_root == '' or git_root == nil then
-        require('telescope.builtin').live_grep({
-            prompt_title = curr_dir,
-        })
-    else
-        local dir = vim.fn.fnamemodify(git_root, ':t')
-        require('telescope.builtin').live_grep({
-            cwd = git_root,
-            prompt_title = dir,
-        })
-    end
+    local dir = vim.fn.fnamemodify(git_root, ':t')
+    require('telescope.builtin').live_grep({
+        cwd = git_root,
+        prompt_title = dir,
+    })
 end
 
 -- Grep string with using ui
 local grep_confirm = function(input)
     local git_root = get_git_root()
-    local curr_dir = vim.fn.expand('%:p:h:t')
-    if git_root == '' or git_root == nil then
-        vim.schedule(function()
-            require('telescope.builtin').grep_string({
-                search = input,
-                prompt_title = curr_dir,
-            })
-        end)
-    else
-        local dir = vim.fn.fnamemodify(git_root, ':t')
-        vim.schedule(function()
-            require('telescope.builtin').grep_string({
-                cwd = git_root,
-                search = input,
-                prompt_title = dir,
-            })
-        end)
-    end
+    local dir = vim.fn.fnamemodify(git_root, ':t')
+    vim.schedule(function()
+        require('telescope.builtin').grep_string({
+            cwd = git_root,
+            search = input,
+            prompt_title = dir,
+        })
+    end)
 end
 
 M.grep_string = function()

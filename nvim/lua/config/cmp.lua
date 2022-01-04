@@ -2,8 +2,10 @@ local keymap = vim.keymap.set
 local lspkind = require('lspkind')
 local cmp = require('cmp')
 
--- stylua: ignore
+-- stylua: ignore start
 keymap('i', '<C-space>', function() require('cmp').complete() end)
+keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end)
+-- stylua: ignore end
 
 local term = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -81,16 +83,16 @@ cmp.setup.cmdline('?', {
     },
 })
 
--- cmp.setup.cmdline(':', {
---     completion = {
---         autocomplete = false,
---     },
---     sources = cmp.config.sources({
---         { name = 'path' },
---     }, {
---         { name = 'cmdline' },
---     }),
--- })
+cmp.setup.cmdline(':', {
+    completion = {
+        autocomplete = false,
+    },
+    sources = cmp.config.sources({
+        { name = 'path' },
+    }, {
+        { name = 'cmdline' },
+    }),
+})
 
 vim.opt.completeopt = { 'menuone', 'noselect' }
 

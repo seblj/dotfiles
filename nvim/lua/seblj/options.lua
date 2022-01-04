@@ -32,6 +32,19 @@ vim.opt.shortmess:append('c')
 vim.opt.cinkeys:remove('0#')
 vim.opt.fillchars:append('diff:╱')
 
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0
+
+-- Avoid nesting neovim sessions
+vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+augroup('NeovimTermGit', {
+    event = 'FileType',
+    pattern = { 'gitcommit', 'gitrebase', 'gitconfig' },
+    command = function()
+        vim.opt_local.bufhidden = 'delete'
+    end,
+})
+
 -- Disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
