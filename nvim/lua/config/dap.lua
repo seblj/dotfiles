@@ -59,27 +59,35 @@ end
 ---------- MAPPINGS ----------
 
 -- Use vim.repeat to enable repeat with .
-keymap('n', 'DapBreakpointRepeat', function()
+keymap('n', '<Plug>DapBreakpointRepeat', function()
     require('dap').toggle_breakpoint()
-    vim.cmd('call repeat#set("DapBreakpointRepeat")')
-end)
-keymap('n', 'DapContinueRepeat', function()
+    vim.cmd('call repeat#set("<Plug>DapBreakpointRepeat")')
+end, {
+    desc = 'Repeat: support for Dap: breakpoint',
+})
+keymap('n', '<Plug>DapContinueRepeat', function()
     require('dap').continue()
-    vim.cmd('call repeat#set("DapContinueRepeat")')
-end)
-keymap('n', 'DapStepIntoRepeat', function()
+    vim.cmd('call repeat#set("<Plug>DapContinueRepeat")')
+end, {
+    desc = 'Repeat: support for Dap: continue',
+})
+keymap('n', '<Plug>DapStepIntoRepeat', function()
     require('dap').step_into()
-    vim.cmd('call repeat#set("DapStepIntoRepeat")')
-end)
-keymap('n', 'DapStepOverRepeat', function()
+    vim.cmd('call repeat#set("<Plug>DapStepIntoRepeat")')
+end, {
+    desc = 'Repeat: support for Dap: step into',
+})
+keymap('n', '<Plug>DapStepOverRepeat', function()
     require('dap').step_over()
-    vim.cmd('call repeat#set("DapStepOverRepeat")')
-end)
+    vim.cmd('call repeat#set("<Plug>DapStepOverRepeat")')
+end, {
+    desc = 'Repeat: support for Dap: step over',
+})
 
-keymap('n', '<leader>db', 'DapBreakpointRepeat', { remap = true })
-keymap('n', '<leader>d<leader>', 'DapContinueRepeat', { remap = true })
-keymap('n', '<leader>dl', 'DapStepIntoRepeat', { remap = true })
-keymap('n', '<leader>dj', 'DapStepOverRepeat', { remap = true })
+keymap('n', '<leader>db', '<Plug>DapBreakpointRepeat', { remap = true, desc = 'Dap: Add breakpoint' })
+keymap('n', '<leader>d<leader>', '<Plug>DapContinueRepeat', { remap = true, desc = 'Dap: Continue debugging' })
+keymap('n', '<leader>dl', '<Plug>DapStepIntoRepeat', { remap = true, desc = 'Dap: Step into' })
+keymap('n', '<leader>dj', '<Plug>DapStepOverRepeat', { remap = true, desc = 'Dap: Step over' })
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     continue = { '.continue', '.c', 'c' },

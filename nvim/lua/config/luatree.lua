@@ -40,4 +40,4 @@ vim.g.nvim_tree_special_files = {
     },
 }
 
-keymap('n', '<leader>tt', ':NvimTreeToggle<CR>')
+keymap('n', '<leader>tt', ':NvimTreeToggle<CR>', { desc = 'NvimTree: Toggle tree' })

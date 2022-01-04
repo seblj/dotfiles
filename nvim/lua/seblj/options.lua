@@ -32,9 +32,6 @@ vim.opt.shortmess:append('c')
 vim.opt.cinkeys:remove('0#')
 vim.opt.fillchars:append('diff:╱')
 
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
-
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
 augroup('NeovimTermGit', {
@@ -45,10 +42,6 @@ augroup('NeovimTermGit', {
     end,
 })
 
--- Disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 augroup('CustomFormatOptions', {
     event = 'BufEnter',
     pattern = '*',
@@ -57,5 +50,12 @@ augroup('CustomFormatOptions', {
     end,
 })
 
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.g.vimsyn_embed = 'l'
 vim.g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'
+
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0

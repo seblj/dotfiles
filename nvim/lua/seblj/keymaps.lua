@@ -30,11 +30,11 @@ keymap('n', '<C-j>', '<C-w>j', { desc = 'Navigate to bottom split' })
 keymap('n', '<C-k>', '<C-w>k', { desc = 'Navigate to top split' })
 keymap('n', '<C-l>', '<C-w>l', { desc = 'Navigate to right split' })
 
-keymap('t', '<C-h>', '<C-\\><C-N><C-w>h', { desc = 'Navigate to left split' }) -- Navigate to left split
-keymap('t', '<C-j>', '<C-\\><C-N><C-w>j', { desc = 'Navigate to bottom split' }) -- Navigate to bottom split
-keymap('t', '<C-k>', '<C-\\><C-N><C-w>k', { desc = 'Navigate to top split' }) -- Navigate to top split
-keymap('t', '<C-l>', '<C-\\><C-N><C-w>l', { desc = 'Navigate to right split' }) -- Navigate to right split
-keymap('t', '<Esc><Esc>', '<C-\\><C-n>') -- Exit term-mode
+keymap('t', '<C-h>', '<C-\\><C-N><C-w>h', { desc = 'Navigate to left split' })
+keymap('t', '<C-j>', '<C-\\><C-N><C-w>j', { desc = 'Navigate to bottom split' })
+keymap('t', '<C-k>', '<C-\\><C-N><C-w>k', { desc = 'Navigate to top split' })
+keymap('t', '<C-l>', '<C-\\><C-N><C-w>l', { desc = 'Navigate to right split' })
+keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Escape from term-mode' })
 
 -- stylua: ignore start
 keymap('n', '<S-Right>', function() require('seblj.utils.resize').resize_right() end, { desc = 'Resize split right' })
@@ -61,8 +61,8 @@ keymap('n', 'j', function() require('seblj.utils').jump('j') end, { desc = 'gj' 
 keymap('n', 'k', function() require('seblj.utils').jump('k') end, { desc = 'gk' })
 -- stylua: ignore end
 
-keymap({ 'n', 'v' }, 'J', '10gj') -- 10 lines down with J
-keymap({ 'n', 'v' }, 'K', '10gk') -- 10 lines up with K
+keymap({ 'n', 'v' }, 'J', '10gj')
+keymap({ 'n', 'v' }, 'K', '10gk')
 
 keymap({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Move to beginning of line' })
 keymap({ 'n', 'v', 'o' }, 'L', '$', { desc = 'Move to end of line' })
@@ -76,7 +76,6 @@ keymap('n', '<Down>', function() require('seblj.utils').quickfix('down') end, { 
 keymap('n', '<Up>', function() require('seblj.utils').quickfix('up') end, { desc = 'Move up in qflist' })
 keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Print syntax under cursor' })
 -- stylua: ignore end
-keymap('n', '<leader><ESC><leader>', ':cclose<CR> `A', { desc = 'Close and go to mark' })
 
 keymap('n', '<leader>@', function()
     local dir = vim.fn.expand('%:p:h')
@@ -102,5 +101,5 @@ vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
 vim.cmd('cnoreabbrev E e') -- Edit file with E
 
 -- Open term in splits
-command('T', 'split | term <args>', { nargs = '*', bang = true, force = true })
-command('VT', 'vsplit | term <args>', { nargs = '*', bang = true, force = true })
+command('T', 'split | term <args>', { nargs = '*', bang = true })
+command('VT', 'vsplit | term <args>', { nargs = '*', bang = true })

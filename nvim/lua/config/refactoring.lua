@@ -14,9 +14,7 @@ local function confirm(prompt_bufnr)
 end
 
 -- Telescope picker to display refactor methods
-local M = {}
-
-M.refactors = function()
+local refactors = function()
     local opts = require('telescope.themes').get_cursor()
     require('telescope.pickers').new(opts, {
         prompt_title = 'Refactors',
@@ -32,6 +30,6 @@ M.refactors = function()
     }):find()
 end
 
-keymap('v', '<leader>fr', '<Esc><cmd>lua require("config.refactoring").refactors()<CR>')
-
-return M
+keymap('v', '<leader>fr', function()
+    refactors()
+end, { desc = 'Refactoring: Open menu' })

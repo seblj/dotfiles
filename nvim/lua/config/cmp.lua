@@ -3,8 +3,8 @@ local lspkind = require('lspkind')
 local cmp = require('cmp')
 
 -- stylua: ignore start
-keymap('i', '<C-space>', function() require('cmp').complete() end, { desc = 'Get completion items' })
-keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end, { desc = 'Confirm selection' })
+keymap('i', '<C-space>', function() require('cmp').complete() end, { desc = 'Cmp: Get completion items' })
+keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end, { desc = 'Cmp: Confirm selection' })
 -- stylua: ignore end
 
 local term = function(str)
@@ -109,7 +109,7 @@ keymap('i', '<Tab>', function()
 end, {
     expr = true,
     remap = true,
-    desc = 'Next completion',
+    desc = 'Cmp: Next completion',
 })
 
 keymap('i', '<S-Tab>', function()
@@ -123,5 +123,5 @@ keymap('i', '<S-Tab>', function()
 end, {
     expr = true,
     remap = true,
-    desc = 'Previous completion',
+    desc = 'Cmp: Previous completion',
 })

@@ -6,7 +6,7 @@ keymap('n', '<leader>ha', function()
     local file = vim.fn.expand('%:t')
     print(file .. ' added to harpoon')
 end, {
-    desc = 'Add file to harpoon',
+    desc = 'Harpoon: Add file',
 })
 
 keymap('n', '<leader>he', function()
@@ -18,5 +18,5 @@ keymap('n', '<leader>he', function()
     keymap('n', 'q', function() require('harpoon.ui').toggle_quick_menu() end, { buffer = true })
     keymap('n', '<ESC>', function() require('harpoon.ui').toggle_quick_menu() end, { buffer = true })
 end, {
-    desc = 'Toggle harpoon menu',
+    desc = 'Harpoon: Toggle menu',
 })
