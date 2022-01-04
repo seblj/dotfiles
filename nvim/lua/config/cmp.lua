@@ -3,8 +3,8 @@ local lspkind = require('lspkind')
 local cmp = require('cmp')
 
 -- stylua: ignore start
-keymap('i', '<C-space>', function() require('cmp').complete() end)
-keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end)
+keymap('i', '<C-space>', function() require('cmp').complete() end, { desc = 'Get completion items' })
+keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end, { desc = 'Confirm selection' })
 -- stylua: ignore end
 
 local term = function(str)
@@ -98,17 +98,21 @@ vim.opt.completeopt = { 'menuone', 'noselect' }
 
 local ls = require('luasnip')
 
-_G.tab_complete = function()
-    if require('cmp').visible() then
+keymap('i', '<Tab>', function()
+    if cmp.visible() then
         return term('<C-n>')
     elseif ls.expand_or_jumpable() then
         return term('<Plug>luasnip-expand-or-jump')
     else
         return term('<Tab>')
     end
-end
+end, {
+    expr = true,
+    remap = true,
+    desc = 'Next completion',
+})
 
-_G.s_tab_complete = function()
+keymap('i', '<S-Tab>', function()
     if cmp.visible() then
         return term('<C-p>')
     elseif ls.jumpable(-1) then
@@ -116,7 +120,8 @@ _G.s_tab_complete = function()
     else
         return term('<S-Tab>')
     end
-end
-
-keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true, remap = true })
-keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true, remap = true })
+end, {
+    expr = true,
+    remap = true,
+    desc = 'Previous completion',
+})

@@ -75,6 +75,21 @@ M.jump = function(letter)
     vim.cmd(string.format([[call execute('normal! %s%s', )]], count, letter))
 end
 
+-- Need to find a better way for this I think.
+-- Want to make it work automatically both through ssh
+-- and when switching OS
+M.get_alt_keys = function()
+    local alt_j = '<A-j>'
+    local alt_k = '<A-k>'
+    local alt_o = '<A-o>'
+    if vim.fn.has('mac') == 1 or vim.fn.getenv('TERM_PROGRAM') == 'iTerm.app' then
+        alt_j = '√'
+        alt_k = 'ª'
+        alt_o = 'œ'
+    end
+    return alt_j, alt_k, alt_o
+end
+
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
     vim.cmd('source ~/dotfiles/nvim/init.lua')

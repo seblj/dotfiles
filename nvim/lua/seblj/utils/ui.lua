@@ -34,10 +34,16 @@ M.popup_create = function(opts)
         vim.api.nvim_set_current_win(winnr)
         keymap('n', '<ESC>', function()
             vim.api.nvim_win_close(0, true)
-        end, { buffer = true })
+        end, {
+            buffer = true,
+            desc = 'Close popup',
+        })
         keymap('n', 'q', function()
             vim.api.nvim_win_close(0, true)
-        end, { buffer = true })
+        end, {
+            buffer = true,
+            desc = 'Close popup',
+        })
     end
     if opts.on_confirm then
         keymap('i', '<CR>', function()
@@ -45,10 +51,14 @@ M.popup_create = function(opts)
             vim.cmd('stopinsert')
         end, {
             buffer = true,
+            desc = 'Confirm selection',
         })
         keymap('n', '<CR>', function()
             opts.on_confirm()
-        end, { buffer = true })
+        end, {
+            buffer = true,
+            desc = 'Confirm selection',
+        })
     end
     if opts.input then
         vim.cmd('startinsert')

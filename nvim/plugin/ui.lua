@@ -47,13 +47,13 @@ vim.ui.select = function(items, opts, on_choice)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
     vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
 
-    -- Keymap for selecting option with number
     for k, _ in ipairs(choices) do
         if k > 2 then
-            keymap(string.format('%d'), function()
+            keymap('n', string.format('%d', k), function()
                 confirm(items, on_choice, k - 2)
             end, {
                 buffer = true,
+                desc = 'Select option with number',
             })
         end
     end

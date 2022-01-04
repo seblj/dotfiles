@@ -21,7 +21,7 @@ local toggle_format = function()
 end
 
 -- stylua: ignore
-keymap('n', '<leader>tf', function() toggle_format() end) -- Toggle autoformat on save
+keymap('n', '<leader>tf', function() toggle_format() end, { desc = "Toggle format" })
 
 ---------- MAPPINGS ----------
 
@@ -32,16 +32,16 @@ local mappings = function()
         },
     }
     -- stylua: ignore start
-    keymap('n', 'gr', function() vim.lsp.buf.references() end)
-    keymap('n', 'gd', function() vim.lsp.buf.definition() end)
-    keymap({ 'n', 'i' }, '<C-s>', function() vim.lsp.buf.signature_help() end)
-    keymap('n', 'gh', function() vim.lsp.buf.hover() end)
-    keymap('n', 'gR', function() vim.lsp.buf.rename() end)
-    keymap('n', '<leader>ca', function() vim.lsp.buf.code_action() end)
-    keymap('n', 'gp', function() vim.diagnostic.goto_prev(popupopts) end)
-    keymap('n', 'gn', function() vim.diagnostic.goto_next(popupopts) end)
-    keymap('n', '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end)
-    keymap('n', 'gb', '<C-t>' )
+    keymap('n', 'gr', function() vim.lsp.buf.references() end, { desc = 'Lsp references' })
+    keymap('n', 'gd', function() vim.lsp.buf.definition() end, { desc = 'Lsp definitions' })
+    keymap({ 'n', 'i' }, '<C-s>', function() vim.lsp.buf.signature_help() end, { desc = 'Lsp signature help' })
+    keymap('n', 'gh', function() vim.lsp.buf.hover() end, { desc = 'Lsp hover' })
+    keymap('n', 'gR', function() vim.lsp.buf.rename() end, { desc = 'Lsp rename' })
+    keymap('n', '<leader>ca', function() vim.lsp.buf.code_action() end, { desc = 'Lsp code action' })
+    keymap('n', 'gp', function() vim.diagnostic.goto_prev(popupopts) end, { desc = 'Lsp previous diagnostic' })
+    keymap('n', 'gn', function() vim.diagnostic.goto_next(popupopts) end, { desc = 'Lsp next diagnostic' })
+    keymap('n', '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end, {desc = 'Lsp diagnostic' })
+    keymap('n', 'gb', '<C-t>', { desc = 'Go back in tag-stack' })
     -- stylua: ignore end
 
     augroup('AutoFormat', {

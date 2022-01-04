@@ -8,50 +8,43 @@ function keymap.set(mode, lhs, rhs, opts)
         opts = { opts, 't', true },
     })
 
-    opts = opts or {}
-
-    if opts.silent == nil then
-        opts.silent = true
-    end
-
-    local buffer = false
-    local is_rhs_lua = type(rhs) == 'function'
+    opts = vim.deepcopy(opts) or {}
+    local is_rhs_luaref = type(rhs) == 'function'
     mode = type(mode) == 'string' and { mode } or mode
 
-    if opts.buffer ~= nil then
-        buffer = opts.buffer == true and 0 or opts.buffer
-        opts.buffer = nil
-    end
-
-    if opts.replace_termcodes ~= nil then
-        if opts.replace_termcodes and is_rhs_lua then
-            local user_rhs = rhs
-            rhs = function()
-                return vim.api.nvim_replace_termcodes(user_rhs(), true, true, true)
-            end
+    if is_rhs_luaref and opts.expr and opts.replace_keycodes ~= false then
+        local user_rhs = rhs
+        rhs = function()
+            return vim.api.nvim_replace_termcodes(user_rhs(), true, true, true)
         end
-        opts.replace_termcodes = nil
     end
+    -- clear replace_keycodes from opts table
+    opts.replace_keycodes = nil
 
-    -- remap defaults to false
-    opts.noremap = true
-    if opts.remap ~= nil then
+    if opts.remap == nil then
+        -- remap by default on <plug> mappings and don't otherwise.
+        opts.noremap = is_rhs_luaref or rhs:lower():match('^<plug>') == nil
+    else
+        -- remaps behavior is opposite of noremap option.
         opts.noremap = not opts.remap
         opts.remap = nil
     end
 
-    if is_rhs_lua then
+    if is_rhs_luaref then
         opts.callback = rhs
         rhs = ''
     end
 
-    if buffer == false then
+    if opts.buffer then
+        local bufnr = opts.buffer == true and 0 or opts.buffer
+        opts.buffer = nil
         for _, m in ipairs(mode) do
-            vim.api.nvim_set_keymap(m, lhs, rhs, opts)
+            vim.api.nvim_buf_set_keymap(bufnr, m, lhs, rhs, opts)
         end
     else
+        opts.buffer = nil
         for _, m in ipairs(mode) do
-            vim.api.nvim_buf_set_keymap(buffer, m, lhs, rhs, opts)
+            vim.api.nvim_set_keymap(m, lhs, rhs, opts)
         end
     end
 end
