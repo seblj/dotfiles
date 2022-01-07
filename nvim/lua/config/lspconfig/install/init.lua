@@ -19,9 +19,6 @@ local servers = {
 local install_server = function(ls)
     vim.cmd('new')
     local command = servers[ls]
-    if true then
-        return
-    end
     vim.fn.termopen('set -e\n' .. command)
 
     keymap('n', 'q', '<cmd>q<CR>', { buffer = true })

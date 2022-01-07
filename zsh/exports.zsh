@@ -1,24 +1,20 @@
 # Exports
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 
 export _Z_DATA="$HOME/.config/z/.z."
 export FZF_DEFAULT_OPTS='--height 40%'
 
-export PATH="$HOME/Library/Python/3.9/bin:$PATH"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH="$HOME/Applications/UPC/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
+typeset -U path
+path+=(
+    /usr/local/opt/llvm/bin
+    $HOME/.cargo/bin
+    $HOME/.local/bin
+)
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
-
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -29,5 +25,3 @@ export MANPAGER='nvim +Man!'
 
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_COMPDUMP="$HOME/.cache/zsh/.zcompdump-${HOST/.*/}-${ZSH_VERSION}"
-
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"

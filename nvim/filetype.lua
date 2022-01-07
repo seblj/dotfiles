@@ -1,7 +1,7 @@
 vim.filetype.add({
     extension = {
         conf = 'conf',
-        ['local'] = 'gitconfig',
+        ts = 'typescript',
     },
     filename = {
         ['.gitconfig.local'] = 'gitconfig',

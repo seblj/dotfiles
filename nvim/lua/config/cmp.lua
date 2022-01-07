@@ -2,11 +2,6 @@ local keymap = vim.keymap.set
 local lspkind = require('lspkind')
 local cmp = require('cmp')
 
--- stylua: ignore start
-keymap('i', '<C-space>', function() require('cmp').complete() end, { desc = 'Cmp: Get completion items' })
-keymap('c', '<C-y>', function() cmp.confirm({ select = false }) end, { desc = 'Cmp: Confirm selection' })
--- stylua: ignore end
-
 local term = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
@@ -34,6 +29,14 @@ cmp.setup({
         }),
         ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
         ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-y>'] = cmp.mapping(
+            cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true,
+            }),
+            { 'i', 'c' }
+        ),
+        ['<C-Space>'] = cmp.mapping({ i = cmp.mapping.complete() }),
     },
 
     preselect = cmp.PreselectMode.None,
@@ -94,7 +97,7 @@ cmp.setup.cmdline(':', {
     }),
 })
 
-vim.opt.completeopt = { 'menuone', 'noselect' }
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 local ls = require('luasnip')
 
