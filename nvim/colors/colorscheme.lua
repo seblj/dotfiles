@@ -198,31 +198,6 @@ highlight({
 
     cTSProperty = { link = 'NONE' },
 
-    ---------- COC ----------
-
-    CocErrorFloat = { guifg = c.red, guibg = c.bg2 },
-    CocWarningFloat = { guifg = c.yellow, guibg = c.bg2 },
-    CocInfoFloat = { guifg = c.blue, guibg = c.bg2 },
-    CocHintFloat = { guifg = c.green, guibg = c.bg2 },
-    CocErrorHighlight = { guifg = c.error, guibg = 'NONE', gui = 'undercurl' },
-    CocWarningHighlight = { guifg = c.orange, guibg = 'NONE', gui = 'undercurl' },
-    CocInfoHighlight = { guifg = c.yellow, guibg = 'NONE', gui = 'undercurl' },
-    CocHintHighlight = { guifg = c.yellow, guibg = 'NONE', gui = 'undercurl' },
-    CocHighlightText = { guifg = c.bg, guibg = c.green },
-    CocErrorSign = { link = 'RedSign' },
-    CocWarningSign = { link = 'OrangeSign' },
-    CocInfoSign = { link = 'BlueSign' },
-    CocHintSign = { link = 'YellowSign' },
-    CocWarningVirtualText = { guifg = c.red },
-    CocErrorVirtualText = { guifg = c.orange },
-    CocHintVirtualText = { guifg = c.yellow },
-    CocInfoVirtualText = { guifg = c.yellow },
-    CocErrorLine = { guifg = 'NONE', guibg = 'NONE' },
-    CocWarningLine = { guifg = 'NONE', guibg = 'NONE' },
-    CocInfoLine = { guifg = 'NONE', guibg = 'NONE' },
-    CocHintLine = { guifg = 'NONE', guibg = 'NONE' },
-    CocCodeLens = { guifg = c.grey },
-
     ---------- NVIM LSPCONFIG ----------
 
     DiagnosticFloatingError = { guifg = c.red, guibg = 'NONE' },
