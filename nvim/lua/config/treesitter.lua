@@ -1,17 +1,14 @@
 ---------- TREESITTER CONFIG ----------
 
+local hlmap = vim.treesitter.highlighter.hl_map
+hlmap.custom_type = 'TSCustomType'
+
 require('nvim-treesitter.configs').setup({
     highlight = {
         enable = true,
         ensure_installed = 'maintained',
         disable = { 'latex' },
     },
-})
-
-local hlmap = vim.treesitter.highlighter.hl_map
-hlmap.custom_type = 'TSCustomType'
-
-require('nvim-treesitter.configs').setup({
     textobjects = {
         select = {
             enable = true,

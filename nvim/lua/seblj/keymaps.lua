@@ -22,7 +22,6 @@ keymap('n', '<leader>=', '<C-w>=', { desc = 'Resize all splits' })
 keymap('n', '<leader>i', 'gg=G', { desc = 'Indent file' })
 keymap('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true, desc = 'Remove highlights' })
 keymap('n', 'gp', '`[v`]', { desc = 'Reselect pasted text' })
-keymap('n', '<C-f>', 'za', { desc = 'Fold' })
 keymap('n', '<C-t>', ':tabedit<CR>', { desc = 'Create new tab' })
 
 keymap('n', '<C-h>', '<C-w>h', { desc = 'Navigate to left split' })
@@ -99,6 +98,10 @@ vim.cmd('cnoreabbrev WA wa') -- Write all with WA
 vim.cmd('cnoreabbrev Qa qa') -- Quit all with Qa
 vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
 vim.cmd('cnoreabbrev E e') -- Edit file with E
+vim.cmd('cnoreabbrev TERM term')
+vim.cmd('cnoreabbrev TERm term')
+vim.cmd('cnoreabbrev TErm term')
+vim.cmd('cnoreabbrev Term term')
 
 -- Open term in splits
 command('T', 'split | term <args>', { nargs = '*', bang = true })

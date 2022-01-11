@@ -4,7 +4,7 @@ local hyper = { 'cmd', 'alt', 'ctrl', 'shift' }
 
 -- Switch application with hyper + key
 local applications = {
-    t = 'iTerm',
+    t = 'kitty',
     s = 'Safari',
     m = 'Spotify',
 }

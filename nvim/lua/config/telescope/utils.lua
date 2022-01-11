@@ -20,11 +20,11 @@ M.edit_dotfiles = function()
         cwd = '~/dotfiles',
         prompt_title = 'Dotfiles',
         hidden = true,
-        file_ignore_patterns = { '.git/', 'hammerspoon/Spoons/' },
+        file_ignore_patterns = { '.git/', 'hammerspoon/Spoons/', 'fonts/', 'icons/' },
     })
 end
 
-M.installed_plugins = function()
+M.plugins = function()
     require('telescope.builtin').find_files({
         cwd = vim.fn.stdpath('data') .. '/site/pack/packer/',
         follow = true,

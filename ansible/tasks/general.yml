@@ -33,3 +33,12 @@
     - install
     - home
     - link
+
+- name: Symlink icon script
+  file:
+    src: "{{ lookup('env', 'HOME') }}/dotfiles/scripts/replace_icons.sh"
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin/icons"
+    state: link
+  tags:
+    - install
+    - link

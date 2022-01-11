@@ -130,8 +130,8 @@ gls.left[6] = {
     DiffAdd = {
         provider = 'DiffAdd',
         condition = checkwidth,
-        icon = ' ',
-        -- icon = '  ',
+        -- icon = ' ',
+        icon = ' ',
         highlight = { colors.green, colors.line_bg },
     },
 }
@@ -139,8 +139,8 @@ gls.left[7] = {
     DiffModified = {
         provider = 'DiffModified',
         condition = checkwidth,
-        icon = ' ',
-        -- icon = ' 柳',
+        -- icon = ' ',
+        icon = ' ',
         highlight = { colors.blue, colors.line_bg },
     },
 }
@@ -148,8 +148,8 @@ gls.left[8] = {
     DiffRemove = {
         provider = 'DiffRemove',
         condition = checkwidth,
-        icon = ' ',
-        -- icon = '  ',
+        -- icon = ' ',
+        icon = ' ',
         highlight = { colors.red, colors.line_bg },
     },
 }

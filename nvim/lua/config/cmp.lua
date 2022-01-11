@@ -1,6 +1,7 @@
 local keymap = vim.keymap.set
 local lspkind = require('lspkind')
 local cmp = require('cmp')
+local feedkeys = require('cmp.utils.feedkeys')
 
 local term = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -10,7 +11,7 @@ cmp.setup({
     sources = {
         { name = 'luasnip' },
         { name = 'nvim_lsp' },
-        { name = 'buffer', options = {
+        { name = 'buffer', option = {
             keyword_pattern = [[\k\+]],
         } },
         { name = 'path' },
@@ -37,6 +38,24 @@ cmp.setup({
             { 'i', 'c' }
         ),
         ['<C-Space>'] = cmp.mapping({ i = cmp.mapping.complete() }),
+        ['<Tab>'] = cmp.mapping({
+            c = function(fallback)
+                if #cmp.core:get_sources() > 0 and not cmp.get_config().experimental.native_menu then
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    else
+                        cmp.complete()
+                        vim.defer_fn(function()
+                            if cmp.visible() then
+                                feedkeys.call(term('<C-n>'), 'i')
+                            end
+                        end, 10)
+                    end
+                else
+                    fallback()
+                end
+            end,
+        }),
     },
 
     preselect = cmp.PreselectMode.None,

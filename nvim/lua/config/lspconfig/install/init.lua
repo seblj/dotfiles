@@ -4,6 +4,7 @@ local servers = {
     pyright = 'npm install -g pyright',
     rust_analyzer = 'brew install rust-analyzer',
     cssls = 'npm i -g vscode-langservers-extracted',
+    eslint = 'npm i -g vscode-langservers-extracted',
     vimls = 'npm install -g vim-language-server',
     texlab = 'cargo install --git https://github.com/latex-lsp/texlab.git --locked',
     html = 'npm i -g vscode-langservers-extracted',

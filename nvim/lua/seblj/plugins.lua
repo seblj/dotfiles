@@ -43,6 +43,7 @@ local plugins = function(use)
     -- Telescope
     use({ 'nvim-telescope/telescope.nvim', config = conf('telescope') })
     use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+    use({ 'nvim-telescope/telescope-file-browser.nvim' })
     use({ 'nvim-lua/plenary.nvim' })
 
     -- Treesitter
@@ -55,7 +56,7 @@ local plugins = function(use)
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
     use({ 'jose-elias-alvarez/null-ls.nvim' })
-    use({ 'folke/lua-dev.nvim' })
+    use({ 'folke/lua-dev.nvim', commit = '4331626' })
     use({ 'b0o/schemastore.nvim' })
 
     -- Completion
@@ -69,7 +70,7 @@ local plugins = function(use)
     use({ 'onsails/lspkind-nvim' })
 
     -- Git
-    use({ 'pwntester/octo.nvim', config = setup('octo') })
+    use({ 'pwntester/octo.nvim', config = setup('octo'), cmd = 'Octo' })
     use({ 'sindrets/diffview.nvim', config = conf('diffview'), cmd = { 'DiffviewOpen', 'DiffviewFileHistory' } })
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'rhysd/conflict-marker.vim', config = conf('conflict'), event = 'BufReadPre' })
@@ -91,7 +92,7 @@ local plugins = function(use)
 
     -- Others
     use({ 'ThePrimeagen/refactoring.nvim', config = conf('refactoring'), keys = '<leader>fr' })
-    use({ 'ThePrimeagen/harpoon', config = conf('harpoon') })
+    use({ 'ThePrimeagen/harpoon', config = conf('harpoon'), disable = true })
 
     use({ 'kyazdani42/nvim-tree.lua', config = conf('luatree'), keys = { '<leader>tt' } })
     use({ 'tamago324/lir.nvim', config = conf('lir') })
