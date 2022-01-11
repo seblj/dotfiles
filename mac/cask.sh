@@ -17,3 +17,4 @@ brew install --cask visual-studio-code
 brew install --cask vlc
 brew install --cask vnc-viewer
 brew install --cask xquartz
+brew install --cask kitty
