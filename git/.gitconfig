@@ -1,30 +1,30 @@
 [user]
-	username = seblj
-	email = seblyng98@gmail.com
-	name = Sebastian Lyng Johansen
+    username = seblj
+    email = seblyng98@gmail.com
+    name = Sebastian Lyng Johansen
 
 [include]
-	path = ~/.gitconfig.local
+    path = ~/.gitconfig.local
 
 [credential]
-	helper = store
+    helper = store
 
 [core]
-	editor = nvim
-	excludesfile = /Users/sebastianlyngjohansen/.gitignore_global
+    editor = nvim
+    excludesfile = /Users/sebastianlyngjohansen/.gitignore_global
     pager = delta
 
 [pull]
     rebase = true
 
 [alias]
-	st = status
-	aa = add -A .
-	cm = commit -m
-	aacm = !git add -A . && git commit -m
-	start = !git checkout master && git pull origin
-	lg = !git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)%an%Creset' --abbrev-commit | emojify | less
-	sa = submodule add
+    st = status
+    aa = add -A .
+    cm = commit -m
+    aacm = !git add -A . && git commit -m
+    start = !git checkout master && git pull origin
+    lg = !git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)%an%Creset' --abbrev-commit | emojify | less
+    sa = submodule add
     ca = commit --amend
     cane = commit --amend --no-edit
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
@@ -48,10 +48,10 @@
     diffFilter = delta --color-only
 
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 
 [mergetool]
-	prompt = false
+    prompt = false
 
 [mergetool "vimdiff"]
-	path = nvim
+    path = nvim
