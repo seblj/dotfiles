@@ -20,8 +20,7 @@ local toggle_format = function()
     end
 end
 
--- stylua: ignore
-keymap('n', '<leader>tf', function() toggle_format() end, { desc = "Lsp: Toggle format" })
+keymap('n', '<leader>tf', toggle_format, { desc = 'Lsp: Toggle format' })
 
 ---------- MAPPINGS ----------
 
@@ -31,18 +30,26 @@ local mappings = function()
             border = 'rounded',
         },
     }
-    -- stylua: ignore start
-    keymap('n', 'gr', function() vim.lsp.buf.references() end, { desc = 'Lsp: References' })
-    keymap('n', 'gd', function() vim.lsp.buf.definition() end, { desc = 'Lsp: Definitions' })
-    keymap({ 'n', 'i' }, '<C-s>', function() vim.lsp.buf.signature_help() end, { desc = 'Lsp: Signature help' })
-    keymap('n', 'gh', function() vim.lsp.buf.hover() end, { desc = 'Lsp: Hover' })
-    keymap('n', 'gR', function() vim.lsp.buf.rename() end, { desc = 'Lsp: Rename' })
-    keymap('n', '<leader>ca', function() vim.lsp.buf.code_action() end, { desc = 'Lsp: Code action' })
-    keymap('n', 'gp', function() vim.diagnostic.goto_prev(popupopts) end, { desc = 'Lsp: Previous diagnostic' })
-    keymap('n', 'gn', function() vim.diagnostic.goto_next(popupopts) end, { desc = 'Lsp: Next diagnostic' })
-    keymap('n', '<leader>cd', function() vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) end, {desc = 'Lsp: Line diagnostic' })
+    local diagnostic_next = function()
+        vim.diagnostic.goto_next(popupopts)
+    end
+    local diagnostic_prev = function()
+        vim.diagnostic.goto_prev(popupopts)
+    end
+    local diagnostic_line = function()
+        vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' })
+    end
+
+    keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Lsp: References', buffer = true })
+    keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Lsp: Definitions', buffer = true })
+    keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Lsp: Signature help', buffer = true })
+    keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Lsp: Hover', buffer = true })
+    keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Lsp: Rename', buffer = true })
+    keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Lsp: Code action', buffer = true })
+    keymap('n', 'gp', diagnostic_prev, { desc = 'Lsp: Previous diagnostic', buffer = true })
+    keymap('n', 'gn', diagnostic_next, { desc = 'Lsp: Next diagnostic', buffer = true })
+    keymap('n', '<leader>cd', diagnostic_line, { desc = 'Lsp: Line diagnostic', buffer = true })
     keymap('n', 'gb', '<C-t>', { desc = 'Go back in tag-stack' })
-    -- stylua: ignore end
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
