@@ -5,12 +5,6 @@ P = function(v)
     return v
 end
 
-_G.__seblj_global_callbacks = __seblj_global_callbacks or {}
-
-_G.seblj = {
-    _store = __seblj_global_callbacks,
-}
-
 if pcall(require, 'plenary') then
     RELOAD = require('plenary.reload').reload_module
 

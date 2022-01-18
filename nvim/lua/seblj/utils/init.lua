@@ -8,6 +8,12 @@ local M = {}
 -- Thanks to @akinsho for this brilliant function white waiting for builtin autocmd in lua
 -- https://github.com/akinsho/dotfiles/blob/main/.config/nvim/lua/as/globals.lua
 M.augroup = function(name, commands, buffer)
+    _G.__seblj_global_callbacks = __seblj_global_callbacks or {}
+
+    _G.seblj = {
+        _store = __seblj_global_callbacks,
+    }
+
     vim.cmd('augroup ' .. name)
     if buffer then
         vim.cmd('au! * <buffer>')
@@ -25,6 +31,12 @@ M.augroup = function(name, commands, buffer)
 end
 
 M.autocmd = function(c)
+    _G.__seblj_global_callbacks = __seblj_global_callbacks or {}
+
+    _G.seblj = {
+        _store = __seblj_global_callbacks,
+    }
+
     local command = c.command
     if type(command) == 'function' then
         table.insert(seblj._store, command)

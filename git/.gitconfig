@@ -11,7 +11,7 @@
 
 [core]
     editor = nvim
-    excludesfile = /Users/sebastianlyngjohansen/.gitignore_global
+    excludesfile = ~/.gitignore_global
     pager = delta
 
 [pull]
@@ -28,8 +28,8 @@
     ca = commit --amend
     cane = commit --amend --no-edit
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-    bc = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git switch
-    bca = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git checkout --track
+    bs = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git switch
+    bsa = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git switch --track
     pc = !gh pr list -L 500 | fzf --height 40% | awk '{print $(NF-1)}' | xargs gh pr checkout
     rc = rebase --continue
 

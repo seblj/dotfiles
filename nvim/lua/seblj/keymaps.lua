@@ -1,6 +1,7 @@
 ---------- MAPPINGS ----------
 
 local utils = require('seblj.utils')
+local resize = require('seblj.utils.resize')
 local alt_j, alt_k, alt_o = utils.get_alt_keys()
 local keymap = vim.keymap.set
 local command = vim.api.nvim_add_user_command
@@ -11,8 +12,7 @@ vim.g.maplocalleader = '\\'
 
 ---------- GENERAL MAPPINGS ----------
 
--- stylua: ignore
-keymap('n', '<leader>r', function() require('seblj.utils').reload_config() end, { desc = 'Reload config' })
+keymap('n', '<leader>r', utils.reload_config, { desc = 'Reload config' })
 keymap('n', alt_o, '<Tab>', { desc = 'Alt-o for jumplist' })
 keymap('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', { expr = true, desc = 'Next completion' })
 keymap('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', { expr = true, desc = 'Previous completion' })
@@ -35,12 +35,11 @@ keymap('t', '<C-k>', '<C-\\><C-N><C-w>k', { desc = 'Navigate to top split' })
 keymap('t', '<C-l>', '<C-\\><C-N><C-w>l', { desc = 'Navigate to right split' })
 keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Escape from term-mode' })
 
--- stylua: ignore start
-keymap('n', '<S-Right>', function() require('seblj.utils.resize').resize_right() end, { desc = 'Resize split right' })
-keymap('n', '<S-Left>', function() require('seblj.utils.resize').resize_left() end, { desc = 'Resize split left' })
-keymap('n', '<S-Up>', function() require('seblj.utils.resize').resize_up() end, { desc = 'Resize split up' })
-keymap('n', '<S-Down>', function() require('seblj.utils.resize').resize_down() end, { desc = 'Resize split down' })
--- stylua: ignore end
+keymap('n', '<S-Right>', resize.resize_right, { desc = 'Resize split right' })
+keymap('n', '<S-Left>', resize.resize_left, { desc = 'Resize split left' })
+keymap('n', '<S-Up>', resize.resize_up, { desc = 'Resize split up' })
+keymap('n', '<S-Down>', resize.resize_down, { desc = 'Resize split down' })
+
 keymap('v', '<', '<gv', { desc = 'Keep visual mode on dedent' })
 keymap('v', '>', '>gv', { desc = 'Keep visual mode on indent' })
 
@@ -56,8 +55,8 @@ keymap('n', '<leader>j', 'J', { desc = 'Join [count] lines' })
 
 -- Thanks to TJ
 -- stylua: ignore start
-keymap('n', 'j', function() require('seblj.utils').jump('j') end, { desc = 'gj' })
-keymap('n', 'k', function() require('seblj.utils').jump('k') end, { desc = 'gk' })
+keymap('n', 'j', function() utils.jump('j') end, { desc = 'gj' })
+keymap('n', 'k', function() utils.jump('k') end, { desc = 'gk' })
 -- stylua: ignore end
 
 keymap({ 'n', 'v' }, 'J', '10gj')
@@ -66,19 +65,18 @@ keymap({ 'n', 'v' }, 'K', '10gk')
 keymap({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Move to beginning of line' })
 keymap({ 'n', 'v', 'o' }, 'L', '$', { desc = 'Move to end of line' })
 
--- stylua: ignore
-keymap('n', '<leader>x', function() require('seblj.utils').save_and_exec() end, { desc = 'Save and execute file' })
+keymap('n', '<leader>x', utils.save_and_exec, { desc = 'Save and execute file' })
 keymap('x', '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>', { desc = 'Macro over visual range' })
 
 -- stylua: ignore start
-keymap('n', '<Down>', function() require('seblj.utils').quickfix('down') end, { desc = 'Move down in qflist' })
-keymap('n', '<Up>', function() require('seblj.utils').quickfix('up') end, { desc = 'Move up in qflist' })
+keymap('n', '<Down>', function() utils.quickfix('down') end, { desc = 'Move down in qflist' })
+keymap('n', '<Up>', function() utils.quickfix('up') end, { desc = 'Move up in qflist' })
 keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Print syntax under cursor' })
 -- stylua: ignore end
 
 keymap('n', '<leader>@', function()
     local dir = vim.fn.expand('%:p:h')
-    vim.cmd('cd ' .. dir)
+    vim.cmd('lcd ' .. dir)
     vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
 end, {
     desc = 'cd to directory of open buffer',
