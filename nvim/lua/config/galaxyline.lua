@@ -101,8 +101,21 @@ gls.left[2] = {
 }
 gls.left[3] = {
     FileName = {
-        provider = { 'FileName' },
-        condition = buffer_not_empty,
+        provider = function()
+            if vim.api.nvim_buf_get_option(0, 'ft') == 'dirbuf' then
+                return vim.fn.expand('%:p:h')
+            end
+            return require('galaxyline.providers.fileinfo').get_current_file_name()
+        end,
+        condition = function()
+            if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
+                return true
+            end
+            if vim.api.nvim_buf_get_option(0, 'ft') == 'dirbuf' then
+                return true
+            end
+            return false
+        end,
         highlight = { colors.fg, colors.line_bg, 'bold' },
     },
 }

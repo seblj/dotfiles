@@ -61,8 +61,22 @@ cmp.setup({
     preselect = cmp.PreselectMode.None,
 
     -- Rounded borders on popup
-    documentation = {
-        border = 'rounded',
+    -- documentation = {
+    --     border = 'rounded',
+    --     scrollbar = '║',
+    -- },
+
+    -- This is for the PR with borders
+    window = {
+        documentation = {
+            border = 'rounded',
+            scrollbar = '║',
+        },
+
+        completion = {
+            border = 'rounded',
+            scrollbar = '║',
+        },
     },
 
     -- Make entry look like (icon, type, source) in completion menu

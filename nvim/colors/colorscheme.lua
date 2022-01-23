@@ -4,6 +4,12 @@ vim.g.colors_name = 'colorscheme'
 
 ---------- COLORS ----------
 
+-- Delta colors
+-- diff_red = '#3f0002',
+-- diff_red_hard = '#901111',
+-- diff_green = '#002800',
+-- diff_green_hard = '#026000',
+
 local c = {
     bg = '#1c1c1c',
     bg2 = '#363944',
@@ -318,11 +324,10 @@ highlight({
 
     ---------- CMP ----------
 
-    CmpItemMenu = { guifg = c.fg, guibg = c.bg2 },
-    CmpItemAbbr = { guifg = c.fg, guibg = c.bg2 },
-    CmpItemAbbrMatch = { guifg = c.purple, guibg = c.bg2 },
-    CmpItemAbbrDeprecated = { guifg = c.fg },
-
+    CmpCompletionWindow = { guibg = c.bg },
+    CmpCompletionWindowBorder = { link = 'FloatBorder' },
+    CmpDocumentationWindowBorder = { link = 'FloatBorder' },
+    CmpItemAbbrMatch = { guifg = c.purple },
     CmpItemKind = { guifg = c.blue },
     CmpItemKindClass = { guifg = c.blue },
     CmpItemKindColor = { guifg = c.yellow },
