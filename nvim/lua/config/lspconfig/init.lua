@@ -64,13 +64,12 @@ end
 
 ---------- SIGNS ----------
 
--- stylua: ignore
 local signs = function()
-    local call = vim.api.nvim_call_function
-    call('sign_define', { 'DiagnosticSignError', { text = '✘', texthl = 'DiagnosticSignError' } })
-    call('sign_define', { 'DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' } })
-    call('sign_define', { 'DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' } })
-    -- call('sign_define', { 'DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' } })
+    local sign_define = vim.fn.sign_define
+    sign_define('DiagnosticSignError', { text = '✘', texthl = 'DiagnosticSignError' })
+    sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+    sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+    -- sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
 end
 
 local disable_formatters = {
