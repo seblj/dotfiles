@@ -33,3 +33,4 @@ vim-markdown-preview.html
 .ccls-cache
 *.passwd
 *.dSYM
+_minted-report

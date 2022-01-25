@@ -7,3 +7,8 @@ require('dirbuf').setup({
         end
     end,
 })
+
+-- Disable dirbufs global mapping of '-' if I haven't set any mapping for '-' myself
+if vim.fn.mapcheck('-', '-') == '' then
+    vim.keymap.set('n', '-', '<nop>')
+end

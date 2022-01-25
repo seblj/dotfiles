@@ -171,6 +171,14 @@ M.save_and_exec = function()
         vim.cmd('sp')
         local command = 'rustc %s && ./%s; rm %s'
         M.run_term(command, file, output, output, output)
+    elseif ft == 'javascript' then
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        M.run_term('node %s', file)
+    elseif ft == 'typescript' then
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        M.run_term('ts-node %s', file)
     elseif ft == 'http' then
         -- Not really save and exec, but think it fits nicely in here for mapping
         require('rest-nvim').run()
