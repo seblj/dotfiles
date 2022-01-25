@@ -21,72 +21,89 @@ end
 
 -- Override vim.ui.select to use popup
 vim.ui.select = function(items, opts, on_choice)
-    vim.validate({
-        items = { items, 'table', false },
-        on_choice = { on_choice, 'function', false },
-    })
-    opts = opts or {}
-    local choices = { opts.prompt or 'Select one of:' }
-    local format_item = opts.format_item or tostring
-    for i, item in pairs(items) do
-        table.insert(choices, string.format('[%d] %s', i, format_item(item)))
+    vim.schedule(function()
+        vim.validate({
+            items = { items, 'table', false },
+            on_choice = { on_choice, 'function', false },
+        })
+        opts = opts or {}
+        local choices = { opts.prompt or 'Select one of:' }
+        local format_item = opts.format_item or tostring
+        for i, item in pairs(items) do
+            table.insert(choices, string.format('[%d] %s', i, format_item(item)))
+        end
+
+        local title = table.remove(choices, 1)
+        local width = ui.calculate_width(choices)
+        choices = { title, string.rep(ui.border_line, width), unpack(choices) }
+
+        local popup_bufnr, _ = ui.popup_create({
+            lines = choices,
+            enter = true,
+            set_cursor = true,
+            on_confirm = function()
+                confirm(items, on_choice)
+            end,
+        })
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
+
+        for k, _ in ipairs(choices) do
+            if k > 2 then
+                keymap('n', string.format('%d', k), function()
+                    confirm(items, on_choice, k - 2)
+                end, {
+                    buffer = true,
+                    desc = 'Select option with number',
+                })
+            end
+        end
+    end)
+end
+
+local get_popup_length = function(title)
+    if #title <= 30 then
+        return 30
     end
-
-    local title = table.remove(choices, 1)
-    local width = ui.calculate_width(choices)
-    choices = { title, string.rep(ui.border_line, width), unpack(choices) }
-
-    local popup_bufnr, _ = ui.popup_create({
-        lines = choices,
-        enter = true,
-        set_cursor = true,
-        on_confirm = function()
-            confirm(items, on_choice)
-        end,
-    })
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
-
-    for k, _ in ipairs(choices) do
-        if k > 2 then
-            keymap('n', string.format('%d', k), function()
-                confirm(items, on_choice, k - 2)
-            end, {
-                buffer = true,
-                desc = 'Select option with number',
-            })
+    for i = 30, 50 do
+        if title.sub(title, i, i) == ' ' then
+            return i
         end
     end
+    return 30
 end
 
 -- Override vim.ui.input to use popup
 vim.ui.input = function(opts, on_confirm)
-    vim.validate({
-        on_confirm = { on_confirm, 'function', false },
-    })
-    opts = opts or {}
+    vim.schedule(function()
+        vim.validate({
+            on_confirm = { on_confirm, 'function', false },
+        })
+        opts = opts or {}
 
-    local lines = {}
-    local title = opts.prompt
-    lines = { title, string.rep(ui.border_line, 30), unpack(lines) }
+        local lines = {}
+        local title = opts.prompt
+        local width = get_popup_length(title)
+        lines = { title, string.rep(ui.border_line, width), unpack(lines) }
 
-    local popup_bufnr, _ = ui.popup_create({
-        width = 30,
-        lines = lines,
-        height = 3,
-        enter = true,
-        input = true,
-        prompt = {
-            enable = true,
-            prefix = options.prefix,
-            highlight = 'LspRenamePrompt',
-        },
-        on_confirm = function()
-            local input = vim.trim(vim.fn.getline('.'):sub(#options.prefix + 1, -1))
-            vim.api.nvim_win_close(0, true)
-            on_confirm(input)
-        end,
-    })
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
+        local popup_bufnr, _ = ui.popup_create({
+            width = width,
+            lines = lines,
+            height = math.ceil(#title / width) + 2,
+            enter = true,
+            input = true,
+            prompt = {
+                enable = true,
+                prefix = options.prefix,
+                highlight = 'LspRenamePrompt',
+            },
+            on_confirm = function()
+                local input = vim.trim(vim.fn.getline('.'):sub(#options.prefix + 1, -1))
+                vim.api.nvim_win_close(0, true)
+                on_confirm(input)
+            end,
+        })
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
+    end)
 end
