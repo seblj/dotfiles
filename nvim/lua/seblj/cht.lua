@@ -49,11 +49,7 @@ local function confirm(prompt_bufnr)
     local content = require('telescope.actions.state').get_selected_entry(prompt_bufnr)
     require('telescope.actions').close(prompt_bufnr)
     table.insert(telescope_selected, content.value)
-    -- Schedule this so we can enter insert mode in the popup
-    -- Assumen it is because telescope calls stopinsert after the callback has ended
-    vim.schedule(function()
-        vim.ui.input({ prompt = 'Query: ' }, run_cht)
-    end)
+    vim.ui.input({ prompt = 'Query: ' }, run_cht)
 end
 
 M.telescope_cht = function()
