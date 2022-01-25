@@ -1,5 +1,14 @@
 ---------- TREESITTER CONFIG ----------
 
+-- Hack to enable bash parser for zsh
+local ft_to_lang = require('nvim-treesitter.parsers').ft_to_lang
+require('nvim-treesitter.parsers').ft_to_lang = function(ft)
+    if ft == 'zsh' then
+        return 'bash'
+    end
+    return ft_to_lang(ft)
+end
+
 local hlmap = vim.treesitter.highlighter.hl_map
 hlmap.custom_type = 'TSCustomType'
 
