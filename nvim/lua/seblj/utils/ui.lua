@@ -3,9 +3,9 @@ local keymap = vim.keymap.set
 local utils = require('seblj.utils')
 local augroup = utils.augroup
 
-M.border_line = '─'
+local border_line = '─'
 
-M.calculate_width = function(lines)
+local calculate_width = function(lines)
     local max_width = math.ceil(vim.o.columns * 0.8)
     local max_length = 0
     for _, line in pairs(lines) do
@@ -24,8 +24,29 @@ local set_cursor = function()
     end
 end
 
+local get_width = function(title, max_width)
+    for i = max_width, 30, -1 do
+        if string.sub(title, i, i) == ' ' then
+            return i
+        end
+    end
+    return max_width
+end
+
 M.popup_create = function(opts)
     local lines, syntax = opts.lines or {}, opts.syntax
+    local title = lines[1]
+    if opts.max_width then
+        opts.width = get_width(title, opts.max_width)
+    end
+
+    local width = opts.width or calculate_width({ title, lines })
+    lines = { title, string.rep(border_line, width), unpack(lines, 2) }
+
+    if opts.prompt then
+        opts.height = math.ceil(#title / width) + 2
+    end
+
     opts.border = opts.border or 'rounded'
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
@@ -60,18 +81,7 @@ M.popup_create = function(opts)
             desc = 'Confirm selection',
         })
     end
-    if opts.input then
-        vim.cmd('startinsert')
-        vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-    end
-    if opts.prompt and opts.prompt.enable then
-        vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')
-        vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix)
-        vim.api.nvim_buf_set_option(popup_bufnr, 'ft', 'UIPrompt')
-    end
-    if opts.set_cursor then
-        vim.api.nvim_win_set_cursor(winnr, { 3, 1 })
+    if opts.hidden_cursor then
         require('seblj.utils').setup_hidden_cursor()
         augroup('UISetCursor', {
             event = 'CursorMoved',
@@ -80,6 +90,16 @@ M.popup_create = function(opts)
                 set_cursor()
             end,
         })
+    end
+    if opts.prompt then
+        vim.cmd('startinsert')
+        vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
+        vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')
+        vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix)
+        vim.api.nvim_buf_set_option(popup_bufnr, 'ft', 'UIPrompt')
+    else
+        vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
     end
 
     return popup_bufnr, winnr
