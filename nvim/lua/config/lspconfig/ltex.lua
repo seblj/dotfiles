@@ -1,3 +1,6 @@
+-- Big thanks to this gist which helped me a lot
+-- https://gist.github.com/lbiaggi/a3eb761ac2fdbff774b29c88844355b8
+
 local M = {}
 
 M.file = {
