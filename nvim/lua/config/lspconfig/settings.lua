@@ -1,5 +1,7 @@
 ---------- LANGUAGE SERVERS ----------
 
+local ltex = require('config.lspconfig.ltex')
+
 return {
     vuels = {
         init_options = {
@@ -33,6 +35,16 @@ return {
 
     grammarly = {
         filetypes = { 'tex', 'markdown' },
+    },
+
+    ltex = {
+        settings = {
+            ltex = {
+                dictionary = { ['en-US'] = ltex.lines_from(ltex.file.dictionary) },
+                disabledRules = { ['en-US'] = ltex.lines_from(ltex.file.disabledRules) },
+                hiddenFalsePositives = { ['en-US'] = ltex.lines_from(ltex.file.hiddenFalsePositives) },
+            },
+        },
     },
 
     jsonls = {

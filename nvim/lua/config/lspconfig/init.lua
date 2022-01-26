@@ -126,6 +126,7 @@ local servers = {
     'omnisharp',
     'dockerls',
     'eslint',
+    'ltex',
     -- 'grammarly',
 }
 

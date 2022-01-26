@@ -10,6 +10,7 @@ typeset -U path
 path+=(
     /usr/local/opt/llvm/bin
     $HOME/.cargo/bin
+    $HOME/.local/ltex/bin
     $HOME/.local/bin
 )
 
