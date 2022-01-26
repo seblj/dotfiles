@@ -38,6 +38,9 @@ return {
     },
 
     ltex = {
+        on_attach = function(client)
+            ltex.on_attach(client)
+        end,
         settings = {
             ltex = {
                 dictionary = { ['en-US'] = ltex.lines_from(ltex.file.dictionary) },

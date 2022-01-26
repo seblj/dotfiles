@@ -79,16 +79,6 @@ local do_command = function(arg, configtype)
     end
 end
 
-vim.keymap.set('n', 'zuw', function()
-    vim.cmd('normal! zuw')
-    update_config('en-US', 'dictionary')
-end)
-
-vim.keymap.set('n', 'zg', function()
-    vim.cmd('normal! zg')
-    update_config('en-US', 'dictionary')
-end)
-
 local orig_execute_command = vim.lsp.buf.execute_command
 vim.lsp.buf.execute_command = function(command)
     local arg = command.arguments[1]
@@ -101,6 +91,24 @@ vim.lsp.buf.execute_command = function(command)
     else
         orig_execute_command(command)
     end
+end
+
+M.on_attach = function(client)
+    require('config.lspconfig').make_config().on_attach(client)
+    vim.keymap.set('n', 'zuw', function()
+        vim.cmd('normal! zuw')
+        update_config('en-US', 'dictionary')
+    end, {
+        buffer = true,
+        desc = 'Remove word from spellfile and update ltex',
+    })
+    vim.keymap.set('n', 'zg', function()
+        vim.cmd('normal! zg')
+        update_config('en-US', 'dictionary')
+    end, {
+        buffer = true,
+        desc = 'Add word to spellfile and update ltex',
+    })
 end
 
 return M

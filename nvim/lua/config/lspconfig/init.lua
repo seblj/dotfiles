@@ -77,7 +77,7 @@ local disable_formatters = {
     'tsserver',
 }
 
-local make_config = function()
+M.make_config = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
     return {
@@ -133,7 +133,7 @@ local servers = {
 -- Automatic setup for language servers
 local setup_servers = function()
     for _, server in pairs(servers) do
-        local config = make_config()
+        local config = M.make_config()
 
         -- Set user settings for each server
         if settings[server] then
