@@ -4,7 +4,7 @@
 local M = {}
 
 M.file = {
-    dictionary = vim.fn.stdpath('config') .. '/spell/dictionary.txt',
+    dictionary = vim.fn.stdpath('config') .. '/spell/en.utf-8.add',
     disabledRules = vim.fn.stdpath('config') .. '/spell/disable.txt',
     hiddenFalsePositives = vim.fn.stdpath('config') .. '/spell/false.txt',
 }
@@ -78,6 +78,16 @@ local do_command = function(arg, configtype)
         end
     end
 end
+
+vim.keymap.set('n', 'zuw', function()
+    vim.cmd('normal! zuw')
+    update_config('en-US', 'dictionary')
+end)
+
+vim.keymap.set('n', 'zg', function()
+    vim.cmd('normal! zg')
+    update_config('en-US', 'dictionary')
+end)
 
 local orig_execute_command = vim.lsp.buf.execute_command
 vim.lsp.buf.execute_command = function(command)
