@@ -1,24 +1,22 @@
 local M = {}
 
-M.nls_setup = function()
-    local nls = require('null-ls')
-    local formatter = nls.builtins.formatting
-    nls.setup({
-        debounce = 150,
-        save_after_format = false,
-        sources = {
-            formatter.stylua,
-            formatter.goimports,
-            formatter.prettierd.with({
-                condition = function(utils)
-                    return not utils.root_has_file('.eslintrc.js')
-                end,
-            }),
-        },
-    })
-end
+local nls = require('null-ls')
+local formatter = nls.builtins.formatting
+nls.setup({
+    debounce = 150,
+    save_after_format = false,
+    sources = {
+        formatter.stylua,
+        formatter.goimports,
+        formatter.prettierd.with({
+            condition = function(utils)
+                return not utils.root_has_file('.eslintrc.js')
+            end,
+        }),
+    },
+})
 
-function M.nls_has_formatter(ft)
+function M.has_formatter(ft)
     local config = require('null-ls.config').get()
     for _, source in ipairs(config.sources) do
         if vim.tbl_contains(source.filetypes, ft) then

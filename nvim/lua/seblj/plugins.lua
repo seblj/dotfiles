@@ -55,7 +55,7 @@ local plugins = function(use)
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
-    use({ 'jose-elias-alvarez/null-ls.nvim' })
+    use({ 'jose-elias-alvarez/null-ls.nvim', config = conf('null-ls') })
     use({ 'folke/lua-dev.nvim' })
     use({ 'b0o/schemastore.nvim' })
 

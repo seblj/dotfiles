@@ -90,25 +90,12 @@ local check_code_action = function()
     end)
 end
 
-local support_code_action = function()
-    local clients = vim.lsp.buf_get_clients(0)
-    for _, client in ipairs(clients) do
-        if client.supports_method('textDocument/codeAction') then
-            return true
-        end
-    end
-    return false
-end
-
 M.setup = function()
     -- If I want to use it in galaxyline for example
     M.icon_opts = {
         showing = false,
         num_actions = 0,
     }
-    if not support_code_action() then
-        return
-    end
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'YellowSign' })
     augroup('SetupLightbulb', {
         event = { 'CursorHold', 'CursorMoved' },

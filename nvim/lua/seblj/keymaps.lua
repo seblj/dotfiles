@@ -21,6 +21,7 @@ keymap('n', '<S-TAB>', 'gT', { desc = 'Previous tab' })
 keymap('n', '<leader>=', '<C-w>=', { desc = 'Resize all splits' })
 keymap('n', '<leader>i', 'gg=G', { desc = 'Indent file' })
 keymap('n', '<CR>', '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true, desc = 'Remove highlights' })
+keymap('n', 'gb', '<C-t>', { desc = 'Go back in tag-stack' })
 keymap('n', 'gp', '`[v`]', { desc = 'Reselect pasted text' })
 keymap('n', '<C-t>', ':tabedit<CR>', { desc = 'Create new tab' })
 

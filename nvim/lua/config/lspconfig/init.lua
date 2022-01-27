@@ -2,10 +2,9 @@
 
 local M = {}
 local utils = require('seblj.utils')
-local keymap = vim.keymap.set
 local augroup = utils.augroup
 local settings = require('config.lspconfig.settings')
-local nls = require('config.lspconfig.null-ls')
+local nls_has_formatter = require('config.null-ls').has_formatter
 
 require('config.lspconfig.install')
 
@@ -19,8 +18,6 @@ local toggle_format = function()
         vim.api.nvim_echo({ { 'Disabled autoformat on save' } }, false, {})
     end
 end
-
-keymap('n', '<leader>tf', toggle_format, { desc = 'Lsp: Toggle format' })
 
 ---------- MAPPINGS ----------
 
@@ -39,17 +36,22 @@ local mappings = function()
     local diagnostic_line = function()
         vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' })
     end
+    local keymap = function(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = true
+        vim.keymap.set(mode, l, r, opts)
+    end
 
-    keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Lsp: References', buffer = true })
-    keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Lsp: Definitions', buffer = true })
-    keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Lsp: Signature help', buffer = true })
-    keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Lsp: Hover', buffer = true })
-    keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Lsp: Rename', buffer = true })
-    keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Lsp: Code action', buffer = true })
-    keymap('n', 'gp', diagnostic_prev, { desc = 'Lsp: Previous diagnostic', buffer = true })
-    keymap('n', 'gn', diagnostic_next, { desc = 'Lsp: Next diagnostic', buffer = true })
-    keymap('n', '<leader>cd', diagnostic_line, { desc = 'Lsp: Line diagnostic', buffer = true })
-    keymap('n', 'gb', '<C-t>', { desc = 'Go back in tag-stack' })
+    keymap('n', '<leader>tf', toggle_format, { desc = 'Lsp: Toggle format' })
+    keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Lsp: References' })
+    keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Lsp: Definitions' })
+    keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Lsp: Signature help' })
+    keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Lsp: Hover' })
+    keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Lsp: Rename' })
+    keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Lsp: Code action' })
+    keymap('n', 'gp', diagnostic_prev, { desc = 'Lsp: Previous diagnostic' })
+    keymap('n', 'gn', diagnostic_next, { desc = 'Lsp: Next diagnostic' })
+    keymap('n', '<leader>cd', diagnostic_line, { desc = 'Lsp: Line diagnostic' })
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
@@ -86,26 +88,18 @@ M.make_config = function()
             require('config.lspconfig.handlers').handlers()
             mappings()
             signs()
-            require('config.lspconfig.signature').setup()
-            require('config.lspconfig.lightbulb').setup()
-            local ft = vim.api.nvim_buf_get_option(0, 'ft')
-            local enabled = false
-            if nls.nls_has_formatter(ft) then
-                enabled = client.name == 'null-ls'
-            else
-                enabled = not (client.name == 'null-ls')
+            if client.server_capabilities.signatureHelpProvider then
+                require('config.lspconfig.signature').setup(client)
             end
-            client.resolved_capabilities.document_formatting = enabled
-            if vim.tbl_contains(disable_formatters, client.name) then
+            if client.supports_method('textDocument/codeAction') then
+                require('config.lspconfig.lightbulb').setup()
+            end
+            local ft = vim.api.nvim_buf_get_option(0, 'ft')
+            if vim.tbl_contains(disable_formatters, client.name) or nls_has_formatter(ft) then
                 client.resolved_capabilities.document_formatting = false
             end
         end,
     }
-end
-
--- Setup null-ls
-if pcall(require, 'null-ls') then
-    nls.nls_setup()
 end
 
 local servers = {

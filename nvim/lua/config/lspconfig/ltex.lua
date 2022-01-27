@@ -95,6 +95,11 @@ end
 
 M.on_attach = function(client)
     require('config.lspconfig').make_config().on_attach(client)
+    -- Set some config on attach to prevent reading from the
+    -- files when the language server is not used
+    update_config('en-US', 'dictionary')
+    update_config('en-US', 'disabledRules')
+    update_config('en-US', 'hiddenFalsePositives')
     vim.keymap.set('n', 'zuw', function()
         vim.cmd('normal! zuw')
         update_config('en-US', 'dictionary')
@@ -109,6 +114,8 @@ M.on_attach = function(client)
         buffer = true,
         desc = 'Add word to spellfile and update ltex',
     })
+    -- TODO: Add some commands to remove the entry
+    -- under the cursor from both disable and false
 end
 
 return M

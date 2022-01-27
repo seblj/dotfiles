@@ -1,6 +1,7 @@
+local M = {}
 local utils = require('seblj.utils')
 local augroup = utils.augroup
-local M = {}
+local clients = {}
 
 local check_trigger_char = function(line_to_cursor, triggers)
     if not triggers then
@@ -20,7 +21,7 @@ local check_trigger_char = function(line_to_cursor, triggers)
     return false
 end
 
-local open_signature = function(clients)
+local open_signature = function()
     local triggered = false
 
     for _, client in pairs(clients) do
@@ -45,22 +46,13 @@ local open_signature = function(clients)
     end
 end
 
-M.setup = function()
-    local all_clients = vim.lsp.buf_get_clients(0)
-    local clients = {}
-    for _, client in pairs(all_clients) do
-        if client.server_capabilities.signatureHelpProvider then
-            table.insert(clients, client)
-        end
-    end
-    if #clients == 0 then
-        return
-    end
+M.setup = function(client)
+    table.insert(clients, client)
     augroup('Signature', {
         event = 'TextChangedI',
         pattern = '<buffer>',
         command = function()
-            open_signature(clients)
+            open_signature()
         end,
     }, true)
 end

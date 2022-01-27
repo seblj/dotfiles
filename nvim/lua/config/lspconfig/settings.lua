@@ -43,9 +43,15 @@ return {
         end,
         settings = {
             ltex = {
-                dictionary = { ['en-US'] = ltex.lines_from(ltex.file.dictionary) },
-                disabledRules = { ['en-US'] = ltex.lines_from(ltex.file.disabledRules) },
-                hiddenFalsePositives = { ['en-US'] = ltex.lines_from(ltex.file.hiddenFalsePositives) },
+                language = 'en',
+                dictionary = {},
+                disabledRules = {},
+                hiddenFalsePositives = {},
+                additionalRules = {
+                    enablePickyRules = true,
+                    motherTongue = 'en',
+                    languageModel = '~/ngram',
+                },
             },
         },
     },
