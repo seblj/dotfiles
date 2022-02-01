@@ -7,6 +7,15 @@
     - home
     - link
 
+- name: Create .local and .local/bin
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+  tags:
+    - install
+    - home
+    - link
+
 - name: Find files to symlink to home
   find:
     paths:

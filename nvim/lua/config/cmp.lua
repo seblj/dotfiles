@@ -119,16 +119,16 @@ cmp.setup.cmdline('?', {
     },
 })
 
-cmp.setup.cmdline(':', {
-    completion = {
-        autocomplete = false,
-    },
-    sources = cmp.config.sources({
-        { name = 'path' },
-    }, {
-        { name = 'cmdline' },
-    }),
-})
+-- cmp.setup.cmdline(':', {
+--     completion = {
+--         autocomplete = false,
+--     },
+--     sources = cmp.config.sources({
+--         { name = 'path' },
+--     }, {
+--         { name = 'cmdline' },
+--     }),
+-- })
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 

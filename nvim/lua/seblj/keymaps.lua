@@ -83,7 +83,24 @@ end, {
     desc = 'cd to directory of open buffer',
 })
 
-vim.cmd('cnoreabbrev w!! w suda://%') -- Write with sudo
+keymap('n', '<leader>tm', function()
+    if vim.o.mouse == 'a' then
+        vim.opt.mouse = ''
+        vim.opt.signcolumn = 'no'
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+    else
+        vim.opt.mouse = 'a'
+        vim.opt.signcolumn = 'auto'
+        vim.opt.number = true
+        vim.opt.relativenumber = true
+    end
+end, {
+    desc = 'Toggle mouse, number and signcolumn',
+})
+
+---------- ABBREVIATIONS ----------
+
 vim.cmd('cnoreabbrev !! <C-r>:') -- Repeat last command
 vim.cmd('cnoreabbrev Q q') -- Quit with Q
 vim.cmd('cnoreabbrev W w') -- Write with W

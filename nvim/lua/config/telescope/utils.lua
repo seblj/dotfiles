@@ -1,6 +1,19 @@
 local M = {}
 local telescope_utils = require('telescope.utils')
+local keymap = vim.keymap.set
 local Job = require('plenary.job')
+
+local use_git_root = true
+keymap('n', '<leader>tg', function()
+    use_git_root = not use_git_root
+    if use_git_root then
+        vim.api.nvim_echo({ { 'Using git root in telescope' } }, false, {})
+    else
+        vim.api.nvim_echo({ { 'Using current dir in telescope' } }, false, {})
+    end
+end, {
+    desc = 'Telescope: Toggle root dir between git and cwd',
+})
 
 local get_git_root = function()
     local git_root, ret = telescope_utils.get_os_command_output(
@@ -12,6 +25,14 @@ local get_git_root = function()
         return vim.loop.cwd()
     end
     return git_root[1]
+end
+
+local get_root = function()
+    local root = get_git_root()
+    if not use_git_root then
+        return vim.loop.cwd()
+    end
+    return root
 end
 
 -- Telescope function for quick edit of dotfiles
@@ -33,7 +54,7 @@ M.plugins = function()
 end
 
 M.find_files = function()
-    local curr_dir = vim.fn.expand('%:p:h:t')
+    local curr_dir = vim.fn.fnamemodify(vim.loop.cwd(), ':t')
     require('telescope.builtin').find_files({
         prompt_title = curr_dir,
     })
@@ -51,21 +72,21 @@ end
 
 -- Live grep from root of git repo
 M.live_grep = function()
-    local git_root = get_git_root()
-    local dir = vim.fn.fnamemodify(git_root, ':t')
+    local root = get_root()
+    local dir = vim.fn.fnamemodify(root, ':t')
     require('telescope.builtin').live_grep({
-        cwd = git_root,
+        cwd = root,
         prompt_title = dir,
     })
 end
 
 -- Grep string with using ui
 local grep_confirm = function(input)
-    local git_root = get_git_root()
-    local dir = vim.fn.fnamemodify(git_root, ':t')
+    local root = get_root()
+    local dir = vim.fn.fnamemodify(root, ':t')
     vim.schedule(function()
         require('telescope.builtin').grep_string({
-            cwd = git_root,
+            cwd = root,
             search = input,
             prompt_title = dir,
         })

@@ -1,5 +1,5 @@
 local augroup = require('seblj.utils').augroup
-local keymap = vim.keymap.set
+local map = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
 augroup('CompilePacker', {
@@ -77,7 +77,7 @@ local plugins = function(use)
 
     -- Test
     use({ 'vim-test/vim-test', config = conf('test'), cmd = { 'TestFile', 'TestNearest' } })
-    use({ 'rcarriga/vim-ultest', run = ':UpdateRemotePlugins', cmd = { 'Ultest', 'UltestNearest' }, wants = 'vim-test' })
+    -- use({ 'rcarriga/vim-ultest', run = ':UpdateRemotePlugins', cmd = { 'Ultest', 'UltestNearest' }, wants = 'vim-test' })
 
     -- Packageinfo
     use({ 'vuki656/package-info.nvim', config = conf('packageinfo'), ft = 'json' })
@@ -94,7 +94,7 @@ local plugins = function(use)
     use({ 'ThePrimeagen/refactoring.nvim', config = conf('refactoring'), keys = '<leader>fr' })
     use({ 'ThePrimeagen/harpoon', config = conf('harpoon'), disable = true })
 
-    use({ 'kyazdani42/nvim-tree.lua', config = conf('luatree'), keys = { '<leader>tt' } })
+    use({ 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } })
     use({ 'elihunter173/dirbuf.nvim', config = conf('dirbuf') })
     -- use({ 'tamago324/lir.nvim', config = conf('lir') })
     use({ 'norcalli/nvim-colorizer.lua', config = setup('colorizer') })
@@ -106,17 +106,17 @@ local plugins = function(use)
     use({ 'github/copilot.vim', cmd = 'Copilot' })
     use({ 'kyazdani42/nvim-web-devicons' })
     use({ 'lewis6991/impatient.nvim' })
-    use({ 'szw/vim-maximizer', config = keymap('n', '<leader>m', ':MaximizerToggle!<CR>', { desc = 'Maximize split' }) })
+    use({ 'szw/vim-maximizer', config = map('n', '<leader>m', ':MaximizerToggle!<CR>', { desc = 'Maximize split' }) })
     use({ 'antoinemadec/FixCursorHold.nvim', config = 'vim.g.cursorhold_updatetime = 100' })
     use({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' })
     use({ 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' })
     use({ 'NTBBloodbath/rest.nvim', ft = 'http' })
     use({ 'mbbill/undotree', cmd = 'UndotreeToggle' })
-    use({ 'lambdalisue/suda.vim' })
+    use({ 'lambdalisue/suda.vim', config = 'vim.cmd("cnoreabbrev w!! w suda://%")' })
     use({ 'wellle/targets.vim' })
     use({ 'tpope/vim-repeat' })
     use({ 'tpope/vim-abolish' })
-    use({ 'tpope/vim-surround' })
+    use({ 'tpope/vim-surround', config = conf('surround') })
     use({ 'tpope/vim-commentary' })
     use({ 'tpope/vim-scriptease' })
     use({ 'tpope/vim-sleuth' })

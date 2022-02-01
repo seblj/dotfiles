@@ -3,7 +3,7 @@
   ignore_errors: yes
   register: gh_result
   failed_when: gh_result.rc != 1 and gh_result.rc != 0
-  when: ansible_facts['os_family'] != "Debian"
+  when: ansible_facts['os_family'] == "Debian"
   tags:
     - install
 

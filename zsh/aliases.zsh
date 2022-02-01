@@ -11,6 +11,7 @@ alias table="python3 ~/projects/table.py"
 alias cht="~/projects/scripts/cht.sh"
 alias ssh_kitty="kitty +kitten ssh"
 alias icat="kitty +kitten icat --align=left"
+alias kitty_debug_font="kitty --debug-font-fallback"
 
 alias localip="ipconfig getifaddr en0"
 
