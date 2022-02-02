@@ -185,36 +185,6 @@ M.save_and_exec = function()
     end
 end
 
--- Function for highlighting
-
-M.highlight = function(colors)
-    for name, opts in pairs(colors) do
-        if type(opts) == 'string' then
-            opts = colors[opts]
-        end
-        for k, v in pairs(opts) do
-            if k ~= 'link' and colors[v] then
-                opts[k] = colors[v][k]
-            end
-        end
-        if not opts.guisp then
-            opts.guisp = 'NONE'
-        end
-        if not opts.gui then
-            opts.gui = 'NONE'
-        end
-        if opts.link then
-            vim.cmd('highlight! link ' .. name .. ' ' .. opts.link)
-        else
-            local command = { 'highlight!', name }
-            for k, v in pairs(opts) do
-                table.insert(command, string.format('%s=', k) .. v)
-            end
-            vim.cmd(table.concat(command, ' '))
-        end
-    end
-end
-
 M.augroup('AfterPackerCompile', {
     event = 'User',
     pattern = 'PackerComplete',
