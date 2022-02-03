@@ -9,14 +9,44 @@ require('nvim-treesitter.parsers').ft_to_lang = function(ft)
     return ft_to_lang(ft)
 end
 
+local parsers = require('nvim-treesitter.parsers').available_parsers()
+local difference = function(a, b)
+    local aa = {}
+    for _, v in pairs(a) do
+        aa[v] = true
+    end
+    for _, v in pairs(b) do
+        aa[v] = nil
+    end
+    local ret = {}
+    local n = 0
+    for _, v in pairs(a) do
+        if aa[v] then
+            n = n + 1
+            ret[n] = v
+        end
+    end
+    return ret
+end
+
 local hlmap = vim.treesitter.highlighter.hl_map
 hlmap.custom_type = 'TSCustomType'
+
+local indent = {
+    'tsx',
+    'typescript',
+    'vue',
+}
 
 require('nvim-treesitter.configs').setup({
     highlight = {
         enable = true,
         ensure_installed = 'maintained',
         disable = { 'latex' },
+    },
+    indent = {
+        enable = true,
+        disable = difference(parsers, indent),
     },
     textobjects = {
         select = {
