@@ -34,6 +34,10 @@ local checkwidth = function()
     return false
 end
 
+local has = function(item)
+    return vim.fn.has(item) == 1
+end
+
 local buffer_not_empty = function()
     if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
         return true
@@ -59,7 +63,7 @@ end
 
 ---------- LEFT ----------
 
-local ViMode = {
+local mode = {
     provider = function()
         -- auto change color according the vim mode
         local alias = {
@@ -109,13 +113,13 @@ local ViMode = {
     highlight = { colors.red, colors.line_bg, 'bold' },
 }
 
-local FileIcon = {
+local file_icon = {
     provider = 'FileIcon',
     condition = buffer_not_empty,
     highlight = { require('galaxyline.providers.fileinfo').get_file_icon_color, colors.line_bg },
 }
 
-local FileName = {
+local file_name = {
     provider = function()
         if vim.api.nvim_buf_get_option(0, 'ft') == 'dirbuf' then
             return vim.fn.expand('%:p:h')
@@ -134,7 +138,7 @@ local FileName = {
     highlight = { colors.fg, colors.line_bg, 'bold' },
 }
 
-local GitIcon = {
+local git_icon = {
     provider = function()
         return '  '
     end,
@@ -142,7 +146,7 @@ local GitIcon = {
     highlight = { colors.red, colors.line_bg, 'bold' },
 }
 
-local GitBranch = {
+local git_branch = {
     provider = 'GitBranch',
     condition = require('galaxyline.providers.vcs').get_git_branch,
     highlight = { colors.red, colors.line_bg, 'bold' },
@@ -150,7 +154,7 @@ local GitBranch = {
     separator_highlight = { colors.bg, colors.line_bg },
 }
 
-local DiffAdd = {
+local diff_add = {
     provider = 'DiffAdd',
     condition = checkwidth,
     -- icon = ' ',
@@ -158,7 +162,7 @@ local DiffAdd = {
     highlight = { colors.green, colors.line_bg },
 }
 
-local DiffModified = {
+local diff_modified = {
     provider = 'DiffModified',
     condition = checkwidth,
     -- icon = ' ',
@@ -166,7 +170,7 @@ local DiffModified = {
     highlight = { colors.blue, colors.line_bg },
 }
 
-local DiffRemove = {
+local diff_remove = {
     provider = 'DiffRemove',
     condition = checkwidth,
     -- icon = ' ',
@@ -176,43 +180,49 @@ local DiffRemove = {
 
 ---------- RIGHT ----------
 
-local DiagnosticError = {
+local diagnostic_error = {
     provider = 'DiagnosticError',
     icon = '  ',
     highlight = { colors.red, colors.line_bg },
 }
 
-local DiagnosticWarn = {
+local diagnostic_warning = {
     provider = 'DiagnosticWarn',
     icon = '  ',
     highlight = { colors.orange, colors.line_bg },
 }
-local DiagnosticHint = {
+local diagnostic_hint = {
     provider = 'DiagnosticHint',
     icon = '  ',
     highlight = { colors.yellow, colors.line_bg },
 }
 
-local FileFormat = {
-    provider = 'FileFormat',
+local os = {
+    provider = function()
+        if has('mac') then
+            return 'macOS'
+        elseif has('linux') then
+            return 'Linux'
+        end
+    end,
     separator = ' ',
     separator_highlight = { colors.bg, colors.line_bg },
     highlight = { colors.fg, colors.line_bg, 'bold' },
 }
 
-local LineInfo = {
+local line_info = {
     provider = 'LineColumn',
     separator = ' | ',
     separator_highlight = { colors.blue, colors.line_bg },
     highlight = { colors.fg, colors.line_bg },
 }
-local PerCent = {
+local file_percent = {
     provider = 'LinePercent',
     separator = ' ',
     separator_highlight = { colors.line_bg, colors.line_bg },
     highlight = { colors.fg, colors.line_bg, 'bold' },
 }
-local LatexWordCount = {
+local latex_num_words = {
     provider = function()
         return get_word_count()
     end,
@@ -225,7 +235,7 @@ local LatexWordCount = {
 
 ---------- INACTIVE ----------
 
-local BufferType = {
+local buffer_type = {
     provider = function()
         local ft = require('galaxyline.providers.buffer').get_buffer_filetype()
         local fname = require('galaxyline.providers.fileinfo').get_current_file_name()
@@ -238,14 +248,14 @@ local BufferType = {
     highlight = { colors.fg, colors.line_bg, 'bold' },
 }
 
-local Line = {
+local line = {
     provider = function()
         return ' '
     end,
     highlight = { colors.fg, colors.line_bg, 'bold' },
 }
 
-local BufferIcon = {
+local buffer_icon = {
     provider = 'BufferIcon',
     highlight = { colors.fg, colors.bg },
 }
@@ -253,31 +263,31 @@ local BufferIcon = {
 ---------- ASSEMBLE ----------
 
 gls.left = {
-    { ViMode = ViMode },
-    { FileIcon = FileIcon },
-    { FileName = FileName },
-    { GitIcon = GitIcon },
-    { GitBranch = GitBranch },
-    { DiffAdd = DiffAdd },
-    { DiffModified = DiffModified },
-    { DiffRemove = DiffRemove },
+    { mode = mode },
+    { file_icon = file_icon },
+    { file_name = file_name },
+    { git_icon = git_icon },
+    { git_branch = git_branch },
+    { diff_add = diff_add },
+    { diff_modified = diff_modified },
+    { diff_remove = diff_remove },
 }
 
 gls.right = {
-    { DiagnosticError = DiagnosticError },
-    { DiagnosticWarn = DiagnosticWarn },
-    { DiagnosticHint = DiagnosticHint },
-    { LatexWordCount = LatexWordCount },
-    { FileFormat = FileFormat },
-    { LineInfo = LineInfo },
-    { PerCent = PerCent },
+    { diagnostic_error = diagnostic_error },
+    { diagnostic_warning = diagnostic_warning },
+    { diagnostic_hint = diagnostic_hint },
+    { latex_num_words = latex_num_words },
+    { os = os },
+    { line_info = line_info },
+    { file_percent = file_percent },
 }
 
 gls.short_line_left = {
-    { BufferType = BufferType },
-    { Line = Line },
+    { buffer_type = buffer_type },
+    { line = line },
 }
 
 gls.short_line_right = {
-    { BufferIcon = BufferIcon },
+    { buffer_icon = buffer_icon },
 }
