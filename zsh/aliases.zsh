@@ -4,6 +4,8 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias f="find . |grep"
 
+alias nvim_build="~/Applications/neovim/build/bin/nvim"
+
 alias report="python3 ~/projects/scripts/latex_template.py"
 alias submissions="python3 ~/projects/grader/grade.py"
 alias weather="python3 ~/projects/weatherscrape.py"
