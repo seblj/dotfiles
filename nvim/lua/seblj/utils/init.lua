@@ -185,14 +185,44 @@ M.save_and_exec = function()
     end
 end
 
-M.augroup('AfterPackerCompile', {
-    event = 'User',
-    pattern = 'PackerComplete',
-    command = function()
-        vim.cmd('PackerLoad vim-test vim-ultest')
-        vim.cmd('silent UpdateRemotePlugins')
-    end,
-})
+M.difference = function(a, b)
+    local aa = {}
+    for _, v in pairs(a) do
+        aa[v] = true
+    end
+    for _, v in pairs(b) do
+        aa[v] = nil
+    end
+    local ret = {}
+    local n = 0
+    for _, v in pairs(a) do
+        if aa[v] then
+            n = n + 1
+            ret[n] = v
+        end
+    end
+    return ret
+end
+
+M.union = function(a, b)
+    local list = {}
+    list = a
+    for _, v in pairs(b) do
+        if not vim.tbl_contains(list, v) then
+            table.insert(list, v)
+        end
+    end
+    return list
+end
+
+-- M.augroup('AfterPackerCompile', {
+--     event = 'User',
+--     pattern = 'PackerComplete',
+--     command = function()
+--         vim.cmd('PackerLoad vim-test vim-ultest')
+--         vim.cmd('silent UpdateRemotePlugins')
+--     end,
+-- })
 
 ---------- HIDE CURSOR ----------
 

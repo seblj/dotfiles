@@ -5,6 +5,7 @@ local M = {}
 M.handlers = function()
     vim.diagnostic.config({
         virtual_text = { spacing = 4, prefix = '●' },
+        float = { border = 'rounded', source = 'if_many' },
         signs = true,
         update_in_insert = false,
     })

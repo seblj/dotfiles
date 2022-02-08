@@ -18,18 +18,7 @@ local core_utils = {
 
 local telescope_selected = {}
 
-local merge_lists = function(a, b)
-    local list = {}
-    list = a
-    for _, v in pairs(b) do
-        if not vim.tbl_contains(list, v) then
-            table.insert(list, v)
-        end
-    end
-    return list
-end
-
-local total = merge_lists(languages, core_utils)
+local total = utils.union(languages, core_utils)
 
 local run_cht = function(query)
     local selected = telescope_selected[1]

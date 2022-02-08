@@ -132,31 +132,16 @@
             "manipulators": [
               {
                 "type": "basic",
-                "description": "Cmd+right_shift for CAPS",
+                "description": "Hyper + enter for caps",
                 "from": {
-                  "key_code": "right_shift",
+                  "key_code": "return_or_enter",
                   "modifiers": {
-                    "mandatory": "command",
-                    "optional": ["any"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "caps_lock"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "manipulators": [
-              {
-                "type": "basic",
-                "description": "Cmd+right_shift for CAPS",
-                "from": {
-                  "key_code": "left_shift",
-                  "modifiers": {
-                    "mandatory": "command",
+                    "mandatory": [
+                      "left_shift",
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ],
                     "optional": ["any"]
                   }
                 },

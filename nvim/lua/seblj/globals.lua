@@ -1,8 +1,9 @@
 -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/globals/init.lua
 
-P = function(v)
-    print(vim.inspect(v))
-    return v
+P = function(...)
+    for _, v in ipairs({ ... }) do
+        print(vim.inspect(v))
+    end
 end
 
 if pcall(require, 'plenary') then

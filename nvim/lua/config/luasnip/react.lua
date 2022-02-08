@@ -24,8 +24,8 @@ M.typescriptreact = make({
     component = react_component,
 })
 
-M.javascriptreact = {
+M.javascriptreact = make({
     component = react_component,
-}
+})
 
 return M

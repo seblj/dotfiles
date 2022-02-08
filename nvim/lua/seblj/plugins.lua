@@ -52,6 +52,7 @@ local plugins = function(use)
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
     use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
+    use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
@@ -71,7 +72,6 @@ local plugins = function(use)
 
     -- Git
     use({ 'pwntester/octo.nvim', config = setup('octo'), cmd = 'Octo' })
-    use({ 'sindrets/diffview.nvim', config = conf('diffview'), cmd = { 'DiffviewOpen', 'DiffviewFileHistory' } })
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'rhysd/conflict-marker.vim', config = conf('conflict'), event = 'BufReadPre' })
 

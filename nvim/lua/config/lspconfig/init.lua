@@ -22,20 +22,6 @@ end
 ---------- MAPPINGS ----------
 
 local mappings = function()
-    local popupopts = {
-        float = {
-            border = 'rounded',
-        },
-    }
-    local diagnostic_next = function()
-        vim.diagnostic.goto_next(popupopts)
-    end
-    local diagnostic_prev = function()
-        vim.diagnostic.goto_prev(popupopts)
-    end
-    local diagnostic_line = function()
-        vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' })
-    end
     local keymap = function(mode, l, r, opts)
         opts = opts or {}
         opts.buffer = true
@@ -49,9 +35,9 @@ local mappings = function()
     keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Lsp: Hover' })
     keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Lsp: Rename' })
     keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Lsp: Code action' })
-    keymap('n', 'gp', diagnostic_prev, { desc = 'Lsp: Previous diagnostic' })
-    keymap('n', 'gn', diagnostic_next, { desc = 'Lsp: Next diagnostic' })
-    keymap('n', '<leader>cd', diagnostic_line, { desc = 'Lsp: Line diagnostic' })
+    keymap('n', 'gp', vim.diagnostic.goto_prev, { desc = 'Lsp: Previous diagnostic' })
+    keymap('n', 'gn', vim.diagnostic.goto_next, { desc = 'Lsp: Next diagnostic' })
+    keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
