@@ -39,6 +39,7 @@ telescope.setup({
 })
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('file_browser')
+require('telescope').load_extension('notify')
 
 keymap('n', '<leader>ff', utils.find_files, { desc = 'Telescope: Find files' })
 keymap('n', '<leader>fg', utils.git_files, { desc = 'Telescope: Git files' })

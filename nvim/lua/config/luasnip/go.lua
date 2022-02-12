@@ -117,7 +117,7 @@ return make({
     ]],
         {
             tab = '\t',
-            go_ret_vals = d(0, go_ret_vals, {}),
+            go_ret_vals = d(1, go_ret_vals, {}),
             insert = i(0),
         }
     ),

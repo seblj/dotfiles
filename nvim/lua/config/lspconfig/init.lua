@@ -83,6 +83,8 @@ M.make_config = function()
             local ft = vim.api.nvim_buf_get_option(0, 'ft')
             if vim.tbl_contains(disable_formatters, client.name) or nls_has_formatter(ft) then
                 client.resolved_capabilities.document_formatting = false
+            else
+                client.resolved_capabilities.document_formatting = true
             end
         end,
     }
