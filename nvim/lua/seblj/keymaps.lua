@@ -2,7 +2,6 @@
 
 local utils = require('seblj.utils')
 local resize = require('seblj.utils.resize')
-local alt_j, alt_k, alt_o = utils.get_alt_keys()
 local keymap = vim.keymap.set
 local command = vim.api.nvim_add_user_command
 
@@ -12,8 +11,12 @@ vim.g.maplocalleader = '\\'
 
 ---------- GENERAL MAPPINGS ----------
 
+keymap({ 'n', 'v', 'i' }, 'œ', '<A-o>', { remap = true, desc = 'Fix <A-o> mapping on mac' })
+keymap({ 'n', 'v', 'i' }, '√', '<A-j>', { remap = true, desc = 'Fix <A-j> mapping on mac' })
+keymap({ 'n', 'v', 'i' }, 'ª', '<A-k>', { remap = true, desc = 'Fix <A-k> mapping on mac' })
+
 keymap('n', '<leader>r', utils.reload_config, { desc = 'Reload config' })
-keymap('n', alt_o, '<Tab>', { desc = 'Alt-o for jumplist' })
+keymap('n', '<A-o>', '<Tab>', { desc = 'Alt-o for jumplist' })
 keymap('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', { expr = true, desc = 'Next completion' })
 keymap('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', { expr = true, desc = 'Previous completion' })
 keymap('n', '<Tab>', 'gt', { desc = 'Next tab' })
@@ -44,13 +47,13 @@ keymap('n', '<S-Down>', resize.resize_down, { desc = 'Resize split down' })
 keymap('v', '<', '<gv', { desc = 'Keep visual mode on dedent' })
 keymap('v', '>', '>gv', { desc = 'Keep visual mode on indent' })
 
-keymap('n', alt_j, ':m.+1<CR>==', { desc = 'Move current line down' })
-keymap('v', alt_j, ":m '>+1<CR>gv=gv", { desc = 'Move current line down' })
-keymap('i', alt_j, '<Esc>:m .+1<CR>==gi', { desc = 'Move current line down' })
+keymap('n', '<A-j>', ':m.+1<CR>==', { desc = 'Move current line down' })
+keymap('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'Move current line down' })
+keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move current line down' })
 
-keymap('n', alt_k, ':m.-2<CR>==', { desc = 'Move current line up' })
-keymap('v', alt_k, ":m '<-2<CR>gv=gv", { desc = 'Move current line up' })
-keymap('i', alt_k, '<Esc>:m .-2<CR>==gi', { desc = 'Move current line up' })
+keymap('n', '<A-k>', ':m.-2<CR>==', { desc = 'Move current line up' })
+keymap('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move current line up' })
+keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move current line up' })
 
 keymap('n', '<leader>j', 'J', { desc = 'Join [count] lines' })
 
