@@ -15,6 +15,7 @@ local indent = {
     'tsx',
     'typescript',
     'vue',
+    'javascript',
 }
 
 require('nvim-treesitter.configs').setup({

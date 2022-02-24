@@ -122,7 +122,7 @@ local file_icon = {
 local file_name = {
     provider = function()
         if vim.api.nvim_buf_get_option(0, 'ft') == 'dirbuf' then
-            return vim.fn.expand('%:p:h')
+            return vim.fn.expand('%:p:h') .. ' '
         end
         return require('galaxyline.providers.fileinfo').get_current_file_name()
     end,
@@ -200,9 +200,9 @@ local diagnostic_hint = {
 local os = {
     provider = function()
         if has('mac') then
-            return 'macOS'
+            return ' '
         elseif has('linux') then
-            return 'Linux'
+            return ' '
         end
     end,
     separator = ' ',

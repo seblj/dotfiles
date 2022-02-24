@@ -96,7 +96,7 @@ M.setup = function()
         showing = false,
         num_actions = 0,
     }
-    vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'YellowSign' })
+    vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'DiagnosticInfo' })
     augroup('SetupLightbulb', {
         event = { 'CursorHold', 'CursorMoved' },
         pattern = '<buffer>',

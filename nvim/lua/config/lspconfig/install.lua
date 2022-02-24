@@ -10,6 +10,7 @@ local servers = {
     html = 'npm i -g vscode-langservers-extracted',
     bashls = 'npm i -g bash-language-server',
     vuels = 'npm install -g vls',
+    volar = 'npm install -g @volar/server',
     jsonls = 'npm i -g vscode-langservers-extracted',
     graphql = 'npm install -g graphql-language-service-cli',
     tsserver = 'npm install -g typescript typescript-language-server',

@@ -16,6 +16,14 @@ return {
         },
     },
 
+    volar = {
+        init_options = {
+            typescript = {
+                serverPath = '/usr/local/lib/node_modules/typescript/lib/tsserverlibrary.js',
+            },
+        },
+    },
+
     sumneko_lua = require('lua-dev').setup({
         library = {
             plugins = false,

@@ -61,7 +61,7 @@ local plugins = function(use)
     use({ 'b0o/schemastore.nvim' })
 
     -- Completion
-    use({ 'hrsh7th/nvim-cmp', config = conf('cmp'), branch = 'feat/completion-menu-borders' })
+    use({ 'hrsh7th/nvim-cmp', config = conf('cmp'), branch = 'dev' })
     use({ 'hrsh7th/cmp-cmdline' })
     use({ 'hrsh7th/cmp-nvim-lsp' })
     use({ 'hrsh7th/cmp-buffer' })
@@ -71,7 +71,6 @@ local plugins = function(use)
     use({ 'onsails/lspkind-nvim' })
 
     -- Git
-    use({ 'pwntester/octo.nvim', config = setup('octo'), cmd = 'Octo' })
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'rhysd/conflict-marker.vim', config = conf('conflict'), event = 'BufReadPre' })
 

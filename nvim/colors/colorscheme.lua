@@ -4,22 +4,13 @@ local highlight = function(colors)
     end
 end
 
-vim.g.colors_name = 'colorscheme'
-
 ---------- COLORS ----------
-
--- Delta colors
--- diff_red = '#3f0002',
--- diff_red_hard = '#901111',
--- diff_green = '#002800',
--- diff_green_hard = '#026000',
 
 local c = {
     bg = '#1c1c1c',
     bg2 = '#363944',
     bg3 = '#121212',
     fg = '#eeeeee',
-    error = '#ff0033',
     diff_red = '#55393d',
     diff_green = '#394634',
     diff_blue = '#354157',
@@ -33,79 +24,64 @@ local c = {
     grey = '#7f8490',
 }
 
----------- GROUPS ----------
-
 highlight({
-    Normal = { fg = c.fg, bg = c.bg },
-    NormalFloat = { fg = c.fg, bg = c.bg },
-    FloatBorder = { fg = c.border },
-    Folded = { fg = c.grey, bg = c.bg },
-    SignColumn = { fg = c.fg },
-    FoldColumn = { fg = c.grey },
+    ---------- HIGHLIGHTING GROUPS ----------
+
     ColorColumn = { bg = c.bg },
-    Search = { fg = c.bg, bg = c.green },
-    IncSearch = { fg = c.bg, bg = c.red },
     Conceal = { fg = c.grey },
-    Whitespace = { fg = c.bg2 },
-
     Cursor = { reverse = true },
-    vCursor = { link = 'Cursor' },
-    iCursor = { link = 'Cursor' },
-    lCursor = { link = 'Cursor' },
-    TransparentCursor = { fg = c.bg, bg = c.bg },
-
-    CursorLine = { fg = c.red, bg = c.bg },
     CursorColumn = { bg = c.bg },
-    LineNr = { fg = c.grey },
+    CursorLine = { fg = c.red, bg = c.bg },
     CursorLineNr = { fg = c.fg },
-
+    CursorTransparent = { fg = c.bg, bg = c.bg },
     DiffAdd = { bg = c.diff_green },
     DiffChange = { bg = c.diff_blue },
     DiffDelete = { bg = c.diff_red },
     DiffText = { fg = c.bg, bg = c.fg },
     Directory = { fg = c.green },
-
     ErrorMsg = { fg = c.red },
-    WarningMsg = { fg = c.yellow, bold = true },
+    FloatBorder = { fg = c.border },
+    FoldColumn = { fg = c.grey },
+    Folded = { fg = c.grey, bg = c.bg },
+    IncSearch = { fg = c.bg, bg = c.red },
+    LineNr = { fg = c.grey },
+    MatchParen = { bg = c.bg2 },
     ModeMsg = { fg = c.fg, bold = true },
     MoreMsg = { fg = c.blue, bold = true },
-    Question = { fg = c.yellow },
-
+    NonText = { fg = c.bg2 },
+    Normal = { fg = c.fg, bg = c.bg },
+    NormalFloat = { fg = c.fg, bg = c.bg },
     Pmenu = { fg = c.fg, bg = c.bg2 },
     PmenuSbar = { bg = c.bg2 },
     PmenuSel = { fg = c.bg, bg = c.green },
     PmenuThumb = { bg = c.grey },
-    WildMenu = { link = 'PmenuSel' },
-
-    MatchParen = { bg = c.bg2 },
-    NonText = { fg = c.bg2 },
+    Question = { fg = c.yellow },
+    QuickFixLine = { fg = c.blue, bold = true },
+    Search = { fg = c.bg, bg = c.green },
+    SignColumn = { fg = c.fg },
     SpecialKey = { fg = c.bg2 },
-
     SpellBad = { fg = c.red, undercurl = true, sp = c.red },
     SpellCap = { fg = c.yellow, undercurl = true, sp = c.yellow },
     SpellLocal = { fg = c.blue, undercurl = true, sp = c.blue },
     SpellRare = { fg = c.purple, undercurl = true, sp = c.purple },
-
     StatusLine = { fg = c.fg },
-    StatusLineTerm = { fg = c.fg, bg = c.bg2 },
     StatusLineNC = { fg = c.grey, bg = c.bg },
+    StatusLineTerm = { fg = c.fg, bg = c.bg2 },
     StatusLineTermNC = { fg = c.grey, bg = c.bg },
-
     TabLine = { fg = c.grey, bg = c.bg3 },
     TabLineFill = { fg = c.grey, bg = c.bg3 },
     TabLineSel = { fg = c.fg, bg = c.bg, italic = true, bold = true },
-
     VertSplit = { fg = c.grey },
     Visual = { bg = c.bg2 },
     VisualNOS = { bg = c.bg2, underline = true },
-    QuickFixLine = { fg = c.blue, bold = true },
+    WarningMsg = { fg = c.yellow, bold = true },
+    Whitespace = { fg = c.bg2 },
+    WildMenu = { link = 'PmenuSel' },
+    iCursor = { link = 'Cursor' },
+    lCursor = { link = 'Cursor' },
+    vCursor = { link = 'Cursor' },
 
-    RedSign = { fg = c.red, bg = c.bg },
-    OrangeSign = { fg = c.orange, bg = c.bg },
-    YellowSign = { fg = c.yellow, bg = c.bg },
-    GreenSign = { fg = c.green, bg = c.bg },
-    BlueSign = { fg = c.blue, bg = c.bg },
-    PurpleSign = { fg = c.purple, bg = c.bg },
+    ---------- SYNTAX GROUP NAMES ----------
 
     Boolean = { fg = c.purple },
     Character = { fg = c.yellow },
@@ -148,7 +124,6 @@ highlight({
     TSConstructor = { fg = c.fg },
     TSConstBuiltin = { fg = c.orange },
     TSCustomType = { fg = c.purple },
-    -- TSError = { link = 'Normal' },
     TSField = { fg = c.green },
     TSFuncBuiltin = { link = 'Function' },
     TSFuncMacro = { link = 'Function' },
@@ -157,18 +132,12 @@ highlight({
     TSNote = { fg = c.blue, bold = true },
     TSParameter = { fg = c.fg },
     TSParameterReference = { link = 'TSParameter' },
-    TSProperty = { fg = c.green },
+    TSProperty = { fg = c.fg },
     TSPunctSpecial = { fg = c.red },
     TSStringEscape = { link = 'String' },
     TSTag = { link = 'Tag' },
     TSTagDelimiter = { fg = c.red },
     TSVariableBuiltin = { fg = c.orange },
-
-    ---------- LANGUAGE SPECIFIC ----------
-
-    ---------- C ----------
-
-    cTSProperty = { link = 'NONE' },
 
     ---------- NVIM LSPCONFIG ----------
 
@@ -180,36 +149,10 @@ highlight({
     DiagnosticUnderlineWarn = { undercurl = true, sp = c.orange },
     DiagnosticUnderlineInfo = { undercurl = true, sp = c.yellow },
     DiagnosticUnderlineHint = { undercurl = true, sp = c.fg },
-    LspRenamePrompt = { fg = c.red },
     LspSignatureActiveParameter = { fg = c.red },
     LspReferenceText = { bg = c.bg2 },
     LspReferenceRead = { bg = c.bg2 },
     LspReferenceWrite = { bg = c.bg2 },
-
-    ---------- TEX ----------
-
-    texStatement = { fg = c.blue },
-    texOnlyMath = { fg = c.grey },
-    texDefName = { fg = c.yellow },
-    texNewCmd = { fg = c.orange },
-    texCmdName = { fg = c.blue },
-    texBeginEnd = { fg = c.red },
-    texBeginEndName = { fg = c.green },
-    texDocType = { fg = c.red },
-    texDocTypeArgs = { fg = c.orange },
-    texInputFile = { fg = c.green },
-    texFileArg = { fg = c.green },
-    texCmd = { fg = c.blue },
-    texCmdPackage = { fg = c.blue },
-    texCmdDef = { fg = c.red },
-    texDefArgName = { fg = c.yellow },
-    texCmdNewcmd = { fg = c.red },
-    texCmdClass = { fg = c.red },
-    texCmdTitle = { fg = c.red },
-    texCmdAuthor = { fg = c.red },
-    texCmdEnv = { fg = c.red },
-    texCmdPart = { fg = c.red },
-    texEnvArgName = { fg = c.green },
 
     ---------- GIT ----------
 
@@ -224,8 +167,8 @@ highlight({
 
     ConflictMarkerBegin = { fg = c.red },
     ConflictMarkerSeparator = { fg = c.red },
-    ConflictMarkerOurs = { bg = c.diff_green },
-    ConflictMarkerTheirs = { bg = c.diff_blue },
+    ConflictMarkerOurs = { link = 'DiffAdd' },
+    ConflictMarkerTheirs = { link = 'DiffChange' },
     ConflictMarkerEnd = { fg = c.red },
 
     ---------- HELP ----------
@@ -250,15 +193,9 @@ highlight({
     NvimTreeOpenedFolderName = { link = 'NvimTreeFolderName' },
     NvimTreeEmptyFolderName = { link = 'NvimTreeFolderName' },
 
-    ---------- TELESCOPE ----------
-
-    TelescopePromptPrefix = { fg = c.red },
-
     ---------- CMP ----------
 
     CmpCompletionWindow = { bg = c.bg },
-    CmpCompletionWindowBorder = { link = 'FloatBorder' },
-    CmpDocumentationWindowBorder = { link = 'FloatBorder' },
     CmpItemAbbrMatch = { fg = c.purple },
     CmpItemKind = { fg = c.blue },
     CmpItemKindClass = { fg = c.blue },

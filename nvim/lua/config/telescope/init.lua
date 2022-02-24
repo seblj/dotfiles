@@ -7,6 +7,7 @@ local telescope = require('telescope')
 local builtin = require('telescope.builtin')
 local cht = require('seblj.cht')
 local extensions = telescope.extensions
+local command = vim.api.nvim_add_user_command
 
 telescope.setup({
     defaults = {
@@ -54,5 +55,8 @@ keymap('n', '<leader>fb', builtin.buffers, { desc = 'Telescope: Buffers' })
 keymap('n', '<leader>fk', builtin.keymaps, { desc = 'Telescope: Keymaps' })
 keymap('n', '<leader>fa', builtin.autocommands, { desc = 'Telescope: Autocommands' })
 keymap('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope: Helptags' })
+keymap('n', '<leader>fc', builtin.command_history, { desc = 'Telescope: Command history' })
 keymap('n', '<leader>vo', builtin.vim_options, { desc = 'Telescope: Vim options' })
 keymap('n', '<leader>fq', cht.telescope_cht, { desc = 'curl cht.sh' })
+
+command('NodeModules', utils.find_node_modules, { bang = true })

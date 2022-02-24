@@ -96,7 +96,6 @@ M.popup_create = function(opts)
         vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
         vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')
         vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix)
         vim.api.nvim_buf_set_option(popup_bufnr, 'ft', 'UIPrompt')
     else
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })

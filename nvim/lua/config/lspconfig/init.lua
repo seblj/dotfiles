@@ -38,6 +38,7 @@ local mappings = function()
     keymap('n', 'gp', vim.diagnostic.goto_prev, { desc = 'Lsp: Previous diagnostic' })
     keymap('n', 'gn', vim.diagnostic.goto_next, { desc = 'Lsp: Next diagnostic' })
     keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
+    keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Lsp: Diagnostics in qflist' })
 
     augroup('AutoFormat', {
         event = 'BufWritePre',
@@ -62,6 +63,7 @@ end
 
 local disable_formatters = {
     'vuels',
+    'volar',
     'tsserver',
 }
 
@@ -98,7 +100,8 @@ local servers = {
     'texlab',
     'html',
     'bashls',
-    'vuels',
+    -- 'vuels',
+    'volar',
     'jsonls',
     'graphql',
     'tsserver',
@@ -108,7 +111,7 @@ local servers = {
     'omnisharp',
     'dockerls',
     'eslint',
-    'ltex',
+    -- 'ltex',
     -- 'grammarly',
 }
 

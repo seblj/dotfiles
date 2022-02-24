@@ -72,10 +72,7 @@ vim.ui.input = function(opts, on_confirm)
             max_width = 50,
             lines = { opts.prompt },
             enter = true,
-            prompt = {
-                prefix = options.prefix,
-                highlight = 'LspRenamePrompt',
-            },
+            prompt = { prefix = options.prefix },
             on_confirm = function()
                 local input = vim.trim(vim.fn.getline('.'):sub(#options.prefix + 1, -1))
                 vim.api.nvim_win_close(0, true)

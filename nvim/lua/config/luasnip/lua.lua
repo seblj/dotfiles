@@ -3,6 +3,7 @@ local make = utils.make
 local ls = require('luasnip')
 local i = ls.insert_node
 local t = ls.text_node
+local fmt = require('luasnip.extras.fmt').fmt
 
 return make({
     ['function'] = {
@@ -23,6 +24,9 @@ return make({
         i(0),
         t({ '', 'end' }),
     },
+    headline = fmt([[---------- {insert} ----------]], {
+        insert = i(0),
+    }),
     ignore = {
         t({ '-- stylua: ignore' }),
     },

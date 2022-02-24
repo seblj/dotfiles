@@ -216,7 +216,7 @@ end
 local guicursor_saved = vim.opt.guicursor
 
 local hide_cursor = function()
-    vim.opt.guicursor = vim.opt.guicursor + 'a:TransparentCursor/lCursor'
+    vim.opt.guicursor = vim.opt.guicursor + 'a:CursorTransparent/lCursor'
 end
 
 local restore_cursor = function()
