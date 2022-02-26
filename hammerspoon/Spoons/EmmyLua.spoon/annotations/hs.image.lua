@@ -14,6 +14,21 @@ hs.image = M
 ---@type table
 M.additionalImageNames = {}
 
+-- Creates a new bitmap representation of the image and returns it as a new hs.image object
+--
+-- Parameters:
+--  * `size` - an optional table specifying the height and width the image should be scaled to in the bitmap. The size is specified as table with `h` and `w` keys set. Defaults to the size of the source image object.
+--  * `gray` - an optional boolean, default false, specifying whether or not the bitmap should be converted to grayscale (true) or left as RGB color (false).
+--
+-- Returns:
+--  * a new hs.image object
+--
+-- Notes:
+--  * a bitmap representation of an image is rendered at the specific size specified (or inherited) when it is generated -- if you later scale it to a different size, the bitmap will be scaled as larger or smaller pixels rather than smoothly.
+--
+--  * this method may be useful when preparing images for other devices (e.g. `hs.streamdeck`).
+function M:bitmapRepresentation(size, gray, ...) end
+
 -- Reads the color of the pixel at the specified location.
 --
 -- Parameters:
@@ -274,4 +289,15 @@ M.systemImageNames = {}
 --  * Template images consist of black and clear colors (and an alpha channel). Template images are not intended to be used as standalone images and are usually mixed with other content to create the desired final appearance.
 --  * Images with this flag set to true usually appear lighter than they would with this flag set to false.
 function M:template(state, ...) end
+
+-- Converts an image to an ASCII representation of the image in the form of a string.
+--
+-- Parameters:
+--  * width - An optional width in pixels (defaults to image width if nothing supplied).
+--  * height - An optional height in pixels (defaults to image height if nothing supplied).
+--
+-- Returns:
+--  * A string.
+---@return string
+function M:toASCII(width, height, ...) end
 

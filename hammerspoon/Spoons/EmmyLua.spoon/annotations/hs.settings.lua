@@ -106,7 +106,6 @@ function M.setDate(key, val, ...) end
 --
 -- Notes:
 --  * the identifier is required so that multiple callbacks for the same key can be registered by separate modules; it's value doesn't affect what is being watched but does need to be unique between multiple watchers of the same key.
---
 --  * Does not work with keys that include a period (.) in the key name because KVO uses dot notation to specify a sequence of properties.  If you know of a way to escape periods so that they are watchable as NSUSerDefault key names, please file an issue and share!
 function M.watchKey(identifier, key, fn, ...) end
 

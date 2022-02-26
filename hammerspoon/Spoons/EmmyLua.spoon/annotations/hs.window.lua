@@ -500,7 +500,7 @@ function M:moveToScreen(screen, noResize, ensureInScreenBounds, duration, ...) e
 --  * The `hs.window` object
 --
 -- Notes:
---  * An example, which would make a window fill the top-left quarter of the screen: `win:moveToUnit'[0,0,50,50]'`
+--  * An example, which would make a window fill the top-left quarter of the screen: `win:moveToUnit'[0.0,0.0,0.5,0.5]'`
 ---@return hs.window
 function M:moveToUnit(unitrect, duration, ...) end
 

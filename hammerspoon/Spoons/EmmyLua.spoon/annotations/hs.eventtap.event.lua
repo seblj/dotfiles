@@ -180,14 +180,12 @@ function M:getTouchDetails() end
 --    * `timestamp`                  - a number representing the time the touch was detected. This number corresponds to seconds since the last system boot, not including time the computer has been asleep. Comparable to `hs.timer.absoluteTime() / 1000000000`.
 --    * `touching`                   - a boolean specifying whether or not the touch phase is "began", "moved", or "stationary" (i.e. is *not* "ended" or "cancelled").
 --    * `type`                       - a string specifying the type of touch. A "direct" touch will indicate a touchbar, while a trackpad will report "indirect".
---
---    * The following fields will be present when the touch is from a touchpad (`type` == "indirect")`
---      * `normalizedPosition`         - a point table specifying the `x` and `y` coordinates of the touch, each normalized to be a value between 0.0 and 1.0. `{ x = 0, y = 0 }` is the lower left corner of the touch device.
---      * `previousNormalizedPosition` - a point table specifying the `x` and `y` coordinates of the previous position for this specific touch (as linked by `identity`) normalezed to values between 0.0 and 1.0.
---
---    * The following fields will be present when the touch is from the touchbar (`type` == "direct")`
---      * `location`                   - a point table specifying the `x` and `y` coordinates of the touch location within the touchbar.
---      * `previousLocation`           - a point table specifying the `x` and `y` coordinates of the previous location for this specific touch (as linked by `identity`) within the touchbar.
+--  * The following fields will be present when the touch is from a touchpad (`type` == "indirect")`
+--   * `normalizedPosition`         - a point table specifying the `x` and `y` coordinates of the touch, each normalized to be a value between 0.0 and 1.0. `{ x = 0, y = 0 }` is the lower left corner of the touch device.
+--   * `previousNormalizedPosition` - a point table specifying the `x` and `y` coordinates of the previous position for this specific touch (as linked by `identity`) normalezed to values between 0.0 and 1.0.
+--  * The following fields will be present when the touch is from the touchbar (`type` == "direct")`
+--   * `location`                   - a point table specifying the `x` and `y` coordinates of the touch location within the touchbar.
+--   * `previousLocation`           - a point table specifying the `x` and `y` coordinates of the previous location for this specific touch (as linked by `identity`) within the touchbar.
 function M:getTouches() end
 
 -- Gets the type of the event
@@ -200,7 +198,6 @@ function M:getTouches() end
 --
 -- Notes:
 --  * some newer events are grouped into a more generic event for watching purposes and the specific event type is determined by examining the event through the Cocoa API. The primary example of this is for gestures on a trackpad or touches of the touchbar, as all of these are grouped under the `hs.eventtap.event.types.gesture` event. For example:
---
 --      ```lua
 --      myTap = hs.eventtap.new( { hs.eventtap.event.types.gesture }, function(e)
 --          local gestureType = e:getType(true)
@@ -285,7 +282,7 @@ function M.newEventFromData(data, ...) end
 --   * `beginSwipeDown` - Begin a swipe down.
 --   * `endSwipeDown` - End a swipe down.
 --
---  * Example Usage:
+-- Examples:
 --   ```lua
 --   hs.hotkey.bind({"cmd", "alt", "ctrl"}, "1", function()
 --       print("Magnify slightly")
@@ -336,21 +333,20 @@ function M.newGesture(gestureType, gestureValue, ...) end
 -- Notes:
 --  * The original version of this constructor utilized a shortcut which merged `flagsChanged` and `keyUp`/`keyDown` events into one.  This approach is still supported for backwards compatibility and because it *does* work in most cases.
 --  * According to Apple Documentation, the proper way to perform a keypress with modifiers is through multiple key events; for example to generate 'Å', you should do the following:
--- ~~~lua
+--  ~~~lua
 --     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, true):post()
 --     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post()
 --     hs.eventtap.event.newKeyEvent("a", true):post()
 --     hs.eventtap.event.newKeyEvent("a", false):post()
 --     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post()
 --     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, false):post()
--- ~~~
+--  ~~~
 --  * The shortcut method is still supported, though if you run into odd behavior or need to generate `flagsChanged` events without a corresponding `keyUp` or `keyDown`, please check out the syntax demonstrated above.
--- ~~~lua
+--  ~~~lua
 --     hs.eventtap.event.newKeyEvent({"shift", "alt"}, "a", true):post()
 --     hs.eventtap.event.newKeyEvent({"shift", "alt"}, "a", false):post()
--- ~~~
---
--- * The shortcut approach is still limited to generating only the left version of modifiers.
+--  ~~~
+--  * The shortcut approach is still limited to generating only the left version of modifiers.
 ---@return hs.eventtap.event
 function M.newKeyEvent(mods, key, isdown, ...) end
 
@@ -451,10 +447,10 @@ function M:post(app, ...) end
 
 -- A table containing property types for use with `hs.eventtap.event:getProperty()` and `hs.eventtap.event:setProperty()`.  The table supports forward (label to number) and reverse (number to label) lookups to increase its flexibility.
 --
--- The constants defined in this table are as follows:
+-- Notes:
+--  * The constants defined in this table are as follows:
 --    (I) in the description indicates that this property is returned or set as an integer
 --    (N) in the description indicates that this property is returned or set as a number (floating point)
---
 --   * eventSourceGroupID                                      -- (I) The event source Unix effective GID.
 --   * eventSourceStateID                                      -- (I) The event source state ID used to create this event.
 --   * eventSourceUnixProcessID                                -- (I) The event source Unix process ID.
@@ -519,36 +515,32 @@ M.properties = nil
 
 -- A table containing key-value pairs describing the raw modifier flags which can be manipulated with [hs.eventtap.event:rawFlags](#rawFlags).
 --
--- This table and [hs.eventtap.event:rawFlags](#rawFlags) are both considered experimental as the full meanings behind some of these flags and what combinations are likely to be observed is still being determined.  It is possible that some of these key names may change in the future.
---
--- At present, what is known about the flags is presented here:
---  * alternate                 - Corresponds to the left (or only) alt key on the keyboard
---  * command                   - Corresponds to the left (or only) cmd key on the keyboard
---  * control                   - Corresponds to the left (or only) ctrl key on the keyboard
---  * shift                     - Corresponds to the left (or only) shift key on the keyboard
---  * numericPad                - Indicates that the key corresponds to one defined as belonging to the numeric keypad, if present
---  * secondaryFn               - Indicates the fn key found on most modern Macintosh laptops.  May also be observed with function and other special keys (arrows, page-up/down, etc.)
---  * deviceRightAlternate      - Corresponds to the right alt key on the keyboard (if present)
---  * deviceRightCommand        - Corresponds to the right cmd key on the keyboard (if present)
---  * deviceRightControl        - Corresponds to the right ctrl key on the keyboard (if present)
---  * deviceRightShift          - Corresponds to the right alt key on the keyboard (if present)
---  * nonCoalesced              - Indicates that multiple mouse movements are not being coalesced into one event if delivery of the event has been delayed
---
--- The following are also defined in IOLLEvent.h, but the description is a guess since I have not observed them myself
---  * alphaShift                - related to the caps-lock in some way?
---  * alphaShiftStateless       - related to the caps-lock in some way?
---  * deviceAlphaShiftStateless - related to the caps-lock in some way?
---  * deviceLeftAlternate       - Corresponds to the left alt key on the keyboard (if present)
---  * deviceLeftCommand         - Corresponds to the left cmd key on the keyboard (if present)
---  * deviceLeftControl         - Corresponds to the left ctrl key on the keyboard (if present)
---  * deviceLeftShift           - Corresponds to the left shift key on the keyboard (if present)
---  * help                      - related to a modifier found on old NeXT keyboards but not on modern keyboards?
---
--- It has also been observed that synthetic events that have been posted also have the bit represented by 0x20000000 set.  This constant does not appear in IOLLEvent.h or CGEventTypes.h, which defines most of the constants used in this module, so it is not included within this table at present, but may be added in the future if any corroborating information can be found.
---
--- For what it may be worth, I have found it most useful to filter out `nonCoalesced` and 0x20000000 before examining the flags in my own code, like this: `hs.eventtap.event:rawFlags() & 0xdffffeff` where 0xdffffeff = ~(0x20000000 | 0x100) (limited to the 32 bits since that is what is returned by `rawFlags`).
---
--- Any documentation or references that can be found which can further expand on the information here is welcome -- Please submit any information you may have through the Hammerspoon GitHub site or Google group.
+-- Notes:
+--  * This table and [hs.eventtap.event:rawFlags](#rawFlags) are both considered experimental as the full meanings behind some of these flags and what combinations are likely to be observed is still being determined.  It is possible that some of these key names may change in the future.
+--  * At present, what is known about the flags is presented here:
+--   * alternate                 - Corresponds to the left (or only) alt key on the keyboard
+--   * command                   - Corresponds to the left (or only) cmd key on the keyboard
+--   * control                   - Corresponds to the left (or only) ctrl key on the keyboard
+--   * shift                     - Corresponds to the left (or only) shift key on the keyboard
+--   * numericPad                - Indicates that the key corresponds to one defined as belonging to the numeric keypad, if present
+--   * secondaryFn               - Indicates the fn key found on most modern Macintosh laptops.  May also be observed with function and other special keys (arrows, page-up/down, etc.)
+--   * deviceRightAlternate      - Corresponds to the right alt key on the keyboard (if present)
+--   * deviceRightCommand        - Corresponds to the right cmd key on the keyboard (if present)
+--   * deviceRightControl        - Corresponds to the right ctrl key on the keyboard (if present)
+--   * deviceRightShift          - Corresponds to the right alt key on the keyboard (if present)
+--   * nonCoalesced              - Indicates that multiple mouse movements are not being coalesced into one event if delivery of the event has been delayed
+--  * The following are also defined in IOLLEvent.h, but the description is a guess since I have not observed them myself
+--   * alphaShift                - related to the caps-lock in some way?
+--   * alphaShiftStateless       - related to the caps-lock in some way?
+--   * deviceAlphaShiftStateless - related to the caps-lock in some way?
+--   * deviceLeftAlternate       - Corresponds to the left alt key on the keyboard (if present)
+--   * deviceLeftCommand         - Corresponds to the left cmd key on the keyboard (if present)
+--   * deviceLeftControl         - Corresponds to the left ctrl key on the keyboard (if present)
+--   * deviceLeftShift           - Corresponds to the left shift key on the keyboard (if present)
+--   * help                      - related to a modifier found on old NeXT keyboards but not on modern keyboards?
+--  * It has also been observed that synthetic events that have been posted also have the bit represented by 0x20000000 set.  This constant does not appear in IOLLEvent.h or CGEventTypes.h, which defines most of the constants used in this module, so it is not included within this table at present, but may be added in the future if any corroborating information can be found.
+--  * For what it may be worth, I have found it most useful to filter out `nonCoalesced` and 0x20000000 before examining the flags in my own code, like this: `hs.eventtap.event:rawFlags() & 0xdffffeff` where 0xdffffeff = ~(0x20000000 | 0x100) (limited to the 32 bits since that is what is returned by `rawFlags`).
+--  * Any documentation or references that can be found which can further expand on the information here is welcome -- Please submit any information you may have through the Hammerspoon GitHub site or Google group.
 ---@type table
 M.rawFlagMasks = {}
 
@@ -665,8 +657,8 @@ function M:setUnicodeString(string, ...) end
 --  * If the event does not correspond to a NSSystemDefined event of subtype AUX_CONTROL_BUTTONS, then an empty table is returned.
 --
 -- Notes:
--- * CAPS_LOCK seems to sometimes generate 0 or 2 key release events (down == false), especially on builtin laptop keyboards, so it is probably safest (more reliable) to look for cases where down == true only.
--- * If the key field contains "undefined", you can use the number in keyCode to look it up in `/System/Library/Frameworks/IOKit.framework/Headers/hidsystem/ev_keymap.h`.  If you believe the numeric value is part of a new system update or was otherwise mistakenly left out, please submit the label (it will defined in the header file as `NX_KEYTYPE_something`) and number to the Hammerspoon maintainers at https://github.com/Hammerspoon/hammerspoon with a request for inclusion in the next Hammerspoon update.
+--  * CAPS_LOCK seems to sometimes generate 0 or 2 key release events (down == false), especially on builtin laptop keyboards, so it is probably safest (more reliable) to look for cases where down == true only.
+--  * If the key field contains "undefined", you can use the number in keyCode to look it up in `/System/Library/Frameworks/IOKit.framework/Headers/hidsystem/ev_keymap.h`.  If you believe the numeric value is part of a new system update or was otherwise mistakenly left out, please submit the label (it will defined in the header file as `NX_KEYTYPE_something`) and number to the Hammerspoon maintainers at https://github.com/Hammerspoon/hammerspoon with a request for inclusion in the next Hammerspoon update.
 function M:systemKey() end
 
 -- Get or set the timestamp of the event.
@@ -685,8 +677,8 @@ function M:timestamp(absolutetime, ...) end
 
 -- A table containing event types to be used with `hs.eventtap.new(...)` and returned by `hs.eventtap.event:type()`.  The table supports forward (label to number) and reverse (number to label) lookups to increase its flexibility.
 --
--- The constants defined in this table are as follows:
---
+-- Notes:
+--  * The constants defined in this table are as follows:
 --   * nullEvent         --  Specifies a null event. (thus far unobserved; please submit an issue if you can provide more information)
 --   * leftMouseDown     --  Specifies a mouse down event with the left button.
 --   * leftMouseUp       --  Specifies a mouse up event with the left button.
@@ -704,12 +696,9 @@ function M:timestamp(absolutetime, ...) end
 --   * otherMouseDown    --  Specifies a mouse down event with one of buttons 2-31.
 --   * otherMouseUp      --  Specifies a mouse up event with one of buttons 2-31.
 --   * otherMouseDragged --  Specifies a mouse drag event with one of buttons 2-31 down.
---
---  The following events, also included in the lookup table, are provided through NSEvent and currently may require the use of `hs.eventtap.event:getRawEventData()` to retrieve supporting information.  Target specific methods may be added as the usability of these events is explored.
---
+--  * The following events, also included in the lookup table, are provided through NSEvent and currently may require the use of `hs.eventtap.event:getRawEventData()` to retrieve supporting information.  Target specific methods may be added as the usability of these events is explored.
 --   * gesture               --  An event that represents a touch event on a touch sensitive trackpad or touchbar. See below.
 --   * systemDefined         --  An event indicating some system event has occurred. For us, it is primarily used to detect special system keys (Volume Up/Down, etc.). See [hs.eventtap.event:systemKey](#systemKey) and [hs.eventtap.event.newSystemKeyEvent](#newSystemKeyEvent).
---
 --   * appKitDefined         --  (thus far unobserved; please submit an issue if you can provide more information)
 --   * applicationDefined    --  (thus far unobserved; please submit an issue if you can provide more information)
 --   * cursorUpdate          --  (thus far unobserved; please submit an issue if you can provide more information)
@@ -717,8 +706,7 @@ function M:timestamp(absolutetime, ...) end
 --   * mouseExited           --  (thus far unobserved; please submit an issue if you can provide more information)
 --   * periodic              --  (thus far unobserved; please submit an issue if you can provide more information)
 --   * quickLook             --  (thus far unobserved; please submit an issue if you can provide more information)
---
---  To detect the following events, setup your eventtap to capture the `hs.eventtap.event.type.gesture` type and examine the value of [hs.eventtap.event:getType(true)](#getType).
+--  * To detect the following events, setup your eventtap to capture the `hs.eventtap.event.type.gesture` type and examine the value of [hs.eventtap.event:getType(true)](#getType).
 --   * gesture      --  The user touched a portion of a touchpad
 --   * directTouch  --  The user touched a portion of the touch bar.
 --   * changeMode   --  A double-tap on the side of an Apple Pencil paired with an iPad that is being used as an external monitor via Sidecar.

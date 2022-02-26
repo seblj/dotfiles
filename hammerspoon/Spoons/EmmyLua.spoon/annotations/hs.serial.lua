@@ -95,7 +95,7 @@ function M:dataBits(value, ...) end
 -- A callback that's triggered when a serial port is added or removed from the system.
 --
 -- Parameters:
---  * callbackFn - the callback function to trigger.
+--  * callbackFn - the callback function to trigger, or nil to remove the current callback
 --
 -- Returns:
 --  * None

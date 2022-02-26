@@ -6,7 +6,7 @@
 -- For TCP sockets see [`hs.socket`](./hs.socket.html)
 --
 -- You can do a lot of neat trivial and non-trivial things with these. A simple ping ponger:
--- <pre style="font-size:10px">
+-- ```lua
 -- function ping(data, addr)
 --   print(data)
 --   addr = hs.socket.parseAddress(addr)
@@ -25,9 +25,9 @@
 --
 -- server = hs.socket.udp.server(9001, pong):receive()
 -- client = hs.socket.udp.new(ping):send("ping", "localhost", 9001):receive()
--- </pre>
+-- ```
 -- Resulting in the following endless exchange:
--- <pre style="font-size:10px">
+-- ```
 -- 20:26:56    LuaSkin: (secondary thread): Data written to UDP socket
 --             LuaSkin: (secondary thread): Data read from UDP socket
 -- ping
@@ -41,10 +41,10 @@
 --             LuaSkin: (secondary thread): Data read from UDP socket
 -- pong
 -- ...
--- </pre>
+-- ```
 --
 -- You can do some silly things with a callback factory and enabling broadcasting:
--- <pre style="font-size:10px">
+-- ```lua
 -- local function callbackMaker(name)
 --   local fun = function(data, addr)
 --     addr = hs.socket.parseAddress(addr)
@@ -62,9 +62,9 @@
 --
 -- broadcaster = hs.socket.udp.new():broadcast()
 -- broadcaster:send("hello!", "255.255.255.255", port)
--- </pre>
+-- ```
 -- Since neither IPv4 nor IPv6 have been disabled, the broadcast is received on both protocols ('dual-stack' IPv6 addresses shown):
--- <pre style="font-size:10px">
+-- ```
 -- listener 2 received data:
 -- hello!
 -- from host: ::ffff:192.168.0.3 port: 53057
@@ -83,7 +83,7 @@
 -- listener 2 received data:
 -- hello!
 -- from host: 192.168.0.3 port: 53057
--- </pre>
+-- ```
 -- 
 ---@class hs.socket.udp
 local M = {}

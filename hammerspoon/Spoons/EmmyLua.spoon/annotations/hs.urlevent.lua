@@ -65,6 +65,17 @@ function M.getDefaultHandler(scheme, ...) end
 --   * senderPID - An integer containing the PID of the application that opened the URL, if available (otherwise -1)
 M.httpCallback = nil
 
+-- A function that should handle mailto: URL events
+--
+-- Notes:
+--  * The function should handle four arguments:
+--   * scheme - A string containing the URI scheme (i.e. "mailto")
+--   * host - A string containing the host requested (typically nil)
+--   * params - A table containing the key/value pairs of all the URL parameters, typically empty
+--   * fullURL - A string containing the full, original URI
+--   * senderPID - An integer containing the PID of the application that opened the URI, if available (otherwise -1)
+M.mailtoCallback = nil
+
 -- Opens a URL with the default application
 --
 -- Parameters:

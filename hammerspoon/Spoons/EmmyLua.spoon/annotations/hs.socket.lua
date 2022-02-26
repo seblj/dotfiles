@@ -9,7 +9,7 @@
 --
 -- For example, you can easily implement a basic HTTP client as follows (though using [`hs.http`](./hs.http.html) is recommended for the real world):
 --
--- <pre style="font-size:10px">
+-- ```lua
 -- local TAG_HTTP_HEADER, TAG_HTTP_CONTENT = 1, 2
 -- local body = ""
 -- local function httpCallback(data, tag)
@@ -26,11 +26,11 @@
 -- client = hs.socket.new(httpCallback):connect("google.com", 80)
 -- client:write("GET /index.html HTTP/1.0\r\nHost: google.com\r\n\r\n")
 -- client:read("\r\n\r\n", TAG_HTTP_HEADER)
--- </pre>
+-- ```
 --
 -- Resulting in the following console output (adjust log verbosity with `hs.socket.setLogLevel()`) :
 --
--- <pre style="font-size:10px">
+-- ```
 --             LuaSkin: (secondary thread): TCP socket connected
 --             LuaSkin: (secondary thread): Data written to TCP socket
 --             LuaSkin: (secondary thread): Data read from TCP socket
@@ -55,7 +55,7 @@
 -- &lt;A HREF=&quot;http://www.google.com/index.html&quot;&gt;here&lt;/A&gt;.
 -- &lt;/BODY&gt;&lt;/HTML&gt;
 --             LuaSkin: (secondary thread): TCP socket disconnected Socket closed by remote peer
--- </pre>
+-- ```
 --
 -- 
 ---@class hs.socket

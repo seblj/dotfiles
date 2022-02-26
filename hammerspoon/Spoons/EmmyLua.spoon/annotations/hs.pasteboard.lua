@@ -29,7 +29,6 @@ function M.allContentTypes(name, ...) end
 --
 -- Notes:
 --  * This function can be used to capture the results of a copy operation issued programatically with `hs.application:selectMenuItem` or `hs.eventtap.keyStroke` without resorting to creating your own timers:
---
 --  ~~~
 --      hs.eventtap.keyStroke({"cmd"}, "c", 0) -- or whatever method you want to trigger the copy
 --      hs.pasteboard.callbackWhenChanged(5, function(state)
@@ -40,7 +39,7 @@ function M.allContentTypes(name, ...) end
 --              error("copy timeout") -- or whatever fallback you want when it timesout
 --          end
 --      end)
--- ~~~
+--  ~~~
 function M.callbackWhenChanged(name, timeout, callback, ...) end
 
 -- Gets the number of times the pasteboard owner has changed
@@ -294,7 +293,6 @@ function M.writeAllData(name, table, ...) end
 -- Notes:
 --  * NSKeyedArchiver specifies an architecture-independent format that is often used in OS X applications to store and transmit objects between applications and when storing data to a file. It works by recording information about the object types and key-value pairs which make up the objects being stored.
 --  * Only objects which have conversion functions built in to Hammerspoon can be converted.
---
 --  * A full list of NSObjects supported directly by Hammerspoon is planned in a future Wiki article.
 ---@return boolean
 function M.writeArchiverDataForUTI(name, uti, data, add, ...) end
