@@ -1,7 +1,7 @@
 local M = {}
 local keymap = vim.keymap.set
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
 local border_line = '─'
 
@@ -83,10 +83,11 @@ M.popup_create = function(opts)
     end
     if opts.hidden_cursor then
         require('seblj.utils').setup_hidden_cursor()
-        augroup('UISetCursor', {
+        augroup({ name = 'UISetCursor' })
+        autocmd({
             event = 'CursorMoved',
             pattern = '<buffer>',
-            command = function()
+            callback = function()
                 set_cursor()
             end,
         })

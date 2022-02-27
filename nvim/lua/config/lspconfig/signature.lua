@@ -1,6 +1,6 @@
 local M = {}
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 local clients = {}
 
 local check_trigger_char = function(line_to_cursor, triggers)
@@ -48,13 +48,15 @@ end
 
 M.setup = function(client)
     table.insert(clients, client)
-    augroup('Signature', {
+    augroup({ name = 'Signature' })
+    autocmd({
+        group = 'Signature',
         event = 'TextChangedI',
         pattern = '<buffer>',
-        command = function()
+        callback = function()
             open_signature()
         end,
-    }, true)
+    })
 end
 
 return M

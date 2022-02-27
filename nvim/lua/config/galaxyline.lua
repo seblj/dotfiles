@@ -1,7 +1,8 @@
 ---------- STATUSLINE CONFIG ----------
 
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+
 local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {
@@ -47,13 +48,17 @@ end
 
 -- Get wordcount in latex document. Only update the count on save
 local latex_word_count = nil
-augroup('UpdateWordCount', {
+
+augroup({ name = 'UpdateWordCount' })
+autocmd({
+    group = 'UpdateWordCount',
     event = 'BufWritePost',
     pattern = '*.tex',
-    command = function()
+    callback = function()
         latex_word_count = string.format('Words: %s', vim.fn['vimtex#misc#wordcount']())
     end,
 })
+
 local get_word_count = function()
     if not latex_word_count then
         latex_word_count = string.format('Words: %s', vim.fn['vimtex#misc#wordcount']())

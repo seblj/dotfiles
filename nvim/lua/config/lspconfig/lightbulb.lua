@@ -1,6 +1,6 @@
 local lsp_util = require('vim.lsp.util')
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 local sign_name = 'LightbulbSign'
 local sign_group = 'LightbulbGroup'
 local old_line = {}
@@ -97,13 +97,15 @@ M.setup = function()
         num_actions = 0,
     }
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'DiagnosticInfo' })
-    augroup('SetupLightbulb', {
+    augroup({ name = 'SetupLightbulb' })
+    autocmd({
+        group = 'SetupLightbulb',
         event = { 'CursorHold', 'CursorMoved' },
         pattern = '<buffer>',
-        command = function()
+        callback = function()
             check_code_action()
         end,
-    }, true)
+    })
 end
 
 return M

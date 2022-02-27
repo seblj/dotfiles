@@ -1,8 +1,8 @@
 ---------- LSP CONFIG ----------
 
 local M = {}
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 local settings = require('config.lspconfig.settings')
 local nls_has_formatter = require('config.null-ls').has_formatter
 
@@ -40,10 +40,11 @@ local mappings = function()
     keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
     keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Lsp: Diagnostics in qflist' })
 
-    augroup('AutoFormat', {
+    augroup({ name = 'AutoFormat' })
+    autocmd({
         event = 'BufWritePre',
         pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs', '*.json', '*.md' },
-        command = function()
+        callback = function()
             if autoformat then
                 vim.lsp.buf.formatting_sync()
             end
