@@ -1,7 +1,7 @@
 ---------- VIMTEX CONFIG ----------
 
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
 vim.g.tex_flavor = 'latex'
 vim.g.vimtex_quickfix_mode = 0
@@ -10,10 +10,12 @@ vim.g.vimtex_view_method = 'skim'
 
 -- Clean latex files when quitting
 
-augroup('VimtexConfig', {
-    event = { 'User' },
+augroup({ name = 'VimtexConfig' })
+autocmd({
+    group = 'VimtexConfig',
+    event = 'User',
     pattern = 'VimtexEventQuit',
-    command = function()
+    callback = function()
         vim.fn['vimtex#compiler#clean'](0)
     end,
 })

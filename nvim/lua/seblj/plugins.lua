@@ -1,12 +1,15 @@
 local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 local map = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
-augroup('CompilePacker', {
+augroup({ name = 'CompilePacker' })
+autocmd({
+    group = 'CompilePacker',
     event = 'BufWritePost',
     pattern = 'plugins.lua',
-    command = function()
+    callback = function()
         vim.cmd('PackerCompile')
     end,
 })

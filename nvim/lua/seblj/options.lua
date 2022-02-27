@@ -1,7 +1,7 @@
 ---------- OPTIONS ----------
 
-local utils = require('seblj.utils')
-local augroup = utils.augroup
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
 vim.cmd('colorscheme colorscheme')
 
@@ -34,26 +34,32 @@ vim.opt.fillchars:append('diff:╱')
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
-augroup('NeovimTermGit', {
+augroup({ name = 'NeovimTermGit' })
+autocmd({
+    group = 'NeovimTermGit',
     event = 'FileType',
     pattern = { 'gitcommit', 'gitrebase', 'gitconfig' },
-    command = function()
+    callback = function()
         vim.opt_local.bufhidden = 'delete'
     end,
 })
 
-augroup('CustomFormatOptions', {
+augroup({ name = 'CustomFormatOptions' })
+autocmd({
+    group = 'CustomFormatOptions',
     event = 'BufEnter',
     pattern = '*',
-    command = function()
+    callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r'
     end,
 })
 
-augroup('HighlightYank', {
+augroup({ name = 'HighlightYank' })
+autocmd({
+    group = 'HighlightYank',
     event = 'TextYankPost',
     pattern = '*',
-    command = function()
+    callback = function()
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })
     end,
 })
