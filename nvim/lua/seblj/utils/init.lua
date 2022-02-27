@@ -65,6 +65,23 @@ M.autocmd = function(c)
     vim.cmd(string.format('autocmd %s %s %s %s %s', event, pattern, once, nested, command))
 end
 
+M.packer_bootstrap = function()
+    local packer_bootstrap = false
+    local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+    if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+        packer_bootstrap = vim.fn.system({
+            'git',
+            'clone',
+            '--depth',
+            '1',
+            'https://github.com/wbthomason/packer.nvim',
+            install_path,
+        })
+        vim.o.runtimepath = vim.fn.stdpath('data') .. '/site/pack/*/start/*,' .. vim.o.runtimepath
+    end
+    return packer_bootstrap
+end
+
 -- Function to execute macro over a visual range
 M.visual_macro = function()
     vim.cmd('echo "@".getcmdline()')
@@ -199,15 +216,6 @@ M.union = function(a, b)
     end
     return list
 end
-
--- M.augroup('AfterPackerCompile', {
---     event = 'User',
---     pattern = 'PackerComplete',
---     command = function()
---         vim.cmd('PackerLoad vim-test vim-ultest')
---         vim.cmd('silent UpdateRemotePlugins')
---     end,
--- })
 
 ---------- HIDE CURSOR ----------
 

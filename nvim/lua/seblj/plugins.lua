@@ -1,4 +1,5 @@
-local augroup = require('seblj.utils').augroup
+local utils = require('seblj.utils')
+local augroup = utils.augroup
 local map = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
@@ -10,6 +11,7 @@ augroup('CompilePacker', {
     end,
 })
 
+local packer_bootstrap = utils.packer_bootstrap()
 local plugins = function(use)
     use({ 'wbthomason/packer.nvim' })
 
@@ -76,10 +78,10 @@ local plugins = function(use)
 
     -- Test
     use({ 'vim-test/vim-test', config = conf('test'), cmd = { 'TestFile', 'TestNearest' } })
-    -- use({ 'rcarriga/vim-ultest', run = ':UpdateRemotePlugins', cmd = { 'Ultest', 'UltestNearest' }, wants = 'vim-test' })
 
     -- Packageinfo
-    use({ 'vuki656/package-info.nvim', config = conf('packageinfo'), ft = 'json' })
+    use({ 'saecki/crates.nvim', config = setup('crates'), event = 'BufRead Cargo.toml' })
+    use({ 'vuki656/package-info.nvim', config = conf('packageinfo'), event = 'BufRead package.json' })
     use({ 'MunifTanjim/nui.nvim' })
 
     -- Latex
@@ -119,6 +121,10 @@ local plugins = function(use)
     use({ 'tpope/vim-commentary' })
     use({ 'tpope/vim-scriptease' })
     use({ 'tpope/vim-sleuth' })
+
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end
 
 return require('packer').startup({

@@ -50,6 +50,14 @@ augroup('CustomFormatOptions', {
     end,
 })
 
+augroup('HighlightYank', {
+    event = 'TextYankPost',
+    pattern = '*',
+    command = function()
+        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })
+    end,
+})
+
 -- Disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

@@ -1,10 +1,6 @@
 local ui = require('seblj.utils.ui')
 local keymap = vim.keymap.set
 
-if not vim.ui then
-    return
-end
-
 local options = {
     prefix = '> ',
 }

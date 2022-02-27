@@ -15,6 +15,7 @@ cmp.setup({
             keyword_pattern = [[\k\+]],
         } },
         { name = 'path' },
+        { name = 'crates' },
     },
 
     snippet = {
@@ -137,8 +138,6 @@ local ls = require('luasnip')
 keymap('i', '<Tab>', function()
     if cmp.visible() then
         return term('<C-n>')
-    elseif ls.expand_or_jumpable() then
-        return term('<Plug>luasnip-expand-or-jump')
     else
         return term('<Tab>')
     end
@@ -151,8 +150,6 @@ end, {
 keymap('i', '<S-Tab>', function()
     if cmp.visible() then
         return term('<C-p>')
-    elseif ls.jumpable(-1) then
-        return term('<Plug>luasnip-jump-prev')
     else
         return term('<S-Tab>')
     end

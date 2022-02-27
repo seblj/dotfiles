@@ -4,7 +4,7 @@
     name = Sebastian Lyng Johansen
 
 [include]
-    path = ~/.gitconfig.local
+    path = ~/.gitconfig_local
 
 [credential]
     helper = store

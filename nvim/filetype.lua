@@ -1,9 +1,7 @@
 vim.filetype.add({
-    extension = {
-        conf = 'conf',
-    },
     filename = {
-        ['.gitconfig.local'] = 'gitconfig',
+        ['.gitconfig_local'] = 'gitconfig',
         ['.gitignore_global'] = 'gitignore',
+        ['kitty.conf'] = 'conf',
     },
 })
