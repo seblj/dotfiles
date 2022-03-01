@@ -48,10 +48,9 @@ end
 
 M.setup = function(client)
     table.insert(clients, client)
-    augroup({ name = 'Signature' })
-    autocmd({
+    augroup('Signature', {})
+    autocmd('TextChangedI', {
         group = 'Signature',
-        event = 'TextChangedI',
         pattern = '<buffer>',
         callback = function()
             open_signature()

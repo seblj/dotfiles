@@ -40,9 +40,9 @@ local mappings = function()
     keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
     keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Lsp: Diagnostics in qflist' })
 
-    augroup({ name = 'AutoFormat' })
-    autocmd({
-        event = 'BufWritePre',
+    augroup('AutoFormat', {})
+    autocmd('BufWritePre', {
+        group = 'AutoFormat',
         pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs', '*.json', '*.md' },
         callback = function()
             if autoformat then

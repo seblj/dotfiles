@@ -49,10 +49,9 @@ end
 -- Get wordcount in latex document. Only update the count on save
 local latex_word_count = nil
 
-augroup({ name = 'UpdateWordCount' })
-autocmd({
+augroup('UpdateWordCount', {})
+autocmd('BufWritePost', {
     group = 'UpdateWordCount',
-    event = 'BufWritePost',
     pattern = '*.tex',
     callback = function()
         latex_word_count = string.format('Words: %s', vim.fn['vimtex#misc#wordcount']())

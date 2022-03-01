@@ -10,10 +10,9 @@ vim.g.vimtex_view_method = 'skim'
 
 -- Clean latex files when quitting
 
-augroup({ name = 'VimtexConfig' })
-autocmd({
+augroup('VimtexConfig', {})
+autocmd('User', {
     group = 'VimtexConfig',
-    event = 'User',
     pattern = 'VimtexEventQuit',
     callback = function()
         vim.fn['vimtex#compiler#clean'](0)

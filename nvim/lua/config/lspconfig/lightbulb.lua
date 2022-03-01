@@ -97,10 +97,9 @@ M.setup = function()
         num_actions = 0,
     }
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'DiagnosticInfo' })
-    augroup({ name = 'SetupLightbulb' })
-    autocmd({
+    augroup('SetupLightbulb', {})
+    autocmd({ 'CursorHold', 'CursorMoved' }, {
         group = 'SetupLightbulb',
-        event = { 'CursorHold', 'CursorMoved' },
         pattern = '<buffer>',
         callback = function()
             check_code_action()

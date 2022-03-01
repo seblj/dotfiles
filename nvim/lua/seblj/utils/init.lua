@@ -177,34 +177,30 @@ end
 M.setup_hidden_cursor = function()
     hide_cursor()
     vim.cmd('setlocal cursorline')
-    augroup({ name = 'HiddenCursor' })
-    autocmd({
+    augroup('HiddenCursor', {})
+    autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = 'HiddenCursor',
-        event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
         pattern = '<buffer>',
         callback = function()
             vim.cmd('setlocal cursorline')
         end,
     })
-    autocmd({
+    autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = 'HiddenCursor',
-        event = { 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' },
         pattern = '<buffer>',
         callback = function()
             vim.cmd('setlocal nocursorline')
         end,
     })
-    autocmd({
+    autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = 'HiddenCursor',
-        event = { 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' },
         pattern = '<buffer>',
         callback = function()
             hide_cursor()
         end,
     })
-    autocmd({
+    autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = 'HiddenCursor',
-        event = { 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' },
         pattern = '<buffer>',
         callback = function()
             restore_cursor()

@@ -34,30 +34,27 @@ vim.opt.fillchars:append('diff:╱')
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
-augroup({ name = 'NeovimTermGit' })
-autocmd({
+augroup('NeovimTermGit', {})
+autocmd('FileType', {
     group = 'NeovimTermGit',
-    event = 'FileType',
     pattern = { 'gitcommit', 'gitrebase', 'gitconfig' },
     callback = function()
         vim.opt_local.bufhidden = 'delete'
     end,
 })
 
-augroup({ name = 'CustomFormatOptions' })
-autocmd({
+augroup('CustomFormatOptions', {})
+autocmd('BufEnter', {
     group = 'CustomFormatOptions',
-    event = 'BufEnter',
     pattern = '*',
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r'
     end,
 })
 
-augroup({ name = 'HighlightYank' })
-autocmd({
+augroup('HighlightYank', {})
+autocmd('TextYankPost', {
     group = 'HighlightYank',
-    event = 'TextYankPost',
     pattern = '*',
     callback = function()
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })
