@@ -1,6 +1,5 @@
-local M = {}
-
 local nls = require('null-ls')
+local formatting = require('config.lspconfig.formatting')
 local formatter = nls.builtins.formatting
 local lsp_util = require('lspconfig.util')
 
@@ -19,24 +18,7 @@ nls.setup({
             end,
         }),
     },
+    on_attach = function(client)
+        formatting.setup(client)
+    end,
 })
-
-function M.has_formatter(ft)
-    local config = require('null-ls.config').get()
-    for _, source in ipairs(config.sources) do
-        if vim.tbl_contains(source.filetypes, ft) then
-            if source.condition then
-                local utils = require('null-ls.utils').make_conditional_utils()
-                return source.condition(utils)
-            end
-            if type(source.method) == 'string' and source.method == 'NULL_LS_FORMATTING' then
-                return true
-            elseif type(source.method) == 'table' and vim.tbl_contains(source.method, 'NULL_LS_FORMATTING') then
-                return true
-            end
-        end
-    end
-    return false
-end
-
-return M

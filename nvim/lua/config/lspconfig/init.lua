@@ -1,23 +1,9 @@
 ---------- LSP CONFIG ----------
 
 local M = {}
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
 local settings = require('config.lspconfig.settings')
-local nls_has_formatter = require('config.null-ls').has_formatter
 
 require('config.lspconfig.install')
-
-local autoformat = true
-
-local toggle_format = function()
-    autoformat = not autoformat
-    if autoformat then
-        vim.api.nvim_echo({ { 'Enabled autoformat on save' } }, false, {})
-    else
-        vim.api.nvim_echo({ { 'Disabled autoformat on save' } }, false, {})
-    end
-end
 
 ---------- MAPPINGS ----------
 
@@ -28,7 +14,6 @@ local mappings = function()
         vim.keymap.set(mode, l, r, opts)
     end
 
-    keymap('n', '<leader>tf', toggle_format, { desc = 'Lsp: Toggle format' })
     keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Lsp: References' })
     keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Lsp: Definitions' })
     keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Lsp: Signature help' })
@@ -39,17 +24,6 @@ local mappings = function()
     keymap('n', 'gn', vim.diagnostic.goto_next, { desc = 'Lsp: Next diagnostic' })
     keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
     keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Lsp: Diagnostics in qflist' })
-
-    augroup('AutoFormat', {})
-    autocmd('BufWritePre', {
-        group = 'AutoFormat',
-        pattern = { '*.tsx', '*.ts', '*.js', '*.vue', '*.lua', '*.go', '*.rs', '*.json', '*.md' },
-        callback = function()
-            if autoformat then
-                vim.lsp.buf.formatting_sync()
-            end
-        end,
-    })
 end
 
 ---------- SIGNS ----------
@@ -62,12 +36,6 @@ local signs = function()
     -- sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
 end
 
-local disable_formatters = {
-    'vuels',
-    'volar',
-    'tsserver',
-}
-
 M.make_config = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -75,6 +43,7 @@ M.make_config = function()
         capabilities = capabilities,
         on_attach = function(client)
             require('config.lspconfig.handlers').handlers()
+            require('config.lspconfig.formatting').setup(client)
             mappings()
             signs()
             if client.server_capabilities.signatureHelpProvider then
@@ -82,12 +51,6 @@ M.make_config = function()
             end
             if client.supports_method('textDocument/codeAction') then
                 require('config.lspconfig.lightbulb').setup()
-            end
-            local ft = vim.api.nvim_buf_get_option(0, 'ft')
-            if vim.tbl_contains(disable_formatters, client.name) or nls_has_formatter(ft) then
-                client.resolved_capabilities.document_formatting = false
-            else
-                client.resolved_capabilities.document_formatting = true
             end
         end,
     }
