@@ -1,6 +1,8 @@
 local M = {}
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+local util = require('vim.lsp.util')
+local handler
 local clients = {}
 
 local check_trigger_char = function(line_to_cursor, triggers)
@@ -42,11 +44,18 @@ M.open_signature = function()
     end
 
     if triggered then
-        vim.lsp.buf.signature_help()
+        local params = util.make_position_params()
+        vim.lsp.buf_request(0, 'textDocument/signatureHelp', params, handler)
     end
 end
 
 M.setup = function(client)
+    handler = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = 'rounded',
+        silent = true,
+        focusable = false,
+    })
+
     table.insert(clients, client)
 
     -- No way yet to clear only inside buffer with lua api for autocmds

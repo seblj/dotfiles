@@ -96,6 +96,7 @@ end
 M.save_and_exec = function()
     vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    local dir = vim.fn.expand('%:p:h')
     local file = vim.fn.expand('%')
     local output = vim.fn.expand('%:t:r')
     if ft == 'vim' or ft == 'lua' then
@@ -113,7 +114,11 @@ M.save_and_exec = function()
     elseif ft == 'rust' then
         vim.cmd('silent! write')
         vim.cmd('sp')
+        vim.cmd('lcd ' .. dir)
         local command = 'rustc %s && ./%s; rm %s'
+        if vim.fn.system('cargo verify-project'):match('{"success":"true"}') then
+            command = 'cargo run'
+        end
         M.run_term(command, file, output, output, output)
     elseif ft == 'javascript' then
         vim.cmd('silent! write')
@@ -181,30 +186,22 @@ M.setup_hidden_cursor = function()
     autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = 'HiddenCursor',
         pattern = '<buffer>',
-        callback = function()
-            vim.cmd('setlocal cursorline')
-        end,
+        command = 'setlocal cursorline',
     })
     autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = 'HiddenCursor',
         pattern = '<buffer>',
-        callback = function()
-            vim.cmd('setlocal nocursorline')
-        end,
+        command = 'setlocal nocursorline',
     })
     autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = 'HiddenCursor',
         pattern = '<buffer>',
-        callback = function()
-            hide_cursor()
-        end,
+        callback = hide_cursor,
     })
     autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = 'HiddenCursor',
         pattern = '<buffer>',
-        callback = function()
-            restore_cursor()
-        end,
+        callback = restore_cursor,
     })
 end
 

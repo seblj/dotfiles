@@ -67,7 +67,7 @@ local servers = {
     -- 'vuels',
     'volar',
     'jsonls',
-    'graphql',
+    -- 'graphql',
     'tsserver',
     'sumneko_lua',
     'clangd',
@@ -75,6 +75,7 @@ local servers = {
     'omnisharp',
     'dockerls',
     'eslint',
+    'taplo',
     -- 'ltex',
     -- 'grammarly',
 }

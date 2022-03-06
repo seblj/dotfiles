@@ -58,7 +58,7 @@ return {
                 additionalRules = {
                     enablePickyRules = true,
                     motherTongue = 'en',
-                    languageModel = '~/ngram',
+                    languageModel = '~/scratch/ngram',
                 },
             },
         },

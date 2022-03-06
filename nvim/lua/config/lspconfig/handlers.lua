@@ -21,7 +21,6 @@ M.handlers = function()
     vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = 'rounded',
         silent = true,
-        focusable = false, -- Sometimes gets set to true if not set explicitly to false for some reason
     })
 end
 

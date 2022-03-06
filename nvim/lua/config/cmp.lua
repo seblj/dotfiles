@@ -133,8 +133,6 @@ cmp.setup.cmdline('?', {
 
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
-local ls = require('luasnip')
-
 keymap('i', '<Tab>', function()
     if cmp.visible() then
         return term('<C-n>')

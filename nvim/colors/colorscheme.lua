@@ -132,10 +132,11 @@ highlight({
     TSNote = { fg = c.blue, bold = true },
     TSParameter = { fg = c.fg },
     TSParameterReference = { link = 'TSParameter' },
-    TSProperty = { fg = c.fg },
+    TSProperty = { fg = c.green },
     TSPunctSpecial = { fg = c.red },
     TSStringEscape = { link = 'String' },
     TSTag = { link = 'Tag' },
+    TSTagAttribute = { fg = c.green },
     TSTagDelimiter = { fg = c.red },
     TSVariableBuiltin = { fg = c.orange },
 
@@ -175,6 +176,10 @@ highlight({
 
     helpCommand = { fg = c.yellow },
     helpExample = { fg = c.green },
+
+    ---------- TELESCOPE ----------
+
+    TelescopePromptPrefix = { fg = c.red },
 
     ---------- STARTSCREEN ----------
 

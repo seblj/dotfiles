@@ -8,9 +8,7 @@ augroup('CompilePacker', {})
 autocmd('BufWritePost', {
     group = 'CompilePacker',
     pattern = 'plugins.lua',
-    callback = function()
-        vim.cmd('PackerCompile')
-    end,
+    command = 'PackerCompile',
 })
 
 local packer_bootstrap = utils.packer_bootstrap()
