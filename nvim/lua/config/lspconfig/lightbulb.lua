@@ -73,7 +73,7 @@ local handler = function(results, ctx)
     set_icon()
 end
 
-local check_code_action = function()
+M.check_code_action = function()
     if vim.fn.mode() ~= 'n' then
         return
     end
@@ -97,14 +97,23 @@ M.setup = function()
         num_actions = 0,
     }
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'DiagnosticInfo' })
-    augroup('SetupLightbulb', {})
-    autocmd({ 'CursorHold', 'CursorMoved' }, {
-        group = 'SetupLightbulb',
-        pattern = '<buffer>',
-        callback = function()
-            check_code_action()
-        end,
-    })
+
+    -- No way yet to clear only inside buffer with lua api for autocmds
+    vim.cmd([[
+        augroup SetupLightbulb
+            au! * <buffer>
+            autocmd CursorHold,CursorMoved <buffer> lua require('config.lspconfig.lightbulb').check_code_action()
+        augroup END
+    ]])
+
+    -- augroup('SetupLightbulb', {})
+    -- autocmd({ 'CursorHold', 'CursorMoved' }, {
+    --     group = 'SetupLightbulb',
+    --     pattern = '<buffer>',
+    --     callback = function()
+    --         check_code_action()
+    --     end,
+    -- })
 end
 
 return M
