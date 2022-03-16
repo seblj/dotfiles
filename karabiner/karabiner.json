@@ -31,7 +31,17 @@
                     "modifiers": ["left_shift", "left_option"]
                   }
                 ],
-                "type": "basic"
+                "type": "basic",
+                "conditions": [
+                  {
+                    "type": "input_source_if",
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -51,7 +61,17 @@
                     "modifiers": ["left_shift", "left_option"]
                   }
                 ],
-                "type": "basic"
+                "type": "basic",
+                "conditions": [
+                  {
+                    "type": "input_source_if",
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -68,6 +88,33 @@
                 "to": [
                   {
                     "key_code": "equal_sign"
+                  }
+                ],
+                "type": "basic",
+                "conditions": [
+                  {
+                    "type": "input_source_if",
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "description": "Lock with eject",
+                "from": {
+                  "key_code": "eject"
+                },
+                "to": [
+                  {
+                    "key_code": "eject",
+                    "modifiers": ["left_shift", "left_control"]
                   }
                 ],
                 "type": "basic"
@@ -87,21 +134,34 @@
                     "modifiers": ["left_shift", "left_option"]
                   }
                 ],
-                "type": "basic"
+                "type": "basic",
+                "conditions": [
+                  {
+                    "type": "input_source_if",
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
           {
             "manipulators": [
               {
-                "description": "Lock with eject",
+                "description": "Lock with Ctrl+Option+L",
                 "from": {
-                  "key_code": "eject"
+                  "key_code": "l",
+                  "modifiers": {
+                    "mandatory": ["left_control", "left_option"]
+                  }
                 },
                 "to": [
                   {
-                    "key_code": "eject",
-                    "modifiers": ["left_shift", "left_control"]
+                    "key_code": "q",
+                    "modifiers": ["left_control", "left_command"]
                   }
                 ],
                 "type": "basic"
