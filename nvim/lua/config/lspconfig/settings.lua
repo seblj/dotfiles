@@ -72,15 +72,15 @@ return {
         },
     },
 
-    pyright = {
-        settings = {
-            python = {
-                analysis = {
-                    typeCheckingMode = 'off',
-                },
-            },
-        },
-    },
+    --     pyright = {
+    --         settings = {
+    --             python = {
+    --                 analysis = {
+    --                     typeCheckingMode = 'off',
+    --                 },
+    --             },
+    --         },
+    --     },
 
     omnisharp = {
         cmd = {

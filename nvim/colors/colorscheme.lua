@@ -14,6 +14,7 @@ local c = {
     diff_red = '#55393d',
     diff_green = '#394634',
     diff_blue = '#354157',
+    changed_text = '#4b5c7c',
     border = '#80A0C2',
     red = '#fc5d7c',
     orange = '#fea24f',
@@ -37,7 +38,7 @@ highlight({
     DiffAdd = { bg = c.diff_green },
     DiffChange = { bg = c.diff_blue },
     DiffDelete = { bg = c.diff_red },
-    DiffText = { fg = c.bg, bg = c.fg },
+    DiffText = { bg = c.changed_text },
     Directory = { fg = c.green },
     ErrorMsg = { fg = c.red },
     FloatBorder = { fg = c.border },
@@ -165,12 +166,6 @@ highlight({
     diffFile = { fg = c.purple },
     diffLine = { fg = c.grey },
     diffIndexLine = { fg = c.purple },
-
-    ConflictMarkerBegin = { fg = c.red },
-    ConflictMarkerSeparator = { fg = c.red },
-    ConflictMarkerOurs = { link = 'DiffAdd' },
-    ConflictMarkerTheirs = { link = 'DiffChange' },
-    ConflictMarkerEnd = { fg = c.red },
 
     ---------- HELP ----------
 

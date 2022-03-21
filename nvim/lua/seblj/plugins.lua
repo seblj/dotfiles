@@ -30,8 +30,8 @@ local plugins = function(use)
         end
     end
 
-    local setup = function(name)
-        return string.format([[require('%s').setup()]], name)
+    local setup = function(name, config)
+        return string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
     end
 
     local conf = function(name)
@@ -61,6 +61,7 @@ local plugins = function(use)
     use({ 'jose-elias-alvarez/null-ls.nvim', config = conf('null-ls') })
     use({ 'folke/lua-dev.nvim' })
     use({ 'b0o/schemastore.nvim' })
+    use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
 
     -- Completion
     use({ 'hrsh7th/nvim-cmp', config = conf('cmp'), branch = 'dev' })
@@ -74,7 +75,7 @@ local plugins = function(use)
 
     -- Git
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
-    use({ 'rhysd/conflict-marker.vim', config = conf('conflict'), event = 'BufReadPre' })
+    use({ 'akinsho/git-conflict.nvim', config = conf('conflict'), event = 'BufReadPre' })
 
     -- Test
     use({ 'vim-test/vim-test', config = conf('test'), cmd = { 'TestFile', 'TestNearest' } })
@@ -96,8 +97,8 @@ local plugins = function(use)
     use({ 'ThePrimeagen/harpoon', config = conf('harpoon'), disable = true })
 
     use({ 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } })
-    use({ 'elihunter173/dirbuf.nvim', config = conf('dirbuf') })
-    -- use({ 'tamago324/lir.nvim', config = conf('lir') })
+    -- use({ 'elihunter173/dirbuf.nvim', config = conf('dirbuf') })
+    use({ 'tamago324/lir.nvim', config = conf('lir') })
     use({ 'norcalli/nvim-colorizer.lua', config = setup('colorizer') })
     use({ 'mhinz/vim-startify', config = conf('startify') })
     use({ 'NTBBloodbath/galaxyline.nvim', config = conf('galaxyline') })
