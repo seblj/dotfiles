@@ -9,14 +9,14 @@ nls.setup({
     sources = {
         formatter.stylua,
         formatter.goimports,
-        formatter.prettierd.with({
-            condition = function()
-                local bufnr = vim.api.nvim_get_current_buf()
-                local bufname = vim.api.nvim_buf_get_name(bufnr)
-                local eslint_root_dir = require('lspconfig.server_configurations.eslint').default_config.root_dir
-                return not eslint_root_dir(lsp_util.path.sanitize(bufname), bufnr)
-            end,
-        }),
+        -- formatter.prettierd.with({
+        --     condition = function()
+        --         local bufnr = vim.api.nvim_get_current_buf()
+        --         local bufname = vim.api.nvim_buf_get_name(bufnr)
+        --         local eslint_root_dir = require('lspconfig.server_configurations.eslint').default_config.root_dir
+        --         return not eslint_root_dir(lsp_util.path.sanitize(bufname), bufnr)
+        --     end,
+        -- }),
     },
     on_attach = function(client)
         formatting.setup(client)

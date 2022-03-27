@@ -5,7 +5,7 @@ local i = ls.insert_node
 local fmt = require('luasnip.extras.fmt').fmt
 
 return make({
-    modtest = fmt(
+    testmod = fmt(
         [[
             #[cfg(test)]
             mod tests {{

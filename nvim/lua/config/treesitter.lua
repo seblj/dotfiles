@@ -60,11 +60,14 @@ require('nvim-treesitter.configs').setup({
         config = {
             rust = '// %s',
             c = '// %s',
+            c_sharp = '// %s',
+            python = '# %s',
         },
         custom_calculation = function(node, language_tree)
             local language_commentstrings = {
-                c = { '//%s', '/*%s*/' },
-                tsx = { '//%s', '{/*%s*/}' },
+                c = { '// %s', '/* %s */' },
+                c_sharp = { '// %s', '/* %s */' },
+                tsx = { '// %s', '{/* %s */}' },
             }
 
             local parse_line = function(commentstring)
@@ -89,8 +92,8 @@ require('nvim-treesitter.configs').setup({
                 return nil
             end
 
-            local commenstrings = language_commentstrings[language_tree:lang()] or {}
-            for _, commentstring in pairs(commenstrings) do
+            local commentstrings = language_commentstrings[language_tree:lang()] or {}
+            for _, commentstring in pairs(commentstrings) do
                 local found = parse_line(commentstring)
                 if found then
                     return found

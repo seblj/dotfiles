@@ -40,19 +40,18 @@ local format_languages = {
     'toml',
 }
 
-local autoformat = true
-
 M.do_formatting = function()
     local ft = vim.api.nvim_buf_get_option(0, 'ft')
-    if autoformat and vim.tbl_contains(format_languages, ft) then
+    if vim.b.do_formatting and vim.tbl_contains(format_languages, ft) then
         vim.lsp.buf.formatting_sync()
     end
 end
 
 M.setup = function(client)
+    vim.b.do_formatting = true
     vim.keymap.set('n', '<leader>tf', function()
-        autoformat = not autoformat
-        if autoformat then
+        vim.b.do_formatting = not vim.b.do_formatting
+        if vim.b.do_formatting then
             vim.api.nvim_echo({ { 'Enabled autoformat on save' } }, false, {})
         else
             vim.api.nvim_echo({ { 'Disabled autoformat on save' } }, false, {})

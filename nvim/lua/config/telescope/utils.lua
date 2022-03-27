@@ -70,6 +70,54 @@ M.git_files = function()
     })
 end
 
+-- Thanks to TJ: https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/telescope/custom/multi_rg.lua
+local conf = require('telescope.config').values
+local finders = require('telescope.finders')
+local make_entry = require('telescope.make_entry')
+local pickers = require('telescope.pickers')
+
+M.multi_grep = function(opts)
+    opts = opts or {}
+    local root = get_root()
+    local dir = vim.fn.fnamemodify(root, ':t')
+
+    local custom_grep = finders.new_async_job({
+        command_generator = function(prompt)
+            if not prompt or prompt == '' then
+                return nil
+            end
+
+            local prompt_split = vim.split(prompt, '  ')
+
+            local args = { 'rg' }
+            if prompt_split[1] then
+                table.insert(args, '-e')
+                table.insert(args, prompt_split[1])
+            end
+
+            if prompt_split[2] then
+                table.insert(args, '-g')
+                table.insert(args, prompt_split[2])
+            end
+
+            return vim.tbl_flatten({
+                args,
+                { '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' },
+            })
+        end,
+        entry_maker = make_entry.gen_from_vimgrep(opts),
+        cwd = root,
+    })
+
+    pickers.new(opts, {
+        debounce = 100,
+        prompt_title = dir,
+        finder = custom_grep,
+        previewer = conf.grep_previewer(opts),
+        sorter = require('telescope.sorters').empty(),
+    }):find()
+end
+
 -- Live grep from root of git repo
 M.live_grep = function()
     local root = get_root()

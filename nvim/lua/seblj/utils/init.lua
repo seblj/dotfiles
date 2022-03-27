@@ -120,6 +120,11 @@ M.save_and_exec = function()
             command = 'cargo run'
         end
         M.run_term(command, file, output, output, output)
+    elseif ft == 'go' then
+        vim.cmd('silent! write')
+        vim.cmd('sp')
+        vim.cmd('lcd ' .. dir)
+        M.run_term('go run .')
     elseif ft == 'javascript' then
         vim.cmd('silent! write')
         vim.cmd('sp')

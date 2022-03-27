@@ -13,7 +13,6 @@ telescope.setup({
     defaults = {
         prompt_prefix = ' ',
         selection_caret = ' ',
-        file_sorter = require('telescope.sorters').get_fzy_sorter,
         layout_strategy = 'flex',
         layout_config = {
             flex = {
@@ -44,7 +43,8 @@ require('telescope').load_extension('notify')
 
 keymap('n', '<leader>ff', utils.find_files, { desc = 'Telescope: Find files' })
 keymap('n', '<leader>fg', utils.git_files, { desc = 'Telescope: Git files' })
-keymap('n', '<leader>fw', utils.live_grep, { desc = 'Telescope: Live grep' })
+-- keymap('n', '<leader>fw', utils.live_grep, { desc = 'Telescope: Live grep' })
+keymap('n', '<leader>fw', utils.multi_grep, { desc = 'Telescope: Live grep' })
 keymap('n', '<leader>fs', utils.grep_string, { desc = 'Telescope: Grep string' })
 keymap('n', '<leader>fd', utils.edit_dotfiles, { desc = 'Telescope: Dotfiles' })
 keymap('n', '<leader>fp', utils.plugins, { desc = 'Telescope: Plugins' })
