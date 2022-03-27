@@ -7,82 +7,169 @@
   "profiles": [
     {
       "complex_modifications": {
-        "parameters": {
-          "basic.simultaneous_threshold_milliseconds": 50,
-          "basic.to_delayed_action_delay_milliseconds": 500,
-          "basic.to_if_alone_timeout_milliseconds": 1000,
-          "basic.to_if_held_down_threshold_milliseconds": 500,
-          "mouse_motion_to_scroll.speed": 100
-        },
         "rules": [
           {
             "manipulators": [
               {
-                "description": "Change command + 8 to {",
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Change command + 8 to { on norwegian layout",
                 "from": {
                   "key_code": "8",
                   "modifiers": {
-                    "mandatory": ["command"]
+                    "mandatory": [
+                      "command"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "8",
-                    "modifiers": ["left_shift", "left_option"]
-                  }
-                ],
-                "type": "basic",
-                "conditions": [
-                  {
-                    "type": "input_source_if",
-                    "input_sources": [
-                      {
-                        "language": "^nb$"
-                      }
+                    "modifiers": [
+                      "left_shift",
+                      "left_option"
                     ]
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
           {
             "manipulators": [
               {
-                "description": "Change command + 9 to }",
+                "description": "Change § to ` on built-in keyboard with english layout",
+                "conditions": [
+                  {
+                    "type": "device_if",
+                    "identifiers": [
+                      {
+                        "product_id": 832
+                      }
+                    ]
+                  },
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "non_us_backslash"
+                },
+                "to": [
+                  {
+                    "key_code": "grave_accent_and_tilde"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "description": "Change ± to ~ on built-in keyboard with english layout",
+                "conditions": [
+                  {
+                    "type": "device_if",
+                    "identifiers": [
+                      {
+                        "product_id": 832
+                      }
+                    ]
+                  },
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "non_us_backslash",
+                  "modifiers": {
+                    "mandatory": "shift"
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "grave_accent_and_tilde",
+                    "modifiers": "shift"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Change command + 9 to } on norwegian layout",
                 "from": {
                   "key_code": "9",
                   "modifiers": {
-                    "mandatory": ["command"]
+                    "mandatory": [
+                      "command"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "9",
-                    "modifiers": ["left_shift", "left_option"]
-                  }
-                ],
-                "type": "basic",
-                "conditions": [
-                  {
-                    "type": "input_source_if",
-                    "input_sources": [
-                      {
-                        "language": "^nb$"
-                      }
+                    "modifiers": [
+                      "left_shift",
+                      "left_option"
                     ]
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
           {
             "manipulators": [
               {
-                "description": "Change option + ´ to ´",
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Change option + ´ to ´ on norwegian layout",
                 "from": {
                   "key_code": "equal_sign",
                   "modifiers": {
-                    "mandatory": ["command"]
+                    "mandatory": [
+                      "command"
+                    ]
                   }
                 },
                 "to": [
@@ -90,17 +177,7 @@
                     "key_code": "equal_sign"
                   }
                 ],
-                "type": "basic",
-                "conditions": [
-                  {
-                    "type": "input_source_if",
-                    "input_sources": [
-                      {
-                        "language": "^nb$"
-                      }
-                    ]
-                  }
-                ]
+                "type": "basic"
               }
             ]
           },
@@ -114,7 +191,10 @@
                 "to": [
                   {
                     "key_code": "eject",
-                    "modifiers": ["left_shift", "left_control"]
+                    "modifiers": [
+                      "left_shift",
+                      "left_control"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -124,27 +204,30 @@
           {
             "manipulators": [
               {
-                "description": "Change ´ to backslash",
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^nb$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Change ´ to backslash on norwegian layout",
                 "from": {
                   "key_code": "equal_sign"
                 },
                 "to": [
                   {
                     "key_code": "7",
-                    "modifiers": ["left_shift", "left_option"]
-                  }
-                ],
-                "type": "basic",
-                "conditions": [
-                  {
-                    "type": "input_source_if",
-                    "input_sources": [
-                      {
-                        "language": "^nb$"
-                      }
+                    "modifiers": [
+                      "left_shift",
+                      "left_option"
                     ]
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
@@ -155,13 +238,19 @@
                 "from": {
                   "key_code": "l",
                   "modifiers": {
-                    "mandatory": ["left_control", "left_option"]
+                    "mandatory": [
+                      "left_control",
+                      "left_option"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "q",
-                    "modifiers": ["left_control", "left_command"]
+                    "modifiers": [
+                      "left_control",
+                      "left_command"
+                    ]
                   }
                 ],
                 "type": "basic"
@@ -171,27 +260,32 @@
           {
             "manipulators": [
               {
-                "type": "basic",
-                "description": "Caps to hyper key if pressed together with other keys",
+                "description": "Caps to hyper key (shift+command+control+options)",
                 "from": {
                   "key_code": "caps_lock",
                   "modifiers": {
-                    "optional": ["any"]
+                    "optional": [
+                      "any"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "left_shift",
-                    "modifiers": ["left_command", "left_control", "left_option"]
+                    "modifiers": [
+                      "left_command",
+                      "left_control",
+                      "left_option"
+                    ]
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
           {
             "manipulators": [
               {
-                "type": "basic",
                 "description": "Hyper + enter for caps",
                 "from": {
                   "key_code": "return_or_enter",
@@ -202,89 +296,14 @@
                       "left_control",
                       "left_option"
                     ],
-                    "optional": ["any"]
+                    "optional": [
+                      "any"
+                    ]
                   }
                 },
                 "to": [
                   {
                     "key_code": "caps_lock"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "manipulators": [
-              {
-                "description": "Small increment volume up with fn + control + arrow",
-                "from": {
-                  "key_code": "up_arrow",
-                  "modifiers": {
-                    "mandatory": ["control", "fn"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "volume_increment",
-                    "modifiers": ["left_shift", "left_option"]
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "manipulators": [
-              {
-                "description": "Volume up with fn + arrow",
-                "from": {
-                  "key_code": "up_arrow",
-                  "modifiers": {
-                    "mandatory": ["fn"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "volume_increment"
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "manipulators": [
-              {
-                "description": "Volume down with fn + arrow",
-                "from": {
-                  "key_code": "down_arrow",
-                  "modifiers": {
-                    "mandatory": ["fn"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "volume_decrement"
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "manipulators": [
-              {
-                "description": "Small decrement volume down with fn + control + arrow",
-                "from": {
-                  "key_code": "down_arrow",
-                  "modifiers": {
-                    "mandatory": ["control", "fn"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "volume_decrement",
-                    "modifiers": ["left_shift", "left_option"]
                   }
                 ],
                 "type": "basic"
@@ -293,17 +312,7 @@
           }
         ]
       },
-      "name": "Default profile",
-      "parameters": {
-        "delay_milliseconds_before_open_device": 1000
-      },
-      "selected": true,
-      "simple_modifications": [],
-      "virtual_hid_keyboard": {
-        "country_code": 0,
-        "indicate_sticky_modifier_keys_state": true,
-        "mouse_key_xy_scale": 100
-      }
+      "name": "Default profile"
     }
   ]
 }
