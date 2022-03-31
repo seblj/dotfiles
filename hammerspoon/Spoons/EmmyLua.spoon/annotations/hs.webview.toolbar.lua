@@ -366,9 +366,8 @@ function M:separator(bool, ...) end
 -- Sets or removes the global callback function for the toolbar.
 --
 -- Parameters:
---  * fn - a function to set as the global callback for the toolbar, or nil to remove the global callback.
+--  * fn - a function to set as the global callback for the toolbar, or nil to remove the global callback. The function should expect three (four, if the item is a `searchfield` or `notifyOnChange` is true) arguments and return none: the toolbar object, "console" or the webview/chooser object the toolbar is attached to, and the toolbar item identifier that was clicked.
 --
---  The function should expect three (four, if the item is a `searchfield` or `notifyOnChange` is true) arguments and return none: the toolbar object, "console" or the webview/chooser object the toolbar is attached to, and the toolbar item identifier that was clicked.
 -- Returns:
 --  * the toolbar object.
 --
@@ -392,6 +391,23 @@ function M:sizeMode(size, ...) end
 --  * NSToolbarSpaceItem         - represents a space approximately the size of a toolbar item
 --  * NSToolbarFlexibleSpaceItem - represents a space that stretches to fill available space in the toolbar
 M.systemToolbarItems = nil
+
+-- Get or set the toolbar's style.
+--
+-- Parameters:
+--  * style - an optional string to set the style of the toolbar to "automatic", "expanded", "preference", "unified", or "unifiedCompact".
+--
+-- Returns:
+--  * if an argument is provided, returns the toolbar object; otherwise returns the current value
+--
+-- Notes:
+--  * This is only available for macOS 11.0+. Will return `nil` if getting on an earlier version of macOS.
+--  * `automatic` - A style indicating that the system determines the toolbar’s appearance and location.
+--  * `expanded` - A style indicating that the toolbar appears below the window title.
+--  * `preference` - A style indicating that the toolbar appears below the window title with toolbar items centered in the toolbar.
+--  * `unified` - A style indicating that the toolbar appears next to the window title.
+--  * `unifiedCompact` - A style indicating that the toolbar appears next to the window title and with reduced margins to allow more focus on the window’s contents.
+function M:toolbarStyle(style, ...) end
 
 -- Checks to see is a toolbar name is already in use
 --

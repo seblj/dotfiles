@@ -183,6 +183,15 @@ function M.getForceToGray() end
 --   * blue
 function M:getGamma() end
 
+-- Gets a table of information about an `hs.screen` object
+--
+-- Parameters:
+--  * None
+--
+-- Returns:
+--  *  A table containing various information, or nil if an error occurred.
+function M:getInfo() end
+
 -- Gets the screen's InvertedPolarity setting
 --
 -- Parameters:

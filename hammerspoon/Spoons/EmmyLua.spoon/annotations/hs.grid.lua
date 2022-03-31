@@ -251,12 +251,12 @@ function M.set(win, cell, screen, ...) end
 --    custom grid frame.
 --
 -- Returns:
---   * the `hs.grid` module for method chaining
+--  * the `hs.grid` module for method chaining
 --
--- Usage:
--- hs.grid.setGrid('5x3','Color LCD') -- sets the grid to 5x3 for any screen named "Color LCD"
--- hs.grid.setGrid('8x5','1920x1080') -- sets the grid to 8x5 for all screens with a 1920x1080 resolution
--- hs.grid.setGrid'4x4' -- sets the default grid to 4x4
+-- Examples:
+--  * hs.grid.setGrid('5x3','Color LCD') -- sets the grid to 5x3 for any screen named "Color LCD"
+--  * hs.grid.setGrid('8x5','1920x1080') -- sets the grid to 8x5 for all screens with a 1920x1080 resolution
+--  * hs.grid.setGrid'4x4' -- sets the default grid to 4x4
 ---@return hs.grid
 function M.setGrid(grid, screen, frame, ...) end
 

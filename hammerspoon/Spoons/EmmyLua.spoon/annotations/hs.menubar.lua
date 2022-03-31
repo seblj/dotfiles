@@ -38,6 +38,30 @@ function M:frame() end
 ---@return hs.image
 function M:icon() end
 
+-- Get or set the position of a menubar image relative to its text title
+--
+-- Parameters:
+--  * position - Either one of the values in `hs.menubar.imagePositions` which will be set, or nothing to return the current position
+--
+-- Returns:
+--  * Either the menubar item, if its image position was changed, or the current value of the image position
+function M:imagePosition(position, ...) end
+
+-- Pre-defined list of image positions for a menubar item
+--
+-- The constants defined are as follows:
+--  * none          - don't show the image
+--  * imageOnly     - only show the image, not the title
+--  * imageLeading  - show the image before the title
+--  * imageTrailing - show the image after the title
+--  * imageLeft     - show the image to the left of the title
+--  * imageRight    - show the image to the right of the title
+--  * imageBelow    - show the image below the title
+--  * imageAbove    - show the image above the title
+--  * imageOverlaps - show the image on top of the title
+---@type table
+M.imagePositions = {}
+
 -- Returns a boolean indicating whether or not the specified menu is currently in the OS X menubar.
 --
 -- Parameters:
