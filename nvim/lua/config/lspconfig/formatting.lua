@@ -40,13 +40,6 @@ local format_languages = {
     'toml',
 }
 
-M.do_formatting = function()
-    local ft = vim.api.nvim_buf_get_option(0, 'ft')
-    if vim.b.do_formatting and vim.tbl_contains(format_languages, ft) then
-        vim.lsp.buf.formatting_sync()
-    end
-end
-
 M.setup = function(client)
     vim.b.do_formatting = true
     vim.keymap.set('n', '<leader>tf', function()
@@ -66,23 +59,18 @@ M.setup = function(client)
     end
 
     if client.resolved_capabilities.document_formatting then
-        -- No way yet to clear only inside buffer with lua api for autocmds
-        vim.cmd([[
-            augroup AutoFormat
-                au! * <buffer>
-                autocmd BufWritePre <buffer> lua require('config.lspconfig.formatting').do_formatting()
-            augroup END
-        ]])
-        -- augroup('AutoFormat', {})
-        -- autocmd('BufWritePre', {
-        --     group = 'AutoFormat',
-        --     buffer = 0,
-        --     callback = function()
-        --         if autoformat and vim.tbl_contains(format_languages, ft) then
-        --             vim.lsp.buf.formatting_sync()
-        --         end
-        --     end,
-        -- })
+        local group = augroup('AutoFormat', {})
+        vim.api.nvim_clear_autocmd({ group = group, pattern = '<buffer>' })
+        autocmd('BufWritePre', {
+            group = group,
+            buffer = 0,
+            callback = function()
+                local _ft = vim.api.nvim_buf_get_option(0, 'ft')
+                if vim.b.do_formatting and vim.tbl_contains(format_languages, _ft) then
+                    vim.lsp.buf.formatting_sync()
+                end
+            end,
+        })
     end
 end
 

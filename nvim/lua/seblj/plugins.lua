@@ -4,9 +4,9 @@ local autocmd = vim.api.nvim_create_autocmd
 local map = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
-augroup('CompilePacker', {})
+local group = augroup('CompilePacker', {})
 autocmd('BufWritePost', {
-    group = 'CompilePacker',
+    group = group,
     pattern = 'plugins.lua',
     command = 'PackerCompile',
 })

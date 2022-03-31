@@ -23,7 +23,7 @@ local check_trigger_char = function(line_to_cursor, triggers)
     return false
 end
 
-M.open_signature = function()
+local open_signature = function()
     local triggered = false
 
     for _, client in pairs(clients) do
@@ -58,22 +58,15 @@ M.setup = function(client)
 
     table.insert(clients, client)
 
-    -- No way yet to clear only inside buffer with lua api for autocmds
-    vim.cmd([[
-        augroup LspSignature
-            au! * <buffer>
-            autocmd TextChangedI <buffer> lua require('config.lspconfig.signature').open_signature()
-        augroup END
-    ]])
-
-    -- augroup('Signature', {})
-    -- autocmd('TextChangedI', {
-    --     group = 'Signature',
-    --     pattern = '<buffer>',
-    --     callback = function()
-    --         open_signature()
-    --     end,
-    -- })
+    local group = augroup('LspSignature', { clear = false })
+    vim.api.nvim_clear_autocmd({ group = group, pattern = '<buffer>' })
+    autocmd('TextChangedI', {
+        group = group,
+        pattern = '<buffer>',
+        callback = function()
+            open_signature()
+        end,
+    })
 end
 
 return M

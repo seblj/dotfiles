@@ -83,9 +83,9 @@ M.popup_create = function(opts)
     end
     if opts.hidden_cursor then
         require('seblj.utils').setup_hidden_cursor()
-        augroup('UISetCursor', {})
+        local group = augroup('UISetCursor', {})
         autocmd('CursorMoved', {
-            group = 'UISetCursor',
+            group = group,
             pattern = '<buffer>',
             callback = function()
                 set_cursor()
