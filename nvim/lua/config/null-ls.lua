@@ -9,14 +9,17 @@ nls.setup({
     sources = {
         formatter.stylua,
         formatter.goimports,
-        -- formatter.prettierd.with({
-        --     condition = function()
-        --         local bufnr = vim.api.nvim_get_current_buf()
-        --         local bufname = vim.api.nvim_buf_get_name(bufnr)
-        --         local eslint_root_dir = require('lspconfig.server_configurations.eslint').default_config.root_dir
-        --         return not eslint_root_dir(lsp_util.path.sanitize(bufname), bufnr)
-        --     end,
-        -- }),
+        formatter.prettierd.with({
+            -- I hate that this only runs on the first attach of a buffer
+            -- Would have been a lot easier if this actually ran on every buffer attach
+            -- to see if null-ls should attach or not. But because it only runs once, which
+            -- means that if a random file is opened first, and then in the same session
+            -- a file that uses eslint is opened, it will attach null-ls to use prettierd
+            -- even though this function returns false.
+            condition = function()
+                return not formatting.eslint_attach()
+            end,
+        }),
     },
     on_attach = function(client)
         formatting.setup(client)

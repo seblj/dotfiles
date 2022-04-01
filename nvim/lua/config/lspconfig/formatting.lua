@@ -1,14 +1,14 @@
 local M = {}
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+local lsp_util = require('lspconfig.util')
 
 local nls_has_formatter = function(ft)
     local config = require('null-ls.config').get()
     for _, source in ipairs(config.sources) do
         if vim.tbl_contains(source.filetypes, ft) then
             if source.condition then
-                local utils = require('null-ls.utils').make_conditional_utils()
-                return source.condition(utils)
+                return source.condition()
             end
             if type(source.method) == 'string' and source.method == 'NULL_LS_FORMATTING' then
                 return true
@@ -40,6 +40,13 @@ local format_languages = {
     'toml',
 }
 
+M.eslint_attach = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+    local eslint_root_dir = require('lspconfig.server_configurations.eslint').default_config.root_dir
+    return eslint_root_dir(lsp_util.path.sanitize(bufname), bufnr)
+end
+
 M.setup = function(client)
     vim.b.do_formatting = true
     vim.keymap.set('n', '<leader>tf', function()
@@ -56,6 +63,9 @@ M.setup = function(client)
         client.resolved_capabilities.document_formatting = false
     else
         client.resolved_capabilities.document_formatting = true
+    end
+    if client.name == 'null-ls' and M.eslint_attach() then
+        client.resolved_capabilities.document_formatting = false
     end
 
     if client.resolved_capabilities.document_formatting then
