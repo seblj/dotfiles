@@ -60,7 +60,7 @@ M.setup = function(client)
 
     if client.resolved_capabilities.document_formatting then
         local group = augroup('AutoFormat', {})
-        vim.api.nvim_clear_autocmd({ group = group, pattern = '<buffer>' })
+        vim.api.nvim_clear_autocmds({ group = group, pattern = '<buffer>' })
         autocmd('BufWritePre', {
             group = group,
             buffer = 0,

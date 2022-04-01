@@ -59,7 +59,7 @@ M.setup = function(client)
     table.insert(clients, client)
 
     local group = augroup('LspSignature', { clear = false })
-    vim.api.nvim_clear_autocmd({ group = group, pattern = '<buffer>' })
+    vim.api.nvim_clear_autocmds({ group = group, pattern = '<buffer>' })
     autocmd('TextChangedI', {
         group = group,
         pattern = '<buffer>',

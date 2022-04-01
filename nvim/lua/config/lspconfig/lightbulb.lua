@@ -99,7 +99,7 @@ M.setup = function()
     vim.fn.sign_define(sign_name, { text = config.icon, texthl = 'DiagnosticInfo' })
 
     local group = augroup('SetupLightbulb', { clear = false })
-    vim.api.nvim_clear_autocmd({ group = group, pattern = '<buffer>' })
+    vim.api.nvim_clear_autocmds({ group = group, pattern = '<buffer>' })
     autocmd({ 'CursorHold', 'CursorMoved' }, {
         group = group,
         pattern = '<buffer>',
