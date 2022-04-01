@@ -43,7 +43,14 @@ local format_languages = {
 M.eslint_attach = function()
     local bufnr = vim.api.nvim_get_current_buf()
     local bufname = vim.api.nvim_buf_get_name(bufnr)
-    local eslint_root_dir = require('lspconfig.server_configurations.eslint').default_config.root_dir
+    -- Do not include package.json as root_pattern for eslint
+    local eslint_root_dir = lsp_util.root_pattern(
+        '.eslintrc.js',
+        '.eslintrc.cjs',
+        '.eslintrc.yaml',
+        '.eslintrc.yml',
+        '.eslintrc.json'
+    )
     return eslint_root_dir(lsp_util.path.sanitize(bufname), bufnr)
 end
 
@@ -69,11 +76,11 @@ M.setup = function(client)
     end
 
     if client.resolved_capabilities.document_formatting then
-        local group = augroup('AutoFormat', {})
+        local group = augroup('AutoFormat', { clear = false })
         vim.api.nvim_clear_autocmds({ group = group, pattern = '<buffer>' })
         autocmd('BufWritePre', {
             group = group,
-            buffer = 0,
+            pattern = '<buffer>',
             callback = function()
                 local _ft = vim.api.nvim_buf_get_option(0, 'ft')
                 if vim.b.do_formatting and vim.tbl_contains(format_languages, _ft) then
