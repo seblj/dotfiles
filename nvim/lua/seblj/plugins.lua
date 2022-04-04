@@ -31,6 +31,9 @@ local plugins = function(use)
     end
 
     local setup = function(name, config)
+        if not config then
+            return string.format([[require('%s').setup()]], name)
+        end
         return string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
     end
 

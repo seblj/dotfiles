@@ -32,6 +32,8 @@ local transform = function(text)
         return t({ '""' })
     elseif string.find(text, '*', 1, true) then
         return t({ 'nil' })
+    elseif string.find(text, '[]', 1, true) then
+        return t({ 'nil' })
     end
     return t({ text })
 end
