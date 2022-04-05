@@ -104,6 +104,14 @@ M.setup = function()
         group = group,
         pattern = '<buffer>',
         callback = function()
+            -- Guard against spamming of method not supported after
+            -- stopping a language serer with LspStop
+            local active_clients = vim.lsp.get_active_clients()
+            if #active_clients <= 1 then
+                if active_clients[1].name == 'null-ls' then
+                    return
+                end
+            end
             check_code_action()
         end,
     })
