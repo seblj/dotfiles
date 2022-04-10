@@ -11,18 +11,13 @@ vim.g.maplocalleader = '\\'
 
 ---------- GENERAL MAPPINGS ----------
 
-keymap({ 'n', 'v', 'i' }, 'œ', '<A-o>', { remap = true, desc = 'Fix <A-o> mapping on mac' })
 keymap({ 'n', 'v', 'i' }, '√', '<A-j>', { remap = true, desc = 'Fix <A-j> mapping on mac' })
 keymap({ 'n', 'v', 'i' }, 'ª', '<A-k>', { remap = true, desc = 'Fix <A-k> mapping on mac' })
 
-keymap({ 'n', 'v', 'i' }, 'ø', '<A-o>', { remap = true, desc = 'Fix <A-o> mapping on mac' })
 keymap({ 'n', 'v', 'i' }, '∆', '<A-j>', { remap = true, desc = 'Fix <A-j> mapping on mac' })
 keymap({ 'n', 'v', 'i' }, '˚', '<A-k>', { remap = true, desc = 'Fix <A-k> mapping on mac' })
 
 keymap('n', '<leader>r', utils.reload_config, { desc = 'Reload config' })
-keymap('n', '<A-o>', '<Tab>', { desc = 'Alt-o for jumplist' })
-keymap('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', { expr = true, desc = 'Next completion' })
-keymap('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', { expr = true, desc = 'Previous completion' })
 keymap('n', '<Tab>', 'gt', { desc = 'Next tab' })
 keymap('n', '<S-TAB>', 'gT', { desc = 'Previous tab' })
 keymap('n', '<leader>=', '<C-w>=', { desc = 'Resize all splits' })
@@ -129,3 +124,4 @@ vim.cmd('cnoreabbrev Term term')
 -- Open term in splits
 command('T', 'split | term <args>', { nargs = '*', bang = true })
 command('VT', 'vsplit | term <args>', { nargs = '*', bang = true })
+command('TT', 'tabedit | term <args>', { nargs = '*', bang = true })

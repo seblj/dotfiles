@@ -80,9 +80,6 @@ local plugins = function(use)
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'akinsho/git-conflict.nvim', config = conf('conflict'), event = 'BufReadPre' })
 
-    -- Test
-    use({ 'vim-test/vim-test', config = conf('test'), cmd = { 'TestFile', 'TestNearest' } })
-
     -- Packageinfo
     use({ 'saecki/crates.nvim', config = setup('crates'), event = 'BufRead Cargo.toml' })
     use({ 'vuki656/package-info.nvim', config = conf('packageinfo'), event = 'BufRead package.json' })
@@ -118,7 +115,6 @@ local plugins = function(use)
     use({ 'NTBBloodbath/rest.nvim', ft = 'http' })
     use({ 'mbbill/undotree', cmd = 'UndotreeToggle' })
     use({ 'lambdalisue/suda.vim', config = 'vim.cmd("cnoreabbrev w!! w suda://%")' })
-    use({ 'wellle/targets.vim' })
     use({ 'tpope/vim-repeat' })
     use({ 'tpope/vim-abolish' })
     use({ 'tpope/vim-surround', config = conf('surround') })
