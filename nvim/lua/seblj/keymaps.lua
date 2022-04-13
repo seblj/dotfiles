@@ -3,7 +3,7 @@
 local utils = require('seblj.utils')
 local resize = require('seblj.utils.resize')
 local keymap = vim.keymap.set
-local command = vim.api.nvim_add_user_command
+local command = vim.api.nvim_create_user_command
 
 -- Leader is space and localleader is \
 vim.g.mapleader = ' '

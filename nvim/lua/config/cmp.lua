@@ -51,23 +51,9 @@ cmp.setup({
 
     preselect = cmp.PreselectMode.None,
 
-    -- Rounded borders on popup
-    -- documentation = {
-    --     border = 'rounded',
-    --     scrollbar = '║',
-    -- },
-
-    -- This is for the PR with borders
     window = {
-        documentation = {
-            border = 'rounded',
-            scrollbar = '║',
-        },
-
-        completion = {
-            border = 'rounded',
-            scrollbar = '║',
-        },
+        documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered(),
     },
 
     -- Make entry look like (icon, type, source) in completion menu
@@ -78,6 +64,8 @@ cmp.setup({
                 nvim_lsp = '[LSP]',
                 buffer = '[Buffer]',
                 luasnip = '[Luasnip]',
+                path = '[Path]',
+                crates = '[Crates]',
             })[entry.source.name]
 
             -- Append '...' if the entry is wider than max length
@@ -110,6 +98,8 @@ cmp.setup.cmdline('?', {
     },
 })
 
+-- Looks really nice, but it misses some completion
+-- items that I like from the builtin
 -- cmp.setup.cmdline(':', {
 --     completion = {
 --         autocomplete = false,

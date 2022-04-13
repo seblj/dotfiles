@@ -7,7 +7,7 @@ local telescope = require('telescope')
 local builtin = require('telescope.builtin')
 local cht = require('seblj.cht')
 local extensions = telescope.extensions
-local command = vim.api.nvim_add_user_command
+local command = vim.api.nvim_create_user_command
 
 telescope.setup({
     defaults = {

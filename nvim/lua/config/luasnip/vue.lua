@@ -15,15 +15,8 @@ return make({
             {tab}<div>
             </template>
 
-            <script lang="ts">
-
-            import {{ defineComponent }} from 'vue';
-
-            export default defineComponent({{
-            {tab}name: '{filename}',
-            {tab}{tab}{insert}
-            {tab}}},
-            }});
+            <script setup lang="ts">
+            {insert}
             </script>
 
             <style lang="scss">
@@ -32,7 +25,6 @@ return make({
         ]],
         {
             tab = '\t',
-            filename = f(filename, {}),
             insert = i(0),
         }
     ),

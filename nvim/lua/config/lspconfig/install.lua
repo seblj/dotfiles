@@ -27,11 +27,13 @@ local install_server = function(ls)
     vim.cmd('startinsert')
 end
 
-vim.api.nvim_add_user_command('LspInstall', function(opts)
+vim.api.nvim_create_user_command('LspInstall', function(opts)
     install_server(opts.args)
 end, {
-    complete = function()
-        return vim.tbl_keys(servers)
+    complete = function(search)
+        return vim.tbl_filter(function(server)
+            return server:match(search)
+        end, vim.tbl_keys(servers))
     end,
     nargs = 1,
 })

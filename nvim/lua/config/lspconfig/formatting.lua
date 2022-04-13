@@ -38,6 +38,7 @@ local format_languages = {
     'json',
     'markdown',
     'toml',
+    'cs',
 }
 
 M.eslint_attach = function()

@@ -41,7 +41,7 @@ M.edit_dotfiles = function()
         cwd = '~/dotfiles',
         prompt_title = 'Dotfiles',
         hidden = true,
-        file_ignore_patterns = { '.git/', 'hammerspoon/Spoons/', 'fonts/', 'icons/' },
+        file_ignore_patterns = { '%.git/', 'hammerspoon/Spoons/', 'fonts/', 'icons/' },
     })
 end
 

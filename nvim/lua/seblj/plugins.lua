@@ -67,7 +67,7 @@ local plugins = function(use)
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
 
     -- Completion
-    use({ 'hrsh7th/nvim-cmp', config = conf('cmp'), branch = 'dev' })
+    use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
     use({ 'hrsh7th/cmp-cmdline' })
     use({ 'hrsh7th/cmp-nvim-lsp' })
     use({ 'hrsh7th/cmp-buffer' })

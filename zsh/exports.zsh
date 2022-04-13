@@ -16,7 +16,7 @@ path+=(
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
-export PATH="$PATH:/Users/sebastianlyngjohansen/.dotnet/tools"
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
