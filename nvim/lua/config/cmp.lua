@@ -52,8 +52,16 @@ cmp.setup({
     preselect = cmp.PreselectMode.None,
 
     window = {
-        documentation = cmp.config.window.bordered(),
-        completion = cmp.config.window.bordered(),
+        documentation = {
+            border = CUSTOM_BORDER,
+            winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,Search:None',
+        },
+        completion = {
+            border = CUSTOM_BORDER,
+            winhighlight = 'FloatBorder:FloatBorder,CursorLine:Visual',
+        },
+        -- documentation = cmp.config.window.bordered(),
+        -- completion = cmp.config.window.bordered(),
     },
 
     -- Make entry look like (icon, type, source) in completion menu

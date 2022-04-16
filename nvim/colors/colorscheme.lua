@@ -8,8 +8,9 @@ end
 
 local c = {
     bg = '#1c1c1c',
-    bg2 = '#363944',
+    bg2 = '#3f424f',
     bg3 = '#121212',
+    bg4 = '#2f2f2f',
     fg = '#eeeeee',
     diff_red = '#55393d',
     diff_green = '#394634',
@@ -41,7 +42,7 @@ highlight({
     DiffText = { bg = c.changed_text },
     Directory = { fg = c.green },
     ErrorMsg = { fg = c.red },
-    FloatBorder = { fg = c.border },
+    FloatBorder = { fg = c.bg4 },
     FoldColumn = { fg = c.grey },
     Folded = { fg = c.grey, bg = c.bg },
     IncSearch = { fg = c.bg, bg = c.red },
@@ -51,7 +52,7 @@ highlight({
     MoreMsg = { fg = c.blue, bold = true },
     NonText = { fg = c.bg2 },
     Normal = { fg = c.fg, bg = c.bg },
-    NormalFloat = { fg = c.fg, bg = c.bg },
+    NormalFloat = { fg = c.fg, bg = c.bg4 },
     Pmenu = { fg = c.fg, bg = c.bg2 },
     PmenuSbar = { bg = c.bg2 },
     PmenuSel = { fg = c.bg, bg = c.green },

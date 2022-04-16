@@ -47,10 +47,10 @@ M.popup_create = function(opts)
         opts.height = math.ceil(#title / width) + 2
     end
 
-    opts.border = opts.border or 'rounded'
+    opts.border = opts.border or CUSTOM_BORDER
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
-    vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:Normal')
+    vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:NormalFloat')
     if opts.enter then
         vim.api.nvim_set_current_win(winnr)
         keymap('n', '<ESC>', function()

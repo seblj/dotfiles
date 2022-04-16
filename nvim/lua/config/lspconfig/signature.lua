@@ -51,7 +51,7 @@ end
 
 M.setup = function(client)
     handler = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = 'rounded',
+        border = CUSTOM_BORDER,
         silent = true,
         focusable = false,
     })

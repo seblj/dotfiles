@@ -41,7 +41,7 @@ vim.ui.select = function(items, opts, on_choice)
             end,
         })
         vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Normal', 1, 0, -1)
 
         for k, _ in ipairs(choices) do
             if k > 1 then
@@ -76,6 +76,6 @@ vim.ui.input = function(opts, on_confirm)
             end,
         })
         vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #opts.prompt)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'FloatBorder', 1, 0, -1)
+        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Normal', 1, 0, -1)
     end)
 end
