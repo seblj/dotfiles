@@ -14,7 +14,9 @@ if pcall(require, 'plenary') then
         return require(name)
     end
 end
-CUSTOM_BORDER = { '', '▄', '', '█', '', '▀', '', '█' }
+
+-- CUSTOM_BORDER = { '', '▄', '', '█', '', '▀', '', '█' }
+CUSTOM_BORDER = { '', '▅', '', '▋', '', '🮄', '', '🮉' }
 
 -- Override vim.keymap.set to have silent as default
 local map = vim.keymap.set
