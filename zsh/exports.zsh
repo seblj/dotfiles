@@ -2,6 +2,7 @@
 
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
+export XDG_CONFIG_HOME="$HOME/.config"
 
 export _Z_DATA="$HOME/.config/z/.z."
 export FZF_DEFAULT_OPTS='--height 40%'

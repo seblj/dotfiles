@@ -2,7 +2,7 @@ local ui = require('seblj.utils.ui')
 local keymap = vim.keymap.set
 
 local options = {
-    prefix = '> ',
+    prefix = ' ',
 }
 
 local confirm = function(items, on_choice, key)

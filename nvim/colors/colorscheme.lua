@@ -1,3 +1,5 @@
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 local highlight = function(colors)
     for name, opts in pairs(colors) do
         vim.api.nvim_set_hl(0, name, opts)
@@ -226,6 +228,18 @@ highlight({
     CmpItemKindVariable = { link = 'TSVariable' },
 
     UltestBorder = { link = 'FloatBorder' },
+})
+
+-- When using ':Messages', the text is highlighted with
+-- 'NonText' for some reason Fix this to actually be readable
+-- without changing hl group for everything it's used for
+local group = augroup('FixQFColorscheme', {})
+autocmd('FileType', {
+    group = group,
+    pattern = 'qf',
+    callback = function()
+        vim.opt.winhighlight = 'NonText:Normal'
+    end,
 })
 
 ---------- TERM COLORS ----------
