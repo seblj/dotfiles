@@ -101,6 +101,19 @@ end, {
     desc = 'Toggle mouse, number and signcolumn',
 })
 
+vim.keymap.set('n', '<leader>tf', function()
+    if vim.b.do_formatting == nil then
+        vim.b.do_formatting = false
+    else
+        vim.b.do_formatting = not vim.b.do_formatting
+    end
+    if vim.b.do_formatting then
+        vim.api.nvim_echo({ { 'Enabled autoformat on save' } }, false, {})
+    else
+        vim.api.nvim_echo({ { 'Disabled autoformat on save' } }, false, {})
+    end
+end, { desc = 'Format: Toggle format on save' })
+
 ---------- ABBREVIATIONS ----------
 
 vim.cmd('cnoreabbrev !! <C-r>:') -- Repeat last command

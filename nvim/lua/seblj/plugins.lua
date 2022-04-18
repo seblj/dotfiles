@@ -44,6 +44,7 @@ local plugins = function(use)
     -- My plugins/forks
     local_use({ 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' })
     local_use({ 'seblj/nvim-echo-diagnostics', config = setup('echo-diagnostics') })
+    local_use({ 'seblj/formatter.nvim', config = conf('formatter') })
 
     -- Telescope
     use({ 'nvim-telescope/telescope.nvim', config = conf('telescope') })
@@ -61,7 +62,6 @@ local plugins = function(use)
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
-    use({ 'jose-elias-alvarez/null-ls.nvim', config = conf('null-ls') })
     use({ 'folke/lua-dev.nvim' })
     use({ 'b0o/schemastore.nvim' })
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })

@@ -67,10 +67,7 @@ M.setup = function(client)
             -- Guard against spamming of method not supported after
             -- stopping a language serer with LspStop
             local active_clients = vim.lsp.get_active_clients()
-            if #active_clients <= 1 then
-                if #active_clients == 1 and active_clients[1].name == 'null-ls' then
-                    return
-                end
+            if #active_clients < 1 then
                 return
             end
             open_signature()
