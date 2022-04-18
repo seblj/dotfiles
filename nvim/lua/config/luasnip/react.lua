@@ -17,15 +17,19 @@ local react_component = fmt(
 
         export default {filename};
     ]],
-    { insert = i(0), filename = f(filename, {}), tab = '\t' }
+    {
+        insert = i(0),
+        filename = f(filename, {}),
+        tab = '\t',
+    }
 )
 
 M.typescriptreact = make({
-    component = react_component,
+    component = vim.deepcopy(react_component),
 })
 
 M.javascriptreact = make({
-    component = react_component,
+    component = vim.deepcopy(react_component),
 })
 
 return M
