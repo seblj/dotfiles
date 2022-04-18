@@ -134,7 +134,7 @@ return require('packer').startup({
             enable = true,
         },
         display = {
-            prompt_border = 'rounded',
+            prompt_border = CUSTOM_BORDER,
         },
     },
 })

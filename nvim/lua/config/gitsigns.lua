@@ -9,7 +9,7 @@ require('gitsigns').setup({
         changedelete = { text = '~_' },
     },
     preview_config = {
-        border = 'rounded',
+        border = CUSTOM_BORDER,
     },
     max_file_length = 200000,
     on_attach = function(bufnr)
