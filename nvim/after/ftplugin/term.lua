@@ -1,4 +1,3 @@
--- opt_local doesn't behave like I want here
-vim.cmd('setlocal nonumber')
-vim.cmd('setlocal norelativenumber')
+vim.opt_local.number = false
+vim.opt_local.relativenumber = false
 vim.cmd('startinsert')

@@ -19,9 +19,40 @@ local indent = {
 }
 
 require('nvim-treesitter.configs').setup({
+    ensure_installed = {
+        'comment',
+        'lua',
+        'teal',
+        'vim',
+        'c',
+        'c_sharp',
+        'cpp',
+        'make',
+        'rust',
+        'go',
+        'gomod',
+        'markdown',
+        'python',
+        'tsx',
+        'javascript',
+        'typescript',
+        'vue',
+        'html',
+        'css',
+        'scss',
+        'graphql',
+        'json',
+        'yaml',
+        'bibtex',
+        'latex',
+        'bash',
+        'dockerfile',
+        'http',
+        'proto',
+    },
+
     highlight = {
         enable = true,
-        ensure_installed = 'maintained',
         disable = { 'help' },
     },
     indent = {

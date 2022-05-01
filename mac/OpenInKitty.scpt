@@ -24,7 +24,7 @@ on run {input, parameters}
         tell application "kitty" to activate
     else
         tell application "System Events" to tell process "kitty"
-            click menu item "New OS Window" of menu 1 of menu bar item "kitty" of menu bar 1
+            click menu item "New OS Window" of menu 1 of menu bar item "Shell" of menu bar 1
         end tell
         tell application "kitty" to activate
     end if

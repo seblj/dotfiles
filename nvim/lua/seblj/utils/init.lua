@@ -186,7 +186,7 @@ end
 
 M.setup_hidden_cursor = function()
     hide_cursor()
-    vim.cmd('setlocal cursorline')
+    vim.opt_local.cursorline = true
     local group = augroup('HiddenCursor', {})
     autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = group,

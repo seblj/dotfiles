@@ -3,8 +3,6 @@
 local M = {}
 local settings = require('config.lspconfig.settings')
 
-require('config.lspconfig.install')
-
 ---------- MAPPINGS ----------
 
 local mappings = function()
@@ -78,7 +76,6 @@ local servers = {
     'omnisharp',
     'dockerls',
     'eslint',
-    'taplo',
     -- 'ltex',
     -- 'grammarly',
 }
@@ -98,6 +95,10 @@ local setup_servers = function()
     end
 end
 
+local ok, lsp_installer = pcall(require, 'nvim-lsp-installer')
+if ok then
+    lsp_installer.setup({})
+end
 setup_servers()
 
 return M

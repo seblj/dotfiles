@@ -62,9 +62,10 @@ local plugins = function(use)
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
-    use({ 'folke/lua-dev.nvim' })
+    use({ 'max397574/lua-dev.nvim' })
     use({ 'b0o/schemastore.nvim' })
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
+    use({ 'williamboman/nvim-lsp-installer' })
 
     -- Completion
     use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
@@ -74,7 +75,6 @@ local plugins = function(use)
     use({ 'hrsh7th/cmp-path' })
     use({ 'saadparwaiz1/cmp_luasnip' })
     use({ 'L3MON4D3/LuaSnip', config = conf('luasnip') })
-    use({ 'onsails/lspkind-nvim' })
 
     -- Git
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })

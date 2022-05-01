@@ -81,13 +81,4 @@ return {
     --             },
     --         },
     --     },
-
-    omnisharp = {
-        cmd = {
-            '/Users/sebastianlyngjohansen/.local/omnisharp-osx/run',
-            '--languageserver',
-            '--hostPID',
-            tostring(vim.fn.getpid()),
-        },
-    },
 }

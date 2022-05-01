@@ -3,7 +3,7 @@ brew install --cask discord
 brew install --cask iterm2
 brew install --cask karabiner-elements
 brew install --cask logitech-options
-brew install --cask mactex
+brew install --cask mactex-no-gui
 brew install --cask mactracker
 brew install --cask microsoft-teams
 brew install --cask multipass
