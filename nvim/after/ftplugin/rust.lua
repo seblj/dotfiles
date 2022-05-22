@@ -1,0 +1,55 @@
+-- Attempt to automatically reload workspace when Cargo.toml is changed
+-- local w = vim.loop.new_fs_event()
+
+-- local function on_change(_, _, status, path)
+--     if status.rename then
+--         w:stop()
+--         FileWatcher(path)
+--         return
+--     end
+--     local bufnrs = vim.tbl_filter(function(b)
+--         if 1 ~= vim.fn.buflisted(b) then
+--             return false
+--         end
+--         return true
+--     end, vim.api.nvim_list_bufs())
+
+--     for _, bufnr in pairs(bufnrs) do
+--         if vim.fn.bufname(bufnr):match('%.rs') then
+--             bufnr = require('lspconfig.util').validate_bufnr(bufnr)
+--             vim.lsp.buf_request(bufnr, 'rust-analyzer/reloadWorkspace', nil, function(e)
+--                 if e then
+--                     error(tostring(e))
+--                 end
+--                 vim.notify('Cargo workspace reloaded')
+--             end)
+--             w:stop()
+--             FileWatcher(path)
+--             return
+--         end
+--     end
+--     w:stop()
+--     FileWatcher(path)
+-- end
+
+-- function FileWatcher(filepath)
+--     local file
+--     if filepath then
+--         file = filepath
+--     else
+--         file = vim.fn.findfile('Cargo.toml', '.;')
+--         if file == '' then
+--             return
+--         end
+--         file = vim.fn.fnamemodify(file, ':p')
+--     end
+--     w:start(
+--         file,
+--         {},
+--         vim.schedule_wrap(function(err, fname, status)
+--             on_change(err, fname, status, file)
+--         end)
+--     )
+-- end
+
+-- FileWatcher()

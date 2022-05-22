@@ -102,7 +102,16 @@ M.multi_grep = function(opts)
 
             return vim.tbl_flatten({
                 args,
-                { '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' },
+                {
+                    '--color=never',
+                    '--no-heading',
+                    '--with-filename',
+                    '--line-number',
+                    '--column',
+                    '--smart-case',
+                    '-g',
+                    '!Spoons/',
+                },
             })
         end,
         entry_maker = make_entry.gen_from_vimgrep(opts),
@@ -137,6 +146,7 @@ local grep_confirm = function(input)
             cwd = root,
             search = input,
             prompt_title = dir,
+            file_ignore_patterns = { '%.git/', 'hammerspoon/Spoons/' },
         })
     end)
 end

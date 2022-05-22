@@ -41,7 +41,12 @@ return {
         },
     }),
 
+    -- TODO: See if I can get the grammarly lsp to work after the release of the new SDK
     grammarly = {
+        init_options = {
+            clientId = '10',
+        },
+        cmd = { 'grammarly-languageserver', '--stdio' },
         filetypes = { 'tex', 'markdown' },
     },
 
@@ -69,6 +74,12 @@ return {
             json = {
                 schemas = require('schemastore').json.schemas(),
             },
+        },
+    },
+
+    omnisharp = {
+        handlers = {
+            ['textDocument/definition'] = require('omnisharp_extended').handler,
         },
     },
 

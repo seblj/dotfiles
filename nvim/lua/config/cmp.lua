@@ -1,43 +1,6 @@
 local cmp = require('cmp')
 local types = require('cmp.types')
 
-local kinds = {
-    Text = '',
-    Method = '',
-    Function = '',
-    Constructor = '',
-    Field = 'ﰠ',
-    Variable = '',
-    Class = 'ﴯ',
-    Interface = '',
-    Module = '',
-    Property = 'ﰠ',
-    Unit = '塞',
-    Value = '',
-    Enum = '',
-    Keyword = '',
-    Snippet = '',
-    Color = '',
-    File = '',
-    Reference = '',
-    Folder = '',
-    EnumMember = '',
-    Constant = '',
-    Struct = 'פּ',
-    Event = '',
-    Operator = '',
-    TypeParameter = '',
-    Namespace = '',
-    Package = '',
-    String = '',
-    Number = '',
-    Boolean = '',
-    Array = '',
-    Object = '',
-    Key = '',
-    Null = 'ﳠ',
-}
-
 cmp.setup({
     sources = {
         { name = 'luasnip' },
@@ -47,6 +10,7 @@ cmp.setup({
         } },
         { name = 'path' },
         { name = 'crates' },
+        { name = 'vim-dadbod-completion' },
     },
 
     snippet = {
@@ -103,7 +67,7 @@ cmp.setup({
     -- Make entry look like (icon, type, source) in completion menu
     formatting = {
         format = function(entry, item)
-            item.kind = kinds[item.kind] .. ' ' .. item.kind
+            item.kind = require('seblj.utils.icons').kind[item.kind] .. ' ' .. item.kind
             item.menu = ({
                 nvim_lsp = '[LSP]',
                 buffer = '[Buffer]',

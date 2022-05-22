@@ -31,6 +31,7 @@ vim.opt.undolevels = 1000
 vim.opt.shortmess:append('c')
 vim.opt.cinkeys:remove('0#')
 vim.opt.fillchars:append('diff:╱')
+vim.opt.laststatus = 3
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'

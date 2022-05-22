@@ -17,10 +17,7 @@ local plugins = function(use)
 
     -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/plugins.lua
     local local_use = function(opts)
-        local plugin = opts
-        if type(opts) == 'table' then
-            plugin = table.remove(opts, 1)
-        end
+        local plugin = type(opts) == 'table' and table.remove(opts, 1) or opts
         local plugin_name = vim.split(plugin, '/')[2]
 
         if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin_name)) == 1 then
@@ -31,10 +28,8 @@ local plugins = function(use)
     end
 
     local setup = function(name, config)
-        if not config then
-            return string.format([[require('%s').setup()]], name)
-        end
-        return string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
+        return not config and string.format([[require('%s').setup()]], name)
+            or string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
     end
 
     local conf = function(name)
@@ -58,7 +53,7 @@ local plugins = function(use)
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
     use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
-    use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
+    local_use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
     use({ 'SmiteshP/nvim-gps' })
 
     -- LSP
@@ -67,6 +62,7 @@ local plugins = function(use)
     use({ 'b0o/schemastore.nvim' })
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
     use({ 'williamboman/nvim-lsp-installer' })
+    use({ 'Hoffs/omnisharp-extended-lsp.nvim' })
 
     -- Completion
     use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
@@ -76,6 +72,11 @@ local plugins = function(use)
     use({ 'hrsh7th/cmp-path' })
     use({ 'saadparwaiz1/cmp_luasnip' })
     use({ 'L3MON4D3/LuaSnip', config = conf('luasnip') })
+
+    -- Database
+    use({ 'tpope/vim-dadbod' })
+    use({ 'kristijanhusak/vim-dadbod-ui', config = conf('dadbod') })
+    use({ 'kristijanhusak/vim-dadbod-completion' })
 
     -- Git
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })

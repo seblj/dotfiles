@@ -131,7 +131,7 @@ highlight({
     TSField = { fg = c.green },
     TSFuncBuiltin = { link = 'Function' },
     TSFuncMacro = { link = 'Function' },
-    TSMath = { fg = c.yellow },
+    -- TSMath = { fg = c.yellow },
     TSNamespace = { fg = c.blue },
     TSNote = { fg = c.blue, bold = true },
     TSParameter = { fg = c.fg },

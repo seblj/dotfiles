@@ -79,7 +79,8 @@ local check_code_action = function()
     end
     local context = {}
     if not context.diagnostics then
-        context.diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
+        local lnum, _ = unpack(vim.api.nvim_win_get_cursor(0))
+        context.diagnostics = vim.diagnostic.get(0, { lnum = lnum - 1 })
     end
     local params = lsp_util.make_range_params()
     params.context = context

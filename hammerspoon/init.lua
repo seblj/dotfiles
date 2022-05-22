@@ -15,6 +15,9 @@ for key, app in pairs(applications) do
     end)
 end
 
+-- Comment back in if I one time try out yabai again
+-- require('yabai')
+
 -- Annotations for completion
 hs.loadSpoon('EmmyLua')
 

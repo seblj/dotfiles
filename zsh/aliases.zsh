@@ -16,6 +16,6 @@ alias kitty_debug_font="kitty --debug-font-fallback"
 alias localip="ipconfig getifaddr en0"
 
 # Avoid nesting
-if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
+if [ -n "$NVIM" ]; then
     alias nvim="nvr"
 fi

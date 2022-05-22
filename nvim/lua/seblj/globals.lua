@@ -1,9 +1,7 @@
 -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/globals/init.lua
 
 P = function(...)
-    for _, v in ipairs({ ... }) do
-        print(vim.inspect(v))
-    end
+    vim.pretty_print(...)
 end
 
 if pcall(require, 'plenary') then
@@ -15,7 +13,6 @@ if pcall(require, 'plenary') then
     end
 end
 
--- CUSTOM_BORDER = { '', '▄', '', '█', '', '▀', '', '█' }
 CUSTOM_BORDER = { '', '▅', '', '▋', '', '🮄', '', '🮉' }
 
 -- Override vim.keymap.set to have silent as default

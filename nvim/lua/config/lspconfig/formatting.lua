@@ -21,7 +21,7 @@ M.setup = function(client)
                     if client.name == 'eslint' then
                         vim.cmd('EslintFixAll')
                     else
-                        vim.lsp.buf.formatting_sync()
+                        vim.lsp.buf.format()
                     end
                 end
             end,

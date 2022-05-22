@@ -49,6 +49,8 @@ require('nvim-treesitter.configs').setup({
         'dockerfile',
         'http',
         'proto',
+        'toml',
+        'query',
     },
 
     highlight = {
@@ -103,23 +105,18 @@ require('nvim-treesitter.configs').setup({
             }
 
             local parse_line = function(commentstring)
-                local a = vim.split(commentstring, '%s', true)
-                local current_line = vim.fn.getline('.')
-                local first_non_whitespace_col = vim.fn.match(vim.fn.getline('.'), '\\S')
+                local curr_line = vim.api.nvim_get_current_line()
+                local first_char = vim.fn.match(curr_line, '\\S')
 
+                local a = vim.split(commentstring, '%s', true)
                 local first = a[1]:gsub('%s+', '')
                 local second = a[2]:gsub('%s+', '')
-                local start =
-                    string.sub(current_line, first_non_whitespace_col, first_non_whitespace_col + #first):gsub(
-                        '%s+',
-                        ''
-                    )
-                local last = string.sub(current_line, 0 - #second, -1):gsub('%s+', '')
 
-                if first == start then
-                    if second == last or #second == 0 then
-                        return commentstring
-                    end
+                local start = string.sub(curr_line, first_char, first_char + #first):gsub('%s+', '')
+                local last = string.sub(curr_line, 0 - #second, -1):gsub('%s+', '')
+
+                if first == start and (second == last or #second == 0) then
+                    return commentstring
                 end
                 return nil
             end

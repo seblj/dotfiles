@@ -135,6 +135,8 @@ vim.cmd('cnoreabbrev TErm term')
 vim.cmd('cnoreabbrev Term term')
 
 -- Open term in splits
-command('T', 'split | term <args>', { nargs = '*', bang = true })
-command('VT', 'vsplit | term <args>', { nargs = '*', bang = true })
-command('TT', 'tabedit | term <args>', { nargs = '*', bang = true })
+local opts = { nargs = '*', bang = true }
+
+command('T', vim.api.nvim_win_get_height(0) / 3 .. 'split | term <args>', opts)
+command('VT', 'vsplit | term <args>', opts)
+command('TT', 'tabedit | term <args>', opts)
