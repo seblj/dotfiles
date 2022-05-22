@@ -59,6 +59,7 @@ local plugins = function(use)
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
     use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
     use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
+    use({ 'SmiteshP/nvim-gps' })
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
