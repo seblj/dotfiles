@@ -19,11 +19,19 @@ SPACESHIP_DOCKER_VERBOSE="${SPACESHIP_DOCKER_VERBOSE=false}"
 # Section
 # ------------------------------------------------------------------------------
 
-# Show current Docker version and connected machine
-spaceship_docker() {
+spaceship_async_job_load_docker() {
   [[ $SPACESHIP_DOCKER_SHOW == false ]] && return
 
   spaceship::exists docker || return
+  async_job spaceship spaceship_async_job_docker
+}
+
+# Show current Docker version and connected machine
+# spaceship_docker() {
+spaceship_async_job_docker() {
+  # [[ $SPACESHIP_DOCKER_SHOW == false ]] && return
+
+  # spaceship::exists docker || return
 
   # Better support for docker environment vars: https://docs.docker.com/compose/reference/envvars/
   local compose_exists=false
@@ -59,9 +67,21 @@ spaceship_docker() {
     docker_version+=" via ($DOCKER_MACHINE_NAME)"
   fi
 
+  echo "$docker_version"
+
+  # spaceship::section \
+  #   "$SPACESHIP_DOCKER_COLOR" \
+  #   "$SPACESHIP_DOCKER_PREFIX" \
+  #   "${SPACESHIP_DOCKER_SYMBOL}v${docker_version}" \
+  #   "$SPACESHIP_DOCKER_SUFFIX"
+}
+
+spaceship_docker() {
+  [[ -z "${SPACESHIP_ASYNC_RESULTS[spaceship_async_job_docker]}" ]] && return
+
   spaceship::section \
     "$SPACESHIP_DOCKER_COLOR" \
     "$SPACESHIP_DOCKER_PREFIX" \
-    "${SPACESHIP_DOCKER_SYMBOL}v${docker_version}" \
+    "${SPACESHIP_DOCKER_SYMBOL}v${SPACESHIP_ASYNC_RESULTS[spaceship_async_job_docker]}" \
     "$SPACESHIP_DOCKER_SUFFIX"
 }
