@@ -32,7 +32,7 @@ vim.ui.select = function(items, opts, on_choice)
         local title = opts.prompt or 'Select one of:'
         choices = { title, unpack(choices) }
 
-        local popup_bufnr, _ = ui.popup_create({
+        ui.popup_create({
             lines = choices,
             enter = true,
             hidden_cursor = true,
@@ -40,8 +40,6 @@ vim.ui.select = function(items, opts, on_choice)
                 confirm(items, on_choice)
             end,
         })
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Normal', 1, 0, -1)
 
         for k, _ in ipairs(choices) do
             if k > 1 then
@@ -64,8 +62,9 @@ vim.ui.input = function(opts, on_confirm)
         })
         opts = opts or {}
 
-        local popup_bufnr, _ = ui.popup_create({
+        ui.popup_create({
             max_width = 50,
+            min_width = 30,
             lines = { opts.prompt },
             enter = true,
             prompt = { prefix = options.prefix },
@@ -75,7 +74,5 @@ vim.ui.input = function(opts, on_confirm)
                 on_confirm(input)
             end,
         })
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #opts.prompt)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Normal', 1, 0, -1)
     end)
 end

@@ -5,15 +5,30 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local border_line = '─'
 
-local calculate_width = function(lines)
-    local max_width = math.ceil(vim.o.columns * 0.8)
-    local max_length = 0
-    for _, line in pairs(lines) do
-        if #line > max_length then
-            max_length = #line
+local calculate_width = function(opts, lines)
+    local width = opts.width
+    local max_width = opts.max_width
+    local min_width = opts.min_width or 0
+    local line_widths = {}
+
+    if not width then
+        width = 0
+        for i, line in ipairs(lines) do
+            line_widths[i] = vim.fn.strdisplaywidth(line)
+            width = math.max(line_widths[i], width)
         end
     end
-    return max_length <= max_width and max_length or max_width
+
+    local screen_width = vim.api.nvim_win_get_width(0)
+    if width < min_width then
+        width = min_width
+    end
+    width = math.min(width, screen_width)
+
+    if max_width then
+        width = math.min(width, max_width)
+    end
+    return width
 end
 
 local set_cursor = function()
@@ -24,23 +39,11 @@ local set_cursor = function()
     end
 end
 
-local get_width = function(title, max_width)
-    for i = max_width, 30, -1 do
-        if string.sub(title, i, i) == ' ' then
-            return i
-        end
-    end
-    return max_width
-end
-
 M.popup_create = function(opts)
     local lines, syntax = opts.lines or {}, opts.syntax
     local title = lines[1]
-    if opts.max_width then
-        opts.width = get_width(title, opts.max_width)
-    end
 
-    local width = opts.width or calculate_width({ title, lines })
+    local width = calculate_width(opts, lines)
     lines = { title, string.rep(border_line, width), unpack(lines, 2) }
 
     if opts.prompt then
@@ -101,6 +104,9 @@ M.popup_create = function(opts)
     else
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
     end
+
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'NormalFloat', 1, 0, -1)
 
     return popup_bufnr, winnr
 end

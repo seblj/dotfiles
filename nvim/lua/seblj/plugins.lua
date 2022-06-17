@@ -20,7 +20,7 @@ local plugins = function(use)
         local plugin = type(opts) == 'table' and table.remove(opts, 1) or opts
         local plugin_name = vim.split(plugin, '/')[2]
 
-        if vim.fn.isdirectory(vim.fn.expand(plugin_dir .. plugin_name)) == 1 then
+        if vim.fn.isdirectory(vim.fs.normalize(plugin_dir .. plugin_name)) == 1 then
             use(vim.tbl_extend('error', { plugin_dir .. plugin_name }, opts))
         else
             use(vim.tbl_extend('error', { plugin }, opts))

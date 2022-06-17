@@ -18,40 +18,35 @@ local indent = {
     'javascript',
 }
 
-require('nvim-treesitter.configs').setup({
-    ensure_installed = {
-        'comment',
-        'lua',
-        'teal',
-        'vim',
-        'c',
-        'c_sharp',
-        'cpp',
-        'make',
-        'rust',
-        'go',
-        'gomod',
-        'markdown',
-        'python',
-        'tsx',
-        'javascript',
-        'typescript',
-        'vue',
-        'html',
-        'css',
-        'scss',
-        'graphql',
-        'json',
-        'yaml',
-        'bibtex',
-        'latex',
-        'bash',
-        'dockerfile',
-        'http',
-        'proto',
-        'toml',
-        'query',
+local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+parser_config.rsx = {
+    install_info = {
+        url = 'https://github.com/seblj/tree-sitter-rsx',
+        files = { 'src/parser.c', 'src/scanner.cc' },
+        branch = 'comments',
     },
+}
+
+local read_file = function(path)
+    local fd = assert(vim.loop.fs_open(path, 'r', 438))
+    local stat = assert(vim.loop.fs_fstat(fd))
+    local data = vim.loop.fs_read(fd, stat.size, 0)
+    return data
+end
+
+local override_queries = function(lang, query_name)
+    local queries_folder = vim.fs.normalize('~/dotfiles/nvim/lua/config/treesitter/queries')
+    vim.treesitter.query.set_query(
+        lang,
+        query_name,
+        read_file(queries_folder .. string.format('/%s/%s.scm', lang, query_name))
+    )
+end
+
+override_queries('rust', 'injections')
+
+require('nvim-treesitter.configs').setup({
+    ensure_installed = 'all',
 
     highlight = {
         enable = true,
@@ -96,6 +91,7 @@ require('nvim-treesitter.configs').setup({
             c = '// %s',
             c_sharp = '// %s',
             python = '# %s',
+            rsx = '// %s',
         },
         custom_calculation = function(node, language_tree)
             local language_commentstrings = {
@@ -133,5 +129,25 @@ require('nvim-treesitter.configs').setup({
 
     autotag = {
         enable = true,
+        filetypes = {
+            'html',
+            'javascript',
+            'typescript',
+            'javascriptreact',
+            'typescriptreact',
+            'svelte',
+            'vue',
+            'tsx',
+            'jsx',
+            'rescript',
+            'xml',
+            'php',
+            'markdown',
+            'glimmer',
+            'handlebars',
+            'hbs',
+            'htmldjango',
+            'rust',
+        },
     },
 })

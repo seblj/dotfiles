@@ -269,8 +269,8 @@ local winbar_components = {
         provider = {
             name = 'file_info',
             opts = {
-                file_readonly_icon = '',
-                file_modified_icon = '',
+                file_readonly_icon = ' ',
+                file_modified_icon = '',
             },
         },
         left_sep = {
@@ -278,6 +278,15 @@ local winbar_components = {
             hl = { bg = '#1c1c1c' },
         },
         hl = { bg = '#1c1c1c', style = 'bold' },
+        enabled = function()
+            return vim.api.nvim_buf_get_name(0) ~= ''
+        end,
+    },
+    filetype = {
+        provider = 'file_type',
+        enabled = function()
+            return vim.api.nvim_buf_get_name(0) == ''
+        end,
     },
     gps = {
         provider = function()
@@ -287,18 +296,37 @@ local winbar_components = {
         enabled = function()
             return ok_gps and nvim_gps.is_available()
         end,
-        hl = { fg = '#eeeeee', bg = '#1c1c1c' },
+        hl = { fg = '#eeeeee' },
     },
 }
 
 local winbar = {
     {
         winbar_components.file,
+        winbar_components.filetype,
         winbar_components.gps,
     },
 }
 
+local get_color = function(group, attr)
+    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
+    return color ~= '' and color or nil
+end
+
+-- Have winbar background to be the same as Normal
+for _, val in pairs(winbar) do
+    for _, component in pairs(val) do
+        if not component.hl then
+            component.hl = { bg = get_color('Normal', 'bg') }
+        end
+        if not component.hl.bg then
+            component.hl.bg = get_color('Normal', 'bg')
+        end
+    end
+end
+
 feline.winbar.setup({
+    theme = { bg = '#1c1c1c' },
     components = { active = winbar, inactive = winbar },
     disable = {
         filetypes = {
@@ -306,6 +334,7 @@ feline.winbar.setup({
             'startify',
             'NvimTree',
             'packer',
+            'startuptime',
         },
     },
 })

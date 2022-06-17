@@ -32,6 +32,7 @@ vim.opt.shortmess:append('c')
 vim.opt.cinkeys:remove('0#')
 vim.opt.fillchars:append('diff:╱')
 vim.opt.laststatus = 3
+vim.opt.textwidth = 80
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
@@ -49,7 +50,7 @@ autocmd('BufEnter', {
     group = formatopt_group,
     pattern = '*',
     callback = function()
-        vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r'
+        vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r' + 'c'
     end,
 })
 

@@ -46,8 +46,6 @@ return {
         init_options = {
             clientId = '10',
         },
-        cmd = { 'grammarly-languageserver', '--stdio' },
-        filetypes = { 'tex', 'markdown' },
     },
 
     ltex = {
