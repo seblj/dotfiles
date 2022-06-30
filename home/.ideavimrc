@@ -1,0 +1,60 @@
+set commentary
+set highlightedyank
+set surround
+
+set number
+set relativenumber
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set clipboard=unnamedplus
+
+let g:highlightedyank_highlight_duration = "150"
+
+let mapleader = " "
+
+nnoremap <leader>x :source ~/.ideavimrc<CR>
+
+nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
+
+nnoremap <leader>ff :action SearchEverywhere<CR>
+
+nnoremap gh :action ShowErrorDescription<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gr :action FindUsages<CR>
+nnoremap gR :action RenameElement<CR>
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+
+" Would like the v:hlsearch, but ideavim doesn't support v: yet :(
+nnoremap <Enter> :nohl<CR><CR>
+
+nnoremap gb <C-t>
+
+nnoremap gn :action GotoNextError<cr>
+nnoremap gp :action GotoPreviousError<cr>
+
+nmap s <Plug>YSurround
+vmap s <Plug>VSurround
+
+nnoremap Y y$
+
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L $
+onoremap H ^
+onoremap L $
+
+nnoremap J 10gj
+nnoremap K 10gk
+vnoremap J 10gj
+vnoremap K 10gk
+
+nnoremap k gk
+nnoremap j gj
+vnoremap k gk
+vnoremap j gj
+
+vnoremap < <gv
+vnoremap > >gv
