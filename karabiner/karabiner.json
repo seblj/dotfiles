@@ -17,7 +17,9 @@
                     "type": "device_if",
                     "identifiers": [
                       {
-                        "product_id": 832,
+                        "product_id": 832
+                      },
+                      {
                         "product_id": 632
                       }
                     ]
@@ -137,7 +139,9 @@
                     "type": "device_if",
                     "identifiers": [
                       {
-                        "product_id": 832,
+                        "product_id": 832
+                      },
+                      {
                         "product_id": 632
                       }
                     ]

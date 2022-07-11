@@ -12,7 +12,6 @@ install_packages(){
         nodejs
         tmux
         ripgrep
-        fzf
     )
 
     for package in "${packages[@]}"; do
@@ -23,13 +22,20 @@ install_packages(){
     done
 }
 
+install_fzf() {
+    printf "\n${BLUE}Installing fzf ${NC}\n\n"
+    git clone --quiet https://github.com/junegunn/fzf.git $HOME/.fzf
+    $HOME/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish > /dev/null 2>&1
+}
+
 source $HOME/dotfiles/install/utils.sh
 
 install_packages
+install_fzf
 
 # Rust
 printf "\n${BLUE}Installing rust ${NC}\n\n"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y > /dev/null
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y > /dev/null 2>&1
 
 # Emojify
 printf "\n${BLUE}Installing emojify ${NC}\n\n"
@@ -47,12 +53,11 @@ printf "\n${BLUE}Installing stylua ${NC}\n\n"
 $HOME/.cargo/bin/cargo install -q stylua > /dev/null
 
 
-# Find out how to silence the first command
 if [[ $OS == 'Linux' ]]; then
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg > /dev/null
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg > /dev/null 2>&1
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-    apt update > /dev/null
+    apt update > /dev/null 2>&1
 fi
 
-$INSTALL gh > /dev/null
+$INSTALL gh > /dev/null 2>&1

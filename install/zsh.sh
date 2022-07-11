@@ -12,7 +12,7 @@ install_oh_my_zsh(){
     fi
 
     # Find out how to silence
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended > /dev/null 2>&1
 }
 
 # Install spaceship prompt for oh_my_zsh

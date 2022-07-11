@@ -4,7 +4,7 @@
 source $HOME/dotfiles/install/utils.sh
 
 install_neovim_dependencies() {
-    printf "\n${BLUE}Installing neovim dependencies ${NC}"
+    printf "\n${BLUE}Installing neovim dependencies ${NC}\n\n"
     case "$OS" in 
         Linux*) apt-get -y install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl > /dev/null;;
         Darwin*) brew install ninja libtool automake cmake pkg-config gettext curl > /dev/null;;
@@ -15,7 +15,7 @@ install_neovim_dependencies() {
 }
 
 clone_neovim(){
-    printf "\n${BLUE}Cloning neovim ${NC}"
+    printf "\n${BLUE}Cloning neovim ${NC}\n\n"
     mkdir -p ~/Applications
     cd ~/Applications
 
@@ -23,7 +23,7 @@ clone_neovim(){
 }
 
 build_neovim(){
-    printf "\n${BLUE}Starting to build neovim ${NC}"
+    printf "\n${BLUE}Starting to build neovim ${NC}\n\n"
     cd ~/Applications/neovim
     make CMAKE_BUILD_TYPE=RelWithDebInfo > /dev/null
     make install > /dev/null
@@ -37,5 +37,5 @@ setup_neovim(){
 
 install_neovim_dependencies
 clone_neovim
-# build_neovim
+build_neovim
 setup_neovim
