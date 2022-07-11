@@ -13,7 +13,7 @@ install_packages(){
         tmux
         ripgrep
         fzf
-        )
+    )
 
     for package in "${packages[@]}"; do
         if ! installed $package; then

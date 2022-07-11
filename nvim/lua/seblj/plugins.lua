@@ -53,7 +53,7 @@ local plugins = function(use)
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
     use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
-    local_use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
+    use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
     use({ 'SmiteshP/nvim-gps' })
 
     -- LSP

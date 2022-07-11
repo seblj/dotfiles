@@ -6,26 +6,4 @@ This is my personal dotfiles for both Linux and macOS. I highly recommend to loo
 
 ### Full
 
-To setup the entire configuration, run the installation script `install.sh`. This will install ansible and run the ansible playbook `ansible/local.yml`
-
-### Partial
-
-It's also possible to run partial installation of the configuration. Make sure you have ansible installed for that.
-
-#### Neovim config
-
-##### This will clone neovim and build it from source as well. Neovim will be installed in `$HOME/Applications/neovim`.
-
-- You can install my neovim config by running `ansible-playbook -K local.yml --tags nvim`
-
-#### ZSH
-
-##### This will install oh-my-zsh and some plugins for zsh. As well as linking up the zsh config.
-
-- You can install my zsh config by running `ansible-playbook -K local.yml --tags zsh`
-
-#### Link
-
-##### This will link the neovim config, zsh config, and certain other config files to their correct location
-
-- You can link the dotfiles by running `ansible-playbook -K local.yml --tags link`
+To setup the entire configuration, run the installation script with `sudo install.sh`. This will install a bunch of things and setup the shell, neovim and etc...
