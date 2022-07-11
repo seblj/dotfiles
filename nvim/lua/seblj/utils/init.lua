@@ -24,28 +24,6 @@ M.packer_bootstrap = function()
     return packer_bootstrap
 end
 
--- Function to execute macro over a visual range
-M.visual_macro = function()
-    vim.cmd('echo "@".getcmdline()')
-    vim.cmd([[execute ":'<,'>normal @".nr2char(getchar())]])
-end
-
--- All credit to @tjdevries for this
--- https://github.com/tjdevries/config_manager/blob/b9490fe7eb47e2bf21e828474787d8b8e8ed5314/xdg_config/nvim/autoload/tj.vim#L161
-M.jump = function(letter)
-    local count = eval('v:count')
-    if count == 0 then
-        vim.cmd(string.format([[call execute('normal! g%s')]], letter))
-        return
-    end
-
-    if count > 10 then
-        vim.cmd([[call execute("normal! m'")]])
-    end
-
-    vim.cmd(string.format([[call execute('normal! %s%s', )]], count, letter))
-end
-
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
     vim.cmd('source ~/dotfiles/nvim/init.lua')

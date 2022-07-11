@@ -56,11 +56,8 @@ keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move current line up' })
 
 keymap('n', '<leader>j', 'J', { desc = 'Join [count] lines' })
 
--- Thanks to TJ
--- stylua: ignore start
-keymap('n', 'j', function() utils.jump('j') end, { desc = 'gj' })
-keymap('n', 'k', function() utils.jump('k') end, { desc = 'gk' })
--- stylua: ignore end
+keymap('n', 'j', 'v:count ? "j" : "gj"', { expr = true, desc = 'gj' })
+keymap('n', 'k', 'v:count ? "k" : "gk"', { expr = true, desc = 'gk' })
 
 keymap({ 'n', 'v' }, 'J', '10gj')
 keymap({ 'n', 'v' }, 'K', '10gk')
@@ -69,7 +66,9 @@ keymap({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Move to beginning of line' })
 keymap({ 'n', 'v', 'o' }, 'L', '$', { desc = 'Move to end of line' })
 
 keymap('n', '<leader>x', utils.save_and_exec, { desc = 'Save and execute file' })
-keymap('x', '@', ':<C-u>:lua require("seblj.utils").visual_macro()<CR>', { desc = 'Macro over visual range' })
+
+local visual_macro = [[:<C-u>:echo "@".getcmdline()<CR>:execute ":'<,'>normal @".nr2char(getchar())<CR>]]
+keymap('x', '@', visual_macro, { desc = 'Macro over visual range' })
 
 -- stylua: ignore start
 keymap('n', '<Down>', function() utils.quickfix('down') end, { desc = 'Move down in qflist' })

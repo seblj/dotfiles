@@ -50,7 +50,7 @@ autocmd('BufEnter', {
     group = formatopt_group,
     pattern = '*',
     callback = function()
-        vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r' + 'c'
+        vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r' + 'c' - 't'
     end,
 })
 
@@ -69,6 +69,3 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.g.vimsyn_embed = 'l'
 vim.g.python3_host_prog = '/Users/sebastianlyngjohansen/.pyenv/versions/neovim3/bin/python'
-
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
