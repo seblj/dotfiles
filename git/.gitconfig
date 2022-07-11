@@ -28,9 +28,11 @@
     ca = commit --amend
     cane = commit --amend --no-edit
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-    bs = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git switch
-    bsa = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% | xargs git switch --track
-    pc = !gh pr list -L 500 | fzf --height 40% | awk '{print $(NF-1)}' | xargs gh pr checkout
+    bc = !git switch -c
+    bs = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Switch branch' | xargs git switch
+    bd = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Delete branch' | xargs git branch -D
+    bsa = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Switch branch' | xargs git switch --track
+    pc = !gh pr list -L 500 | fzf --height 40% --header='Checkout PR'| awk '{print $(NF-1)}' | xargs gh pr checkout
     rc = rebase --continue
 
 [delta]
