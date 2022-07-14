@@ -29,7 +29,9 @@ nnoremap <leader>ca :action ShowIntentionActions<CR>
 " Would like the v:hlsearch, but ideavim doesn't support v: yet :(
 nnoremap <Enter> :nohl<CR><CR>
 
-nnoremap gb <C-t>
+nmap gb <Action>(Back)
+nmap <C-o> <Action>(Back)
+nmap <C-i> <Action>(Forward)
 
 nnoremap gn :action GotoNextError<cr>
 nnoremap gp :action GotoPreviousError<cr>
