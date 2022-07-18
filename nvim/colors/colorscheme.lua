@@ -16,6 +16,8 @@ local c = {
     fg = '#eeeeee',
     diff_red = '#55393d',
     diff_green = '#394634',
+    diff_red_bright = '#71394a',
+    diff_green_bright = '#5d7255',
     diff_blue = '#354157',
     changed_text = '#4b5c7c',
     border = '#80A0C2',
@@ -170,6 +172,11 @@ highlight({
     diffLine = { fg = c.grey },
     diffIndexLine = { fg = c.purple },
 
+    GitSignsAddInline = { bg = c.diff_green_bright },
+    GitSignsDeleteInline = { bg = c.diff_red_bright },
+    GitSignsAddLn = { bg = c.diff_green },
+    GitSignsDeleteLn = { bg = c.diff_red },
+
     ---------- HELP ----------
 
     helpCommand = { fg = c.yellow },
@@ -226,8 +233,6 @@ highlight({
     CmpItemKindUnit = { fg = c.purple },
     CmpItemKindValue = { fg = c.purple },
     CmpItemKindVariable = { link = 'TSVariable' },
-
-    UltestBorder = { link = 'FloatBorder' },
 })
 
 -- When using ':Messages', the text is highlighted with

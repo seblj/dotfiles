@@ -16,13 +16,13 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     group = augroup,
     pattern = '*.tex',
     callback = function()
-        latex_word_count = string.format('Words: %s', vim.fn['vimtex#misc#wordcount']())
+        latex_word_count = string.format(' Words: %s', vim.fn['vimtex#misc#wordcount']())
     end,
 })
 
 local get_word_count = function()
     if not latex_word_count then
-        latex_word_count = string.format('Words: %s', vim.fn['vimtex#misc#wordcount']())
+        latex_word_count = string.format(' Words: %s', vim.fn['vimtex#misc#wordcount']())
     end
     return latex_word_count
 end

@@ -11,7 +11,6 @@ install_oh_my_zsh(){
         return
     fi
 
-    # Find out how to silence
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended > /dev/null 2>&1
 }
 
@@ -40,15 +39,19 @@ install_zsh() {
     $INSTALL zsh > /dev/null
 }
 
-install_zsh_z() {
+install_oh_my_zsh_plugins() {
     printf "\n${BLUE}Setting up z plugin for autojump ${NC}\n\n"
     mkdir -p $HOME/.config/z
     git clone --quiet https://github.com/agkozak/zsh-z.git $HOME/.oh-my-zsh/custom/plugins/zsh-z > /dev/null
+
+
+    printf "\n${BLUE}Setting up vim-mode plugin for zsh${NC}\n\n" 
+    git clone --quiet https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode > /dev/null
 }
 
 install_zsh
 install_zsh_async
 install_oh_my_zsh
 install_spaceship
-install_zsh_z
+install_oh_my_zsh_plugins
 setup_zsh
