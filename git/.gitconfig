@@ -26,6 +26,9 @@
     lg = !git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)%an%Creset' --abbrev-commit | emojify | less
     sa = submodule add
     ca = commit --amend
+    cp = cherry-pick
+    cpc = cherry-pick --continue
+    cpa = cherry-pick --abort
     cane = commit --amend --no-edit
     po = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
     bc = !git switch -c
@@ -34,6 +37,7 @@
     bsa = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Switch branch' | xargs git switch --track
     pc = !gh pr list -L 500 | fzf --height 40% --header='Checkout PR'| awk '{print $(NF-1)}' | xargs gh pr checkout
     rc = rebase --continue
+    ra = rebase --abort
 
 [delta]
     line-numbers = true

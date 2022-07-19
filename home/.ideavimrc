@@ -29,6 +29,15 @@ nnoremap <leader>ca :action ShowIntentionActions<CR>
 " Would like the v:hlsearch, but ideavim doesn't support v: yet :(
 nnoremap <Enter> :nohl<CR><CR>
 
+nnoremap ∆ :action MoveLineDown<CR>
+nnoremap ˚ :action MoveLineUp<CR>
+vnoremap ∆ :action MoveLineDown<CR>
+vnoremap ˚ :action MoveLineUp<CR>
+inoremap ∆ <Esc>:action MoveLineDown<CR>a
+inoremap ˚ <Esc>:action MoveLineUp<CR>a
+
+nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+
 nmap gb <Action>(Back)
 nmap <C-o> <Action>(Back)
 nmap <C-i> <Action>(Forward)
@@ -40,6 +49,10 @@ nmap s <Plug>YSurround
 vmap s <Plug>VSurround
 
 nnoremap Y y$
+
+nnoremap <leader>j J
+nnoremap <Tab> gt
+nnoremap <S-Tab> gT
 
 nnoremap H ^
 nnoremap L $
