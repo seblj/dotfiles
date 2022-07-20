@@ -84,10 +84,10 @@ end, {
     desc = 'Repeat: support for Dap: step over',
 })
 
-keymap('n', '<leader>db', '<Plug>DapBreakpointRepeat', { remap = true, desc = 'Dap: Add breakpoint' })
-keymap('n', '<leader>d<leader>', '<Plug>DapContinueRepeat', { remap = true, desc = 'Dap: Continue debugging' })
-keymap('n', '<leader>dl', '<Plug>DapStepIntoRepeat', { remap = true, desc = 'Dap: Step into' })
-keymap('n', '<leader>dj', '<Plug>DapStepOverRepeat', { remap = true, desc = 'Dap: Step over' })
+keymap('n', '<leader>db', '<Plug>DapBreakpointRepeat', { desc = 'Dap: Add breakpoint' })
+keymap('n', '<leader>d<leader>', '<Plug>DapContinueRepeat', { desc = 'Dap: Continue debugging' })
+keymap('n', '<leader>dl', '<Plug>DapStepIntoRepeat', { desc = 'Dap: Step into' })
+keymap('n', '<leader>dj', '<Plug>DapStepOverRepeat', { desc = 'Dap: Step over' })
 
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     continue = { '.continue', '.c', 'c' },
@@ -107,20 +107,23 @@ dapui.setup({
         collapsed = '',
         circular = '↺',
     },
-    sidebar = {
-        elements = {
-            { id = 'scopes', size = 0.25 },
-            { id = 'watches', size = 0.25 },
+    layouts = {
+        {
+            elements = {
+                { id = 'scopes', size = 0.25 },
+                { id = 'watches', size = 0.25 },
+            },
+            size = 40,
+            position = 'left',
         },
-        size = 40,
-        position = 'left',
-    },
-    tray = {
-        elements = {
-            'repl',
+        {
+
+            elements = {
+                'repl',
+            },
+            size = 10,
+            position = 'bottom',
         },
-        size = 10,
-        position = 'bottom',
     },
 })
 

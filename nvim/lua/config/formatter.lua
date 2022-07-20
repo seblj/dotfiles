@@ -6,15 +6,6 @@ local prettierd = function()
         exe = 'prettierd',
         args = { vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
         stdin = true,
-        cond = function()
-            local active_clients = vim.lsp.get_active_clients()
-            for _, client in ipairs(active_clients) do
-                if client.name == 'eslint' then
-                    return false
-                end
-            end
-            return true
-        end,
     }
 end
 
