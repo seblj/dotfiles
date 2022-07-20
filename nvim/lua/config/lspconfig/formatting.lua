@@ -19,7 +19,7 @@ M.setup = function(client)
             callback = function()
                 if vim.b.do_formatting ~= false then
                     if client.name == 'eslint' then
-                        vim.cmd('EslintFixAll')
+                        vim.cmd.EslintFixAll()
                     else
                         vim.lsp.buf.format()
                     end

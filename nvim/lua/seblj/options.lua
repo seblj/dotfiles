@@ -3,7 +3,7 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
-vim.cmd('colorscheme colorscheme')
+vim.cmd.colorscheme('colorscheme')
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true

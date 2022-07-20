@@ -78,7 +78,7 @@ keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Pr
 
 keymap('n', '<leader>@', function()
     local dir = vim.fn.expand('%:p:h')
-    vim.cmd('lcd ' .. dir)
+    vim.cmd.lcd(dir)
     vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
 end, {
     desc = 'cd to directory of open buffer',
@@ -115,23 +115,23 @@ end, { desc = 'Format: Toggle format on save' })
 
 ---------- ABBREVIATIONS ----------
 
-vim.cmd('cnoreabbrev !! <C-r>:') -- Repeat last command
-vim.cmd('cnoreabbrev Q q') -- Quit with Q
-vim.cmd('cnoreabbrev W w') -- Write with W
-vim.cmd('cnoreabbrev WQ wq') -- Write and quit with WQ
-vim.cmd('cnoreabbrev Wq wq') -- Write and quit with Wq
-vim.cmd('cnoreabbrev Wqa wqa') -- Write and quit all with Wqa
-vim.cmd('cnoreabbrev WQa wqa') -- Write and quit all with WQa
-vim.cmd('cnoreabbrev WQA wqa') -- Write and quit all with WQA
-vim.cmd('cnoreabbrev Wa wa') -- Write all with Wa
-vim.cmd('cnoreabbrev WA wa') -- Write all with WA
-vim.cmd('cnoreabbrev Qa qa') -- Quit all with Qa
-vim.cmd('cnoreabbrev QA qa') -- Quit all with QA
-vim.cmd('cnoreabbrev E e') -- Edit file with E
-vim.cmd('cnoreabbrev TERM term')
-vim.cmd('cnoreabbrev TERm term')
-vim.cmd('cnoreabbrev TErm term')
-vim.cmd('cnoreabbrev Term term')
+vim.cmd.cnoreabbrev({ '!!', '<C-r>:' }) -- Repeat last command
+vim.cmd.cnoreabbrev({ 'Q', 'q' }) -- Quit with Q
+vim.cmd.cnoreabbrev({ 'W', 'w' }) -- Write with W
+vim.cmd.cnoreabbrev({ 'WQ', 'wq' }) -- Write and quit with WQ
+vim.cmd.cnoreabbrev({ 'Wq', 'wq' }) -- Write and quit with Wq
+vim.cmd.cnoreabbrev({ 'Wqa', 'wqa' }) -- Write and quit all with Wqa
+vim.cmd.cnoreabbrev({ 'WQa', 'wqa' }) -- Write and quit all with WQa
+vim.cmd.cnoreabbrev({ 'WQA', 'wqa' }) -- Write and quit all with WQA
+vim.cmd.cnoreabbrev({ 'Wa', 'wa' }) -- Write all with Wa
+vim.cmd.cnoreabbrev({ 'WA', 'wa' }) -- Write all with WA
+vim.cmd.cnoreabbrev({ 'Qa', 'qa' }) -- Quit all with Qa
+vim.cmd.cnoreabbrev({ 'QA', 'qa' }) -- Quit all with QA
+vim.cmd.cnoreabbrev({ 'E', 'e' }) -- Edit file with E
+vim.cmd.cnoreabbrev({ 'TERM', 'term' })
+vim.cmd.cnoreabbrev({ 'TERm', 'term' })
+vim.cmd.cnoreabbrev({ 'TErm', 'term' })
+vim.cmd.cnoreabbrev({ 'Term', 'term' })
 
 -- Open term in splits
 local opts = { nargs = '*', bang = true }

@@ -10,7 +10,7 @@ local neg_size = '-' .. resize_size
 
 local get_direction = function(pos)
     local this = vim.fn.winnr()
-    vim.cmd(string.format('wincmd %s', pos))
+    vim.cmd.wincmd(pos)
     local next = vim.fn.winnr()
     vim.cmd(string.format('%s wincmd w', this))
     return this == next
@@ -29,11 +29,11 @@ local is_right_window = function()
 end
 
 local resize_vertical = function(size)
-    vim.cmd(string.format('vertical resize %s', size))
+    vim.cmd.resize({ size, mods = { vertical = true } })
 end
 
 local resize_horizontal = function(size)
-    vim.cmd(string.format('resize %s', size))
+    vim.cmd.resize(size)
 end
 
 M.resize_up = function()

@@ -57,7 +57,7 @@ autocmd('BufWritePre', {
     group = group,
     callback = function()
         if vim.b.do_formatting ~= false then
-            vim.cmd('FormatWrite')
+            vim.cmd.FormatWrite()
         end
     end,
 })

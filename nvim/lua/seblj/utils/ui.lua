@@ -72,7 +72,7 @@ M.popup_create = function(opts)
     if opts.on_confirm then
         keymap('i', '<CR>', function()
             opts.on_confirm()
-            vim.cmd('stopinsert')
+            vim.cmd.stopinsert()
         end, {
             buffer = true,
             desc = 'Confirm selection',
@@ -96,7 +96,7 @@ M.popup_create = function(opts)
         })
     end
     if opts.prompt then
-        vim.cmd('startinsert')
+        vim.cmd.startinsert()
         vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
         vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')
         vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)

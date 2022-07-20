@@ -12,7 +12,7 @@ autocmd('FileType', {
             branch = '[#' .. branch:gsub('story%-', '') .. ']'
             vim.api.nvim_buf_set_lines(0, 0, 0, false, { branch })
             -- nvim_buf_set_lines creates a new line for some reason so delete it
-            vim.cmd([[norm! 2Gdd]])
+            vim.cmd.normal({ '2Gdd', silent = true })
             vim.api.nvim_win_set_cursor(0, { 1, #branch })
         end
     end,

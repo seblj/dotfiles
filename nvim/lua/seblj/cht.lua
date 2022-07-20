@@ -30,7 +30,7 @@ local run_cht = function(query)
         query = table.concat(input, '~')
     end
 
-    vim.cmd('tabnew')
+    vim.cmd.tabnew()
     run_term('curl cht.sh/' .. selected .. '/' .. query)
 end
 

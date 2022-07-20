@@ -12,7 +12,7 @@ end, {
 
 keymap('n', '<leader>he', function()
     ui.toggle_quick_menu()
-    vim.cmd('mapclear <buffer>')
+    vim.cmd.mapclear('<buffer>')
     -- Add mapping myself because I like to silent the mapping and not print it out
     keymap('n', '<CR>', ui.select_menu_item, { buffer = true })
     keymap('n', 'q', ui.toggle_quick_menu, { buffer = true })
