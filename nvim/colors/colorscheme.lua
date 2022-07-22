@@ -146,6 +146,12 @@ highlight({
     TSTagDelimiter = { fg = c.red },
     TSVariableBuiltin = { fg = c.orange },
 
+    ---------- LANGUGE SPECIFIC ----------
+
+    typescriptParenExp = { link = 'TSPunctBracket' },
+    typescript1 = { link = 'TSPunctBracket' },
+    typescriptParens = { link = 'TSPunctBracket' },
+
     ---------- NVIM LSPCONFIG ----------
 
     DiagnosticError = { fg = c.red },

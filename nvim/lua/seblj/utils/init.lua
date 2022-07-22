@@ -147,6 +147,18 @@ M.union = function(a, b)
     return list
 end
 
+function M.get_syntax_hl()
+    if vim.fn.exists('*synstack') == 0 then
+        return
+    end
+    local syntax = {}
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    for _, id in ipairs(vim.fn.synstack(line, col + 1)) do
+        table.insert(syntax, vim.fn.synIDattr(id, 'name'))
+    end
+    P(syntax)
+end
+
 ---------- HIDE CURSOR ----------
 
 -- https://github.com/tamago324/lir.nvim/blob/master/lua/lir/smart_cursor/init.lua

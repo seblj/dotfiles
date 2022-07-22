@@ -37,6 +37,7 @@ inoremap ∆ <Esc>:action MoveLineDown<CR>a
 inoremap ˚ <Esc>:action MoveLineUp<CR>a
 
 nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+nnoremap <leader>gm :action Annotate<CR>
 
 nmap gb <Action>(Back)
 nmap <C-o> <Action>(Back)
