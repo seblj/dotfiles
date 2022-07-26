@@ -35,27 +35,25 @@ vim.opt.textwidth = 80
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
-local term_group = augroup('NeovimTermGit', {})
+local group = augroup('SebGroup', { clear = true })
 autocmd('FileType', {
-    group = term_group,
+    group = group,
     pattern = { 'gitcommit', 'gitrebase', 'gitconfig' },
     callback = function()
         vim.opt_local.bufhidden = 'delete'
     end,
 })
 
-local formatopt_group = augroup('CustomFormatOptions', {})
 autocmd('BufEnter', {
-    group = formatopt_group,
+    group = group,
     pattern = '*',
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r' + 'c' - 't'
     end,
 })
 
-local yank_group = augroup('HighlightYank', {})
 autocmd('TextYankPost', {
-    group = yank_group,
+    group = group,
     pattern = '*',
     callback = function()
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })

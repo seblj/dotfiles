@@ -10,11 +10,6 @@ vim.g.startify_commands = {
     { 'StartupTime', 'StartupTime' },
 }
 
--- 
--- 
--- 
--- 祥
-
 vim.g.startify_lists = {
     { type = 'commands', header = { '   Commands' } },
     { type = 'files', header = { '   MRU' } },

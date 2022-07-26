@@ -30,9 +30,9 @@ M.handlers = function()
                     return require('telescope.builtin').lsp_definitions()
                 end
             end
-            vim.lsp.util.jump_to_location(result[1], client.offset_encoding)
+            vim.lsp.util.jump_to_location(result[1], client.offset_encoding, false)
         else
-            vim.lsp.util.jump_to_location(result, client.offset_encoding)
+            vim.lsp.util.jump_to_location(result, client.offset_encoding, false)
         end
     end
     vim.lsp.handlers['textDocument/references'] = function(_, _, _)

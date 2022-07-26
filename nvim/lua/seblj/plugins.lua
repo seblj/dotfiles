@@ -12,29 +12,8 @@ autocmd('BufWritePost', {
 })
 
 local packer_bootstrap = utils.packer_bootstrap()
-local plugins = function(use)
+local plugins = function(local_use, use, setup, conf)
     use({ 'wbthomason/packer.nvim' })
-
-    -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/plugins.lua
-    local local_use = function(opts)
-        local plugin = type(opts) == 'table' and table.remove(opts, 1) or opts
-        local plugin_name = vim.split(plugin, '/')[2]
-
-        if vim.fn.isdirectory(vim.fs.normalize(plugin_dir .. plugin_name)) == 1 then
-            use(vim.tbl_extend('error', { plugin_dir .. plugin_name }, opts))
-        else
-            use(vim.tbl_extend('error', { plugin }, opts))
-        end
-    end
-
-    local setup = function(name, config)
-        return not config and string.format([[require('%s').setup()]], name)
-            or string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
-    end
-
-    local conf = function(name)
-        return string.format([[require('config.%s')]], name)
-    end
 
     -- My plugins/forks
     local_use({ 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' })
@@ -61,7 +40,8 @@ local plugins = function(use)
     use({ 'max397574/lua-dev.nvim' })
     use({ 'b0o/schemastore.nvim' })
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
-    use({ 'williamboman/nvim-lsp-installer' })
+    use({ 'williamboman/mason.nvim' })
+    use({ 'williamboman/mason-lspconfig.nvim' })
     use({ 'Hoffs/omnisharp-extended-lsp.nvim' })
 
     -- Completion
@@ -80,7 +60,7 @@ local plugins = function(use)
 
     -- Git
     use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
-    use({ 'akinsho/git-conflict.nvim', config = conf('conflict'), event = 'BufReadPre' })
+    use({ 'akinsho/git-conflict.nvim', config = setup('git-conflict', { highlights = { current = 'DiffChange' } }) })
 
     -- Packageinfo
     use({ 'saecki/crates.nvim', config = setup('crates'), event = 'BufRead Cargo.toml' })
@@ -130,7 +110,30 @@ local plugins = function(use)
 end
 
 return require('packer').startup({
-    plugins,
+    function(use)
+        -- https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/plugins.lua
+        local local_use = function(opts)
+            local plugin = type(opts) == 'table' and table.remove(opts, 1) or opts
+            local plugin_name = vim.split(plugin, '/')[2]
+
+            if vim.fn.isdirectory(vim.fs.normalize(plugin_dir .. plugin_name)) == 1 then
+                use(vim.tbl_extend('error', { plugin_dir .. plugin_name }, opts))
+            else
+                use(vim.tbl_extend('error', { plugin }, opts))
+            end
+        end
+
+        local setup = function(name, config)
+            return not config and string.format([[require('%s').setup()]], name)
+                or string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
+        end
+
+        local conf = function(name)
+            return string.format([[require('config.%s')]], name)
+        end
+
+        plugins(local_use, use, setup, conf)
+    end,
     config = {
         profile = {
             enable = true,

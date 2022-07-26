@@ -76,13 +76,7 @@ keymap('n', '<Up>', function() utils.quickfix('up') end, { desc = 'Move up in qf
 keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Print syntax under cursor' })
 -- stylua: ignore end
 
-keymap('n', '<leader>@', function()
-    local dir = vim.fn.expand('%:p:h')
-    vim.cmd.lcd(dir)
-    vim.api.nvim_echo({ { 'cd ' .. dir } }, false, {})
-end, {
-    desc = 'cd to directory of open buffer',
-})
+keymap('n', '<leader>@', '<cmd>lcd %:p:h<CR><cmd>pwd<CR>', { desc = 'cd to directory of open buffer' })
 
 keymap('n', '<leader>tm', function()
     if vim.o.mouse == 'a' then
@@ -91,7 +85,7 @@ keymap('n', '<leader>tm', function()
         vim.opt.number = false
         vim.opt.relativenumber = false
     else
-        vim.opt.mouse = 'a'
+        vim.opt.mouse = 'nvi'
         vim.opt.signcolumn = 'auto'
         vim.opt.number = true
         vim.opt.relativenumber = true

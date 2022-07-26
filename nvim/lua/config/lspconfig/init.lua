@@ -57,28 +57,15 @@ M.make_config = function()
     }
 end
 
-local servers = {
-    'pyright',
-    'rust_analyzer',
-    'cssls',
-    'vimls',
-    'texlab',
-    'html',
-    'bashls',
-    -- 'vuels',
-    'volar',
-    'jsonls',
-    -- 'graphql',
-    'tsserver',
-    'sumneko_lua',
-    'clangd',
-    'gopls',
-    'omnisharp',
-    'dockerls',
-    'eslint',
-    -- 'ltex',
-    -- 'grammarly',
-}
+local servers = {}
+
+local mason_ok, mason = pcall(require, 'mason')
+local ok, lsp_installer = pcall(require, 'mason-lspconfig')
+if ok and mason_ok then
+    mason.setup()
+    lsp_installer.setup()
+    servers = lsp_installer.get_installed_servers()
+end
 
 -- Automatic setup for language servers
 local setup_servers = function()
@@ -95,10 +82,6 @@ local setup_servers = function()
     end
 end
 
-local ok, lsp_installer = pcall(require, 'nvim-lsp-installer')
-if ok then
-    lsp_installer.setup({})
-end
 setup_servers()
 
 return M
