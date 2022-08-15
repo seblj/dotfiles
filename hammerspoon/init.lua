@@ -7,6 +7,7 @@ local applications = {
     t = 'kitty',
     s = 'Safari',
     m = 'Spotify',
+    c = 'Google Chrome',
 }
 
 for key, app in pairs(applications) do

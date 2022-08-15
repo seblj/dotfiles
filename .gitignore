@@ -1,6 +1,5 @@
 nvim/plugged
 nvim/plugin/packer_compiled.lua
-nvim/spell
 minimal.vim
 karabiner/automatic_backups
 vimspector-config

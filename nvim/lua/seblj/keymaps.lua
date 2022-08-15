@@ -17,6 +17,7 @@ keymap({ 'n', 'v', 'i' }, 'ª', '<A-k>', { remap = true, desc = 'Fix <A-k> mappi
 keymap({ 'n', 'v', 'i' }, '∆', '<A-j>', { remap = true, desc = 'Fix <A-j> mapping on mac' })
 keymap({ 'n', 'v', 'i' }, '˚', '<A-k>', { remap = true, desc = 'Fix <A-k> mapping on mac' })
 
+keymap('n', '<C-i>', '<C-i>')
 keymap('n', '<leader>r', utils.reload_config, { desc = 'Reload config' })
 keymap('n', '<Tab>', 'gt', { desc = 'Next tab' })
 keymap('n', '<S-TAB>', 'gT', { desc = 'Previous tab' })
@@ -106,6 +107,11 @@ vim.keymap.set('n', '<leader>tf', function()
         vim.api.nvim_echo({ { 'Disabled autoformat on save' } }, false, {})
     end
 end, { desc = 'Format: Toggle format on save' })
+
+keymap('n', '<leader>ts', function()
+    vim.opt.spelllang = vim.o.spelllang == 'en' and 'nb' or 'en'
+    print('Setting spelllang to', vim.o.spelllang)
+end, { desc = 'Toggle spelllang between english and norwegian' })
 
 ---------- ABBREVIATIONS ----------
 
