@@ -1,6 +1,5 @@
 ---------- UTILS ----------
 
-local eval = vim.api.nvim_eval
 local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
@@ -38,7 +37,7 @@ end
 
 -- Use arrowkeys for cnext and cprev only in quickfixlist
 M.quickfix = function(key)
-    if eval("empty(filter(getwininfo(), 'v:val.quickfix'))") == 1 then
+    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
         if key == 'down' then
             vim.cmd.normal('j')
         elseif key == 'up' then
@@ -55,14 +54,14 @@ end
 
 M.run_term = function(command, ...)
     local terminal_id
-    if vim.fn.exists('b:run') ~= 0 then
-        local run = eval('b:run')
+    if vim.b.run ~= nil then
+        local run = vim.b.run
         vim.cmd.term()
-        terminal_id = eval('b:terminal_job_id')
+        terminal_id = vim.b.terminal_job_id
         vim.api.nvim_chan_send(terminal_id, run .. '\n')
     else
         vim.cmd.term()
-        terminal_id = eval('b:terminal_job_id')
+        terminal_id = vim.b.terminal_job_id
         vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
     end
 
@@ -76,7 +75,7 @@ local run_term_split = function(...)
     local wininfo = vim.fn.getwininfo()
     for _, win in ipairs(wininfo) do
         if win.variables.terminal_execute then
-            vim.cmd(string.format('%s wincmd w', win.winnr))
+            vim.cmd.wincmd({ 'w', count = win.winnr })
             terminal_exists = true
         end
     end

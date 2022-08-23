@@ -1,7 +1,6 @@
 local utils = require('seblj.utils')
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local map = vim.keymap.set
 local plugin_dir = '~/projects/plugins/'
 
 local group = augroup('CompilePacker', {})
@@ -59,7 +58,7 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'kristijanhusak/vim-dadbod-completion' })
 
     -- Git
-    use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
+    local_use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'akinsho/git-conflict.nvim', config = setup('git-conflict', { highlights = { current = 'DiffChange' } }) })
 
     -- Packageinfo
@@ -78,6 +77,8 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'ThePrimeagen/refactoring.nvim', config = conf('refactoring'), keys = '<leader>fr' })
     use({ 'ThePrimeagen/harpoon', config = conf('harpoon'), disable = true })
 
+    use({ 'mfussenegger/nvim-lint', config = conf('lint') })
+
     use({ 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } })
     -- use({ 'elihunter173/dirbuf.nvim', config = conf('dirbuf') })
     use({ 'tamago324/lir.nvim', config = conf('lir') })
@@ -87,10 +88,8 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'windwp/nvim-autopairs', config = conf('autopairs') })
     use({ 'rcarriga/nvim-notify', config = conf('notify') })
     use({ 'godlygeek/tabular', config = 'vim.g.no_default_tabular_maps = 1' })
-    use({ 'github/copilot.vim', cmd = 'Copilot' })
     use({ 'kyazdani42/nvim-web-devicons' })
     use({ 'lewis6991/impatient.nvim' })
-    use({ 'szw/vim-maximizer', config = map('n', '<leader>m', ':MaximizerToggle!<CR>', { desc = 'Maximize split' }) })
     use({ 'antoinemadec/FixCursorHold.nvim', config = 'vim.g.cursorhold_updatetime = 100' })
     use({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' })
     use({ 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' })

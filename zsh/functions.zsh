@@ -10,6 +10,18 @@ diff_commit() {
     fi
 }
 
+fzf_gitmoji() {
+    local cmd="cat $HOME/dotfiles/nvim/lua/config/telescope/gitmoji.json | jq -r '.[] | \"\(.emoji) \(.code) \(.description)\"'"
+    local result="$(eval "$cmd" | fzf | xargs echo | grep -Eo ':\w+:')"
+
+    zle reset-prompt
+    [ -n "$result" ] && LBUFFER+=$result
+}
+
+zle -N fzf_gitmoji
+zvm_bindkey viins '^G' fzf_gitmoji
+bindkey '^G' fzf_gitmoji
+
 # Opens file in grammarly.
 # Convert to txt temporarily since grammarly don't support .tex and .md
 # Deletes file after opening, or on SIGINT.

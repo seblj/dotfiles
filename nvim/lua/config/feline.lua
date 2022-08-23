@@ -265,6 +265,14 @@ if ok_gps then
 end
 
 local winbar_components = {
+    maximized = {
+        provider = function()
+            return 'Maximized'
+        end,
+        enabled = function()
+            return vim.t.maximized
+        end,
+    },
     file = {
         provider = {
             name = 'file_info',
@@ -302,6 +310,7 @@ local winbar_components = {
 
 local winbar = {
     {
+        winbar_components.maximized,
         winbar_components.file,
         winbar_components.filetype,
         winbar_components.gps,

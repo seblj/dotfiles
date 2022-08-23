@@ -101,14 +101,14 @@ M.on_attach = function(client)
     update_config('en-US', 'disabledRules')
     update_config('en-US', 'hiddenFalsePositives')
     vim.keymap.set('n', 'zuw', function()
-        vim.cmd.normal({ 'zuw', silent = true })
+        vim.cmd.normal({ 'zuw', mods = { silent = true } })
         update_config('en-US', 'dictionary')
     end, {
         buffer = true,
         desc = 'Remove word from spellfile and update ltex',
     })
     vim.keymap.set('n', 'zg', function()
-        vim.cmd.normal({ 'zg', silent = true })
+        vim.cmd.normal({ 'zg', mods = { silent = true } })
         update_config('en-US', 'dictionary')
     end, {
         buffer = true,

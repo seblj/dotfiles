@@ -21,18 +21,11 @@ local get_git_root = function()
         vim.loop.cwd()
     )
 
-    if ret ~= 0 then
-        return vim.loop.cwd()
-    end
-    return git_root[1]
+    return ret ~= 0 and vim.loop.cwd() or git_root[1]
 end
 
 local get_root = function()
-    local root = get_git_root()
-    if not use_git_root then
-        return vim.loop.cwd()
-    end
-    return root
+    return use_git_root and get_git_root() or vim.loop.cwd()
 end
 
 -- Telescope function for quick edit of dotfiles
@@ -61,8 +54,7 @@ M.find_files = function()
 end
 
 M.git_files = function()
-    local git_root = get_git_root()
-    local dir = vim.fn.fnamemodify(git_root, ':t')
+    local dir = vim.fn.fnamemodify(get_git_root(), ':t')
     require('telescope.builtin').git_files({
         prompt_title = dir,
         recurse_submodules = true,

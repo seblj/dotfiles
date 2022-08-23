@@ -43,6 +43,7 @@ keymap('n', '<S-Right>', resize.resize_right, { desc = 'Resize split right' })
 keymap('n', '<S-Left>', resize.resize_left, { desc = 'Resize split left' })
 keymap('n', '<S-Up>', resize.resize_up, { desc = 'Resize split up' })
 keymap('n', '<S-Down>', resize.resize_down, { desc = 'Resize split down' })
+keymap('n', '<leader>gh', ':help <C-r><C-w><CR>', { desc = 'Search in help for word under cursor' })
 
 keymap('v', '<', '<gv', { desc = 'Keep visual mode on dedent' })
 keymap('v', '>', '>gv', { desc = 'Keep visual mode on indent' })
@@ -80,7 +81,7 @@ keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Pr
 keymap('n', '<leader>@', '<cmd>lcd %:p:h<CR><cmd>pwd<CR>', { desc = 'cd to directory of open buffer' })
 
 keymap('n', '<leader>tm', function()
-    if vim.o.mouse == 'a' then
+    if vim.o.mouse == 'nvi' then
         vim.opt.mouse = ''
         vim.opt.signcolumn = 'no'
         vim.opt.number = false
@@ -112,6 +113,18 @@ keymap('n', '<leader>ts', function()
     vim.opt.spelllang = vim.o.spelllang == 'en' and 'nb' or 'en'
     print('Setting spelllang to', vim.o.spelllang)
 end, { desc = 'Toggle spelllang between english and norwegian' })
+
+keymap('n', '<leader>m', function()
+    if vim.t.maximized then
+        vim.t.maximized = false
+        vim.cmd.tabclose()
+    else
+        if vim.fn.winnr('$') ~= 1 then
+            vim.cmd.split({ mods = { tab = 1 } })
+            vim.t.maximized = true
+        end
+    end
+end, { desc = 'Maximize current split' })
 
 ---------- ABBREVIATIONS ----------
 
