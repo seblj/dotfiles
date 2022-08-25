@@ -6,24 +6,30 @@ local t = ls.text_node
 local fmt = require('luasnip.extras.fmt').fmt
 
 return make({
-    ['function'] = {
-        t({ 'function()', '' }),
-        t({ '\t' }),
-        i(0),
-        t({ '', 'end' }),
-    },
-    ['then'] = {
-        t({ 'then', '' }),
-        t({ '\t' }),
-        i(0),
-        t({ '', 'end' }),
-    },
-    ['do'] = {
-        t({ 'do', '' }),
-        t({ '\t' }),
-        i(0),
-        t({ '', 'end' }),
-    },
+    ['function'] = fmt(
+        [[
+        function()
+        {tab}{insert}
+        end
+    ]],
+        { tab = '\t', insert = i(0) }
+    ),
+    ['then'] = fmt(
+        [[
+        then
+        {tab}{insert}
+        end
+    ]],
+        { tab = '\t', insert = i(0) }
+    ),
+    ['do'] = fmt(
+        [[
+        do
+        {tab}{insert}
+        end
+    ]],
+        { tab = '\t', insert = i(0) }
+    ),
     headline = fmt([[---------- {insert} ----------]], {
         insert = i(0),
     }),

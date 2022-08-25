@@ -1,12 +1,13 @@
 ---------- TREESITTER CONFIG ----------
 
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+
 local treesitter_parsers = require('nvim-treesitter.parsers')
 local utils = require('seblj.utils')
 
 local ft_to_parser = treesitter_parsers.filetype_to_parsername
 ft_to_parser.zsh = 'bash'
-
-local parsers = treesitter_parsers.available_parsers()
 
 local hlmap = vim.treesitter.highlighter.hl_map
 hlmap.custom_type = 'TSCustomType'
@@ -30,8 +31,7 @@ parser_config.rsx = {
 local read_file = function(path)
     local fd = assert(vim.loop.fs_open(path, 'r', 438))
     local stat = assert(vim.loop.fs_fstat(fd))
-    local data = vim.loop.fs_read(fd, stat.size, 0)
-    return data
+    return vim.loop.fs_read(fd, stat.size, 0)
 end
 
 local override_queries = function(lang, query_name)
@@ -43,7 +43,13 @@ local override_queries = function(lang, query_name)
     )
 end
 
-override_queries('rust', 'injections')
+autocmd('FileType', {
+    pattern = 'rust',
+    group = augroup('RustOverrideQuery', { clear = true }),
+    callback = function()
+        override_queries('rust', 'injections')
+    end,
+})
 
 require('nvim-treesitter.configs').setup({
     ensure_installed = 'all',
@@ -54,7 +60,7 @@ require('nvim-treesitter.configs').setup({
     },
     indent = {
         enable = true,
-        disable = utils.difference(parsers, indent),
+        disable = utils.difference(treesitter_parsers.available_parsers(), indent),
     },
     textobjects = {
         select = {

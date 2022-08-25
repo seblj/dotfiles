@@ -94,19 +94,15 @@ M.save_and_exec = function()
     local dir = vim.fn.expand('%:p:h')
     local file = vim.fn.expand('%')
     local output = vim.fn.expand('%:t:r')
+    vim.cmd.write({ mods = { emsg_silent = true } })
     if ft == 'vim' or ft == 'lua' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         vim.cmd.source('%')
     elseif ft == 'python' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         run_term_split('python3 %s', file)
     elseif ft == 'c' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         local command = 'gcc %s -o %s && ./%s; rm %s'
         run_term_split(command, file, output, output, output)
     elseif ft == 'rust' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
-        vim.cmd.sp()
         vim.cmd.lcd(dir)
         local command = 'rustc %s && ./%s; rm %s'
         if vim.fn.system('cargo verify-project'):match('{"success":"true"}') then
@@ -114,14 +110,11 @@ M.save_and_exec = function()
         end
         run_term_split(command, file, output, output, output)
     elseif ft == 'go' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         vim.cmd.lcd(dir)
         run_term_split('go run .')
     elseif ft == 'javascript' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         run_term_split('node %s', file)
     elseif ft == 'typescript' then
-        vim.cmd.write({ mods = { emsg_silent = true } })
         run_term_split('ts-node %s', file)
     elseif ft == 'http' then
         -- Not really save and exec, but think it fits nicely in here for mapping
@@ -181,34 +174,28 @@ local hide_cursor = function()
     vim.opt.guicursor = vim.opt.guicursor + 'a:CursorTransparent/lCursor'
 end
 
-local restore_cursor = function()
-    vim.opt.guicursor = vim.opt.guicursor + 'a:Cursor/lCursor'
-    vim.opt.guicursor = guicursor_saved
-end
-
 M.setup_hidden_cursor = function()
     hide_cursor()
     vim.opt_local.cursorline = true
+    vim.opt_local.winhighlight = 'CursorLine:CursorLineHiddenCursor'
     local group = augroup('HiddenCursor', {})
     autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
         group = group,
         pattern = '<buffer>',
-        command = 'setlocal cursorline',
+        callback = function()
+            hide_cursor()
+            vim.opt_local.cursorline = true
+            vim.opt_local.winhighlight = 'CursorLine:CursorLineHiddenCursor'
+        end,
     })
     autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = group,
         pattern = '<buffer>',
-        command = 'setlocal nocursorline',
-    })
-    autocmd({ 'BufEnter', 'WinEnter', 'CmdwinLeave', 'CmdlineLeave' }, {
-        group = group,
-        pattern = '<buffer>',
-        callback = hide_cursor,
-    })
-    autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
-        group = group,
-        pattern = '<buffer>',
-        callback = restore_cursor,
+        callback = function()
+            vim.opt.guicursor = vim.opt.guicursor + 'a:Cursor/lCursor'
+            vim.opt.guicursor = guicursor_saved
+            vim.opt_local.cursorline = false
+        end,
     })
 end
 
