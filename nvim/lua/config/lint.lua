@@ -11,4 +11,5 @@ autocmd({ 'BufWritePost', 'BufEnter', 'BufLeave', 'InsertLeave' }, {
     callback = function()
         lint.try_lint()
     end,
+    desc = 'NvimLint',
 })

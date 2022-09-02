@@ -51,4 +51,5 @@ autocmd('BufWritePre', {
             vim.cmd.FormatWrite()
         end
     end,
+    desc = 'Formatting',
 })

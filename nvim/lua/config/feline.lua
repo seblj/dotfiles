@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     callback = function()
         latex_word_count = string.format(' Words: %s', vim.fn['vimtex#misc#wordcount']())
     end,
+    desc = 'Update word count in latex',
 })
 
 local get_word_count = function()

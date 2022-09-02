@@ -25,6 +25,7 @@ M.setup = function(client)
                     end
                 end
             end,
+            desc = 'Formatting',
         })
     end
 end

@@ -42,6 +42,7 @@ autocmd('FileType', {
     callback = function()
         vim.opt_local.bufhidden = 'delete'
     end,
+    desc = 'Set bufhidden to delete',
 })
 
 autocmd('BufEnter', {
@@ -50,6 +51,7 @@ autocmd('BufEnter', {
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - 'o' + 'r' + 'c' - 't'
     end,
+    desc = 'Fix formatoptions',
 })
 
 autocmd('TextYankPost', {
@@ -58,6 +60,7 @@ autocmd('TextYankPost', {
     callback = function()
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })
     end,
+    desc = 'Highlight on yank',
 })
 
 -- Disable netrw

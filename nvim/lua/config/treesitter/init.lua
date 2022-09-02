@@ -49,6 +49,7 @@ autocmd('FileType', {
     callback = function()
         override_queries('rust', 'injections')
     end,
+    desc = 'Override rust treesitter injection',
 })
 
 require('nvim-treesitter.configs').setup({

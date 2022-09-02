@@ -22,4 +22,5 @@ autocmd('User', {
     callback = function()
         vim.fn['vimtex#compiler#clean'](0)
     end,
+    desc = 'Clean up latex files',
 })

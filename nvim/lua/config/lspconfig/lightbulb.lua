@@ -113,6 +113,7 @@ M.setup = function()
             end
             check_code_action()
         end,
+        desc = 'Start lightbulb for code actions',
     })
 end
 

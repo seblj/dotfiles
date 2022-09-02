@@ -72,6 +72,7 @@ M.setup = function(client)
             end
             open_signature()
         end,
+        desc = 'Start lsp signature',
     })
 end
 

@@ -8,4 +8,5 @@ autocmd('TermOpen', {
     callback = function()
         vim.opt.ft = 'term'
     end,
+    desc = 'Set filetype for term buffer',
 })

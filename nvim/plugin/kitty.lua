@@ -16,6 +16,7 @@ if vim.env.TERM == 'xterm-kitty' then
         callback = function()
             kitty_fix('\x1b[>1u')
         end,
+        desc = 'Fix kitty',
     })
     autocmd('UILeave', {
         group = group,
@@ -23,5 +24,6 @@ if vim.env.TERM == 'xterm-kitty' then
         callback = function()
             kitty_fix('\x1b[<1u')
         end,
+        desc = 'Fix kitty',
     })
 end

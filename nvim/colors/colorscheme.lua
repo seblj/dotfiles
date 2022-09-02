@@ -167,6 +167,9 @@ highlight({
     LspReferenceText = { bg = c.bg2 },
     LspReferenceRead = { bg = c.bg2 },
     LspReferenceWrite = { bg = c.bg2 },
+    -- I do not agree with not linking this to FloatBorder by default, but oh
+    -- well...
+    LspInfoBorder = { link = 'FloatBorder' },
 
     ---------- GIT ----------
 
@@ -252,6 +255,7 @@ autocmd('FileType', {
     callback = function()
         vim.opt.winhighlight = 'NonText:Normal'
     end,
+    desc = 'Fix colors in qflist',
 })
 
 ---------- TERM COLORS ----------

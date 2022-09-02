@@ -93,6 +93,7 @@ M.popup_create = function(opts)
             callback = function()
                 set_cursor()
             end,
+            desc = 'Hidden cursor',
         })
     end
     if opts.prompt then

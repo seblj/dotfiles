@@ -13,6 +13,13 @@ cmp.setup({
         { name = 'vim-dadbod-completion' },
     },
 
+    confirmation = {
+        -- This seems annoying, so disable it for now for all language servers
+        get_commit_characters = function(_)
+            return {}
+        end,
+    },
+
     snippet = {
         expand = function(args)
             require('luasnip').lsp_expand(args.body)

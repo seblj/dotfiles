@@ -170,6 +170,7 @@ M.setup_hidden_cursor = function()
             vim.opt_local.cursorline = true
             vim.opt_local.winhighlight = 'CursorLine:CursorLineHiddenCursor'
         end,
+        desc = 'Hide cursor',
     })
     autocmd({ 'BufLeave', 'WinLeave', 'CmdwinEnter', 'CmdlineEnter' }, {
         group = group,
@@ -179,6 +180,7 @@ M.setup_hidden_cursor = function()
             vim.opt.guicursor = guicursor_saved
             vim.opt_local.cursorline = false
         end,
+        desc = 'Show cursor',
     })
 end
 

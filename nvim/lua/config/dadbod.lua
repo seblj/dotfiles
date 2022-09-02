@@ -22,6 +22,7 @@ vim.api.nvim_create_autocmd('FileType', {
         map('n', 'r', '<Plug>(DBUI_RenameLine)')
         map('n', 'q', '<Plug>(DBUI_Quit)')
     end,
+    desc = 'Set keymaps for dbui',
 })
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -34,6 +35,7 @@ vim.api.nvim_create_autocmd('FileType', {
             },
         })
     end,
+    desc = 'Register cmd-dadbod source',
 })
 
 -- Hack to turn off cursorline in query buffer.
@@ -46,4 +48,5 @@ vim.api.nvim_create_autocmd('BufEnter', {
             vim.opt_local.cursorline = false
         end, 50)
     end,
+    desc = 'Disable cursorline in dbui',
 })
