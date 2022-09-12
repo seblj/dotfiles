@@ -53,7 +53,7 @@ M.popup_create = function(opts)
     opts.border = opts.border or CUSTOM_BORDER
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
-    vim.api.nvim_win_set_option(winnr, 'winhl', 'Normal:NormalFloat')
+    vim.wo[winnr].winhl = 'Normal:NormalFloat'
     if opts.enter then
         vim.api.nvim_set_current_win(winnr)
         keymap('n', '<ESC>', function()
@@ -97,10 +97,10 @@ M.popup_create = function(opts)
     end
     if opts.prompt then
         vim.cmd.startinsert()
-        vim.api.nvim_buf_set_option(popup_bufnr, 'modifiable', true)
-        vim.api.nvim_buf_set_option(popup_bufnr, 'buftype', 'prompt')
+        vim.bo[popup_bufnr].modifiable = true
+        vim.bo[popup_bufnr].buftype = 'prompt'
         vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
-        vim.api.nvim_buf_set_option(popup_bufnr, 'ft', 'UIPrompt')
+        vim.bo[popup_bufnr].filetype = 'UIPrompt'
     else
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
     end

@@ -4,7 +4,7 @@ local open_or_attach = function(filetype, callback)
     local found = false
     local wininfo = vim.fn.getwininfo()
     for _, win in ipairs(wininfo) do
-        if vim.api.nvim_buf_get_option(win.bufnr, 'ft') == filetype then
+        if vim.bo[win.bufnr].filetype == filetype then
             found = true
             vim.cmd.wincmd({ 'w', count = win.winnr })
         end

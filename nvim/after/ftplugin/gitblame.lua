@@ -8,9 +8,9 @@ local gitmoji = function(text, emoji)
     })
 end
 
-vim.api.nvim_buf_set_option(0, 'modifiable', true)
+vim.bo.modifiable = true
 local gitmojis = vim.json.decode(Path:new('~/dotfiles/nvim/lua/config/telescope/gitmoji.json'):read())
 for _, v in pairs(gitmojis) do
     gitmoji(v.code, v.emoji)
 end
-vim.api.nvim_buf_set_option(0, 'modifiable', false)
+vim.bo.modifiable = false

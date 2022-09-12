@@ -35,23 +35,6 @@ M.reload_config = function()
     vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
--- Use arrowkeys for cnext and cprev only in quickfixlist
-M.quickfix = function(key)
-    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
-        if key == 'down' then
-            vim.cmd.normal('j')
-        elseif key == 'up' then
-            vim.cmd.normal('k')
-        end
-    else
-        if key == 'down' then
-            vim.cmd.cnext({ mods = { emsg_silent = true } })
-        elseif key == 'up' then
-            vim.cmd.cprev({ mods = { emsg_silent = true } })
-        end
-    end
-end
-
 M.run_term = function(command, ...)
     local terminal_id
     if vim.b.run ~= nil then
@@ -90,7 +73,7 @@ end
 -- Save and execute file based on filetype
 M.save_and_exec = function()
     vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
-    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    local ft = vim.bo.filetype
     local dir = vim.fn.expand('%:p:h')
     local file = vim.fn.expand('%')
     local output = vim.fn.expand('%:t:r')

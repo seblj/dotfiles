@@ -158,7 +158,7 @@ local components = {
                 return get_word_count()
             end,
             enabled = function()
-                return vim.api.nvim_buf_get_option(0, 'ft') == 'tex'
+                return vim.bo.filetype == 'tex'
             end,
         },
         buffer_type = {

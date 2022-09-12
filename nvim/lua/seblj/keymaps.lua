@@ -56,6 +56,14 @@ keymap('n', '<A-k>', ':m.-2<CR>==', { desc = 'Move current line up' })
 keymap('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move current line up' })
 keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move current line up' })
 
+keymap('x', '<leader>sr', [["sy:let @/=@s<CR>cgn]], { desc = 'Replace word under cursor' })
+keymap('n', '<leader>sr', [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn]], {
+    desc = 'Replace word under cursor',
+})
+keymap('n', '<leader>sa', [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn<C-r>"]], {
+    desc = 'Append to word under cursor',
+})
+
 keymap('n', '<leader>j', 'J', { desc = 'Join [count] lines' })
 
 keymap('n', 'j', 'v:count ? "j" : "gj"', { expr = true, desc = 'gj' })
@@ -72,9 +80,23 @@ keymap('n', '<leader>x', utils.save_and_exec, { desc = 'Save and execute file' }
 local visual_macro = [[:<C-u>:echo "@".getcmdline()<CR>:execute ":'<,'>normal @".nr2char(getchar())<CR>]]
 keymap('x', '@', visual_macro, { desc = 'Macro over visual range' })
 
+keymap('n', '<Down>', function()
+    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
+        vim.cmd.normal('j')
+    else
+        vim.cmd.cnext({ mods = { emsg_silent = true } })
+    end
+end, { desc = 'Move down in qflist' })
+
 -- stylua: ignore start
-keymap('n', '<Down>', function() utils.quickfix('down') end, { desc = 'Move down in qflist' })
-keymap('n', '<Up>', function() utils.quickfix('up') end, { desc = 'Move up in qflist' })
+keymap('n', '<Up>', function()
+    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
+        vim.cmd.normal('k')
+    else
+        vim.cmd.cprev({ mods = { emsg_silent = true } })
+    end
+end, { desc = 'Move up in qflist' })
+
 keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Print syntax under cursor' })
 -- stylua: ignore end
 
@@ -118,11 +140,9 @@ keymap('n', '<leader>m', function()
     if vim.t.maximized then
         vim.t.maximized = false
         vim.cmd.tabclose()
-    else
-        if vim.fn.winnr('$') ~= 1 then
-            vim.cmd.split({ mods = { tab = 1 } })
-            vim.t.maximized = true
-        end
+    elseif vim.fn.winnr('$') ~= 1 then
+        vim.cmd.split({ mods = { tab = 1 } })
+        vim.t.maximized = true
     end
 end, { desc = 'Maximize current split' })
 
