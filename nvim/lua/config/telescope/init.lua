@@ -35,6 +35,9 @@ telescope.setup({
             override_file_sorter = true,
             override_generic_sorter = true,
         },
+        file_browser = {
+            hidden = true,
+        },
     },
 })
 require('telescope').load_extension('fzf')

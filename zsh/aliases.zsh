@@ -15,6 +15,9 @@ alias kitty_debug_font="kitty --debug-font-fallback"
 
 alias localip="ipconfig getifaddr en0"
 
+# alias cat to bat if bat is installed
+installed bat && alias cat="bat"
+
 # Avoid nesting
 if [ -n "$NVIM" ]; then
     alias nvim="nvr"

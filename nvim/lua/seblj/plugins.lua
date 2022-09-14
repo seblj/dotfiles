@@ -31,7 +31,6 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
     use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
-    use({ 'lewis6991/spellsitter.nvim', config = setup('spellsitter') })
     use({ 'SmiteshP/nvim-gps' })
 
     -- LSP
@@ -58,7 +57,7 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'kristijanhusak/vim-dadbod-completion' })
 
     -- Git
-    local_use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
+    use({ 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } })
     use({ 'akinsho/git-conflict.nvim', config = setup('git-conflict', { highlights = { current = 'DiffChange' } }) })
 
     -- Packageinfo

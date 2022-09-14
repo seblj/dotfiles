@@ -9,8 +9,7 @@ local utils = require('seblj.utils')
 local ft_to_parser = treesitter_parsers.filetype_to_parsername
 ft_to_parser.zsh = 'bash'
 
-local hlmap = vim.treesitter.highlighter.hl_map
-hlmap.custom_type = 'TSCustomType'
+vim.api.nvim_set_hl(0, '@custom_type', { link = 'TSCustomType' })
 
 local indent = {
     'tsx',
