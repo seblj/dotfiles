@@ -44,7 +44,6 @@ local plugins = function(local_use, use, setup, conf)
 
     -- Completion
     use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })
-    use({ 'hrsh7th/cmp-cmdline' })
     use({ 'hrsh7th/cmp-nvim-lsp' })
     use({ 'hrsh7th/cmp-buffer' })
     use({ 'hrsh7th/cmp-path' })
@@ -73,23 +72,18 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'rcarriga/nvim-dap-ui' })
 
     -- Others
-    use({ 'ThePrimeagen/refactoring.nvim', config = conf('refactoring'), keys = '<leader>fr' })
-    use({ 'ThePrimeagen/harpoon', config = conf('harpoon'), disable = true })
-
     use({ 'mfussenegger/nvim-lint', config = conf('lint') })
 
     use({ 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } })
-    -- use({ 'elihunter173/dirbuf.nvim', config = conf('dirbuf') })
     use({ 'tamago324/lir.nvim', config = conf('lir') })
     use({ 'norcalli/nvim-colorizer.lua', config = setup('colorizer') })
     use({ 'mhinz/vim-startify', config = conf('startify') })
     use({ 'feline-nvim/feline.nvim', config = conf('feline') })
-    use({ 'windwp/nvim-autopairs', config = conf('autopairs') })
+    use({ 'windwp/nvim-autopairs', config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }) })
     use({ 'rcarriga/nvim-notify', config = conf('notify') })
     use({ 'godlygeek/tabular', config = 'vim.g.no_default_tabular_maps = 1' })
     use({ 'kyazdani42/nvim-web-devicons' })
     use({ 'lewis6991/impatient.nvim' })
-    use({ 'antoinemadec/FixCursorHold.nvim', config = 'vim.g.cursorhold_updatetime = 100' })
     use({ 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' })
     use({ 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' })
     use({ 'NTBBloodbath/rest.nvim', ft = 'http' })

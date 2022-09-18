@@ -93,17 +93,15 @@ lir.setup({
     devicons_enable = true,
     hide_cursor = true,
     on_init = function()
-        -- stylua: ignore start
-        keymap('n', '<C-x>', function() actions.split() end, { buffer = true, desc = 'Lir: Open horizontal split' })
-        keymap('n', '<C-v>', function() actions.vsplit() end, { buffer = true, desc = 'Lir: Open vertical split' })
-        keymap('n', '<C-t>', function() actions.tabedit() end, { buffer = true, desc = 'Lir: Open new tab' })
-        keymap('n', '<CR>', function() actions.edit() end, { buffer = true, desc = 'Lir: Open file' })
-        keymap('n', '..', function() actions.up() end, { buffer = true, desc = 'Lir: Go one directory up' })
-        keymap('n', 'Y', function() actions.yank_path() end, { buffer = true, desc = 'Lir: Yank path' })
-        keymap('n', 'dd', function() actions.delete() end, { buffer = true, desc = 'Lir: Delete' })
-        keymap('n', 'N', function() new_file() end, { buffer = true, desc = 'Lir: Create new file' })
-        keymap('n', 'M', function() new_directory() end, { buffer = true, desc = 'Lir: Create new directory' })
-        keymap('n', 'r', function() rename() end, { buffer = true, desc = 'Lir: Rename' })
-        -- stylua: ignore end
+        keymap('n', '<C-x>', actions.split, { buffer = true, desc = 'Lir: Open horizontal split' })
+        keymap('n', '<C-v>', actions.vsplit, { buffer = true, desc = 'Lir: Open vertical split' })
+        keymap('n', '<C-t>', actions.tabedit, { buffer = true, desc = 'Lir: Open new tab' })
+        keymap('n', '<CR>', actions.edit, { buffer = true, desc = 'Lir: Open file' })
+        keymap('n', '..', actions.up, { buffer = true, desc = 'Lir: Go one directory up' })
+        keymap('n', 'Y', actions.yank_path, { buffer = true, desc = 'Lir: Yank path' })
+        keymap('n', 'dd', actions.delete, { buffer = true, desc = 'Lir: Delete' })
+        keymap('n', 'N', new_file, { buffer = true, desc = 'Lir: Create new file' })
+        keymap('n', 'M', new_directory, { buffer = true, desc = 'Lir: Create new directory' })
+        keymap('n', 'r', rename, { buffer = true, desc = 'Lir: Rename' })
     end,
 })

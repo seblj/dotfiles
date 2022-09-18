@@ -7,20 +7,14 @@ local autocmd = vim.api.nvim_create_autocmd
 local M = {}
 
 M.packer_bootstrap = function()
-    local packer_bootstrap = nil
+    local is_bootstrap = false
     local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-    if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-        packer_bootstrap = vim.fn.system({
-            'git',
-            'clone',
-            '--depth',
-            '1',
-            'https://github.com/wbthomason/packer.nvim',
-            install_path,
-        })
-        vim.o.runtimepath = vim.fn.stdpath('data') .. '/site/pack/*/start/*,' .. vim.o.runtimepath
+    if vim.loop.fs_stat(install_path).type ~= 'directory' then
+        is_bootstrap = true
+        vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+        vim.cmd.packadd('packer.nvim')
     end
-    return packer_bootstrap
+    return is_bootstrap
 end
 
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
@@ -36,17 +30,9 @@ M.reload_config = function()
 end
 
 M.run_term = function(command, ...)
-    local terminal_id
-    if vim.b.run ~= nil then
-        local run = vim.b.run
-        vim.cmd.term()
-        terminal_id = vim.b.terminal_job_id
-        vim.api.nvim_chan_send(terminal_id, run .. '\n')
-    else
-        vim.cmd.term()
-        terminal_id = vim.b.terminal_job_id
-        vim.api.nvim_chan_send(terminal_id, string.format(command .. '\n', ...))
-    end
+    vim.cmd.term()
+    local run_command = vim.b.run ~= nil and vim.b.run .. '\n' or string.format(command .. '\n', ...)
+    vim.api.nvim_chan_send(vim.b.terminal_job_id, run_command)
 
     keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
     vim.cmd.stopinsert()
@@ -55,10 +41,9 @@ end
 local run_term_split = function(...)
     local current_win = vim.api.nvim_get_current_win()
     local terminal_exists = false
-    local wininfo = vim.fn.getwininfo()
-    for _, win in ipairs(wininfo) do
-        if win.variables.terminal_execute then
-            vim.cmd.wincmd({ 'w', count = win.winnr })
+    for _, winid in ipairs(vim.api.nvim_list_wins()) do
+        if vim.w[winid].terminal_execute then
+            vim.api.nvim_set_current_win(winid)
             terminal_exists = true
         end
     end
@@ -70,38 +55,51 @@ local run_term_split = function(...)
     vim.api.nvim_set_current_win(current_win)
 end
 
+local runner = {
+    python = 'python3 $file',
+    c = 'gcc $file -o $output && ./$output; rm $output',
+    javascript = 'node $file',
+    typescript = 'ts-node $file',
+    rust = function()
+        local command = 'rustc $file && ./$output; rm $output'
+        local match = vim.fn.system('cargo verify-project'):match('{"success":"true"}')
+        return match and 'cargo run' or command
+    end,
+    go = function()
+        local command = 'go run $file'
+        local dir = vim.fs.dirname(vim.fs.find('go.mod', { upward = true })[1])
+        return dir and 'go run ' .. dir or command
+    end,
+}
+
 -- Save and execute file based on filetype
 M.save_and_exec = function()
     vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
     local ft = vim.bo.filetype
-    local dir = vim.fn.expand('%:p:h')
-    local file = vim.fn.expand('%')
-    local output = vim.fn.expand('%:t:r')
+    local file = vim.api.nvim_buf_get_name(0)
+    local dir = vim.fn.fnamemodify(file, ':p:h')
+    local output = vim.fn.fnamemodify(file, ':t:r')
     vim.cmd.write({ mods = { emsg_silent = true } })
     if ft == 'vim' or ft == 'lua' then
         vim.cmd.source('%')
-    elseif ft == 'python' then
-        run_term_split('python3 %s', file)
-    elseif ft == 'c' then
-        local command = 'gcc %s -o %s && ./%s; rm %s'
-        run_term_split(command, file, output, output, output)
-    elseif ft == 'rust' then
-        vim.cmd.lcd(dir)
-        local command = 'rustc %s && ./%s; rm %s'
-        if vim.fn.system('cargo verify-project'):match('{"success":"true"}') then
-            command = 'cargo run'
-        end
-        run_term_split(command, file, output, output, output)
-    elseif ft == 'go' then
-        vim.cmd.lcd(dir)
-        run_term_split('go run .')
-    elseif ft == 'javascript' then
-        run_term_split('node %s', file)
-    elseif ft == 'typescript' then
-        run_term_split('ts-node %s', file)
     elseif ft == 'http' then
         -- Not really save and exec, but think it fits nicely in here for mapping
         require('rest-nvim').run()
+    else
+        vim.cmd.lcd(dir)
+        local command = runner[ft]
+        if not command then
+            vim.api.nvim_echo({ { string.format('No config found for %s', ft) } }, false, {})
+            return
+        end
+        if type(command) == 'function' then
+            command = command()
+        end
+
+        command = command:gsub('$file', file)
+        command = command:gsub('$output', output)
+        command = command:gsub('$dir', dir)
+        run_term_split(command)
     end
 end
 

@@ -5,9 +5,10 @@ local autocmd = vim.api.nvim_create_autocmd
 
 vim.cmd.colorscheme('colorscheme')
 
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.updatetime = 250
+vim.opt.updatetime = 100
 vim.opt.cmdheight = 2
 vim.opt.inccommand = 'split'
 vim.opt.clipboard = 'unnamedplus'

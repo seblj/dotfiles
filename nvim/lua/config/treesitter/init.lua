@@ -9,8 +9,6 @@ local utils = require('seblj.utils')
 local ft_to_parser = treesitter_parsers.filetype_to_parsername
 ft_to_parser.zsh = 'bash'
 
-vim.api.nvim_set_hl(0, '@custom_type', { link = 'TSCustomType' })
-
 local indent = {
     'tsx',
     'typescript',
@@ -99,6 +97,7 @@ require('nvim-treesitter.configs').setup({
             python = '# %s',
             rsx = '// %s',
             teal = '-- %s',
+            http = '# %s',
         },
         custom_calculation = function(node, language_tree)
             local language_commentstrings = {

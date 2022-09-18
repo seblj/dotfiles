@@ -101,7 +101,6 @@ M.popup_create = function(opts)
         vim.bo[popup_bufnr].modifiable = true
         vim.bo[popup_bufnr].buftype = 'prompt'
         vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
-        vim.bo[popup_bufnr].filetype = 'UIPrompt'
     else
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
     end

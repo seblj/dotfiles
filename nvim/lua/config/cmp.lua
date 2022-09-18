@@ -1,5 +1,4 @@
 local cmp = require('cmp')
-local types = require('cmp.types')
 
 cmp.setup({
     sources = {
@@ -26,35 +25,15 @@ cmp.setup({
         end,
     },
 
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-Space>'] = cmp.mapping.complete(),
         ['<CR>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,
         }),
-        ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-        ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-        ['<C-y>'] = cmp.mapping(
-            cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true,
-            }),
-            { 'i', 'c' }
-        ),
-        ['<C-n>'] = cmp.mapping(function()
-            if not cmp.visible() then
-                cmp.complete()
-            else
-                cmp.select_next_item({ behavior = types.cmp.SelectBehavior.Insert })
-            end
-        end),
-        ['<C-p>'] = cmp.mapping(function()
-            if not cmp.visible() then
-                cmp.complete()
-            else
-                cmp.select_prev_item({ behavior = types.cmp.SelectBehavior.Insert })
-            end
-        end),
-    },
+    }),
 
     preselect = cmp.PreselectMode.None,
 
@@ -94,36 +73,3 @@ cmp.setup({
         end,
     },
 })
-
-cmp.setup.cmdline('/', {
-    completion = {
-        autocomplete = false,
-    },
-    sources = {
-        { name = 'buffer' },
-    },
-})
-
-cmp.setup.cmdline('?', {
-    completion = {
-        autocomplete = false,
-    },
-    sources = {
-        { name = 'buffer' },
-    },
-})
-
--- Looks really nice, but it misses some completion
--- items that I like from the builtin
--- cmp.setup.cmdline(':', {
---     completion = {
---         autocomplete = false,
---     },
---     sources = cmp.config.sources({
---         { name = 'path' },
---     }, {
---         { name = 'cmdline' },
---     }),
--- })
-
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }

@@ -130,7 +130,6 @@ highlight({
 
     TSConstructor = { fg = c.fg },
     TSConstBuiltin = { fg = c.orange },
-    TSCustomType = { fg = c.purple },
     TSField = { fg = c.green },
     TSFuncBuiltin = { link = 'Function' },
     TSFuncMacro = { link = 'Function' },
@@ -146,6 +145,8 @@ highlight({
     TSTagAttribute = { fg = c.green },
     TSTagDelimiter = { fg = c.red },
     TSVariableBuiltin = { fg = c.orange },
+
+    ['@custom_type'] = { fg = c.purple },
 
     ---------- LANGUGE SPECIFIC ----------
 

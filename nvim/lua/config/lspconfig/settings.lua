@@ -1,21 +1,6 @@
 ---------- LANGUAGE SERVERS ----------
 
-local ltex = require('config.lspconfig.ltex')
-
 return {
-    vuels = {
-        init_options = {
-            config = {
-                vetur = {
-                    completion = {
-                        autoImport = true,
-                        useScaffoldSnippets = false,
-                    },
-                },
-            },
-        },
-    },
-
     volar = {
         init_options = {
             typescript = {
@@ -41,31 +26,6 @@ return {
         },
     }),
 
-    -- TODO: See if I can get the grammarly lsp to work after the release of the new SDK
-    grammarly = {
-        init_options = {
-            clientId = '10',
-        },
-    },
-
-    ltex = {
-        on_attach = function(client)
-            ltex.on_attach(client)
-        end,
-        settings = {
-            ltex = {
-                language = 'en',
-                dictionary = {},
-                disabledRules = {},
-                hiddenFalsePositives = {},
-                additionalRules = {
-                    enablePickyRules = true,
-                    motherTongue = 'en',
-                },
-            },
-        },
-    },
-
     jsonls = {
         settings = {
             json = {
@@ -79,14 +39,4 @@ return {
             ['textDocument/definition'] = require('omnisharp_extended').handler,
         },
     },
-
-    --     pyright = {
-    --         settings = {
-    --             python = {
-    --                 analysis = {
-    --                     typeCheckingMode = 'off',
-    --                 },
-    --             },
-    --         },
-    --     },
 }

@@ -11,8 +11,8 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.config/zsh/spaceship.zsh
 
 [ -f ~/.local.zsh ] && source ~/.local.zsh
-source $HOME/.config/zsh/aliases.zsh
 source $HOME/.config/zsh/functions.zsh
+source $HOME/.config/zsh/aliases.zsh
 source $HOME/.config/zsh/vim.zsh
 
 installed pyenv && eval "$(pyenv init -)"
