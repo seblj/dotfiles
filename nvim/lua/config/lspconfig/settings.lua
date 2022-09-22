@@ -1,5 +1,11 @@
 ---------- LANGUAGE SERVERS ----------
 
+require('lua-dev').setup({
+    library = {
+        plugins = false,
+    },
+})
+
 return {
     volar = {
         init_options = {
@@ -9,22 +15,17 @@ return {
         },
     },
 
-    sumneko_lua = require('lua-dev').setup({
-        library = {
-            plugins = false,
-        },
-        lspconfig = {
-            settings = {
-                Lua = {
-                    workspace = {
-                        library = {
-                            ['/Users/sebastianlyngjohansen/.hammerspoon/Spoons/EmmyLua.spoon/annotations'] = true,
-                        },
+    sumneko_lua = {
+        settings = {
+            Lua = {
+                workspace = {
+                    library = {
+                        ['/Users/sebastianlyngjohansen/.hammerspoon/Spoons/EmmyLua.spoon/annotations'] = true,
                     },
                 },
             },
         },
-    }),
+    },
 
     jsonls = {
         settings = {

@@ -72,6 +72,10 @@ define_keymap(None, {
     K("RC-Up"): K("Super-Up"),
     K("RC-Down"): K("Super-Down"),
 
+    K("C-Alt-Enter"): K("Super-Up"),
+    K("C-Alt-Left"): K("Super-Left"),
+    K("C-Alt-Right"): K("Super-Right"),
+
     K("RC-Shift-Left"): K("Super-Shift-Left"),
     K("RC-Shift-Right"): K("Super-Shift-Right"),
     K("Alt-BACKSPACE"): K("C-BACKSPACE"),

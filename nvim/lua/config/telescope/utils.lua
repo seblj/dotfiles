@@ -16,10 +16,8 @@ end, {
 })
 
 local get_git_root = function()
-    local git_root, ret = telescope_utils.get_os_command_output(
-        { 'git', 'rev-parse', '--show-toplevel' },
-        vim.loop.cwd()
-    )
+    local git_root, ret =
+        telescope_utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' }, vim.loop.cwd())
 
     return ret ~= 0 and vim.loop.cwd() or git_root[1]
 end
@@ -110,13 +108,15 @@ M.multi_grep = function(opts)
         cwd = root,
     })
 
-    pickers.new(opts, {
-        debounce = 100,
-        prompt_title = dir,
-        finder = custom_grep,
-        previewer = conf.grep_previewer(opts),
-        sorter = require('telescope.sorters').empty(),
-    }):find()
+    pickers
+        .new(opts, {
+            debounce = 100,
+            prompt_title = dir,
+            finder = custom_grep,
+            previewer = conf.grep_previewer(opts),
+            sorter = require('telescope.sorters').empty(),
+        })
+        :find()
 end
 
 -- Live grep from root of git repo
@@ -129,22 +129,19 @@ M.live_grep = function()
     })
 end
 
--- Grep string with using ui
-local grep_confirm = function(input)
-    local root = get_root()
-    local dir = vim.fn.fnamemodify(root, ':t')
-    vim.schedule(function()
-        require('telescope.builtin').grep_string({
-            cwd = root,
-            search = input,
-            prompt_title = dir,
-            file_ignore_patterns = { '%.git/', 'hammerspoon/Spoons/' },
-        })
-    end)
-end
-
 M.grep_string = function()
-    vim.ui.input({ prompt = 'Grep String: ' }, grep_confirm)
+    vim.ui.input({ prompt = 'Grep String: ' }, function(input)
+        local root = get_root()
+        local dir = vim.fn.fnamemodify(root, ':t')
+        vim.schedule(function()
+            require('telescope.builtin').grep_string({
+                cwd = root,
+                search = input,
+                prompt_title = dir,
+                file_ignore_patterns = { '%.git/', 'hammerspoon/Spoons/' },
+            })
+        end)
+    end)
 end
 
 -- Search neovim repo
@@ -160,7 +157,8 @@ end
 -- See if I can find a mapping for this
 M.find_node_modules = function()
     local git_root = get_git_root()
-    local curr_dir = vim.fn.expand('%:p:h:t')
+    local bufname = vim.api.nvim_buf_get_name(0)
+    local curr_dir = vim.fn.fnamemodify(bufname, ':p:h:t')
     local cwd
     if git_root == '' or git_root == nil then
         cwd = curr_dir
@@ -168,16 +166,14 @@ M.find_node_modules = function()
 
     local path
 
-    Job
-        :new({
-            command = 'fd',
-            args = { '-t', 'd', '-I', '-d', '2', '-a', 'node_modules' },
-            cwd = cwd,
-            on_exit = function(j, _)
-                path = j:result()[1]
-            end,
-        })
-        :sync()
+    Job:new({
+        command = 'fd',
+        args = { '-t', 'd', '-I', '-d', '2', '-a', 'node_modules' },
+        cwd = cwd,
+        on_exit = function(j, _)
+            path = j:result()[1]
+        end,
+    }):sync()
 
     if not path then
         return

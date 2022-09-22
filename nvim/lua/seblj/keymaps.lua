@@ -146,6 +146,20 @@ keymap('n', '<leader>m', function()
     end
 end, { desc = 'Maximize current split' })
 
+keymap('n', '<leader>dr', function()
+    local file = vim.api.nvim_buf_get_name(0)
+    local dir = vim.fn.fnamemodify(file, ':p:h')
+    local root_file = vim.fs.find({ 'Sahka.Server.sln', 'ApiGateway.csproj' }, { path = dir, upward = true })[1]
+    if root_file then
+        local root_dir = vim.fn.fnamemodify(root_file, ':p:h')
+        vim.cmd.lcd(root_dir)
+        vim.fn.execute('!dotnet restore')
+        vim.cmd.LspRestart()
+    else
+        vim.api.nvim_echo({ { "Couldn't find root of project" } }, false, {})
+    end
+end)
+
 ---------- ABBREVIATIONS ----------
 
 vim.cmd.cnoreabbrev({ '!!', '<C-r>:' }) -- Repeat last command

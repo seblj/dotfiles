@@ -43,29 +43,31 @@ local function gitmoji(opts)
     for _, v in pairs(gitmojis) do
         table.insert(results, { emoji = v.emoji, code = v.code, desc = v.description })
     end
-    pickers.new(opts, {
-        prompt_title = 'Gitmoji',
-        finder = finders.new_table({
-            results = results,
-            entry_maker = gen_from_gitmoji(opts),
-        }),
-        sorter = conf.generic_sorter(opts),
-        -- attach_mappings = function()
-        --     actions.select_default:replace(function(prompt_bufnr)
-        --         local selection = action_state.get_selected_entry()
-        --         if selection == nil then
-        --             utils.__warn_no_selection('actions.insert_value')
-        --             return
-        --         end
+    pickers
+        .new(opts, {
+            prompt_title = 'Gitmoji',
+            finder = finders.new_table({
+                results = results,
+                entry_maker = gen_from_gitmoji(opts),
+            }),
+            sorter = conf.generic_sorter(opts),
+            -- attach_mappings = function()
+            --     actions.select_default:replace(function(prompt_bufnr)
+            --         local selection = action_state.get_selected_entry()
+            --         if selection == nil then
+            --             utils.__warn_no_selection('actions.insert_value')
+            --             return
+            --         end
 
-        --         vim.schedule(function()
-        --             actions.close(prompt_bufnr)
-        --         end)
-        --         return selection.word
-        --     end)
-        --     return true
-        -- end,
-    }):find()
+            --         vim.schedule(function()
+            --             actions.close(prompt_bufnr)
+            --         end)
+            --         return selection.word
+            --     end)
+            --     return true
+            -- end,
+        })
+        :find()
 end
 
 gitmoji()
