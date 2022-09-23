@@ -165,7 +165,8 @@ local components = {
         buffer_type = {
             provider = function()
                 local ft = vim.bo.filetype:upper()
-                local fname = vim.fn.expand('%:t')
+                local bufname = vim.api.nvim_buf_get_name(0)
+                local fname = vim.fn.fnamemodify(bufname, ':t')
                 local readonly, modified = '', ''
                 if vim.bo.readonly then
                     readonly = ' '
@@ -335,16 +336,42 @@ for _, val in pairs(winbar) do
     end
 end
 
+local blocked_fts = {
+    'term',
+    'startify',
+    'NvimTree',
+    'packer',
+    'startuptime',
+}
+
 feline.winbar.setup({
     theme = { bg = '#1c1c1c' },
     components = { active = winbar, inactive = winbar },
     disable = {
-        filetypes = {
-            'term',
-            'startify',
-            'NvimTree',
-            'packer',
-            'startuptime',
-        },
+        filetypes = blocked_fts,
     },
+})
+
+-- Hack to not enable winbar on all buffers
+local winbar_group = vim.api.nvim_create_augroup('AttachWinbar', { clear = true })
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'TabNew', 'TabEnter', 'BufEnter', 'WinClosed' }, {
+    group = winbar_group,
+    desc = 'Winbar only on some buffers',
+    callback = function()
+        vim.o.winbar = ''
+        for _, w in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf, win = vim.bo[vim.api.nvim_win_get_buf(w)], vim.wo[w]
+            if
+                not vim.tbl_contains(blocked_fts, buf.filetype)
+                and vim.fn.win_gettype(vim.api.nvim_win_get_number(w)) == ''
+                and buf.buftype == ''
+                and buf.filetype ~= ''
+                and not win.diff
+            then
+                win.winbar = "%{%v:lua.require'feline'.generate_winbar()%}"
+            elseif win.diff then
+                win.winbar = nil
+            end
+        end
+    end,
 })
