@@ -30,41 +30,29 @@ M.reload_config = function()
     vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
--- buf can be one of
--- 'vertical'
--- 'horizontal'
--- 'tab'
--- Otherwise it will override current buffer with term
-M.run_term = function(buf, focus, command, ...)
+-- buf should be one of
+-- 'split'
+-- 'vsplit'
+-- 'tabnew'
+M.run_term = function(direction, focus, command, ...)
+    local terminal = vim.fn.filter(vim.fn.getwininfo(), 'v:val.terminal')[1]
     local current_win = vim.api.nvim_get_current_win()
-    local terminal_exists = false
-    for _, winid in ipairs(vim.api.nvim_list_wins()) do
-        if vim.w[winid].terminal_execute then
-            vim.api.nvim_set_current_win(winid)
-            terminal_exists = true
-        end
-    end
-    if not terminal_exists then
-        if buf == 'vertical' then
-            vim.cmd.vsplit()
-        elseif buf == 'horizontal' then
-            local height = vim.api.nvim_win_get_height(0)
-            vim.cmd.split()
+    if not terminal then
+        local height = vim.api.nvim_win_get_height(0)
+        vim.cmd[direction]()
+        if direction == 'split' then
             vim.api.nvim_win_set_height(0, math.floor(height / 3))
-        elseif buf == 'tab' then
-            vim.cmd.tabnew()
         end
         vim.cmd.term()
+        vim.cmd('$')
+        terminal = vim.fn.filter(vim.fn.getwininfo(), 'v:val.terminal')[1]
+        if not focus then
+            vim.api.nvim_set_current_win(current_win)
+        end
     end
-    vim.w.terminal_execute = true
-    local run_command = vim.b.run ~= nil and vim.b.run .. '\n' or string.format(command .. '\n', ...)
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, run_command)
-    vim.cmd('$')
+    vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(command .. '\n', ...))
     keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
     vim.cmd.stopinsert()
-    if not focus then
-        vim.api.nvim_set_current_win(current_win)
-    end
 end
 
 M.get_zsh_completion = function(command)
@@ -72,7 +60,7 @@ M.get_zsh_completion = function(command)
     Job:new({
         command = 'capture',
         args = { command },
-        on_exit = function(j, _)
+        on_exit = function(j)
             res = j:result()
         end,
     }):sync()
@@ -154,7 +142,7 @@ M.save_and_exec = function()
         command = command:gsub('$file', file)
         command = command:gsub('$output', output)
         command = command:gsub('$dir', dir)
-        M.run_term(false, command)
+        M.run_term('split', false, command)
     end
 end
 

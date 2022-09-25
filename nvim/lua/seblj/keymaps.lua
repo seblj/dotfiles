@@ -81,7 +81,7 @@ local visual_macro = [[:<C-u>:echo "@".getcmdline()<CR>:execute ":'<,'>normal @"
 keymap('x', '@', visual_macro, { desc = 'Macro over visual range' })
 
 keymap('n', '<Down>', function()
-    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
+    if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) then
         vim.cmd.normal('j')
     else
         vim.cmd.cnext({ mods = { emsg_silent = true } })
@@ -89,7 +89,7 @@ keymap('n', '<Down>', function()
 end, { desc = 'Move down in qflist' })
 
 keymap('n', '<Up>', function()
-    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
+    if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) then
         vim.cmd.normal('k')
     else
         vim.cmd.cprev({ mods = { emsg_silent = true } })
@@ -181,7 +181,7 @@ vim.cmd.cnoreabbrev({ 'Term', 'term' })
 -- Open term in splits
 local opts = { nargs = '*', bang = true }
 
-local create_command = function(direction, key, focus)
+local create_command = function(direction, focus, key)
     local completion = function(_, cmdline, _)
         local file = vim.api.nvim_buf_get_name(0)
         local dir = vim.fn.fnamemodify(file, ':p:h')
@@ -194,6 +194,6 @@ local create_command = function(direction, key, focus)
         utils.run_term(direction, focus, x.args)
     end, opts)
 end
-create_command('horizontal', 'T', true)
-create_command('vertical', 'VT', true)
-create_command('tab', 'TT', true)
+create_command('split', true, 'T')
+create_command('vsplit', true, 'VT')
+create_command('tabnew', true, 'TT')
