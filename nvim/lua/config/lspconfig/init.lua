@@ -83,5 +83,6 @@ local setup_servers = function()
 end
 
 setup_servers()
+require('lspconfig.ui.windows').default_options.border = CUSTOM_BORDER
 
 return M

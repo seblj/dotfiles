@@ -76,7 +76,7 @@ local plugins = function(local_use, use, setup, conf)
 
     use({ 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } })
     use({ 'tamago324/lir.nvim', config = conf('lir') })
-    use({ 'NvChad/nvim-colorizer.lua', config = setup('colorizer') })
+    use({ 'NvChad/nvim-colorizer.lua', config = setup('colorizer', { user_default_options = { names = false } }) })
     use({ 'mhinz/vim-startify', config = conf('startify') })
     use({ 'feline-nvim/feline.nvim', config = conf('feline') })
     use({ 'windwp/nvim-autopairs', config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }) })

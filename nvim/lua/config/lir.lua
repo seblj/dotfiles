@@ -103,5 +103,7 @@ lir.setup({
         keymap('n', 'N', new_file, { buffer = true, desc = 'Lir: Create new file' })
         keymap('n', 'M', new_directory, { buffer = true, desc = 'Lir: Create new directory' })
         keymap('n', 'r', rename, { buffer = true, desc = 'Lir: Rename' })
+
+        require('seblj.utils').setup_hidden_cursor()
     end,
 })

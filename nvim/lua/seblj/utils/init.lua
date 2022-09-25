@@ -55,6 +55,26 @@ local run_term_split = function(...)
     vim.api.nvim_set_current_win(current_win)
 end
 
+vim.api.nvim_create_user_command('RunOnSave', function(opts)
+    autocmd('BufWritePost', {
+        group = augroup('RunOnSave', { clear = true }),
+        pattern = '<buffer>',
+        callback = function()
+            vim.schedule(function()
+                local file = vim.api.nvim_buf_get_name(0)
+                local dir = vim.fn.fnamemodify(file, ':p:h')
+                vim.cmd.lcd(dir)
+                run_term_split(opts.args)
+            end)
+        end,
+        desc = 'Run command on save in terminal buffer',
+    })
+end, { nargs = '*', bang = true })
+
+vim.api.nvim_create_user_command('RunOnSaveClear', function()
+    vim.api.nvim_clear_autocmds({ group = 'RunOnSave' })
+end, { bang = true })
+
 local runner = {
     python = 'python3 $file',
     c = 'gcc $file -o $output && ./$output; rm $output',

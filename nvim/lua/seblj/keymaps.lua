@@ -88,7 +88,6 @@ keymap('n', '<Down>', function()
     end
 end, { desc = 'Move down in qflist' })
 
--- stylua: ignore start
 keymap('n', '<Up>', function()
     if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
         vim.cmd.normal('k')
@@ -98,7 +97,6 @@ keymap('n', '<Up>', function()
 end, { desc = 'Move up in qflist' })
 
 keymap('n', '<leader>z', '<cmd>TSHighlightCapturesUnderCursor<CR>', { desc = 'Print syntax under cursor' })
--- stylua: ignore end
 
 keymap('n', '<leader>@', '<cmd>lcd %:p:h<CR><cmd>pwd<CR>', { desc = 'cd to directory of open buffer' })
 

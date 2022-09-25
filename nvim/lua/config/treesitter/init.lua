@@ -98,6 +98,7 @@ require('nvim-treesitter.configs').setup({
             rsx = '// %s',
             teal = '-- %s',
             http = '# %s',
+            bash = '# %s',
         },
         custom_calculation = function(node, language_tree)
             local language_commentstrings = {

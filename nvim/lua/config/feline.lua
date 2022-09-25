@@ -354,7 +354,7 @@ feline.winbar.setup({
 
 -- Hack to not enable winbar on all buffers
 local winbar_group = vim.api.nvim_create_augroup('AttachWinbar', { clear = true })
-vim.api.nvim_create_autocmd({ 'BufWinEnter', 'TabNew', 'TabEnter', 'BufEnter', 'WinClosed' }, {
+vim.api.nvim_create_autocmd({ 'BufWinEnter', 'TabNew', 'TabEnter', 'BufEnter', 'WinClosed', 'BufWritePost' }, {
     group = winbar_group,
     desc = 'Winbar only on some buffers',
     callback = function()
