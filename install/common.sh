@@ -14,6 +14,7 @@ mkdir -p $HOME/.config
 mkdir -p $HOME/.local/bin
 
 ln -sf $HOME/dotfiles/scripts/replace_icons.sh $HOME/.local/bin/icons
+ln -sf $HOME/dotfiles/scripts/capture $HOME/.local/bin/capture
 
 symlink_files_in_dir home
 symlink_files_in_dir git

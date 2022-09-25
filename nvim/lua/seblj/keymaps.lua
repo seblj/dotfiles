@@ -181,6 +181,19 @@ vim.cmd.cnoreabbrev({ 'Term', 'term' })
 -- Open term in splits
 local opts = { nargs = '*', bang = true }
 
-command('T', vim.api.nvim_win_get_height(0) / 3 .. 'split | term <args>', opts)
-command('VT', 'vsplit | term <args>', opts)
-command('TT', 'tabedit | term <args>', opts)
+local create_command = function(direction, key, focus)
+    local completion = function(_, cmdline, _)
+        local file = vim.api.nvim_buf_get_name(0)
+        local dir = vim.fn.fnamemodify(file, ':p:h')
+        vim.cmd.lcd(dir)
+        local run_command = vim.split(cmdline, key .. ' ')[2]
+        return utils.get_zsh_completion(run_command)
+    end
+    opts['complete'] = completion
+    command(key, function(x)
+        utils.run_term(direction, focus, x.args)
+    end, opts)
+end
+create_command('horizontal', 'T', true)
+create_command('vertical', 'VT', true)
+create_command('tab', 'TT', true)

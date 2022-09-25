@@ -3,6 +3,7 @@
 local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+local Job = require('plenary.job')
 
 local M = {}
 
@@ -29,16 +30,12 @@ M.reload_config = function()
     vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
-M.run_term = function(command, ...)
-    vim.cmd.term()
-    local run_command = vim.b.run ~= nil and vim.b.run .. '\n' or string.format(command .. '\n', ...)
-    vim.api.nvim_chan_send(vim.b.terminal_job_id, run_command)
-
-    keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
-    vim.cmd.stopinsert()
-end
-
-local run_term_split = function(...)
+-- buf can be one of
+-- 'vertical'
+-- 'horizontal'
+-- 'tab'
+-- Otherwise it will override current buffer with term
+M.run_term = function(buf, focus, command, ...)
     local current_win = vim.api.nvim_get_current_win()
     local terminal_exists = false
     for _, winid in ipairs(vim.api.nvim_list_wins()) do
@@ -48,11 +45,42 @@ local run_term_split = function(...)
         end
     end
     if not terminal_exists then
-        vim.cmd.sp()
+        if buf == 'vertical' then
+            vim.cmd.vsplit()
+        elseif buf == 'horizontal' then
+            local height = vim.api.nvim_win_get_height(0)
+            vim.cmd.split()
+            vim.api.nvim_win_set_height(0, math.floor(height / 3))
+        elseif buf == 'tab' then
+            vim.cmd.tabnew()
+        end
+        vim.cmd.term()
     end
     vim.w.terminal_execute = true
-    M.run_term(...)
-    vim.api.nvim_set_current_win(current_win)
+    local run_command = vim.b.run ~= nil and vim.b.run .. '\n' or string.format(command .. '\n', ...)
+    vim.api.nvim_chan_send(vim.b.terminal_job_id, run_command)
+    vim.cmd('$')
+    keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
+    vim.cmd.stopinsert()
+    if not focus then
+        vim.api.nvim_set_current_win(current_win)
+    end
+end
+
+M.get_zsh_completion = function(command)
+    local res
+    Job:new({
+        command = 'capture',
+        args = { command },
+        on_exit = function(j, _)
+            res = j:result()
+        end,
+    }):sync()
+
+    for k, v in ipairs(res) do
+        res[k] = vim.fn.split(v, ' -- ')[1]
+    end
+    return res
 end
 
 vim.api.nvim_create_user_command('RunOnSave', function(opts)
@@ -61,15 +89,22 @@ vim.api.nvim_create_user_command('RunOnSave', function(opts)
         pattern = '<buffer>',
         callback = function()
             vim.schedule(function()
-                local file = vim.api.nvim_buf_get_name(0)
-                local dir = vim.fn.fnamemodify(file, ':p:h')
-                vim.cmd.lcd(dir)
-                run_term_split(opts.args)
+                M.run_term('horizontal', false, opts.args)
             end)
         end,
         desc = 'Run command on save in terminal buffer',
     })
-end, { nargs = '*', bang = true })
+end, {
+    nargs = '*',
+    bang = true,
+    complete = function(_, cmdline, _)
+        local file = vim.api.nvim_buf_get_name(0)
+        local dir = vim.fn.fnamemodify(file, ':p:h')
+        vim.cmd.lcd(dir)
+        local command = vim.split(cmdline, 'RunOnSave ')[2]
+        return M.get_zsh_completion(command)
+    end,
+})
 
 vim.api.nvim_create_user_command('RunOnSaveClear', function()
     vim.api.nvim_clear_autocmds({ group = 'RunOnSave' })
@@ -119,7 +154,7 @@ M.save_and_exec = function()
         command = command:gsub('$file', file)
         command = command:gsub('$output', output)
         command = command:gsub('$dir', dir)
-        run_term_split(command)
+        M.run_term(false, command)
     end
 end
 
