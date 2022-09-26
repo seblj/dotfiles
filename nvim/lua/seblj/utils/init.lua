@@ -34,7 +34,7 @@ end
 -- 'split'
 -- 'vsplit'
 -- 'tabnew'
-M.run_term = function(direction, focus, command, ...)
+M.run_term = function(direction, focus, stopinsert, command, ...)
     local terminal = vim.fn.filter(vim.fn.getwininfo(), 'v:val.terminal')[1]
     local current_win = vim.api.nvim_get_current_win()
     if not terminal then
@@ -52,7 +52,9 @@ M.run_term = function(direction, focus, command, ...)
     end
     vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(command .. '\n', ...))
     keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
-    vim.cmd.stopinsert()
+    if stopinsert then
+        vim.cmd.stopinsert()
+    end
 end
 
 M.get_zsh_completion = function(command)
@@ -77,7 +79,7 @@ vim.api.nvim_create_user_command('RunOnSave', function(opts)
         pattern = '<buffer>',
         callback = function()
             vim.schedule(function()
-                M.run_term('split', false, opts.args)
+                M.run_term('split', false, true, opts.args)
             end)
         end,
         desc = 'Run command on save in terminal buffer',
@@ -142,7 +144,7 @@ M.save_and_exec = function()
         command = command:gsub('$file', file)
         command = command:gsub('$output', output)
         command = command:gsub('$dir', dir)
-        M.run_term('split', false, command)
+        M.run_term('split', false, true, command)
     end
 end
 

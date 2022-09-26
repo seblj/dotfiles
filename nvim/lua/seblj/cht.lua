@@ -31,7 +31,7 @@ local run_cht = function(query)
     end
 
     vim.cmd.tabnew()
-    run_term('curl cht.sh/' .. selected .. '/' .. query)
+    run_term('split', false, true, 'curl cht.sh/' .. selected .. '/' .. query)
 end
 
 local function confirm(prompt_bufnr)
@@ -43,18 +43,20 @@ end
 
 M.telescope_cht = function()
     local opts = require('telescope.themes').get_cursor()
-    require('telescope.pickers').new(opts, {
-        prompt_title = 'Cheat sheet',
-        finder = require('telescope.finders').new_table({
-            results = vim.tbl_values(total),
-        }),
-        sorter = require('telescope.config').values.generic_sorter(opts),
-        attach_mappings = function(_, map)
-            map('i', '<CR>', confirm)
-            map('n', '<CR>', confirm)
-            return true
-        end,
-    }):find()
+    require('telescope.pickers')
+        .new(opts, {
+            prompt_title = 'Cheat sheet',
+            finder = require('telescope.finders').new_table({
+                results = vim.tbl_values(total),
+            }),
+            sorter = require('telescope.config').values.generic_sorter(opts),
+            attach_mappings = function(_, map)
+                map('i', '<CR>', confirm)
+                map('n', '<CR>', confirm)
+                return true
+            end,
+        })
+        :find()
 end
 
 return M

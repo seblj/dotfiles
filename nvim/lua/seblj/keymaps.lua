@@ -181,7 +181,7 @@ vim.cmd.cnoreabbrev({ 'Term', 'term' })
 -- Open term in splits
 local opts = { nargs = '*', bang = true }
 
-local create_command = function(direction, focus, key)
+local create_command = function(direction, focus, stopinsert, key)
     local completion = function(_, cmdline, _)
         local file = vim.api.nvim_buf_get_name(0)
         local dir = vim.fn.fnamemodify(file, ':p:h')
@@ -191,9 +191,9 @@ local create_command = function(direction, focus, key)
     end
     opts['complete'] = completion
     command(key, function(x)
-        utils.run_term(direction, focus, x.args)
+        utils.run_term(direction, focus, stopinsert, x.args)
     end, opts)
 end
-create_command('split', true, 'T')
-create_command('vsplit', true, 'VT')
-create_command('tabnew', true, 'TT')
+create_command('split', true, false, 'T')
+create_command('vsplit', true, false, 'VT')
+create_command('tabnew', true, false, 'TT')
