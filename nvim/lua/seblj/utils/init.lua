@@ -77,7 +77,7 @@ vim.api.nvim_create_user_command('RunOnSave', function(opts)
         pattern = '<buffer>',
         callback = function()
             vim.schedule(function()
-                M.run_term('horizontal', false, opts.args)
+                M.run_term('split', false, opts.args)
             end)
         end,
         desc = 'Run command on save in terminal buffer',
