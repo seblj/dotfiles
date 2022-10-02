@@ -29,10 +29,7 @@ cmp.setup({
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = false,
-        }),
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
     }),
 
     preselect = cmp.PreselectMode.None,
