@@ -9,6 +9,8 @@ SPACESHIP_PROMPT_ORDER=(
   char
   dir
   git
+  exec_time
+  rust
   node
   docker
   venv
