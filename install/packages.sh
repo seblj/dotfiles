@@ -22,6 +22,32 @@ install_packages(){
     done
 }
 
+install_packages_mac(){
+    packages=(
+        fd
+    )
+
+    for package in "${packages[@]}"; do
+        if ! installed $package; then
+            printf "\n${BLUE}Installing $package ${NC}\n\n"
+            $INSTALL $package > /dev/null
+        fi
+    done
+}
+
+install_packages_linux(){
+    packages=(
+        fd-find
+    )
+
+    for package in "${packages[@]}"; do
+        if ! installed $package; then
+            printf "\n${BLUE}Installing $package ${NC}\n\n"
+            $INSTALL $package > /dev/null
+        fi
+    done
+}
+
 install_fzf() {
     printf "\n${BLUE}Installing fzf ${NC}\n\n"
     git clone --quiet https://github.com/junegunn/fzf.git $HOME/.fzf
@@ -31,6 +57,13 @@ install_fzf() {
 source $HOME/dotfiles/install/utils.sh
 
 install_packages
+
+if [[ $OS == 'Linux' ]]; then
+    install_packages_linux
+else
+    install_packages_mac
+fi
+
 install_fzf
 
 # Rust

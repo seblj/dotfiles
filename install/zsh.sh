@@ -29,12 +29,6 @@ setup_zsh(){
     ln -sf $HOME/dotfiles/zsh ~/.config/
 }
 
-install_zsh_async(){
-    printf "\n${BLUE}Setting up async prompt ${NC}\n\n"
-    cd $HOME/dotfiles/zsh/prompt
-    git submodule update --init > /dev/null
-}
-
 install_zsh() {
     printf "\n${BLUE}Installing zsh ${NC}\n\n"
     $INSTALL zsh > /dev/null
@@ -51,7 +45,6 @@ install_oh_my_zsh_plugins() {
 }
 
 install_zsh
-install_zsh_async
 install_oh_my_zsh
 install_spaceship
 install_oh_my_zsh_plugins
