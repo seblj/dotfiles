@@ -3,7 +3,6 @@
 local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local Job = require('plenary.job')
 
 local M = {}
 
@@ -58,6 +57,10 @@ M.run_term = function(direction, focus, stopinsert, command, ...)
 end
 
 M.get_zsh_completion = function(command)
+    local ok, Job = pcall(require, 'plenary.job')
+    if not ok then
+        return {}
+    end
     local res
     Job:new({
         command = 'capture',
