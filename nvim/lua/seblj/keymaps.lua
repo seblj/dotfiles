@@ -177,6 +177,7 @@ vim.cmd.cnoreabbrev({ 'TERM', 'term' })
 vim.cmd.cnoreabbrev({ 'TERm', 'term' })
 vim.cmd.cnoreabbrev({ 'TErm', 'term' })
 vim.cmd.cnoreabbrev({ 'Term', 'term' })
+vim.cmd.cnoreabbrev({ 'make', 'Make' })
 
 -- Open term in splits
 local opts = { nargs = '*', bang = true }
@@ -197,3 +198,9 @@ end
 create_command('split', true, false, 'T')
 create_command('vsplit', true, false, 'VT')
 create_command('tabnew', true, false, 'TT')
+command('Make', function(x)
+    vim.cmd.make({ args = { x.args }, bang = true, mods = { silent = true } })
+    vim.cmd.copen()
+end, {
+    nargs = '*',
+})

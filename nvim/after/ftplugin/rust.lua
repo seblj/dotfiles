@@ -1,55 +1,29 @@
--- Attempt to automatically reload workspace when Cargo.toml is changed
--- local w = vim.loop.new_fs_event()
-
--- local function on_change(_, _, status, path)
---     if status.rename then
---         w:stop()
---         FileWatcher(path)
---         return
---     end
---     local bufnrs = vim.tbl_filter(function(b)
---         if 1 ~= vim.fn.buflisted(b) then
---             return false
---         end
---         return true
---     end, vim.api.nvim_list_bufs())
-
---     for _, bufnr in pairs(bufnrs) do
---         if vim.fn.bufname(bufnr):match('%.rs') then
---             bufnr = require('lspconfig.util').validate_bufnr(bufnr)
---             vim.lsp.buf_request(bufnr, 'rust-analyzer/reloadWorkspace', nil, function(e)
---                 if e then
---                     error(tostring(e))
---                 end
---                 vim.notify('Cargo workspace reloaded')
---             end)
---             w:stop()
---             FileWatcher(path)
---             return
---         end
---     end
---     w:stop()
---     FileWatcher(path)
--- end
-
--- function FileWatcher(filepath)
---     local file
---     if filepath then
---         file = filepath
---     else
---         file = vim.fn.findfile('Cargo.toml', '.;')
---         if file == '' then
---             return
---         end
---         file = vim.fn.fnamemodify(file, ':p')
---     end
---     w:start(
---         file,
---         {},
---         vim.schedule_wrap(function(err, fname, status)
---             on_change(err, fname, status, file)
---         end)
---     )
--- end
-
--- FileWatcher()
+vim.api.nvim_create_user_command('Cargo', function(x)
+    vim.cmd.compiler('cargo')
+    local file = vim.api.nvim_buf_get_name(0)
+    local dir = vim.fn.fnamemodify(file, ':p:h')
+    local root_file = vim.fs.find({ 'Cargo.toml' }, { path = dir, upward = true })[1]
+    local root_dir = vim.fn.fnamemodify(root_file, ':p:h')
+    vim.cmd.lcd(root_dir)
+    vim.cmd.make({ args = { x.args }, bang = true, mods = { silent = true } })
+    local errors, warnings = 0, 0
+    for _, val in pairs(vim.fn.getqflist()) do
+        if val.type == 'E' then
+            errors = errors + 1
+        elseif val.type == 'W' and not string.match(val.text, 'generated %d warnings') then
+            warnings = warnings + 1
+        end
+    end
+    -- Shuts up hit enter to continue prompt
+    vim.cmd.redraw()
+    vim.api.nvim_echo({ { string.format('E: %s | W: %s', errors, warnings) } }, false, {})
+    if warnings ~= 0 and errors ~= 0 then
+        vim.cmd.copen()
+        vim.bo.filetype = 'rust-qf'
+    end
+end, {
+    nargs = '*',
+    complete = function()
+        return { 'clippy', 'build', 'check' }
+    end,
+})
