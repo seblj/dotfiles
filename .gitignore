@@ -6,3 +6,4 @@ vimspector-config
 .zsh_history
 .zcompdump*
 .zsh_sessions
+zsh/spaceship-prompt

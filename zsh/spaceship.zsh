@@ -1,8 +1,5 @@
 # Spaceship theme for zsh
 
-# Source async repo
-source $ZDOTDIR/prompt/zsh-async/async.zsh
-
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
 prompt spaceship
@@ -11,12 +8,15 @@ SPACESHIP_PROMPT_ORDER=(
   host
   char
   dir
-  git_branch
-  git_status
+  git
   node
   docker
   venv
 )
+
+SPACESHIP_USER_SHOW=always
+SPACESHIP_DIR_PREFIX=""
+SPACESHIP_GIT_PREFIX="→ "
 
 # VENV
 SPACESHIP_VENV_GENERIC_NAMES=''

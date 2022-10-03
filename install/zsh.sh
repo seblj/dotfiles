@@ -17,8 +17,9 @@ install_oh_my_zsh(){
 # Install spaceship prompt for oh_my_zsh
 install_spaceship(){
     printf "\n${BLUE}Configuring prompt ${NC}\n\n"
+    git clone https://github.com/spaceship-prompt/spaceship-prompt.git $HOME/dotfiles/zsh/spaceship-prompt
     mkdir -p /usr/local/share/zsh/site-functions
-    sudo ln -sf $HOME/dotfiles/zsh/prompt/spaceship.zsh /usr/local/share/zsh/site-functions/prompt_spaceship_setup
+    sudo ln -sf $HOME/dotfiles/zsh/spaceship-prompt/spaceship.zsh /usr/local/share/zsh/site-functions/prompt_spaceship_setup
 }
 
 setup_zsh(){
