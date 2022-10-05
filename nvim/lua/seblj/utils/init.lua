@@ -122,12 +122,12 @@ local runner = {
 
 -- Save and execute file based on filetype
 M.save_and_exec = function()
-    vim.api.nvim_echo({ { 'Executing file\n' } }, false, {})
     local ft = vim.bo.filetype
     local file = vim.api.nvim_buf_get_name(0)
     local dir = vim.fn.fnamemodify(file, ':p:h')
     local output = vim.fn.fnamemodify(file, ':t:r')
     vim.cmd.write({ mods = { emsg_silent = true } })
+    vim.api.nvim_echo({ { 'Executing file' } }, false, {})
     if ft == 'vim' or ft == 'lua' then
         vim.cmd.source('%')
     elseif ft == 'http' then
