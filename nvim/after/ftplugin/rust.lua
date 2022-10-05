@@ -17,7 +17,7 @@ vim.api.nvim_create_user_command('Cargo', function(x)
     -- Shuts up hit enter to continue prompt
     vim.cmd.redraw()
     vim.api.nvim_echo({ { string.format('E: %s | W: %s', errors, warnings) } }, false, {})
-    if warnings ~= 0 and errors ~= 0 then
+    if warnings ~= 0 or errors ~= 0 then
         vim.cmd.copen()
         vim.bo.filetype = 'rust-qf'
     end
