@@ -30,8 +30,12 @@ local run_cht = function(query)
         query = table.concat(input, '~')
     end
 
-    vim.cmd.tabnew()
-    run_term('split', false, true, 'curl cht.sh/' .. selected .. '/' .. query)
+    run_term({
+        direction = 'tabnew',
+        focus = true,
+        stopinsert = true,
+        cmd = string.format('curl cht.sh/%s/%s', selected, query),
+    })
 end
 
 local function confirm(prompt_bufnr)

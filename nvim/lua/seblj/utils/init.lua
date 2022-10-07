@@ -29,29 +29,29 @@ M.reload_config = function()
     vim.api.nvim_echo({ { 'Reloaded config' } }, false, {}) -- Don't add to message history
 end
 
--- buf should be one of
+-- direction should be one of
 -- 'split'
 -- 'vsplit'
 -- 'tabnew'
-M.run_term = function(direction, focus, stopinsert, command, ...)
+M.run_term = function(opts, ...)
     local terminal = vim.fn.filter(vim.fn.getwininfo(), 'v:val.terminal')[1]
     local current_win = vim.api.nvim_get_current_win()
-    if not terminal then
+    if not terminal or opts.new then
         local height = vim.api.nvim_win_get_height(0)
-        vim.cmd[direction]()
-        if direction == 'split' then
+        vim.cmd[opts.direction]()
+        if opts.direction == 'split' then
             vim.api.nvim_win_set_height(0, math.floor(height / 3))
         end
         vim.cmd.term()
         vim.cmd('$')
         terminal = vim.fn.filter(vim.fn.getwininfo(), 'v:val.terminal')[1]
-        if not focus then
+        if not opts.focus then
             vim.api.nvim_set_current_win(current_win)
         end
     end
-    vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(command .. '\n', ...))
+    vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. '\n', ...))
     keymap('n', 'q', '<cmd>q<CR>', { buffer = true })
-    if stopinsert then
+    if opts.stopinsert then
         vim.cmd.stopinsert()
     end
 end
@@ -82,7 +82,7 @@ vim.api.nvim_create_user_command('RunOnSave', function(opts)
         pattern = '<buffer>',
         callback = function()
             vim.schedule(function()
-                M.run_term('split', false, true, opts.args)
+                M.run_term({ direction = 'split', focus = false, stopinsert = true, cmd = opts.args })
             end)
         end,
         desc = 'Run command on save in terminal buffer',
@@ -147,7 +147,7 @@ M.save_and_exec = function()
         command = command:gsub('$file', file)
         command = command:gsub('$output', output)
         command = command:gsub('$dir', dir)
-        M.run_term('split', false, true, command)
+        M.run_term({ direction = 'split', focus = false, stopinsert = true, cmd = command })
     end
 end
 

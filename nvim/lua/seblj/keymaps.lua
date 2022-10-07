@@ -192,7 +192,7 @@ local create_command = function(direction, focus, stopinsert, key)
     end
     opts['complete'] = completion
     command(key, function(x)
-        utils.run_term(direction, focus, stopinsert, x.args)
+        utils.run_term({ direction = direction, focus = focus, stopinsert = stopinsert, cmd = x.args, new = true })
     end, opts)
 end
 create_command('split', true, false, 'T')
