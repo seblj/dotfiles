@@ -9,19 +9,20 @@ local mappings = function()
     local keymap = function(mode, l, r, opts)
         opts = opts or {}
         opts.buffer = true
+        opts.desc = string.format('Lsp: %s', opts.desc)
         vim.keymap.set(mode, l, r, opts)
     end
 
-    keymap('n', 'gr', vim.lsp.buf.references, { desc = 'Lsp: References' })
-    keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Lsp: Definitions' })
-    keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Lsp: Signature help' })
-    keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Lsp: Hover' })
-    keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Lsp: Rename' })
-    keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Lsp: Code action' })
-    keymap('n', 'gp', vim.diagnostic.goto_prev, { desc = 'Lsp: Previous diagnostic' })
-    keymap('n', 'gn', vim.diagnostic.goto_next, { desc = 'Lsp: Next diagnostic' })
-    keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Lsp: Line diagnostic' })
-    keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Lsp: Diagnostics in qflist' })
+    keymap('n', 'gr', vim.lsp.buf.references, { desc = 'References' })
+    keymap('n', 'gd', vim.lsp.buf.definition, { desc = 'Definitions' })
+    keymap({ 'n', 'i' }, '<C-s>', vim.lsp.buf.signature_help, { desc = 'Signature help' })
+    keymap('n', 'gh', vim.lsp.buf.hover, { desc = 'Hover' })
+    keymap('n', 'gR', vim.lsp.buf.rename, { desc = 'Rename' })
+    keymap('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code action' })
+    keymap('n', 'gp', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+    keymap('n', 'gn', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+    keymap('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line diagnostic' })
+    keymap('n', '<leader>dw', vim.diagnostic.setqflist, { desc = 'Diagnostics in qflist' })
 end
 
 ---------- SIGNS ----------
