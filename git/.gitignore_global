@@ -34,3 +34,18 @@ vim-markdown-preview.html
 *.passwd
 *.dSYM
 _minted-report
+
+
+# Latex files #
+######################
+*.aux
+*.acn
+*.acr
+*.aux
+*.fdb_latexmk
+*.fls
+*.glo
+*.ist
+*.out
+*.synctex.gz
+*.toc

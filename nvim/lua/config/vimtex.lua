@@ -14,7 +14,7 @@ autocmd('User', {
     group = group,
     pattern = 'VimtexEventQuit',
     callback = function()
-        vim.fn['vimtex#compiler#clean'](0)
+        vim.cmd.VimtexClean()
     end,
     desc = 'Clean up latex files',
 })

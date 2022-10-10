@@ -2,6 +2,7 @@ $pdflatex = 'pdflatex -synctex=1 -interaction=nonstopmode --shell-escape %O %S';
 
 $bibtex_use = 2;
 push @generated_exts, "cb";
+push @generated_exts, "aux";
 push @generated_exts, "cb2";
 push @generated_exts, "spl";
 push @generated_exts, "nav";
