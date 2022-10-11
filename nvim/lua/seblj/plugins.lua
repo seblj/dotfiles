@@ -7,7 +7,7 @@ local group = augroup('CompilePacker', {})
 autocmd('BufWritePost', {
     group = group,
     pattern = 'plugins.lua',
-    command = 'PackerCompile',
+    command = 'source <afile> | PackerCompile',
 })
 
 local packer_bootstrap = utils.packer_bootstrap()
