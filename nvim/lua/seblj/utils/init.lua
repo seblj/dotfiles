@@ -77,25 +77,54 @@ M.get_zsh_completion = function(command)
 end
 
 vim.api.nvim_create_user_command('RunOnSave', function(opts)
+    local pattern = '<buffer>'
+    -- Try to find a root_dir to use that as pattern since I probably often want
+    -- to run the command on all the files in the project. If I get annoyed by
+    -- this, then just make a `RunOnSaveBuffer` or something to always use
+    -- buffer no matter what
+    local active_clients = vim.lsp.get_active_clients()
+    if #active_clients > 0 and active_clients[1].config and active_clients[1].config.root_dir then
+        local root_dir = active_clients[1].config.root_dir
+        if root_dir ~= vim.env.HOME then
+            pattern = string.format('%s/*', root_dir)
+        end
+    end
+    print(pattern)
     autocmd('BufWritePost', {
         group = augroup('RunOnSave', { clear = true }),
-        pattern = '<buffer>',
+        pattern = pattern,
         callback = function()
             vim.schedule(function()
-                M.run_term({ direction = 'split', focus = false, stopinsert = true, cmd = opts.args })
+                if opts.args:sub(1, 1) == '!' then
+                    M.run_term({ direction = 'split', focus = false, stopinsert = true, cmd = string.sub(opts.args, 2) })
+                else
+                    local this = vim.fn.winnr()
+                    vim.cmd(opts.args)
+                    vim.cmd.wincmd({ 'w', count = this })
+                end
             end)
         end,
-        desc = 'Run command on save in terminal buffer',
+        desc = 'Run command on save',
     })
 end, {
     nargs = '*',
     bang = true,
-    complete = function(_, cmdline, _)
-        local file = vim.api.nvim_buf_get_name(0)
-        local dir = vim.fn.fnamemodify(file, ':p:h')
-        vim.cmd.lcd(dir)
+    complete = function(arg_lead, cmdline, _)
         local command = vim.split(cmdline, 'RunOnSave ')[2]
-        return M.get_zsh_completion(command)
+        if command:sub(1, 1) == '!' then
+            local file = vim.api.nvim_buf_get_name(0)
+            local dir = vim.fn.fnamemodify(file, ':p:h')
+            vim.cmd.lcd(dir)
+            local completions = M.get_zsh_completion(string.sub(command, 2))
+            if arg_lead:sub(1, 1) == '!' then
+                for k in ipairs(completions) do
+                    completions[k] = string.format('!%s', completions[k])
+                end
+            end
+            return completions
+        else
+            return vim.fn.getcompletion(command, 'cmdline')
+        end
     end,
 })
 
