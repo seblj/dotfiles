@@ -44,7 +44,7 @@ autocmd('FileType', {
     desc = 'Set bufhidden to delete',
 })
 
-autocmd('BufEnter', {
+autocmd('FileType', {
     group = group,
     pattern = '*',
     callback = function()

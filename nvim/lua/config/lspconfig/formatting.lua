@@ -7,6 +7,7 @@ local format_languages = {
     'rust_analyzer',
     'jsonls',
     'omnisharp',
+    'texlab',
 }
 
 M.setup = function(client)

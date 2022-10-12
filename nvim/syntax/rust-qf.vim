@@ -4,7 +4,7 @@ endif
 
 syn region qfRegion	    start="\v^(\|)@!" end="\v^(\|)@!" contains=qfFileName,qfErrorRegion,qfWarningRegion
 syn region qfErrorRegion    start="error" end="\v^(\|)@!" contains=qfRustHintLines,qfRustHint,qfRustError,qfRustErrorLines,qfRustHintLinesTwo,qfRustErrorStripes,qfRustErrorStripe contained
-syn region qfWarningRegion  start="warning" end="\v^(\|)@!" contains=qfRustWarning contained
+syn region qfWarningRegion  start="warning" end="\v^(\|)@!" contains=qfRustWarning,qfRustWarningLines,qfRustWarningStripe,qfRustWarningStripes,qfRustWarningSlashes contained
 
 syn match	qfFileName         "^[^|]*" contained
 syn match	qfSeparator        "|" contained
@@ -15,11 +15,16 @@ syn match       qfRustHint         "\(\(||\s*|\s*|\)\@<=.*\)\&\(.*^\)\@!.*" cont
 syn match	qfRustHintLines    "-\{2,}" contained
 syn match	qfRustHintLinesTwo "-\{2,}\&\(.*^\)\@!.*" contained
 
-syn match	qfRustErrorLines   "_\{2,}" contained
 syn match	qfRustError        "\^.*" contained
+syn match	qfRustErrorLines   "_\{2,}" contained
 syn match	qfRustErrorStripes ".\(||.*|\s*|\)\@<=" contained
 syn match	qfRustErrorStripe  "\(||.*\.\.\.\s*\)\@<=.*" contained
+
 syn match	qfRustWarning      "\^.*" contained
+syn match	qfRustWarningLines   "_\{2,}" contained
+syn match	qfRustWarningStripes ".\(||.*|\s*|\)\@<=" contained
+syn match	qfRustWarningStripe  "\(||.*\.\.\.\s*\)\@<=.*" contained
+syn match	qfRustWarningSlashes  ".\(||.*|\s*\/\)\@<=" contained
 
 hi def link qfError		Error
 hi def link qfWarning		WarningMsg
@@ -28,6 +33,11 @@ hi def link qfRustError		qfError
 hi def link qfRustErrorLines	qfError
 hi def link qfRustErrorStripes	qfError
 hi def link qfRustErrorStripe	qfError
+
+hi def link qfRustWarningLines   qfWarning
+hi def link qfRustWarningStripes qfWarning
+hi def link qfRustWarningStripe  qfWarning
+hi def link qfRustWarningSlashes  qfWarning
 
 hi def link qfRustHintLines	Tag
 hi def link qfRustHintLinesTwo	qfRustHintLines
