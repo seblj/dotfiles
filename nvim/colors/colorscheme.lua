@@ -188,11 +188,6 @@ highlight({
     GitSignsAddLn = { bg = c.diff_green },
     GitSignsDeleteLn = { bg = c.diff_red },
 
-    ---------- HELP ----------
-
-    helpCommand = { fg = c.yellow },
-    helpExample = { fg = c.green },
-
     ---------- TELESCOPE ----------
 
     TelescopePromptPrefix = { fg = c.red },
