@@ -5,7 +5,7 @@ source $HOME/.config/zsh/exports.zsh
 # Remove % at end of print when not using \n
 PROMPT_EOL_MARK=""
 
-plugins=(git zsh-z tmux zsh-vi-mode)
+plugins=(git zsh-z tmux zsh-vi-mode docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.config/zsh/spaceship.zsh
