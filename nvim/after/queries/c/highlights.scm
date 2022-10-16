@@ -1,2 +1,2 @@
 ; extends
-(type_identifier) @custom_type
+(type_identifier) @type.custom

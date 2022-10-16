@@ -1,6 +1,6 @@
 ---------- LANGUAGE SERVERS ----------
 
-require('lua-dev').setup({
+require('neodev').setup({
     library = {
         plugins = false,
     },

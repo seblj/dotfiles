@@ -35,7 +35,7 @@ local plugins = function(local_use, use, setup, conf)
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
-    use({ 'folke/lua-dev.nvim' })
+    use({ 'folke/neodev.nvim' })
     use({ 'b0o/schemastore.nvim' })
     use({ 'j-hui/fidget.nvim', config = setup('fidget', { text = { spinner = 'dots' } }) })
     use({ 'williamboman/mason.nvim' })
