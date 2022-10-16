@@ -75,10 +75,9 @@ keymap({ 'n', 'v' }, 'K', '10gk')
 keymap({ 'n', 'v', 'o' }, 'H', '^', { desc = 'Move to beginning of line' })
 keymap({ 'n', 'v', 'o' }, 'L', '$', { desc = 'Move to end of line' })
 
-keymap('n', '<leader>x', utils.save_and_exec, { desc = 'Save and execute file' })
+keymap('x', '@', '":norm @" . getcharstr() . "<CR>"', { desc = 'Macro over visual range', expr = true })
 
-local visual_macro = [[:<C-u>:echo "@".getcmdline()<CR>:execute ":'<,'>normal @".nr2char(getchar())<CR>]]
-keymap('x', '@', visual_macro, { desc = 'Macro over visual range' })
+keymap('n', '<leader>x', utils.save_and_exec, { desc = 'Save and execute file' })
 
 keymap('n', '<Down>', function()
     if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) then
