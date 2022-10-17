@@ -30,7 +30,6 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'nvim-treesitter/playground' })
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
-    use({ 'JoosepAlviste/nvim-ts-context-commentstring' })
     use({ 'SmiteshP/nvim-gps' })
 
     -- LSP

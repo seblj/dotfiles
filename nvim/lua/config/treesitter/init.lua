@@ -9,6 +9,8 @@ local utils = require('seblj.utils')
 local ft_to_parser = treesitter_parsers.filetype_to_parsername
 ft_to_parser.zsh = 'bash'
 
+require('config.treesitter.commentstring')
+
 local indent = {
     'tsx',
     'typescript',
@@ -84,53 +86,6 @@ require('nvim-treesitter.configs').setup({
                 ['<leader>sF'] = '@function.outer',
             },
         },
-    },
-
-    -- Comments
-    context_commentstring = {
-        enable = true,
-        config = {
-            rust = '// %s',
-            c = '// %s',
-            c_sharp = '// %s',
-            python = '# %s',
-            rsx = '// %s',
-            teal = '-- %s',
-            http = '# %s',
-            bash = '# %s',
-        },
-        custom_calculation = function(node, language_tree)
-            local language_commentstrings = {
-                c = { '// %s', '/* %s */' },
-                c_sharp = { '// %s', '/* %s */' },
-                tsx = { '// %s', '{/* %s */}' },
-            }
-
-            local parse_line = function(commentstring)
-                local curr_line = vim.api.nvim_get_current_line()
-                local first_char = vim.fn.match(curr_line, '\\S')
-
-                local a = vim.split(commentstring, '%s', true)
-                local first = a[1]:gsub('%s+', '')
-                local second = a[2]:gsub('%s+', '')
-
-                local start = string.sub(curr_line, first_char, first_char + #first):gsub('%s+', '')
-                local last = string.sub(curr_line, 0 - #second, -1):gsub('%s+', '')
-
-                if first == start and (second == last or #second == 0) then
-                    return commentstring
-                end
-                return nil
-            end
-
-            local commentstrings = language_commentstrings[language_tree:lang()] or {}
-            for _, commentstring in pairs(commentstrings) do
-                local found = parse_line(commentstring)
-                if found then
-                    return found
-                end
-            end
-        end,
     },
 
     autotag = {
