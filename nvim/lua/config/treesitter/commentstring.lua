@@ -10,7 +10,7 @@ local config = {
     javascript = react,
 }
 
-local custom_calculation_config = {
+local uncomment_calculation_config = {
     c = { '// %s', '/* %s */' },
     c_sharp = { '// %s', '/* %s */' },
     tsx = { '// %s', '{/* %s */}' },
@@ -39,7 +39,7 @@ local uncomment_calculation = function(language)
         local curr_line = vim.api.nvim_get_current_line()
         local first_char = vim.fn.match(curr_line, '\\S')
 
-        local a = vim.split(commentstring, '%s', true)
+        local a = vim.split(commentstring, '%s', { plain = true })
         local first = a[1]:gsub('%s+', '')
         local second = a[2]:gsub('%s+', '')
 
@@ -52,7 +52,7 @@ local uncomment_calculation = function(language)
         return nil
     end
 
-    local commentstrings = custom_calculation_config[language] or {}
+    local commentstrings = uncomment_calculation_config[language] or {}
     for _, commentstring in pairs(commentstrings) do
         local found = parse_line(commentstring)
         if found then
@@ -106,7 +106,7 @@ local function calculate_commentstring()
     local root = parsers.get_parser()
     local lang = contains(root, { unpack(range) }):lang()
 
-    if custom_calculation_config[lang] then
+    if uncomment_calculation_config[lang] then
         local commentstring = uncomment_calculation(lang)
         if commentstring then
             return commentstring
@@ -138,5 +138,5 @@ end, { expr = true })
 
 vim.keymap.set('n', 'gcu', function()
     vim.bo.commentstring = calculate_commentstring()
-    return '<Plug>CommentaryUndo'
+    return '<Plug>Commentary<Plug>Commentary'
 end, { expr = true })
