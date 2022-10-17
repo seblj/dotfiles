@@ -133,7 +133,6 @@ highlight({
     ['@field'] = { fg = c.green },
     ['@function.builtin'] = { link = 'Function' },
     ['@function.macro'] = { link = 'Function' },
-    -- [ "@text.math" ] = { fg = c.yellow },
     ['@namespace'] = { fg = c.blue },
     ['@text.note'] = { fg = c.blue, bold = true },
     ['@parameter'] = { fg = c.fg },
@@ -146,6 +145,41 @@ highlight({
     ['@tag.delimiter'] = { fg = c.red },
     ['@variable.builtin'] = { fg = c.orange },
     ['@type.custom'] = { fg = c.purple },
+
+    -- Treesitter doesn't highlight these by default anymore, and neovim don't
+    -- have them upstream yet
+    ['@none'] = { default = true },
+    ['@punctuation.delimiter'] = { link = 'Delimiter', default = true },
+    ['@punctuation.bracket'] = { link = 'Delimiter', default = true },
+
+    ['@string.regex'] = { link = 'String', default = true },
+
+    ['@function.call'] = { link = '@function', default = true },
+    ['@method.call'] = { link = '@method', default = true },
+    ['@annotation'] = { link = 'PreProc', default = true },
+    ['@attribute'] = { link = 'PreProc', default = true },
+    ['@symbol'] = { link = 'Identifier', default = true },
+
+    ['@keyword.function'] = { link = 'Keyword', default = true },
+    ['@keyword.operator'] = { link = '@operator', default = true },
+    ['@keyword.return'] = { link = '@keyword', default = true },
+
+    ['@type.builtin'] = { link = 'Type', default = true },
+    ['@type.qualifier'] = { link = 'Type', default = true },
+
+    ['@text'] = { link = '@none', default = true },
+    ['@text.strong'] = { bold = true, default = true },
+    ['@text.emphasis'] = { italic = true, default = true },
+    ['@text.strike'] = { strikethrough = true },
+
+    ['@text.reference'] = { link = 'Constant', default = true },
+    ['@text.environment'] = { link = 'Macro', default = true },
+    ['@text.environment.name'] = { link = 'Type', default = true },
+    ['@text.title'] = { link = 'Title', default = true },
+    ['@text.literal'] = { link = 'String', default = true },
+    ['@text.uri'] = { link = 'Underlined', default = true },
+    ['@text.warning'] = { link = 'Todo', default = true },
+    ['@text.danger'] = { link = 'WarningMsg', default = true },
 
     ---------- LANGUGE SPECIFIC ----------
 
