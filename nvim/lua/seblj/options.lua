@@ -39,7 +39,7 @@ autocmd('FileType', {
     group = group,
     pattern = { 'gitcommit', 'gitrebase', 'gitconfig' },
     callback = function()
-        vim.opt_local.bufhidden = 'delete'
+        vim.bo.bufhidden = 'delete'
     end,
     desc = 'Set bufhidden to delete',
 })
@@ -57,7 +57,7 @@ autocmd('TextYankPost', {
     group = group,
     pattern = '*',
     callback = function()
-        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 150 })
+        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 100 })
     end,
     desc = 'Highlight on yank',
 })
