@@ -21,6 +21,7 @@ local parsers = require('nvim-treesitter.parsers')
 
 local default_commentstring = function(ft)
     if vim.bo.ft == ft then
+        vim.bo.ft = ft
         return vim.bo.commentstring
     end
     local filetypes = vim.fn.getcompletion('', 'filetype')
@@ -77,12 +78,7 @@ local function check_node(node, language_config)
     end
 
     local node_type = node:type()
-
-    if language_config[node_type] then
-        return language_config[node_type]
-    end
-
-    return check_node(node:parent(), language_config)
+    return language_config[node_type] and language_config[node_type] or check_node(node:parent(), language_config)
 end
 
 local function calculate_commentstring()
