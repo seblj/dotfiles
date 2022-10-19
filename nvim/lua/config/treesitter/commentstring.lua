@@ -3,6 +3,11 @@
 local react = {
     jsx_element = '{/* %s */}',
     jsx_fragment = '{/* %s */}',
+    jsx_attribute = '// %s',
+    comment = '// %s',
+    call_expression = '// %s',
+    statement_block = '// %s',
+    spread_element = '// %s',
 }
 
 local config = {
