@@ -7,10 +7,12 @@ set adjust-open "best-fit"
 # One page per row by default
 set pages-per-row 1
 
+set selection-clipboard clipboard
+
 #stop at page boundries
 set scroll-page-aware "true"
 set scroll-full-overlap 0.01
-set scroll-step 1
+set scroll-step 50
 
 #zoom settings
 set zoom-min 10
@@ -18,9 +20,7 @@ set guioptions ""
 
 # zathurarc-dark
 
-set incremental-search "true"
-
-set font "inconsolata 15"
+set font "JetBrains Mono 13"
 set default-bg "#1c1c1c"
 set default-fg "#F7F7F6"
 
@@ -51,12 +51,10 @@ set notification-fg "#151515"
 set recolor "true"
 set recolor-lightcolor "#1c1c1c"
 set recolor-darkcolor "#E0E0E0"
-set recolor-reverse-video "true"
 set recolor-keephue "true"
 
 
 set render-loading "false"
-set scroll-step 50
 unmap f
 map f toggle_fullscreen
 map [fullscreen] f toggle_fullscreen
