@@ -9,6 +9,11 @@ local has = function(item)
     return vim.fn.has(item) == 1
 end
 
+local get_color = function(group, attr)
+    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
+    return color ~= '' and color or nil
+end
+
 -- Get wordcount in latex document. Only update the count on save
 local latex_word_count = nil
 local augroup = vim.api.nvim_create_augroup('UpdateWordCount', {})
@@ -285,9 +290,9 @@ local winbar_components = {
         },
         left_sep = {
             str = ' ',
-            hl = { bg = '#1c1c1c' },
+            hl = { bg = get_color('Normal', 'bg') },
         },
-        hl = { bg = '#1c1c1c', style = 'bold' },
+        hl = { bg = get_color('Normal', 'bg'), style = 'bold' },
         enabled = function()
             return vim.api.nvim_buf_get_name(0) ~= ''
         end,
@@ -306,7 +311,7 @@ local winbar_components = {
         enabled = function()
             return ok_gps and nvim_gps.is_available()
         end,
-        hl = { fg = '#eeeeee' },
+        hl = { fb = get_color('Normal', 'fg') },
     },
 }
 
@@ -318,11 +323,6 @@ local winbar = {
         winbar_components.gps,
     },
 }
-
-local get_color = function(group, attr)
-    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
-    return color ~= '' and color or nil
-end
 
 -- Have winbar background to be the same as Normal
 for _, val in pairs(winbar) do
@@ -345,7 +345,7 @@ local blocked_fts = {
 }
 
 feline.winbar.setup({
-    theme = { bg = '#1c1c1c' },
+    theme = { bg = get_color('Normal', 'bg') },
     components = { active = winbar, inactive = winbar },
     disable = {
         filetypes = blocked_fts,
