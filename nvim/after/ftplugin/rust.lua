@@ -10,7 +10,7 @@ vim.api.nvim_create_user_command('Cargo', function(x)
     for _, val in pairs(vim.fn.getqflist()) do
         if val.type == 'E' then
             errors = errors + 1
-        elseif val.type == 'W' and not string.match(val.text, 'generated %d warnings') then
+        elseif val.type == 'W' and not string.match(val.text, 'generated %d warning') then
             warnings = warnings + 1
         end
     end
