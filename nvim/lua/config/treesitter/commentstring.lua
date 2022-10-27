@@ -24,17 +24,20 @@ local uncomment_calculation_config = {
 
 local parsers = require('nvim-treesitter.parsers')
 
+local get_ft_commentstring = function(ft)
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[buf].ft = ft
+    return vim.bo[buf].commentstring
+end
+
 local default_commentstring = function(ft)
     if vim.bo.ft == ft then
-        vim.bo.ft = ft
-        return vim.bo.commentstring
+        return get_ft_commentstring(ft)
     end
     local filetypes = vim.fn.getcompletion('', 'filetype')
     for _, lang in ipairs(filetypes) do
         if lang == ft then
-            local buf = vim.api.nvim_create_buf(false, true)
-            vim.bo[buf].ft = ft
-            return vim.bo[buf].commentstring
+            return get_ft_commentstring(ft)
         end
     end
     return vim.bo.commentstring
