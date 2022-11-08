@@ -101,7 +101,7 @@ highlight({
     Exception = { fg = c.red },
     Float = { fg = c.purple },
     Function = { fg = c.green },
-    Identifier = { fg = c.orange },
+    Identifier = { fg = c.fg },
     Ignore = { fg = c.grey },
     Include = { fg = c.red },
     Keyword = { fg = c.red },
