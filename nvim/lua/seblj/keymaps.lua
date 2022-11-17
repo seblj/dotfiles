@@ -28,6 +28,10 @@ keymap('n', 'gb', '<C-t>', { desc = 'Go back in tag-stack' })
 keymap('n', 'gp', '`[v`]', { desc = 'Reselect pasted text' })
 keymap('n', '<C-t>', ':tabedit<CR>', { desc = 'Create new tab' })
 
+keymap({ 'n', 'v' }, '<leader>d', '"_d', { desc = 'Delete into black hole register' })
+keymap({ 'n', 'v' }, '<leader>c', '"_c', { desc = 'Change into black hole register' })
+keymap('x', '<leader>p', '"_dP', { desc = 'Delete into black hole register on visual paste' })
+
 keymap('n', '<C-h>', '<C-w>h', { desc = 'Navigate to left split' })
 keymap('n', '<C-j>', '<C-w>j', { desc = 'Navigate to bottom split' })
 keymap('n', '<C-k>', '<C-w>k', { desc = 'Navigate to top split' })

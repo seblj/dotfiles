@@ -67,7 +67,7 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'lervag/vimtex', config = conf('vimtex'), ft = { 'tex', 'bib' } })
 
     -- Debugging
-    use({ 'mfussenegger/nvim-dap', config = conf('dap'), keys = '<leader>db' })
+    use({ 'mfussenegger/nvim-dap', config = conf('dap'), keys = { { 'n', '<leader>db' } } })
     use({ 'rcarriga/nvim-dap-ui' })
 
     -- Others
