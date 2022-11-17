@@ -31,13 +31,6 @@ autocmd('BufNew', {
 })
 
 require('gitsigns').setup({
-    signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~_' },
-    },
     preview_config = {
         border = CUSTOM_BORDER,
     },

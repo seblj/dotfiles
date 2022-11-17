@@ -96,7 +96,12 @@ vim.api.nvim_create_user_command('RunOnSave', function(opts)
         callback = function()
             vim.schedule(function()
                 if opts.args:sub(1, 1) == '!' then
-                    M.run_term({ direction = 'split', focus = false, stopinsert = true, cmd = string.sub(opts.args, 2) })
+                    M.run_term({
+                        direction = 'split',
+                        focus = false,
+                        stopinsert = true,
+                        cmd = string.sub(opts.args, 2),
+                    })
                 else
                     local this = vim.fn.winnr()
                     vim.cmd(opts.args)
