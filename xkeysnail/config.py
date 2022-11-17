@@ -85,6 +85,18 @@ define_keymap(None, {
 
     # Lock pc
     K("C-Alt-L"): K("Super-L"),
+
+    # ø
+    K("RC-SEMICOLON"): [K("scrolllock"), K("slash"), K("o")],
+    K("RC-Shift-SEMICOLON"): [K("scrolllock"), K("slash"), K("Shift-o")],
+
+    # æ
+    K("RC-APOSTROPHE"): [K("scrolllock"), K("a"), K("e")],
+    K("RC-Shift-APOSTROPHE"): [K("scrolllock"), K("Shift-a"), K("Shift-e")],
+
+    # å
+    K("RC-Left_Brace"): [K("scrolllock"), K("o"), K("a")],
+    K("RC-Shift-Left_Brace"): [K("scrolllock"), K("o"), K("Shift-a")],
 })
 
 # Keybindings for Chromes
