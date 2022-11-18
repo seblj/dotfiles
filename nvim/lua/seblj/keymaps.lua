@@ -68,7 +68,7 @@ keymap('n', '<leader>sa', [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn<C-r>"]], 
     desc = 'Append to word under cursor',
 })
 
-keymap('n', '<leader>j', 'J', { desc = 'Join [count] lines' })
+keymap('', '<leader>j', 'J', { desc = 'Join [count] lines' })
 
 keymap('n', 'j', 'v:count ? "j" : "gj"', { expr = true, desc = 'gj' })
 keymap('n', 'k', 'v:count ? "k" : "gk"', { expr = true, desc = 'gk' })
