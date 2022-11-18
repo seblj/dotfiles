@@ -43,7 +43,7 @@ M.make_config = function()
     end
     return {
         capabilities = capabilities,
-        on_attach = function(client)
+        on_attach = function(client, bufnr)
             require('config.lspconfig.handlers').handlers()
             require('config.lspconfig.formatting').setup(client)
             mappings()
@@ -53,6 +53,9 @@ M.make_config = function()
             end
             if client.supports_method('textDocument/codeAction') then
                 require('config.lspconfig.lightbulb').setup()
+            end
+            if client.server_capabilities.documentSymbolProvider then
+                require('nvim-navic').attach(client, bufnr)
             end
         end,
     }

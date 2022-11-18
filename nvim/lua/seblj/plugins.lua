@@ -30,7 +30,6 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'nvim-treesitter/playground' })
     use({ 'windwp/nvim-ts-autotag' })
     use({ 'nvim-treesitter/nvim-treesitter-textobjects' })
-    use({ 'SmiteshP/nvim-gps' })
 
     -- LSP
     use({ 'neovim/nvim-lspconfig', config = conf('lspconfig') })
@@ -40,6 +39,7 @@ local plugins = function(local_use, use, setup, conf)
     use({ 'williamboman/mason.nvim' })
     use({ 'williamboman/mason-lspconfig.nvim' })
     use({ 'Hoffs/omnisharp-extended-lsp.nvim' })
+    use({ 'SmiteshP/nvim-navic' })
 
     -- Completion
     use({ 'hrsh7th/nvim-cmp', config = conf('cmp') })

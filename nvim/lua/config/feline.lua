@@ -228,47 +228,11 @@ feline.setup({
 ---------- WINBAR ----------
 
 local icons = require('seblj.utils.icons')
-local ok_gps, nvim_gps = pcall(require, 'nvim-gps')
+local navic = require('nvim-navic')
 
-if ok_gps then
-    local setup_icons = function(group, icon)
-        return '%#' .. group .. '#' .. icon .. '%*' .. ' '
-    end
-    nvim_gps.setup({
-        icons = {
-            ['class-name'] = setup_icons('Keyword', icons.kind.Class),
-            ['function-name'] = setup_icons('Function', icons.kind.Function),
-            ['method-name'] = setup_icons('Function', icons.kind.Method),
-            ['container-name'] = setup_icons('CmpItemKindColor', icons.kind.Object),
-            ['tag-name'] = setup_icons('TSTag', icons.misc.Tag),
-            ['mapping-name'] = setup_icons('CmpItemKindColor', icons.kind.Object),
-            ['sequence-name'] = setup_icons('CmpItemKindProperty', icons.kind.Array),
-            ['null-name'] = setup_icons('CmpItemKindField', icons.kind.Field),
-            ['boolean-name'] = setup_icons('Boolean', icons.kind.Boolean),
-            ['integer-name'] = setup_icons('Number', icons.kind.Number),
-            ['float-name'] = setup_icons('Float', icons.kind.Number),
-            ['string-name'] = setup_icons('String', icons.kind.String),
-            ['array-name'] = setup_icons('CmpItemKindProperty', icons.kind.Array),
-            ['object-name'] = setup_icons('CmpItemKindColor', icons.kind.Object),
-            ['number-name'] = setup_icons('Number', icons.kind.Number),
-            ['table-name'] = setup_icons('CmpItemKindProperty', icons.ui.Table),
-            ['date-name'] = setup_icons('CmpItemKindValue', icons.ui.Calendar),
-            ['date-time-name'] = setup_icons('CmpItemKindValue', icons.ui.Table),
-            ['inline-table-name'] = setup_icons('CmpItemKindProperty', icons.ui.Calendar),
-            ['time-name'] = setup_icons('CmpItemKindValue', icons.misc.Watch),
-            ['module-name'] = setup_icons('CmpItemKindModule', icons.kind.Module),
-            ['title-name'] = setup_icons('Title', '#'),
-            ['label-name'] = setup_icons('String', icons.kind.String),
-            ['hook-name'] = setup_icons('Function', 'ﯠ'),
-        },
-        languages = {
-            json = {},
-            yaml = {},
-            latex = {},
-            tsx = {},
-        },
-        separator = '  ',
-    })
+local icons_with_space = {}
+for key, val in pairs(icons.kind) do
+    icons_with_space[key] = val .. ' '
 end
 
 local winbar_components = {
@@ -305,11 +269,15 @@ local winbar_components = {
     },
     gps = {
         provider = function()
-            local location = nvim_gps.get_location()
+            local location = navic.get_location({
+                highlight = true,
+                icons = icons_with_space,
+                separator = '  ',
+            })
             return location == '' and '' or '  ' .. location
         end,
         enabled = function()
-            return ok_gps and nvim_gps.is_available()
+            return navic.is_available()
         end,
         hl = { fb = get_color('Normal', 'fg') },
     },
