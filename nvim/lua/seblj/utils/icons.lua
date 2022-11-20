@@ -34,6 +34,7 @@ return {
         Object = '',
         Key = '',
         Null = 'ﳠ',
+        Copilot = '',
     },
     ui = {
         Comment = '',
