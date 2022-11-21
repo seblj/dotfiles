@@ -5,7 +5,6 @@ local prettierd = function()
     return {
         exe = 'prettierd',
         args = { vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
-        stdin = true,
     }
 end
 
@@ -16,7 +15,6 @@ require('formatter').setup({
                 return {
                     exe = 'stylua',
                     args = { '--search-parent-directories', '--stdin-filepath', vim.api.nvim_buf_get_name(0), '-' },
-                    stdin = true,
                 }
             end,
         },
@@ -24,7 +22,6 @@ require('formatter').setup({
             function()
                 return {
                     exe = 'goimports',
-                    stdin = true,
                 }
             end,
         },
