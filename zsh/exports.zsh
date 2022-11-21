@@ -1,10 +1,13 @@
 # Exports
 
-export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+if [[ $OS == "Darwin" ]]; then
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
+fi
 
 export _Z_DATA="$HOME/.config/z/.z."
 export FZF_DEFAULT_OPTS='--height 40%'
