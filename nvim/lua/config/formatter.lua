@@ -8,7 +8,7 @@ local prettierd = function()
     }
 end
 
-require('seblj.formatter').setup({
+require('formatter').setup({
     filetype = {
         lua = function()
             return {
