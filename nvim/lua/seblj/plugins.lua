@@ -17,7 +17,6 @@ local plugins = function(local_use, use, setup, conf)
     -- My plugins/forks
     local_use({ 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' })
     local_use({ 'seblj/nvim-echo-diagnostics', config = setup('echo-diagnostics') })
-    local_use({ 'seblj/formatter.nvim', config = conf('formatter') })
 
     -- Telescope
     use({ 'nvim-telescope/telescope.nvim', config = conf('telescope') })

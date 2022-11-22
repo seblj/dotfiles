@@ -8,34 +8,30 @@ local prettierd = function()
     }
 end
 
-require('formatter').setup({
+require('seblj.formatter').setup({
     filetype = {
-        lua = {
-            function()
-                return {
-                    exe = 'stylua',
-                    args = { '--search-parent-directories', '--stdin-filepath', vim.api.nvim_buf_get_name(0), '-' },
-                }
-            end,
-        },
-        go = {
-            function()
-                return {
-                    exe = 'goimports',
-                }
-            end,
-        },
-        javascript = { prettierd },
-        typescript = { prettierd },
-        javascriptreact = { prettierd },
-        typescriptreact = { prettierd },
-        vue = { prettierd },
-        css = { prettierd },
-        scss = { prettierd },
-        html = { prettierd },
-        yaml = { prettierd },
-        markdown = { prettierd },
-        graphql = { prettierd },
+        lua = function()
+            return {
+                exe = 'stylua',
+                args = { '--search-parent-directories', '--stdin-filepath', vim.api.nvim_buf_get_name(0), '-' },
+            }
+        end,
+        go = function()
+            return {
+                exe = 'goimports',
+            }
+        end,
+        javascript = prettierd,
+        typescript = prettierd,
+        javascriptreact = prettierd,
+        typescriptreact = prettierd,
+        vue = prettierd,
+        css = prettierd,
+        scss = prettierd,
+        html = prettierd,
+        yaml = prettierd,
+        markdown = prettierd,
+        graphql = prettierd,
     },
 })
 
@@ -45,7 +41,7 @@ autocmd('BufWritePre', {
     group = group,
     callback = function()
         if vim.b.do_formatting ~= false then
-            vim.cmd.FormatWrite()
+            vim.cmd.Format()
         end
     end,
     desc = 'Formatting',
