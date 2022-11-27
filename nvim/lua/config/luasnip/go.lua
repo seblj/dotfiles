@@ -9,17 +9,19 @@ local ts_locals = require('nvim-treesitter.locals')
 local ts_utils = require('nvim-treesitter.ts_utils')
 local fmt = require('luasnip.extras.fmt').fmt
 
-vim.treesitter.set_query(
-    'go',
-    'LuaSnip_Result',
-    [[
-  [
+if require('nvim-treesitter.parsers').has_parser('go') then
+    vim.treesitter.set_query(
+        'go',
+        'LuaSnip_Result',
+        [[
+    [
     (method_declaration result: (_) @id)
     (function_declaration result: (_) @id)
     (func_literal result: (_) @id)
-  ]
-]]
-)
+    ]
+    ]]
+    )
+end
 
 local transform = function(text)
     if text == 'int' then

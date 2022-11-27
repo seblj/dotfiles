@@ -35,11 +35,13 @@ end
 
 local override_queries = function(lang, query_name)
     local queries_folder = vim.fs.normalize('~/dotfiles/nvim/lua/config/treesitter/queries')
-    vim.treesitter.query.set_query(
-        lang,
-        query_name,
-        read_file(queries_folder .. string.format('/%s/%s.scm', lang, query_name))
-    )
+    if require('nvim-treesitter.parsers').has_parser(lang) then
+        vim.treesitter.query.set_query(
+            lang,
+            query_name,
+            read_file(queries_folder .. string.format('/%s/%s.scm', lang, query_name))
+        )
+    end
 end
 
 autocmd('FileType', {
@@ -52,8 +54,7 @@ autocmd('FileType', {
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = 'all',
-
+    auto_install = true,
     highlight = {
         enable = true,
     },
