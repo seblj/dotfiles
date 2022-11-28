@@ -34,6 +34,7 @@ require('gitsigns').setup({
     preview_config = {
         border = CUSTOM_BORDER,
     },
+    max_file_length = 30000,
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
         local map = function(m, l, r, opts)

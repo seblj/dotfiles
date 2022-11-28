@@ -31,7 +31,6 @@ vim.opt.cinkeys:remove('0#')
 vim.opt.fillchars:append('diff:╱')
 vim.opt.laststatus = 3
 vim.opt.textwidth = 80
-vim.opt.diffopt:append('linematch:60')
 
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'

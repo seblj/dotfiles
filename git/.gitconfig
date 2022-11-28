@@ -18,6 +18,7 @@
     rebase = true
 
 [alias]
+    add-untracked = !git add $(git ls-files -o --exclude-standard)
     st = status
     aa = add -A .
     cm = commit -m
