@@ -364,6 +364,204 @@
                 "type": "basic"
               }
             ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + ; for ø",
+                "from": {
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": [
+                      "command"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "o",
+                  "modifiers": [
+                    "left_option"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + shift + ; for Ø",
+                "from": {
+                  "key_code": "semicolon",
+                  "modifiers": {
+                    "mandatory": [
+                      "command",
+                      "shift"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "o",
+                  "modifiers": [
+                    "left_option",
+                    "left_shift"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + a for å",
+                "from": {
+                  "key_code": "open_bracket",
+                  "modifiers": {
+                    "mandatory": [
+                      "command"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "a",
+                  "modifiers": [
+                    "left_option"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + Shift + a for Å",
+                "from": {
+                  "key_code": "open_bracket",
+                  "modifiers": {
+                    "mandatory": [
+                      "command",
+                      "shift"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "a",
+                  "modifiers": [
+                    "left_option",
+                    "left_shift"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + ' for æ",
+                "from": {
+                  "key_code": "quote",
+                  "modifiers": {
+                    "mandatory": [
+                      "command"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "quote",
+                  "modifiers": [
+                    "left_option"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "input_sources": [
+                      {
+                        "language": "^en$"
+                      }
+                    ],
+                    "type": "input_source_if"
+                  }
+                ],
+                "description": "Cmd + Shift + ' for Æ",
+                "from": {
+                  "key_code": "quote",
+                  "modifiers": {
+                    "mandatory": [
+                      "command",
+                      "shift"
+                    ]
+                  }
+                },
+                "to": {
+                  "key_code": "quote",
+                  "modifiers": [
+                    "left_option",
+                    "left_shift"
+                  ]
+                },
+                "type": "basic"
+              }
+            ]
           }
         ]
       },
