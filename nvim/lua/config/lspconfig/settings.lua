@@ -15,6 +15,16 @@ return {
         },
     },
 
+    rust_analyzer = {
+        settings = {
+            ['rust-analyzer'] = {
+                rustfmt = {
+                    extraArgs = { '+nightly' },
+                },
+            },
+        },
+    },
+
     sumneko_lua = {
         settings = {
             Lua = {
