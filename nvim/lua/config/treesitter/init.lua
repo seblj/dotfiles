@@ -11,13 +11,6 @@ ft_to_parser.zsh = 'bash'
 
 require('config.treesitter.commentstring')
 
-local indent = {
-    'tsx',
-    'typescript',
-    'vue',
-    'javascript',
-}
-
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 parser_config.rsx = {
     install_info = {
@@ -27,28 +20,11 @@ parser_config.rsx = {
     },
 }
 
-local read_file = function(path)
-    local fd = assert(vim.loop.fs_open(path, 'r', 438))
-    local stat = assert(vim.loop.fs_fstat(fd))
-    return vim.loop.fs_read(fd, stat.size, 0)
-end
-
-local override_queries = function(lang, query_name)
-    local queries_folder = vim.fs.normalize('~/dotfiles/nvim/lua/config/treesitter/queries')
-    if require('nvim-treesitter.parsers').has_parser(lang) then
-        vim.treesitter.query.set_query(
-            lang,
-            query_name,
-            read_file(queries_folder .. string.format('/%s/%s.scm', lang, query_name))
-        )
-    end
-end
-
 autocmd('FileType', {
     pattern = 'rust',
     group = augroup('RustOverrideQuery', { clear = true }),
     callback = function()
-        override_queries('rust', 'injections')
+        utils.override_queries('rust', 'injections')
     end,
     desc = 'Override rust treesitter injection',
 })
@@ -60,7 +36,12 @@ require('nvim-treesitter.configs').setup({
     },
     indent = {
         enable = true,
-        disable = utils.difference(treesitter_parsers.available_parsers(), indent),
+        disable = utils.difference(treesitter_parsers.available_parsers(), {
+            'tsx',
+            'typescript',
+            'vue',
+            'javascript',
+        }),
     },
     textobjects = {
         select = {
@@ -91,25 +72,6 @@ require('nvim-treesitter.configs').setup({
 
     autotag = {
         enable = true,
-        filetypes = {
-            'html',
-            'javascript',
-            'typescript',
-            'javascriptreact',
-            'typescriptreact',
-            'svelte',
-            'vue',
-            'tsx',
-            'jsx',
-            'rescript',
-            'xml',
-            'php',
-            'markdown',
-            'glimmer',
-            'handlebars',
-            'hbs',
-            'htmldjango',
-            'rust',
-        },
+        filetypes = vim.list_extend(require('nvim-ts-autotag.internal').tbl_filetypes, { 'rust' }),
     },
 })
