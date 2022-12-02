@@ -34,6 +34,7 @@ vim-markdown-preview.html
 *.passwd
 *.dSYM
 _minted-report
+.env
 
 
 # Latex files #

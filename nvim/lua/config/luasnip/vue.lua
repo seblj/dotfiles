@@ -2,6 +2,7 @@ local utils = require('config.luasnip.utils')
 local make = utils.make
 local ls = require('luasnip')
 local i = ls.insert_node
+local f = ls.function_node
 local fmt = require('luasnip.extras.fmt').fmt
 
 return make({
@@ -22,7 +23,9 @@ return make({
             </style>
         ]],
         {
-            tab = '\t',
+            tab = f(function()
+                return '\t'
+            end),
             insert = i(0),
         }
     ),
