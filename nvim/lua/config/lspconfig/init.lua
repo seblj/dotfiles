@@ -72,21 +72,18 @@ if ok and mason_ok then
 end
 
 -- Automatic setup for language servers
-local setup_servers = function()
-    for _, server in pairs(servers) do
-        local config = M.make_config()
+for _, server in pairs(servers) do
+    local config = M.make_config()
 
-        -- Set user settings for each server
-        if settings[server] then
-            for k, v in pairs(settings[server]) do
-                config[k] = v
-            end
+    -- Set user settings for each server
+    if settings[server] then
+        for k, v in pairs(settings[server]) do
+            config[k] = v
         end
-        require('lspconfig')[server].setup(config)
     end
+    require('lspconfig')[server].setup(config)
 end
 
-setup_servers()
 require('lspconfig.ui.windows').default_options.border = CUSTOM_BORDER
 
 return M

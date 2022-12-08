@@ -6,17 +6,6 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local M = {}
 
-M.packer_bootstrap = function()
-    local is_bootstrap = false
-    local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-    if vim.loop.fs_stat(install_path).type ~= 'directory' then
-        is_bootstrap = true
-        vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-        vim.cmd.packadd('packer.nvim')
-    end
-    return is_bootstrap
-end
-
 -- Reloads config for nvim so I don't need to reopen buffer in some cases
 M.reload_config = function()
     vim.cmd.source('~/dotfiles/nvim/init.lua')
