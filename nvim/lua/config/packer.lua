@@ -11,7 +11,7 @@ end
 
 local opt_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 if not vim.loop.fs_stat(opt_path) then
-    vim.fn.execute('!git clone https://github.com/lewis/packer.nvim --branch=main ' .. opt_path)
+    vim.fn.execute('!git clone https://github.com/lewis6991/packer.nvim --branch=main ' .. opt_path)
 end
 
 vim.cmd.packadd('packer.nvim')

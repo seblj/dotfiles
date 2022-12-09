@@ -17,7 +17,7 @@ packer.add({
     { 'nvim-lua/plenary.nvim' },
 
     -- Treesitter
-    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate' },
+    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate<CR>:TSInstall all' },
     { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
     { 'windwp/nvim-ts-autotag' },
     { 'nvim-treesitter/nvim-treesitter-textobjects' },
