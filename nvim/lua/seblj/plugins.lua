@@ -46,7 +46,7 @@ packer.add({
     { 'tpope/vim-dadbod' },
 
     -- Git
-    { 'lewis6991/gitsigns.nvim', config = conf('gitsigns') },
+    { 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } },
     { 'akinsho/git-conflict.nvim', config = setup('git-conflict', { highlights = { current = 'DiffChange' } }) },
 
     -- Packageinfo
