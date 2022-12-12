@@ -17,8 +17,8 @@ packer.add({
     { 'nvim-lua/plenary.nvim' },
 
     -- Treesitter
-    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate<CR>:TSInstall all' },
-    { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
+    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate<CR>:TSInstall all<CR>' },
+    { 'nvim-treesitter/playground', cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' } },
     { 'windwp/nvim-ts-autotag' },
     { 'nvim-treesitter/nvim-treesitter-textobjects' },
 
@@ -62,7 +62,6 @@ packer.add({
     { 'rcarriga/nvim-dap-ui' },
 
     -- Others
-    { 'mfussenegger/nvim-lint', config = conf('lint') },
     { 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } },
     { 'tamago324/lir.nvim', config = conf('lir') },
     { 'NvChad/nvim-colorizer.lua', config = setup('colorizer', { user_default_options = { names = false } }) },

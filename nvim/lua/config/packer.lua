@@ -17,10 +17,8 @@ end
 vim.cmd.packadd('packer.nvim')
 
 require('packer').setup({
-    config = {
-        display = {
-            prompt_border = CUSTOM_BORDER,
-        },
+    display = {
+        prompt_border = CUSTOM_BORDER,
     },
 })
 
