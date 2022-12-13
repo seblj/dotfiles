@@ -4,6 +4,7 @@ local setup = packer.setup
 
 packer.add({
     { 'lewis6991/packer.nvim', branch = 'main' },
+    { 'lewis6991/impatient.nvim', start = true },
 
     -- My plugins/forks
     { 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' },
@@ -55,28 +56,32 @@ packer.add({
     { 'MunifTanjim/nui.nvim' },
 
     -- Latex
-    { 'lervag/vimtex', config = conf('vimtex'), ft = { 'tex', 'bib' } },
+    { 'lervag/vimtex', config_pre = conf('vimtex'), ft = { 'tex', 'bib' } },
 
     -- Debugging
     { 'mfussenegger/nvim-dap', config = conf('dap'), keys = { { 'n', '<leader>db' } } },
     { 'rcarriga/nvim-dap-ui' },
 
-    -- Others
+    -- File tree
     { 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } },
     { 'tamago324/lir.nvim', config = conf('lir') },
+
+    -- UI
     { 'NvChad/nvim-colorizer.lua', config = setup('colorizer', { user_default_options = { names = false } }) },
     { 'mhinz/vim-startify', config = conf('startify') },
-    { 'feline-nvim/feline.nvim', config = conf('feline') },
-    { 'windwp/nvim-autopairs', config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }) },
-    { 'rcarriga/nvim-notify', config = conf('notify') },
-    { 'godlygeek/tabular', config = 'vim.g.no_default_tabular_maps = 1' },
     { 'kyazdani42/nvim-web-devicons' },
-    { 'lewis6991/impatient.nvim', start = true },
+    { 'feline-nvim/feline.nvim', config = conf('feline') },
+    { 'rcarriga/nvim-notify', config = conf('notify') },
+
+    { 'windwp/nvim-autopairs', config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }) },
+    { 'godlygeek/tabular', config_pre = 'vim.g.no_default_tabular_maps = 1' },
     { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' },
     { 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' },
     { 'NTBBloodbath/rest.nvim', ft = 'http' },
     { 'mbbill/undotree', cmd = 'UndotreeToggle' },
     { 'lambdalisue/suda.vim', config = 'vim.cmd.cnoreabbrev({ "w!!", "w suda://%" })' },
+
+    -- Tpope
     { 'tpope/vim-repeat' },
     { 'tpope/vim-abolish' },
     { 'tpope/vim-surround', config = conf('surround') },
