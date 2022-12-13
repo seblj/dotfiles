@@ -14,6 +14,7 @@ push @generated_exts, "nlg";
 push @generated_exts, "nlo";
 push @generated_exts, "nls";
 push @generated_exts, "acn";
+push @generated_exts, "acr";
 push @generated_exts, "def";
 push @generated_exts, "glo";
 push @generated_exts, "ist";
