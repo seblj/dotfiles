@@ -58,6 +58,22 @@ autocmd('TextYankPost', {
     pattern = '*',
     callback = function()
         vim.highlight.on_yank({ higroup = 'IncSearch', timeout = 100 })
+        if vim.env.SSH_CONNECTION then
+            -- See if I should get from another register
+            local ok, yank_data = pcall(vim.fn.getreg, '0')
+            if ok and #yank_data > 0 then
+                local Job = require('plenary.job')
+                local data = nil
+                Job:new({
+                    command = 'base64',
+                    writer = yank_data,
+                    on_exit = function(j, _)
+                        data = table.concat(j:result())
+                    end,
+                }):sync()
+                vim.fn.chansend(vim.v.stderr, string.format('\x1b]52;c;%s\x07', data))
+            end
+        end
     end,
     desc = 'Highlight on yank',
 })
