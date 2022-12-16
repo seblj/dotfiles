@@ -18,7 +18,7 @@ packer.add({
     { 'nvim-lua/plenary.nvim' },
 
     -- Treesitter
-    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate<CR>:TSInstall all<CR>' },
+    { 'nvim-treesitter/nvim-treesitter', config = conf('treesitter'), run = ':TSUpdate' },
     { 'nvim-treesitter/playground', cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' } },
     { 'windwp/nvim-ts-autotag' },
     { 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -75,7 +75,7 @@ packer.add({
 
     { 'windwp/nvim-autopairs', config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }) },
     { 'godlygeek/tabular', config_pre = 'vim.g.no_default_tabular_maps = 1' },
-    { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' },
+    { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install' },
     { 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' },
     { 'NTBBloodbath/rest.nvim', ft = 'http' },
     { 'mbbill/undotree', cmd = 'UndotreeToggle' },
