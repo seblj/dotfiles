@@ -26,6 +26,7 @@ local handler = function(results, ctx)
         vim.fn.sign_unplace(sign_group)
         return
     end
+
     -- Only show actions if there are diagnostics
     if config.diagnostic_only and #vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 }) == 0 then
         vim.fn.sign_unplace(sign_group)
@@ -42,12 +43,13 @@ local check_code_action = function()
     if vim.fn.mode() ~= 'n' then
         return
     end
+    local bufnr = vim.api.nvim_get_current_buf()
     local context = {
-        diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 }),
+        ---@diagnostic disable-next-line: missing-parameter
+        diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr),
     }
     local params = lsp_util.make_range_params()
     params.context = context
-    local bufnr = vim.api.nvim_get_current_buf()
     local method = 'textDocument/codeAction'
     vim.lsp.buf_request_all(bufnr, method, params, function(results)
         handler(results, { bufnr = bufnr, method = method, params = params })
