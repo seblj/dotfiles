@@ -57,6 +57,9 @@ M.make_config = function()
             if client.server_capabilities.documentSymbolProvider then
                 require('nvim-navic').attach(client, bufnr)
             end
+
+            -- Turn off semantic tokens
+            client.server_capabilities.semanticTokensProvider = nil
         end,
     }
 end
