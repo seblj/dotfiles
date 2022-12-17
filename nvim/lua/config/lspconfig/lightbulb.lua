@@ -21,7 +21,8 @@ local changed_line = function()
 end
 
 local handler = function(results, ctx)
-    local num_results = results[1].result and #results[1].result or 0
+    local res = results and results[1] or {}
+    local num_results = res.result and #res.result or 0
     if num_results == 0 then
         vim.fn.sign_unplace(sign_group)
         return
