@@ -1,12 +1,19 @@
 local M = {}
 
 M.setup = function(name, config)
-    return not config and string.format([[require('%s').setup()]], name)
-        or string.format([[require('%s').setup(%s)]], name, vim.inspect(config or {}))
+    return function()
+        if config then
+            require(name).setup(config)
+        else
+            require(name)
+        end
+    end
 end
 
 M.conf = function(name)
-    return string.format([[require('config.%s')]], name)
+    return function()
+        require(string.format('config.%s', name))
+    end
 end
 
 local opt_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
