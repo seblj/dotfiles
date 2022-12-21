@@ -1,10 +1,12 @@
+vim.cmd.packadd('impatient.nvim')
+pcall(require, 'impatient')
 local packer = require('config.packer')
 local conf = packer.conf
 local setup = packer.setup
 
 packer.add({
     { 'lewis6991/packer.nvim', branch = 'main' },
-    { 'lewis6991/impatient.nvim', start = true },
+    { 'lewis6991/impatient.nvim' },
 
     -- My plugins/forks
     { 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' },
