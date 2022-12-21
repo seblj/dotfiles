@@ -1,29 +1,22 @@
 local lazy = require('config.lazy')
 local conf = lazy.conf
 local setup = lazy.setup
+local init = lazy.init
 
-require('lazy').setup({
+lazy.lazy_setup({
     -- My plugins/forks
-    {
-        'seblj/nvim-tabline',
-        config = setup('tabline'),
-        event = 'TabNew',
-        dependencies = {
-            { 'kyazdani42/nvim-web-devicons' },
-        },
-    },
+    { 'seblj/nvim-tabline', config = setup('tabline'), event = 'TabNew' },
     { 'seblj/nvim-echo-diagnostics', config = setup('echo-diagnostics') },
-    { 'seblj/formatter.nvim', config = conf('formatter'), dependencies = { 'nvim-lua/plenary.nvim' } },
+    { 'seblj/formatter.nvim', config = conf('formatter') },
 
     -- Telescope
     {
         'nvim-telescope/telescope.nvim',
         config = conf('telescope'),
+        init = init('telescope'),
         dependencies = {
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
             { 'nvim-telescope/telescope-file-browser.nvim' },
-            { 'nvim-lua/plenary.nvim' },
-            { 'kyazdani42/nvim-web-devicons' },
         },
     },
 
@@ -74,10 +67,7 @@ require('lazy').setup({
         'kristijanhusak/vim-dadbod-ui',
         config = conf('dadbod'),
         cmd = 'DBUI',
-        dependencies = {
-            { 'kristijanhusak/vim-dadbod-completion' },
-            { 'tpope/vim-dadbod' },
-        },
+        dependencies = { 'kristijanhusak/vim-dadbod-completion', 'tpope/vim-dadbod' },
     },
 
     -- Git
@@ -85,22 +75,8 @@ require('lazy').setup({
     { 'akinsho/git-conflict.nvim', config = setup('git-conflict', { highlights = { current = 'DiffChange' } }) },
 
     -- Packageinfo
-    {
-        'saecki/crates.nvim',
-        config = setup('crates'),
-        event = 'BufReadPre Cargo.toml',
-        dependencies = {
-            { 'nvim-lua/plenary.nvim' },
-        },
-    },
-    {
-        'vuki656/package-info.nvim',
-        config = conf('packageinfo'),
-        event = 'BufReadPre package.json',
-        dependencies = {
-            { 'MunifTanjim/nui.nvim' },
-        },
-    },
+    { 'saecki/crates.nvim', config = setup('crates'), event = 'BufReadPre Cargo.toml' },
+    { 'vuki656/package-info.nvim', config = conf('packageinfo'), event = 'BufReadPre package.json' },
 
     -- Latex
     { 'lervag/vimtex', config = conf('vimtex'), ft = { 'tex', 'bib' } },
@@ -109,36 +85,21 @@ require('lazy').setup({
     {
         'mfussenegger/nvim-dap',
         config = conf('dap'),
-        dependencies = {
-            { 'rcarriga/nvim-dap-ui' },
-        },
+        dependencies = { 'rcarriga/nvim-dap-ui' },
         keys = { '<leader>db' },
     },
 
     -- File tree
-    {
-        'kyazdani42/nvim-tree.lua',
-        config = conf('nvimtree'),
-        keys = { '<leader>nt' },
-        dependencies = {
-            { 'kyazdani42/nvim-web-devicons' },
-        },
-    },
+    { 'kyazdani42/nvim-tree.lua', config = conf('nvimtree'), keys = { '<leader>nt' } },
     { 'tamago324/lir.nvim', config = conf('lir') },
 
     -- UI
     { 'NvChad/nvim-colorizer.lua', config = setup('colorizer', { user_default_options = { names = false } }) },
     { 'mhinz/vim-startify', config = conf('startify') },
-    {
-        'feline-nvim/feline.nvim',
-        config = conf('feline'),
-        dependencies = {
-            { 'kyazdani42/nvim-web-devicons' },
-            { 'SmiteshP/nvim-navic' },
-        },
-    },
+    { 'feline-nvim/feline.nvim', config = conf('feline') },
     { 'rcarriga/nvim-notify', config = conf('notify') },
 
+    -- Functionality
     {
         'windwp/nvim-autopairs',
         config = setup('nvim-autopairs', { ignored_next_char = '[%w%.%{%[%(%"%\']' }),
@@ -150,15 +111,9 @@ require('lazy').setup({
             vim.g.no_default_tabular_maps = 1
         end,
     },
-    { 'iamcco/markdown-preview.nvim', build = 'cd app && yarn install', cmd = 'MarkdownPreviewToggle' },
+    { 'iamcco/markdown-preview.nvim', build = 'cd app && yarn install' },
     { 'dstein64/vim-startuptime', config = conf('startuptime'), cmd = 'StartupTime' },
-    {
-        'NTBBloodbath/rest.nvim',
-        ft = 'http',
-        dependencies = {
-            { 'nvim-lua/plenary.nvim' },
-        },
-    },
+    { 'NTBBloodbath/rest.nvim', ft = 'http' },
     { 'mbbill/undotree', cmd = 'UndotreeToggle' },
     {
         'lambdalisue/suda.vim',
@@ -167,6 +122,11 @@ require('lazy').setup({
         end,
     },
 
+    -- Dependencies/helpers for other plugins
+    { 'nvim-lua/plenary.nvim' },
+    { 'MunifTanjim/nui.nvim' },
+    { 'kyazdani42/nvim-web-devicons' },
+
     -- Tpope
     { 'tpope/vim-repeat' },
     { 'tpope/vim-abolish' },
@@ -174,12 +134,4 @@ require('lazy').setup({
     { 'tpope/vim-commentary' },
     { 'tpope/vim-scriptease' },
     { 'tpope/vim-sleuth' },
-}, {
-    dev = {
-        path = '~/projects/plugins',
-        patterns = { 'seblj' },
-    },
-    ui = {
-        border = CUSTOM_BORDER,
-    },
 })

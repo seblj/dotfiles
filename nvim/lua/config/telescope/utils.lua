@@ -1,7 +1,5 @@
 local M = {}
-local telescope_utils = require('telescope.utils')
 local keymap = vim.keymap.set
-local Job = require('plenary.job')
 
 local use_git_root = true
 keymap('n', '<leader>tg', function()
@@ -17,7 +15,7 @@ end, {
 
 local get_git_root = function()
     local git_root, ret =
-        telescope_utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' }, vim.loop.cwd())
+        require('telescope.utils').get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' }, vim.loop.cwd())
 
     return ret ~= 0 and vim.loop.cwd() or git_root[1]
 end
@@ -60,13 +58,12 @@ M.git_files = function()
     })
 end
 
--- Thanks to TJ: https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/telescope/custom/multi_rg.lua
-local conf = require('telescope.config').values
-local finders = require('telescope.finders')
-local make_entry = require('telescope.make_entry')
-local pickers = require('telescope.pickers')
-
 M.multi_grep = function(opts)
+    -- Thanks to TJ: https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/telescope/custom/multi_rg.lua
+    local conf = require('telescope.config').values
+    local finders = require('telescope.finders')
+    local make_entry = require('telescope.make_entry')
+    local pickers = require('telescope.pickers')
     opts = opts or {}
     local root = get_root()
     local dir = vim.fn.fnamemodify(root, ':t')
@@ -166,14 +163,16 @@ M.find_node_modules = function()
 
     local path
 
-    Job:new({
-        command = 'fd',
-        args = { '-t', 'd', '-I', '-d', '2', '-a', 'node_modules' },
-        cwd = cwd,
-        on_exit = function(j, _)
-            path = j:result()[1]
-        end,
-    }):sync()
+    require('plenary.job')
+        :new({
+            command = 'fd',
+            args = { '-t', 'd', '-I', '-d', '2', '-a', 'node_modules' },
+            cwd = cwd,
+            on_exit = function(j, _)
+                path = j:result()[1]
+            end,
+        })
+        :sync()
 
     if not path then
         return
