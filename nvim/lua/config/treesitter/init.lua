@@ -71,6 +71,5 @@ require('nvim-treesitter.configs').setup({
 
     autotag = {
         enable = true,
-        filetypes = vim.list_extend(require('nvim-ts-autotag.internal').tbl_filetypes, { 'rust' }),
     },
 })

@@ -38,7 +38,7 @@ end
 
 M.plugins = function()
     require('telescope.builtin').find_files({
-        cwd = vim.fn.stdpath('data') .. '/site/pack/packer/',
+        cwd = vim.fn.stdpath('data') .. '/lazy',
         follow = true,
         prompt_title = 'Plugins',
     })
