@@ -13,6 +13,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
+require('lazy.view').hover = 'gd'
+
 M.setup = function(name, config)
     return function()
         if config then
