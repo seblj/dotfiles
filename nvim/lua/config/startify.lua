@@ -5,8 +5,8 @@ vim.g.startify_files_number = 6
 
 vim.g.startify_commands = {
     { 'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()' },
-    { 'PackerSync', 'PackerSync' },
-    { 'PackerInstall', 'PackerInstall' },
+    { 'Packer sync', 'Packer sync' },
+    { 'Packer install', 'Packer install' },
     { 'StartupTime', 'StartupTime' },
 }
 
