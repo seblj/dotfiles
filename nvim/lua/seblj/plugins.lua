@@ -14,6 +14,7 @@ lazy.lazy_setup({
         'nvim-telescope/telescope.nvim',
         config = conf('telescope'),
         init = init('telescope'),
+        cmd = 'Telescope',
         dependencies = {
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
             { 'nvim-telescope/telescope-file-browser.nvim' },
