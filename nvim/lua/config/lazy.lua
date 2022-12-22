@@ -13,16 +13,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.runtimepath:prepend(lazypath)
 
-M.setup = function(name, config)
-    return function()
-        if config then
-            require(name).setup(config)
-        else
-            require(name).setup()
-        end
-    end
-end
-
 M.conf = function(name)
     return function()
         local c = require(string.format('config.%s', name))
@@ -38,7 +28,7 @@ M.init = function(name)
     end
 end
 
-M.lazy_setup = function(config)
+M.setup = function(config)
     for k, val in ipairs(config) do
         local plugin = type(val) == 'table' and val[1] or val
         local author, name = unpack(vim.split(plugin, '/'))

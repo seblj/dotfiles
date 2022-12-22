@@ -6,7 +6,7 @@ vim.g.startify_files_number = 6
 vim.g.startify_commands = {
     { 'Dotfiles', 'lua require("config.telescope.utils").edit_dotfiles()' },
     { 'Lazy sync', 'Lazy sync' },
-    { 'Lazy install', 'Lazy install' },
+    { 'Lazy update', 'Lazy update' },
     { 'StartupTime', 'StartupTime' },
 }
 
