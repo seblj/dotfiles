@@ -54,6 +54,9 @@ M.make_config = function()
             if client.supports_method('textDocument/codeAction') then
                 require('config.lspconfig.lightbulb').setup()
             end
+            if client.supports_method('textDocument/hover') then
+                require('config.lspconfig.hover').setup()
+            end
             if client.server_capabilities.documentSymbolProvider then
                 require('nvim-navic').attach(client, bufnr)
             end
