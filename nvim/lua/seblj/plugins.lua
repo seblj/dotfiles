@@ -37,8 +37,6 @@ lazy.setup({
         'neovim/nvim-lspconfig',
         config = conf('lspconfig'),
         event = { 'BufReadPre', 'BufNewFile' },
-        -- https://github.com/neovim/nvim-lspconfig/issues/2355
-        commit = '3e2cc70',
         dependencies = {
             { 'folke/neodev.nvim' },
             { 'b0o/schemastore.nvim' },
