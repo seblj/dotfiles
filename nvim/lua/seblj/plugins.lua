@@ -46,7 +46,7 @@ lazy.setup({
             { 'SmiteshP/nvim-navic' },
         },
     },
-    { 'j-hui/fidget.nvim', config = { text = { spinner = 'dots' } } },
+    { 'j-hui/fidget.nvim', opts = { text = { spinner = 'dots' } } },
 
     -- Completion
     {
@@ -72,7 +72,7 @@ lazy.setup({
 
     -- Git
     { 'lewis6991/gitsigns.nvim', config = conf('gitsigns'), event = { 'BufReadPre', 'BufWritePre' } },
-    { 'akinsho/git-conflict.nvim', config = { highlights = { current = 'DiffChange' } } },
+    { 'akinsho/git-conflict.nvim', opts = { highlights = { current = 'DiffChange' } } },
 
     -- Packageinfo
     { 'saecki/crates.nvim', config = true, event = 'BufReadPre Cargo.toml' },
@@ -94,7 +94,7 @@ lazy.setup({
     { 'tamago324/lir.nvim', config = conf('lir') },
 
     -- UI
-    { 'NvChad/nvim-colorizer.lua', config = { user_default_options = { names = false } } },
+    { 'NvChad/nvim-colorizer.lua', opts = { user_default_options = { names = false } } },
     { 'mhinz/vim-startify', config = conf('startify') },
     { 'feline-nvim/feline.nvim', config = conf('feline') },
     { 'rcarriga/nvim-notify', config = conf('notify') },
@@ -105,7 +105,7 @@ lazy.setup({
     { 'NTBBloodbath/rest.nvim', ft = 'http' },
     { 'mbbill/undotree', cmd = 'UndotreeToggle' },
 
-    { 'windwp/nvim-autopairs', config = { ignored_next_char = '[%w%.%{%[%(%"%\']' }, event = 'InsertEnter' },
+    { 'windwp/nvim-autopairs', opts = { ignored_next_char = '[%w%.%{%[%(%"%\']' }, event = 'InsertEnter' },
     {
         'godlygeek/tabular',
         init = function()
