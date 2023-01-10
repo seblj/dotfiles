@@ -1,5 +1,6 @@
 local M = {}
 local util = require('vim.lsp.util')
+local popup_bufnr, popup_winnr
 
 local function make_position_param(mouse, bufnr, offset_encoding)
     local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
@@ -32,13 +33,11 @@ local make_params = function(mouse, bufnr, offset_encoding)
     }
 end
 
-local function hover_handler(_, result, ctx, config)
+local function hover_handler(_, result, _, config)
     config = {
         border = CUSTOM_BORDER,
         silent = true,
-        focusable = false,
         relative = 'mouse',
-        focus_id = ctx.method,
     }
     if not (result and result.contents) then
         if config.silent ~= true then
@@ -52,21 +51,46 @@ local function hover_handler(_, result, ctx, config)
         vim.notify('No information available')
         return
     end
-    return util.open_floating_preview(markdown_lines, 'markdown', config)
+    popup_bufnr, popup_winnr = util.open_floating_preview(markdown_lines, 'markdown', config)
+    return popup_bufnr, popup_winnr
+end
+
+local try_close_window = function(bufnr)
+    if bufnr ~= popup_bufnr then
+        if popup_winnr and vim.api.nvim_win_is_valid(popup_winnr) then
+            vim.schedule(function()
+                vim.api.nvim_win_close(popup_winnr, true)
+            end)
+        end
+    end
 end
 
 M.setup = function()
     local hover_timer = nil
     vim.o.mousemoveevent = true
 
+    vim.api.nvim_create_autocmd({ 'FocusLost', 'FocusGained' }, {
+        pattern = '*',
+        group = vim.api.nvim_create_augroup('HoverFocusClear', { clear = true }),
+        callback = function()
+            local mouse = vim.fn.getmousepos()
+            local bufnr = vim.api.nvim_win_get_buf(mouse.winid)
+            try_close_window(bufnr)
+        end,
+    })
+
     vim.keymap.set({ '', 'i' }, '<MouseMove>', function()
         if hover_timer then
             hover_timer:close()
         end
+
         hover_timer = vim.defer_fn(function()
             hover_timer = nil
             local mouse = vim.fn.getmousepos()
             local bufnr = vim.api.nvim_win_get_buf(mouse.winid)
+
+            try_close_window(bufnr)
+
             local params = make_params(mouse, bufnr)
             if not params then
                 return
