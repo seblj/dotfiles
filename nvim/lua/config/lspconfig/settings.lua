@@ -1,6 +1,6 @@
 ---------- LANGUAGE SERVERS ----------
 
-require('neodev').setup({
+require("neodev").setup({
     library = {
         plugins = false,
     },
@@ -10,16 +10,16 @@ return {
     volar = {
         init_options = {
             typescript = {
-                serverPath = '/usr/local/lib/node_modules/typescript/lib/tsserverlibrary.js',
+                serverPath = "/usr/local/lib/node_modules/typescript/lib/tsserverlibrary.js",
             },
         },
     },
 
     rust_analyzer = {
         settings = {
-            ['rust-analyzer'] = {
+            ["rust-analyzer"] = {
                 rustfmt = {
-                    extraArgs = { '+nightly' },
+                    extraArgs = { "+nightly" },
                 },
             },
         },
@@ -30,7 +30,7 @@ return {
             Lua = {
                 workspace = {
                     library = {
-                        ['/Users/sebastianlyngjohansen/.hammerspoon/Spoons/EmmyLua.spoon/annotations'] = true,
+                        ["/Users/sebastianlyngjohansen/.hammerspoon/Spoons/EmmyLua.spoon/annotations"] = true,
                     },
                 },
             },
@@ -40,14 +40,14 @@ return {
     jsonls = {
         settings = {
             json = {
-                schemas = require('schemastore').json.schemas(),
+                schemas = require("schemastore").json.schemas(),
             },
         },
     },
 
     omnisharp = {
         handlers = {
-            ['textDocument/definition'] = require('omnisharp_extended').handler,
+            ["textDocument/definition"] = require("omnisharp_extended").handler,
         },
     },
 }

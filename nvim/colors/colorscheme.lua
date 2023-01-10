@@ -1,6 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
-local highlight = function(colors)
+local function highlight(colors)
     for name, opts in pairs(colors) do
         vim.api.nvim_set_hl(0, name, opts)
     end
@@ -9,25 +9,25 @@ end
 ---------- COLORS ----------
 
 local c = {
-    bg = '#1c1c1c',
-    bg2 = '#3f424f',
-    bg3 = '#121212',
-    bg4 = '#2f2f2f',
-    fg = '#eeeeee',
-    diff_red = '#55393d',
-    diff_green = '#394634',
-    diff_red_bright = '#71394a',
-    diff_green_bright = '#5d7255',
-    diff_blue = '#354157',
-    changed_text = '#4b5c7c',
-    border = '#80A0C2',
-    red = '#fc5d7c',
-    orange = '#fea24f',
-    yellow = '#e7c664',
-    green = '#9ed072',
-    blue = '#76cce0',
-    purple = '#b39df3',
-    grey = '#7f8490',
+    bg = "#1c1c1c",
+    bg2 = "#3f424f",
+    bg3 = "#121212",
+    bg4 = "#2f2f2f",
+    fg = "#eeeeee",
+    diff_red = "#55393d",
+    diff_green = "#394634",
+    diff_red_bright = "#71394a",
+    diff_green_bright = "#5d7255",
+    diff_blue = "#354157",
+    changed_text = "#4b5c7c",
+    border = "#80A0C2",
+    red = "#fc5d7c",
+    orange = "#fea24f",
+    yellow = "#e7c664",
+    green = "#9ed072",
+    blue = "#76cce0",
+    purple = "#b39df3",
+    grey = "#7f8490",
 }
 
 highlight({
@@ -83,10 +83,10 @@ highlight({
     VisualNOS = { bg = c.bg2, underline = true },
     WarningMsg = { fg = c.yellow, bold = true },
     Whitespace = { fg = c.bg2 },
-    WildMenu = { link = 'PmenuSel' },
-    iCursor = { link = 'Cursor' },
-    lCursor = { link = 'Cursor' },
-    vCursor = { link = 'Cursor' },
+    WildMenu = { link = "PmenuSel" },
+    iCursor = { link = "Cursor" },
+    lCursor = { link = "Cursor" },
+    vCursor = { link = "Cursor" },
 
     ---------- SYNTAX GROUP NAMES ----------
 
@@ -128,64 +128,64 @@ highlight({
 
     ---------- TREESITTER ----------
 
-    ['@constructor'] = { fg = c.fg },
-    ['@constant.builtin'] = { fg = c.orange },
-    ['@field'] = { fg = c.green },
-    ['@function.builtin'] = { link = 'Function' },
-    ['@function.macro'] = { link = 'Function' },
-    ['@namespace'] = { fg = c.blue },
-    ['@text.note'] = { fg = c.blue, bold = true },
-    ['@parameter'] = { fg = c.fg },
-    ['@parameter.reference'] = { link = '@parameter' },
-    ['@property'] = { fg = c.green },
-    ['@punctuation.special'] = { fg = c.red },
-    ['@string.escape'] = { link = 'String' },
-    ['@tag'] = { link = 'Tag' },
-    ['@tag.attribute'] = { fg = c.green },
-    ['@tag.delimiter'] = { fg = c.red },
-    ['@variable.builtin'] = { fg = c.orange },
-    ['@type.custom'] = { fg = c.purple },
+    ["@constructor"] = { fg = c.fg },
+    ["@constant.builtin"] = { fg = c.orange },
+    ["@field"] = { fg = c.green },
+    ["@function.builtin"] = { link = "Function" },
+    ["@function.macro"] = { link = "Function" },
+    ["@namespace"] = { fg = c.blue },
+    ["@text.note"] = { fg = c.blue, bold = true },
+    ["@parameter"] = { fg = c.fg },
+    ["@parameter.reference"] = { link = "@parameter" },
+    ["@property"] = { fg = c.green },
+    ["@punctuation.special"] = { fg = c.red },
+    ["@string.escape"] = { link = "String" },
+    ["@tag"] = { link = "Tag" },
+    ["@tag.attribute"] = { fg = c.green },
+    ["@tag.delimiter"] = { fg = c.red },
+    ["@variable.builtin"] = { fg = c.orange },
+    ["@type.custom"] = { fg = c.purple },
 
     -- Treesitter doesn't highlight these by default anymore, and neovim don't
     -- have them upstream yet
-    ['@none'] = { default = true },
-    ['@punctuation.delimiter'] = { link = 'Delimiter', default = true },
-    ['@punctuation.bracket'] = { link = 'Delimiter', default = true },
+    ["@none"] = { default = true },
+    ["@punctuation.delimiter"] = { link = "Delimiter", default = true },
+    ["@punctuation.bracket"] = { link = "Delimiter", default = true },
 
-    ['@string.regex'] = { link = 'String', default = true },
+    ["@string.regex"] = { link = "String", default = true },
 
-    ['@function.call'] = { link = '@function', default = true },
-    ['@method.call'] = { link = '@method', default = true },
-    ['@annotation'] = { link = 'PreProc', default = true },
-    ['@attribute'] = { link = 'PreProc', default = true },
-    ['@symbol'] = { link = 'Identifier', default = true },
+    ["@function.call"] = { link = "@function", default = true },
+    ["@method.call"] = { link = "@method", default = true },
+    ["@annotation"] = { link = "PreProc", default = true },
+    ["@attribute"] = { link = "PreProc", default = true },
+    ["@symbol"] = { link = "Identifier", default = true },
 
-    ['@keyword.function'] = { link = 'Keyword', default = true },
-    ['@keyword.operator'] = { link = '@operator', default = true },
-    ['@keyword.return'] = { link = '@keyword', default = true },
+    ["@keyword.function"] = { link = "Keyword", default = true },
+    ["@keyword.operator"] = { link = "@operator", default = true },
+    ["@keyword.return"] = { link = "@keyword", default = true },
 
-    ['@type.builtin'] = { link = 'Type', default = true },
-    ['@type.qualifier'] = { link = 'Type', default = true },
+    ["@type.builtin"] = { link = "Type", default = true },
+    ["@type.qualifier"] = { link = "Type", default = true },
 
-    ['@text'] = { link = '@none', default = true },
-    ['@text.strong'] = { bold = true, default = true },
-    ['@text.emphasis'] = { italic = true, default = true },
-    ['@text.strike'] = { strikethrough = true },
+    ["@text"] = { link = "@none", default = true },
+    ["@text.strong"] = { bold = true, default = true },
+    ["@text.emphasis"] = { italic = true, default = true },
+    ["@text.strike"] = { strikethrough = true },
 
-    ['@text.reference'] = { link = 'Constant', default = true },
-    ['@text.environment'] = { link = 'Macro', default = true },
-    ['@text.environment.name'] = { link = 'Type', default = true },
-    ['@text.title'] = { link = 'Title', default = true },
-    ['@text.literal'] = { link = 'String', default = true },
-    ['@text.uri'] = { link = 'Underlined', default = true },
-    ['@text.warning'] = { link = 'Todo', default = true },
-    ['@text.danger'] = { link = 'WarningMsg', default = true },
+    ["@text.reference"] = { link = "Constant", default = true },
+    ["@text.environment"] = { link = "Macro", default = true },
+    ["@text.environment.name"] = { link = "Type", default = true },
+    ["@text.title"] = { link = "Title", default = true },
+    ["@text.literal"] = { link = "String", default = true },
+    ["@text.uri"] = { link = "Underlined", default = true },
+    ["@text.warning"] = { link = "Todo", default = true },
+    ["@text.danger"] = { link = "WarningMsg", default = true },
 
     ---------- LANGUGE SPECIFIC ----------
 
-    typescriptParenExp = { link = '@punctuation.bracket' },
-    typescript1 = { link = '@punctuation.bracket' },
-    typescriptParens = { link = '@punctuation.bracket' },
+    typescriptParenExp = { link = "@punctuation.bracket" },
+    typescript1 = { link = "@punctuation.bracket" },
+    typescriptParens = { link = "@punctuation.bracket" },
 
     ---------- NVIM LSPCONFIG ----------
 
@@ -203,7 +203,7 @@ highlight({
     LspReferenceWrite = { bg = c.bg2 },
     -- I do not agree with not linking this to FloatBorder by default, but oh
     -- well...
-    LspInfoBorder = { link = 'FloatBorder' },
+    LspInfoBorder = { link = "FloatBorder" },
 
     ---------- GIT ----------
 
@@ -239,98 +239,98 @@ highlight({
     ---------- NVIM TREE ----------
 
     NvimTreeFolderName = { fg = c.blue },
-    NvimTreeOpenedFolderName = { link = 'NvimTreeFolderName' },
-    NvimTreeEmptyFolderName = { link = 'NvimTreeFolderName' },
+    NvimTreeOpenedFolderName = { link = "NvimTreeFolderName" },
+    NvimTreeEmptyFolderName = { link = "NvimTreeFolderName" },
 
     ---------- CMP ----------
 
     CmpCompletionWindow = { bg = c.bg },
     CmpItemAbbrMatch = { fg = c.purple },
     CmpItemKind = { fg = c.blue },
-    CmpItemKindClass = { link = '@type' },
+    CmpItemKindClass = { link = "@type" },
     CmpItemKindColor = { fg = c.yellow },
-    CmpItemKindConstant = { link = '@constant' },
-    CmpItemKindConstructor = { link = '@constructor' },
+    CmpItemKindConstant = { link = "@constant" },
+    CmpItemKindConstructor = { link = "@constructor" },
     CmpItemKindEnum = { fg = c.blue },
     CmpItemKindEnumMember = { fg = c.purple },
     CmpItemKindEvent = { fg = c.red },
-    CmpItemKindField = { link = '@field' },
+    CmpItemKindField = { link = "@field" },
     CmpItemKindFile = { fg = c.yellow },
     CmpItemKindFolder = { fg = c.yellow },
-    CmpItemKindFunction = { link = '@function' },
+    CmpItemKindFunction = { link = "@function" },
     CmpItemKindInterface = { fg = c.blue },
-    CmpItemKindKeyword = { link = '@keyword' },
-    CmpItemKindMethod = { link = '@method' },
-    CmpItemKindModule = { link = '@namespace' },
-    CmpItemKindOperator = { link = '@operator' },
-    CmpItemKindProperty = { link = '@property' },
+    CmpItemKindKeyword = { link = "@keyword" },
+    CmpItemKindMethod = { link = "@method" },
+    CmpItemKindModule = { link = "@namespace" },
+    CmpItemKindOperator = { link = "@operator" },
+    CmpItemKindProperty = { link = "@property" },
     CmpItemKindReference = { fg = c.yellow },
     CmpItemKindSnippet = { fg = c.yellow },
-    CmpItemKindStruct = { link = '@type' },
+    CmpItemKindStruct = { link = "@type" },
     CmpItemKindText = { fg = c.fg },
-    CmpItemKindTypeParameter = { link = '@type' },
+    CmpItemKindTypeParameter = { link = "@type" },
     CmpItemKindUnit = { fg = c.purple },
     CmpItemKindValue = { fg = c.purple },
-    CmpItemKindVariable = { link = '@variable' },
+    CmpItemKindVariable = { link = "@variable" },
 
-    NavicIconsFile = { link = 'CmpItemKindFile' },
-    NavicIconsModule = { link = 'CmpItemKindModule' },
-    NavicIconsNamespace = { link = 'CmpItemKindModule' },
-    NavicIconsPackage = { link = 'Boolean' },
-    NavicIconsClass = { link = 'CmpItemKindClass' },
-    NavicIconsMethod = { link = 'CmpItemKindMethod' },
-    NavicIconsProperty = { link = 'CmpItemKindProperty' },
-    NavicIconsField = { link = 'CmpItemKindField' },
-    NavicIconsConstructor = { link = 'CmpItemKindConstructor' },
-    NavicIconsEnum = { link = 'CmpItemKindEnum' },
-    NavicIconsInterface = { link = 'CmpItemKindInterface' },
-    NavicIconsFunction = { link = 'CmpItemKindFunction' },
-    NavicIconsVariable = { link = 'CmpItemKindVariable' },
-    NavicIconsConstant = { link = 'CmpItemKindConstant' },
-    NavicIconsString = { link = 'String' },
-    NavicIconsNumber = { link = 'Number' },
-    NavicIconsBoolean = { link = 'Boolean' },
-    NavicIconsArray = { link = 'CmpItemKindProperty' },
-    NavicIconsObject = { link = 'CmpItemKindField' },
-    NavicIconsKey = { link = 'CmpItemKindKeyword' },
-    NavicIconsNull = { link = 'CmpItemKindConstant' },
-    NavicIconsEnumMember = { link = 'CmpItemKindEnumMember' },
-    NavicIconsStruct = { link = 'CmpItemKindStruct' },
-    NavicIconsEvent = { link = 'CmpItemKindEvent' },
-    NavicIconsOperator = { link = 'CmpItemKindOperator' },
-    NavicIconsTypeParameter = { link = 'CmpItemKindTypeParameter' },
-    NavicText = { link = 'CmpItemKindText' },
+    NavicIconsFile = { link = "CmpItemKindFile" },
+    NavicIconsModule = { link = "CmpItemKindModule" },
+    NavicIconsNamespace = { link = "CmpItemKindModule" },
+    NavicIconsPackage = { link = "Boolean" },
+    NavicIconsClass = { link = "CmpItemKindClass" },
+    NavicIconsMethod = { link = "CmpItemKindMethod" },
+    NavicIconsProperty = { link = "CmpItemKindProperty" },
+    NavicIconsField = { link = "CmpItemKindField" },
+    NavicIconsConstructor = { link = "CmpItemKindConstructor" },
+    NavicIconsEnum = { link = "CmpItemKindEnum" },
+    NavicIconsInterface = { link = "CmpItemKindInterface" },
+    NavicIconsFunction = { link = "CmpItemKindFunction" },
+    NavicIconsVariable = { link = "CmpItemKindVariable" },
+    NavicIconsConstant = { link = "CmpItemKindConstant" },
+    NavicIconsString = { link = "String" },
+    NavicIconsNumber = { link = "Number" },
+    NavicIconsBoolean = { link = "Boolean" },
+    NavicIconsArray = { link = "CmpItemKindProperty" },
+    NavicIconsObject = { link = "CmpItemKindField" },
+    NavicIconsKey = { link = "CmpItemKindKeyword" },
+    NavicIconsNull = { link = "CmpItemKindConstant" },
+    NavicIconsEnumMember = { link = "CmpItemKindEnumMember" },
+    NavicIconsStruct = { link = "CmpItemKindStruct" },
+    NavicIconsEvent = { link = "CmpItemKindEvent" },
+    NavicIconsOperator = { link = "CmpItemKindOperator" },
+    NavicIconsTypeParameter = { link = "CmpItemKindTypeParameter" },
+    NavicText = { link = "CmpItemKindText" },
     NavicSeparator = { fg = c.fg },
 })
 
 -- When using ':Messages', the text is highlighted with
 -- 'NonText' for some reason Fix this to actually be readable
 -- without changing hl group for everything it's used for
-local group = augroup('FixQFColorscheme', {})
-autocmd('FileType', {
+local group = augroup("FixQFColorscheme", {})
+autocmd("FileType", {
     group = group,
-    pattern = 'qf',
+    pattern = "qf",
     callback = function()
-        vim.opt.winhighlight = 'NonText:Normal'
+        vim.opt.winhighlight = "NonText:Normal"
     end,
-    desc = 'Fix colors in qflist',
+    desc = "Fix colors in qflist",
 })
 
 ---------- TERM COLORS ----------
 
-vim.g.terminal_color_0 = '#1d1f21'
-vim.g.terminal_color_1 = '#ff2200'
-vim.g.terminal_color_2 = '#198844'
-vim.g.terminal_color_3 = '#bbbb00'
-vim.g.terminal_color_4 = '#00bbbb'
-vim.g.terminal_color_5 = '#bb00bb'
-vim.g.terminal_color_6 = '#00bbbb'
-vim.g.terminal_color_7 = '#f5f5f5'
-vim.g.terminal_color_8 = '#989698'
-vim.g.terminal_color_9 = '#ff2200'
-vim.g.terminal_color_10 = '#198844'
-vim.g.terminal_color_11 = '#d8865f'
-vim.g.terminal_color_12 = '#00bbbb'
-vim.g.terminal_color_13 = '#bb00bb'
-vim.g.terminal_color_14 = '#00bbbb'
-vim.g.terminal_color_15 = '#ffffff'
+vim.g.terminal_color_0 = "#1d1f21"
+vim.g.terminal_color_1 = "#ff2200"
+vim.g.terminal_color_2 = "#198844"
+vim.g.terminal_color_3 = "#bbbb00"
+vim.g.terminal_color_4 = "#00bbbb"
+vim.g.terminal_color_5 = "#bb00bb"
+vim.g.terminal_color_6 = "#00bbbb"
+vim.g.terminal_color_7 = "#f5f5f5"
+vim.g.terminal_color_8 = "#989698"
+vim.g.terminal_color_9 = "#ff2200"
+vim.g.terminal_color_10 = "#198844"
+vim.g.terminal_color_11 = "#d8865f"
+vim.g.terminal_color_12 = "#00bbbb"
+vim.g.terminal_color_13 = "#bb00bb"
+vim.g.terminal_color_14 = "#00bbbb"
+vim.g.terminal_color_15 = "#ffffff"

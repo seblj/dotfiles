@@ -5,38 +5,38 @@ local M = {}
 
 local resize_size = 1
 
-local pos_size = '+' .. resize_size
-local neg_size = '-' .. resize_size
+local pos_size = "+" .. resize_size
+local neg_size = "-" .. resize_size
 
-local get_direction = function(pos)
+local function get_direction(pos)
     local this = vim.fn.winnr()
     vim.cmd.wincmd(pos)
     local next = vim.fn.winnr()
-    vim.cmd.wincmd({ 'w', count = this })
+    vim.cmd.wincmd({ "w", count = this })
     return this == next
 end
 
-local is_bottom_window = function()
-    return get_direction('j') and not get_direction('k')
+local function is_bottom_window()
+    return get_direction("j") and not get_direction("k")
 end
 
-local is_right_window = function()
-    return get_direction('l') and not get_direction('h')
+local function is_right_window()
+    return get_direction("l") and not get_direction("h")
 end
 
-M.resize_up = function()
+function M.resize_up()
     return vim.cmd.resize(is_bottom_window() and pos_size or neg_size)
 end
 
-M.resize_down = function()
+function M.resize_down()
     return vim.cmd.resize(is_bottom_window() and neg_size or pos_size)
 end
 
-M.resize_left = function()
+function M.resize_left()
     return vim.cmd.resize({ is_right_window() and pos_size or neg_size, mods = { vertical = true } })
 end
 
-M.resize_right = function()
+function M.resize_right()
     return vim.cmd.resize({ is_right_window() and neg_size or pos_size, mods = { vertical = true } })
 end
 

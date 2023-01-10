@@ -1,13 +1,13 @@
 -- Some inspiration from https://github.com/JoosepAlviste/nvim-ts-context-commentstring
 
 local react = {
-    jsx_element = '{/* %s */}',
-    jsx_fragment = '{/* %s */}',
-    jsx_attribute = '// %s',
-    comment = '// %s',
-    call_expression = '// %s',
-    statement_block = '// %s',
-    spread_element = '// %s',
+    jsx_element = "{/* %s */}",
+    jsx_fragment = "{/* %s */}",
+    jsx_attribute = "// %s",
+    comment = "// %s",
+    call_expression = "// %s",
+    statement_block = "// %s",
+    spread_element = "// %s",
 }
 
 local config = {
@@ -16,25 +16,25 @@ local config = {
 }
 
 local uncomment_calculation_config = {
-    c = { '// %s', '/* %s */' },
-    c_sharp = { '// %s', '/* %s */' },
-    tsx = { '// %s', '{/* %s */}' },
-    javascript = { '// %s', '{/* %s */}' },
+    c = { "// %s", "/* %s */" },
+    c_sharp = { "// %s", "/* %s */" },
+    tsx = { "// %s", "{/* %s */}" },
+    javascript = { "// %s", "{/* %s */}" },
 }
 
-local parsers = require('nvim-treesitter.parsers')
+local parsers = require("nvim-treesitter.parsers")
 
-local get_ft_commentstring = function(ft)
+local function get_ft_commentstring(ft)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.bo[buf].ft = ft
     return vim.bo[buf].commentstring
 end
 
-local default_commentstring = function(ft)
+local function default_commentstring(ft)
     if vim.bo.ft == ft then
         return get_ft_commentstring(ft)
     end
-    local filetypes = vim.fn.getcompletion('', 'filetype')
+    local filetypes = vim.fn.getcompletion("", "filetype")
     for _, lang in ipairs(filetypes) do
         if lang == ft then
             return get_ft_commentstring(ft)
@@ -43,17 +43,17 @@ local default_commentstring = function(ft)
     return vim.bo.commentstring
 end
 
-local uncomment_calculation = function(language)
-    local parse_line = function(commentstring)
+local function uncomment_calculation(language)
+    local function parse_line(commentstring)
         local curr_line = vim.api.nvim_get_current_line()
-        local first_char = vim.fn.match(curr_line, '\\S')
+        local first_char = vim.fn.match(curr_line, "\\S")
 
-        local a = vim.split(commentstring, '%s', { plain = true })
-        local first = a[1]:gsub('%s+', '')
-        local second = a[2]:gsub('%s+', '')
+        local a = vim.split(commentstring, "%s", { plain = true })
+        local first = a[1]:gsub("%s+", "")
+        local second = a[2]:gsub("%s+", "")
 
-        local start = string.sub(curr_line, first_char, first_char + #first):gsub('%s+', '')
-        local last = string.sub(curr_line, 0 - #second, -1):gsub('%s+', '')
+        local start = string.sub(curr_line, first_char, first_char + #first):gsub("%s+", "")
+        local last = string.sub(curr_line, 0 - #second, -1):gsub("%s+", "")
 
         if first == start and (second == last or #second == 0) then
             return commentstring
@@ -72,7 +72,7 @@ end
 
 local function contains(tree, range)
     for lang, child in pairs(tree:children()) do
-        if lang ~= 'comment' and child:contains(range) then
+        if lang ~= "comment" and child:contains(range) then
             return contains(child, range)
         end
     end
@@ -96,7 +96,7 @@ local function calculate_commentstring()
 
     local location = {
         vim.api.nvim_win_get_cursor(0)[1] - 1,
-        vim.fn.match(vim.fn.getline('.'), '\\S'),
+        vim.fn.match(vim.fn.getline("."), "\\S"),
     }
 
     local range = {
@@ -130,17 +130,17 @@ local function calculate_commentstring()
     return check_node(node, config[lang])
 end
 
-vim.keymap.set({ 'n', 'x', 'o' }, 'gc', function()
+vim.keymap.set({ "n", "x", "o" }, "gc", function()
     vim.bo.commentstring = calculate_commentstring()
-    return '<Plug>Commentary'
+    return "<Plug>Commentary"
 end, { expr = true })
 
-vim.keymap.set('n', 'gcc', function()
+vim.keymap.set("n", "gcc", function()
     vim.bo.commentstring = calculate_commentstring()
-    return '<Plug>CommentaryLine'
+    return "<Plug>CommentaryLine"
 end, { expr = true })
 
-vim.keymap.set('n', 'gcu', function()
+vim.keymap.set("n", "gcu", function()
     vim.bo.commentstring = calculate_commentstring()
-    return '<Plug>Commentary<Plug>Commentary'
+    return "<Plug>Commentary<Plug>Commentary"
 end, { expr = true })

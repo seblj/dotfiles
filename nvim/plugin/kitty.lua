@@ -3,27 +3,27 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
 -- Make kitty distinguish between <C-i> and <Tab>
-if vim.env.TERM == 'xterm-kitty' then
-    local group = augroup('KittyFix', {})
-    local kitty_fix = function(s)
-        if eval('v:event.chan') == 0 then
-            vim.fn['chansend'](eval('v:stderr'), s)
+if vim.env.TERM == "xterm-kitty" then
+    local group = augroup("KittyFix", {})
+    local function kitty_fix(s)
+        if eval("v:event.chan") == 0 then
+            vim.fn["chansend"](eval("v:stderr"), s)
         end
     end
-    autocmd('UIEnter', {
+    autocmd("UIEnter", {
         group = group,
-        pattern = '*',
+        pattern = "*",
         callback = function()
-            kitty_fix('\x1b[>1u')
+            kitty_fix("\x1b[>1u")
         end,
-        desc = 'Fix kitty',
+        desc = "Fix kitty",
     })
-    autocmd('UILeave', {
+    autocmd("UILeave", {
         group = group,
-        pattern = '*',
+        pattern = "*",
         callback = function()
-            kitty_fix('\x1b[<1u')
+            kitty_fix("\x1b[<1u")
         end,
-        desc = 'Fix kitty',
+        desc = "Fix kitty",
     })
 end

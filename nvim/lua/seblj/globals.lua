@@ -4,8 +4,8 @@ P = function(...)
     vim.pretty_print(...)
 end
 
-if pcall(require, 'plenary') then
-    RELOAD = require('plenary.reload').reload_module
+if pcall(require, "plenary") then
+    RELOAD = require("plenary.reload").reload_module
 
     R = function(name)
         RELOAD(name)
@@ -13,7 +13,7 @@ if pcall(require, 'plenary') then
     end
 end
 
-CUSTOM_BORDER = { '', '', '', '', '', '', '', '' }
+CUSTOM_BORDER = { "", "", "", "", "", "", "", "" }
 
 -- Override vim.keymap.set to have silent as default
 local map = vim.keymap.set

@@ -3,9 +3,9 @@ local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
-local border_line = '─'
+local border_line = "─"
 
-local calculate_width = function(opts, lines)
+local function calculate_width(opts, lines)
     local width = opts.width
     local max_width = opts.max_width
     local min_width = opts.min_width or 0
@@ -31,15 +31,15 @@ local calculate_width = function(opts, lines)
     return width
 end
 
-local set_cursor = function()
-    local current_line = vim.fn.line('.')
+local function set_cursor()
+    local current_line = vim.fn.line(".")
     local max_lines = vim.api.nvim_buf_line_count(0)
     if current_line < 3 and max_lines >= 3 then
         vim.api.nvim_win_set_cursor(0, { 3, 1 })
     end
 end
 
-M.popup_create = function(opts)
+function M.popup_create(opts)
     local lines, syntax = opts.lines or {}, opts.syntax
     local title = lines[1]
 
@@ -53,60 +53,60 @@ M.popup_create = function(opts)
     opts.border = opts.border or CUSTOM_BORDER
     local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
 
-    vim.wo[winnr].winhl = 'Normal:NormalFloat'
+    vim.wo[winnr].winhl = "Normal:NormalFloat"
     if opts.enter then
         vim.api.nvim_set_current_win(winnr)
-        keymap('n', '<ESC>', function()
+        keymap("n", "<ESC>", function()
             vim.api.nvim_win_close(0, true)
         end, {
             buffer = true,
-            desc = 'Close popup',
+            desc = "Close popup",
         })
-        keymap('n', 'q', function()
+        keymap("n", "q", function()
             vim.api.nvim_win_close(0, true)
         end, {
             buffer = true,
-            desc = 'Close popup',
+            desc = "Close popup",
         })
     end
     if opts.on_confirm then
-        keymap('i', '<CR>', function()
+        keymap("i", "<CR>", function()
             opts.on_confirm()
             vim.cmd.stopinsert()
         end, {
             buffer = true,
-            desc = 'Confirm selection',
+            desc = "Confirm selection",
         })
-        keymap('n', '<CR>', function()
+        keymap("n", "<CR>", function()
             opts.on_confirm()
         end, {
             buffer = true,
-            desc = 'Confirm selection',
+            desc = "Confirm selection",
         })
     end
     if opts.hidden_cursor then
-        require('seblj.utils').setup_hidden_cursor()
-        local group = augroup('UISetCursor', {})
-        autocmd('CursorMoved', {
+        require("seblj.utils").setup_hidden_cursor()
+        local group = augroup("UISetCursor", {})
+        autocmd("CursorMoved", {
             group = group,
-            pattern = '<buffer>',
+            pattern = "<buffer>",
             callback = function()
                 set_cursor()
             end,
-            desc = 'Hidden cursor',
+            desc = "Hidden cursor",
         })
     end
     if opts.prompt then
         vim.cmd.startinsert()
         vim.bo[popup_bufnr].modifiable = true
-        vim.bo[popup_bufnr].buftype = 'prompt'
+        vim.bo[popup_bufnr].buftype = "prompt"
         vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
     else
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
     end
 
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'Title', 0, 0, #title)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, 'NormalFloat', 1, 0, -1)
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "Title", 0, 0, #title)
+    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "NormalFloat", 1, 0, -1)
 
     return popup_bufnr, winnr
 end

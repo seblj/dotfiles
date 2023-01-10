@@ -1,10 +1,10 @@
-local utils = require('config.luasnip.utils')
+local utils = require("config.luasnip.utils")
 local make = utils.make
 local filename = utils.filename
-local ls = require('luasnip')
+local ls = require("luasnip")
 local i = ls.insert_node
 local f = ls.function_node
-local fmt = require('luasnip.extras.fmt').fmt
+local fmt = require("luasnip.extras.fmt").fmt
 
 local M = {}
 
@@ -20,7 +20,7 @@ local react_component = fmt(
     {
         insert = i(0),
         filename = f(filename, {}),
-        tab = '\t',
+        tab = "\t",
     }
 )
 
