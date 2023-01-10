@@ -44,6 +44,13 @@ lazy.setup({
             { 'williamboman/mason-lspconfig.nvim', config = true, cmd = 'LspInstall' },
             { 'Hoffs/omnisharp-extended-lsp.nvim' },
             { 'SmiteshP/nvim-navic' },
+            {
+                'seblj/nvim-lsp-extras',
+                opts = {
+                    signature = { border = CUSTOM_BORDER },
+                    mouse_hover = { border = CUSTOM_BORDER },
+                },
+            },
         },
     },
     { 'j-hui/fidget.nvim', opts = { text = { spinner = 'dots' } } },

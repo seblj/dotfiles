@@ -48,15 +48,6 @@ M.make_config = function()
             require('config.lspconfig.formatting').setup(client)
             mappings()
             signs()
-            if client.server_capabilities.signatureHelpProvider then
-                require('config.lspconfig.signature').setup(client)
-            end
-            if client.supports_method('textDocument/codeAction') then
-                require('config.lspconfig.lightbulb').setup()
-            end
-            if client.supports_method('textDocument/hover') then
-                require('config.lspconfig.hover').setup()
-            end
             if client.server_capabilities.documentSymbolProvider then
                 require('nvim-navic').attach(client, bufnr)
             end
