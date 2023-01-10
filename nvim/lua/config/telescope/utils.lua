@@ -35,10 +35,15 @@ function M.edit_dotfiles()
 end
 
 function M.plugins()
+    local plugins = {}
+    for _, plugin in ipairs(require("lazy").plugins()) do
+        table.insert(plugins, plugin.dir)
+    end
     require("telescope.builtin").find_files({
         cwd = vim.fn.stdpath("data") .. "/lazy",
         follow = true,
         prompt_title = "Plugins",
+        search_dirs = plugins,
     })
 end
 
