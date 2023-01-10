@@ -28,11 +28,14 @@ M.init = function(name)
     end
 end
 
-M.setup = function(config)
+local function walk_spec(config)
     for k, val in ipairs(config) do
         local plugin = type(val) == 'table' and val[1] or val
         local author, name = unpack(vim.split(plugin, '/'))
         local install_path = string.format('%s/projects/plugins/%s', os.getenv('HOME'), name)
+        if val.dependencies then
+            walk_spec(val.dependencies)
+        end
         if author == 'seblj' and vim.loop.fs_stat(install_path) then
             if type(val) == 'table' then
                 val.dev = true
@@ -41,7 +44,10 @@ M.setup = function(config)
             end
         end
     end
+end
 
+M.setup = function(config)
+    walk_spec(config)
     require('lazy').setup(config, {
         dev = {
             path = '~/projects/plugins',
