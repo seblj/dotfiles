@@ -83,7 +83,7 @@ lazy.setup({
 
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },
-    { "vuki656/package-info.nvim", config = conf("packageinfo"), event = "BufReadPre package.json" },
+    { "vuki656/package-info.nvim", config = true, event = "BufReadPre package.json" },
 
     -- Latex
     { "lervag/vimtex", config = conf("vimtex"), ft = { "tex", "bib" } },
@@ -110,7 +110,6 @@ lazy.setup({
     { "iamcco/markdown-preview.nvim", build = "cd app && yarn install" },
     { "dstein64/vim-startuptime", config = conf("startuptime"), cmd = "StartupTime" },
     { "NTBBloodbath/rest.nvim", ft = "http" },
-    { "mbbill/undotree", cmd = "UndotreeToggle" },
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
     {
@@ -122,7 +121,7 @@ lazy.setup({
     {
         "lambdalisue/suda.vim",
         config = function()
-            vim.cmd.cnoreabbrev({ "w!!", "w suda://%" })
+            vim.cmd.cnoreabbrev({ "w!!", "SudaWrite" })
         end,
     },
 

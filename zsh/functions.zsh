@@ -11,7 +11,7 @@ diff_commit() {
 }
 
 fzf_gitmoji() {
-    local cmd="cat $HOME/dotfiles/nvim/lua/config/telescope/gitmoji.json | jq -r '.[] | \"\(.emoji) \(.code) \(.description)\"'"
+    local cmd="cat $HOME/dotfiles/zsh/gitmoji.json | jq -r '.[] | \"\(.emoji) \(.code) \(.description)\"'"
     local result="$(eval "$cmd" | fzf | xargs echo | grep -Eo ':\w+:')"
 
     zle reset-prompt
