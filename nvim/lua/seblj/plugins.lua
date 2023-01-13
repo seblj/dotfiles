@@ -97,7 +97,11 @@ lazy.setup({
     },
 
     -- File tree
-    { "kyazdani42/nvim-tree.lua", config = conf("nvimtree"), keys = { "<leader>nt" } },
+    {
+        "kyazdani42/nvim-tree.lua",
+        config = true,
+        keys = { { "<leader>nt", ":NvimTreeToggle<CR>", desc = "NvimTree: Toggle tree" } },
+    },
     { "tamago324/lir.nvim", config = conf("lir") },
 
     -- UI
@@ -107,7 +111,7 @@ lazy.setup({
     { "rcarriga/nvim-notify", config = conf("notify") },
 
     -- Functionality
-    { "iamcco/markdown-preview.nvim", build = "cd app && yarn install" },
+    { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
     { "dstein64/vim-startuptime", config = conf("startuptime"), cmd = "StartupTime" },
     { "NTBBloodbath/rest.nvim", ft = "http" },
 
