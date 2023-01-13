@@ -90,8 +90,7 @@ end
 
 lir.setup({
     show_hidden_files = true,
-    devicons_enable = true,
-    hide_cursor = true,
+    devicons = { enable = true },
     on_init = function()
         keymap("n", "<C-x>", actions.split, { buffer = true, desc = "Lir: Open horizontal split" })
         keymap("n", "<C-v>", actions.vsplit, { buffer = true, desc = "Lir: Open vertical split" })
