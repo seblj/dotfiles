@@ -1,11 +1,16 @@
 ---------- FILE EXPLORER CONFIG ----------
 
-local actions = require("lir.actions")
-
 require("lir").setup({
     show_hidden_files = true,
     devicons = { enable = true },
-    on_init = function()
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("LirGroup", { clear = true }),
+    pattern = "lir",
+    callback = function()
+        local actions = require("lir.actions")
+
         vim.keymap.set("n", "<C-x>", actions.split, { buffer = true, desc = "Lir: Open horizontal split" })
         vim.keymap.set("n", "<C-v>", actions.vsplit, { buffer = true, desc = "Lir: Open vertical split" })
         vim.keymap.set("n", "<C-t>", actions.tabedit, { buffer = true, desc = "Lir: Open new tab" })
