@@ -35,6 +35,7 @@ vim-markdown-preview.html
 *.dSYM
 _minted-report
 .env
+node_modules
 
 
 # Latex files #
