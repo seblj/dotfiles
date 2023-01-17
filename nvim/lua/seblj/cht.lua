@@ -18,7 +18,7 @@ local core_utils = {
 
 local telescope_selected = {}
 
-local total = utils.union(languages, core_utils)
+local total = vim.list_extend(languages, core_utils)
 
 local function run_cht(query)
     local selected = telescope_selected[1]

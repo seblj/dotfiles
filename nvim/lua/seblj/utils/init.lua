@@ -78,7 +78,6 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
             pattern = string.format("%s/*", root_dir)
         end
     end
-    print(pattern)
     autocmd("BufWritePost", {
         group = augroup("RunOnSave", { clear = true }),
         pattern = pattern,
@@ -174,36 +173,6 @@ function M.save_and_exec()
     end
 end
 
-function M.difference(a, b)
-    local aa = {}
-    for _, v in pairs(a) do
-        aa[v] = true
-    end
-    for _, v in pairs(b) do
-        aa[v] = nil
-    end
-    local ret = {}
-    local n = 0
-    for _, v in pairs(a) do
-        if aa[v] then
-            n = n + 1
-            ret[n] = v
-        end
-    end
-    return ret
-end
-
-function M.union(a, b)
-    local list = {}
-    list = a
-    for _, v in pairs(b) do
-        if not vim.tbl_contains(list, v) then
-            table.insert(list, v)
-        end
-    end
-    return list
-end
-
 function M.read_file(path)
     local fd = assert(vim.loop.fs_open(path, "r", 438))
     local stat = assert(vim.loop.fs_fstat(fd))
@@ -219,18 +188,6 @@ function M.override_queries(lang, query_name)
             M.read_file(queries_folder .. string.format("/%s/%s.scm", lang, query_name))
         )
     end
-end
-
-function M.get_syntax_hl()
-    if vim.fn.exists("*synstack") == 0 then
-        return
-    end
-    local syntax = {}
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    for _, id in ipairs(vim.fn.synstack(line, col + 1)) do
-        table.insert(syntax, vim.fn.synIDattr(id, "name"))
-    end
-    P(syntax)
 end
 
 ---------- HIDE CURSOR ----------

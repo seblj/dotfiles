@@ -35,12 +35,9 @@ require("nvim-treesitter.configs").setup({
     },
     indent = {
         enable = true,
-        disable = utils.difference(treesitter_parsers.available_parsers(), {
-            "tsx",
-            "typescript",
-            "vue",
-            "javascript",
-        }),
+        disable = vim.tbl_filter(function(val)
+            return not vim.tbl_contains({ "tsx", "typescript", "vue", "javascript" }, val)
+        end, treesitter_parsers.available_parsers()),
     },
     textobjects = {
         select = {
