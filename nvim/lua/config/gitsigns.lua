@@ -13,7 +13,7 @@ autocmd("BufNew", {
             local winid = popup.is_open("blame")
             if winid then
                 vim.api.nvim_win_call(winid, function()
-                    local gitmoji_file = "~/dotfiles/nvim/lua/config/telescope/gitmoji.json"
+                    local gitmoji_file = "~/dotfiles/zsh/gitmoji.json"
                     local gitmojis = vim.json.decode(require("plenary.path"):new(gitmoji_file):read())
                     vim.bo.modifiable = true
                     for _, v in pairs(gitmojis) do
