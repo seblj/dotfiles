@@ -41,7 +41,7 @@ keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", { desc = "Navigate to left split" })
 keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", { desc = "Navigate to bottom split" })
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", { desc = "Navigate to top split" })
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", { desc = "Navigate to right split" })
-keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Escape from term-mode" })
+keymap("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape from term-mode" })
 
 keymap("n", "<S-Right>", resize.resize_right, { desc = "Resize split right" })
 keymap("n", "<S-Left>", resize.resize_left, { desc = "Resize split left" })

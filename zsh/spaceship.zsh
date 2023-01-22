@@ -6,7 +6,6 @@ prompt spaceship
 SPACESHIP_PROMPT_ORDER=(
   user
   host
-  char
   dir
   git
   exec_time
@@ -14,10 +13,10 @@ SPACESHIP_PROMPT_ORDER=(
   node
   docker
   venv
+  char
 )
 
 SPACESHIP_USER_SHOW=always
-SPACESHIP_DIR_PREFIX=""
 SPACESHIP_GIT_PREFIX="→ "
 
 # VENV

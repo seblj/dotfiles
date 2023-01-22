@@ -1,5 +1,10 @@
 # Functions
 
+#Check if a package is installed
+installed(){
+    command -v "$1" >/dev/null 2>&1
+}
+
 # Compare commits
 diff_commit() {
     if [ "$1" != "" ]
@@ -19,7 +24,7 @@ fzf_gitmoji() {
 }
 
 zle -N fzf_gitmoji
-zvm_bindkey viins '^G' fzf_gitmoji
+installed zvm_bindkey && zvm_bindkey viins '^G' fzf_gitmoji
 bindkey '^G' fzf_gitmoji
 
 # Opens file in grammarly.
@@ -35,11 +40,6 @@ grammarly() {
 # Kill specified port
 kill_port() {
     kill $(lsof -t -i:$1)
-}
-
-#Check if a package is installed
-installed(){
-    command -v "$1" >/dev/null 2>&1
 }
 
 # Always zip recursively and change how zip command work
