@@ -22,7 +22,7 @@ local function mappings()
     keymap("n", "gp", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
     keymap("n", "gn", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
     keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
-    keymap("n", "<leader>dw", vim.diagnostic.setqflist, { desc = "Diagnostics in qflist" })
+    keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
 end
 
 ---------- SIGNS ----------
