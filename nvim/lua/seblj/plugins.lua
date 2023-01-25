@@ -4,9 +4,9 @@ local init = lazy.init
 
 lazy.setup({
     -- My plugins/forks
-    { "seblj/nvim-tabline", config = true, event = "TabNew" },
-    { "seblj/nvim-echo-diagnostics", config = true },
-    { "seblj/formatter.nvim", config = conf("formatter") },
+    { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
+    { "seblj/nvim-echo-diagnostics", config = true, dev = true },
+    { "seblj/formatter.nvim", config = conf("formatter"), dev = true },
 
     -- Telescope
     {
@@ -50,6 +50,7 @@ lazy.setup({
                     signature = { border = CUSTOM_BORDER },
                     mouse_hover = { border = CUSTOM_BORDER },
                 },
+                dev = true,
             },
         },
     },
