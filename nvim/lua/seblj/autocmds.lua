@@ -27,7 +27,6 @@ autocmd("FileType", {
     group = group,
     callback = function()
         vim.opt_local.spell = true
-        vim.opt_local.formatoptions:append("t")
     end,
     desc = "Set spell and formatoptions",
 })
@@ -47,7 +46,7 @@ autocmd("FileType", {
     group = group,
     pattern = "*",
     callback = function()
-        vim.opt.formatoptions = vim.opt.formatoptions - "o" + "r" + "c" - "t"
+        vim.opt.formatoptions = vim.opt.formatoptions - "o" + "r" + "c"
     end,
     desc = "Fix formatoptions",
 })
