@@ -6,7 +6,7 @@ lazy.setup({
     -- My plugins/forks
     { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
     { "seblj/nvim-echo-diagnostics", config = true, dev = true },
-    { "seblj/formatter.nvim", config = conf("formatter"), dev = true },
+    { "seblj/nvim-formatter", config = conf("formatter"), dev = true },
 
     -- Telescope
     {
