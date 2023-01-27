@@ -85,7 +85,20 @@ require("formatter").setup({
 
 local group = augroup("Formatter", {})
 autocmd("BufWritePre", {
-    pattern = { "*.lua", "*.go", "*.js", "*.ts", "*.jsx", "*.tsx", "*.vue", "*.md", "*.css", "*.scss", "*.rs", "*.sql" },
+    pattern = {
+        "*.lua",
+        "*.go",
+        "*.js",
+        "*.ts",
+        "*.jsx",
+        "*.tsx",
+        "*.vue",
+        "*.md",
+        "*.css",
+        "*.scss",
+        "*.rs",
+        "*.sql",
+    },
     group = group,
     callback = function()
         if vim.b.do_formatting ~= false then
