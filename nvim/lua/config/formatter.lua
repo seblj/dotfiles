@@ -8,6 +8,40 @@ local function prettierd()
     }
 end
 
+local function path_pop(path)
+    local new_path, _ = string.gsub(path, "/[^/]+$", "")
+    return new_path == "" and "/" or new_path
+end
+
+local function get_os_command_output(cmd, cwd)
+    local result = {}
+    local job = vim.fn.jobstart(cmd, {
+        cwd = cwd,
+        stdout_buffered = true,
+        on_stdout = function(_, output, _)
+            result = output
+        end,
+    })
+    vim.fn.jobwait({ job })
+
+    return result
+end
+
+local function _reverse_find_file(file, dir)
+    local files = get_os_command_output({ "ls", "-a1" }, dir)
+    for _, x in pairs(files) do
+        if x == file then
+            return dir .. "/" .. file
+        end
+    end
+
+    return dir == "/" and nil or _reverse_find_file(file, path_pop(dir))
+end
+
+local function reverse_find_file(file)
+    return _reverse_find_file(file, path_pop(vim.api.nvim_buf_get_name(0)))
+end
+
 require("formatter").setup({
     filetype = {
         lua = function()
@@ -22,9 +56,11 @@ require("formatter").setup({
             }
         end,
         sql = function()
+            local config = reverse_find_file(".sql-formatter.json")
             return {
                 exe = "sql-formatter",
-                args = { "-l", "postgresql" },
+                -- args = { "-l", "postgresql" },
+                args = config == nil and {} or { "--config", config },
             }
         end,
         rust = function()
