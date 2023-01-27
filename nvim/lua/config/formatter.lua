@@ -48,7 +48,7 @@ require("formatter").setup({
 })
 
 local group = augroup("Formatter", {})
-autocmd("BufWritePre", {
+autocmd("BufWritePost", {
     pattern = {
         "*.lua",
         "*.go",
