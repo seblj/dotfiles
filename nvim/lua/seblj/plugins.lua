@@ -113,7 +113,6 @@ lazy.setup({
 
     -- Functionality
     { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
-    { "dstein64/vim-startuptime", config = conf("startuptime"), cmd = "StartupTime" },
     { "NTBBloodbath/rest.nvim", ft = "http" },
     { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" } },
 
@@ -139,7 +138,14 @@ lazy.setup({
     -- Tpope
     { "tpope/vim-repeat" },
     { "tpope/vim-abolish" },
-    { "tpope/vim-surround", config = conf("surround") },
+    {
+        "tpope/vim-surround",
+        keys = {
+            { "s", "<Plug>Ysurround", desc = "Surround with motion" },
+            { "S", "<Plug>Yssurround", desc = "Surround entire line" },
+            { "s", "<Plug>VSurround", mode = "v", desc = "Surround visual" },
+        },
+    },
     { "tpope/vim-commentary" },
     { "tpope/vim-scriptease" },
     { "tpope/vim-sleuth" },

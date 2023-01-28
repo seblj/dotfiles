@@ -2,12 +2,13 @@
 
 vim.g.startify_enable_special = 0
 vim.g.startify_files_number = 6
+vim.g.startify_change_to_dir = 0
 
 vim.g.startify_commands = {
     { "Dotfiles", 'lua require("config.telescope.utils").edit_dotfiles()' },
     { "Lazy sync", "Lazy sync" },
     { "Lazy update", "Lazy update" },
-    { "StartupTime", "StartupTime" },
+    { "Lazy profile", "Lazy profile" },
 }
 
 vim.g.startify_lists = {

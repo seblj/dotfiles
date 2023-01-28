@@ -70,14 +70,7 @@ end
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
-    local config = M.make_config()
-
-    -- Set user settings for each server
-    if settings[server] then
-        for k, v in pairs(settings[server]) do
-            config[k] = v
-        end
-    end
+    local config = vim.tbl_deep_extend("error", M.make_config(), settings[server] or {})
     require("lspconfig")[server].setup(config)
 end
 

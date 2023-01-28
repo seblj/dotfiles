@@ -1,27 +1,26 @@
-(
-  (macro_invocation
-    macro: ((identifier) @_html_def)
-    (token_tree) @rsx)
-
-    (#eq? @_html_def "html")
+(macro_invocation
+    (scoped_identifier
+        path: (identifier) @_path (#not-eq? @_path "sqlx")
+        name: (identifier) @_name (#not-match? @_name "query")
+    )
+    (token_tree) @rust
 )
 
-(
-  (macro_invocation
-    macro: ((identifier) @_html_def)
-    (token_tree) @rust)
-
-    (#not-eq? @_html_def "html")
+(macro_invocation
+    macro: (identifier) @_macro (#not-any-of? @_macro "fetch_optional" "fetch_all" "insert" "execute")
+    (token_tree) @rust
 )
 
-(
-  (macro_invocation
-    macro: ((identifier) @_style_def)
+(macro_invocation
     (token_tree
-        (raw_string_literal) @css))
+      (identifier) @rust
+    )
+)
 
-    (#offset! @css 1 0 0 -1)
-    (#eq? @_style_def "style")
+(macro_invocation
+    (token_tree
+      (token_tree) @rust
+    )
 )
 
 (macro_invocation
@@ -53,17 +52,13 @@
     (#offset! @sql 0 3 0 -2)
 )
 
-; Nested injections doesn't work, but just leave this
-; in in case I don't use it inline inside the html macro
-(
-  (macro_invocation
-    macro: ((identifier) @_css_def)
-    (token_tree
-     (string_literal) @css))
+;
+; Default values from ~/.local/share/nvim/site/pack/packer/start/nvim-treesitter/queries/rust/injections.scm
+;
 
-    (#offset! @css 0 1 0 -1)
-    (#eq? @_css_def "css")
-)
+; Replaced with the three `macro_invocation`'s at top of file
+; (macro_invocation
+;   (token_tree) @rust)
 
 (macro_definition
   (macro_rule
@@ -74,6 +69,14 @@
   (line_comment)
   (block_comment)
 ] @comment
+
+(
+  (macro_invocation
+    macro: ((identifier) @_html_def)
+    (token_tree) @html)
+
+    (#eq? @_html_def "html")
+)
 
 (call_expression
   function: (scoped_identifier
