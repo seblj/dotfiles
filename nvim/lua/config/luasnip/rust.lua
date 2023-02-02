@@ -24,6 +24,19 @@ return make({
         i(0)
     ),
 
+    tokio_test = fmt(
+        [[
+            #[tokio::test(flavor = "multi_thread")]
+            async fn {}() -> Result<(), anyhow::Error> {{
+                {}
+            }}
+        ]],
+        {
+            i(1),
+            i(0),
+        }
+    ),
+
     derive = fmt(
         [[
             #[derive({})]
