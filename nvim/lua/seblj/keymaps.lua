@@ -120,15 +120,11 @@ end, {
 })
 
 vim.keymap.set("n", "<leader>tf", function()
-    if vim.b.do_formatting == nil then
-        vim.b.do_formatting = false
-    else
-        vim.b.do_formatting = not vim.b.do_formatting
-    end
-    if vim.b.do_formatting then
-        vim.api.nvim_echo({ { "Enabled autoformat on save" } }, false, {})
-    else
+    vim.b.disable_formatting = not vim.b.disable_formatting
+    if vim.b.disable_formatting then
         vim.api.nvim_echo({ { "Disabled autoformat on save" } }, false, {})
+    else
+        vim.api.nvim_echo({ { "Enabled autoformat on save" } }, false, {})
     end
 end, { desc = "Format: Toggle format on save" })
 
@@ -171,6 +167,10 @@ vim.cmd.cnoreabbrev({ "make", "Make" })
 -- Open term in splits
 local opts = { nargs = "*", bang = true }
 
+---@param direction "split" | "vsplit" | "tabnew"
+---@param focus boolean
+---@param stopinsert boolean
+---@param key string
 local function create_command(direction, focus, stopinsert, key)
     local function completion(_, cmdline, _)
         local file = vim.api.nvim_buf_get_name(0)

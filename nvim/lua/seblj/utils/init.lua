@@ -18,10 +18,13 @@ function M.reload_config()
     vim.api.nvim_echo({ { "Reloaded config" } }, false, {}) -- Don't add to message history
 end
 
--- direction should be one of
--- 'split'
--- 'vsplit'
--- 'tabnew'
+---@class TermConfig
+---@field direction "split" | "vsplit" | "tabnew"
+---@field stopinsert boolean
+---@field cmd string
+---@field new boolean
+---@field focus boolean
+---@param opts TermConfig
 function M.run_term(opts, ...)
     local terminal = vim.fn.filter(vim.fn.getwininfo(), "v:val.terminal")[1]
     local current_win = vim.api.nvim_get_current_win()

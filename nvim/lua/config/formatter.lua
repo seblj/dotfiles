@@ -65,7 +65,7 @@ autocmd("BufWritePost", {
     },
     group = group,
     callback = function()
-        if vim.b.do_formatting ~= false then
+        if not vim.b.disable_formatting then
             vim.cmd.FormatWrite()
         end
     end,

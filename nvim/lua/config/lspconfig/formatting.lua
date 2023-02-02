@@ -17,7 +17,7 @@ function M.setup(client)
             group = group,
             pattern = "<buffer>",
             callback = function()
-                if vim.b.do_formatting ~= false then
+                if not vim.b.disable_formatting then
                     if client.name == "eslint" then
                         vim.cmd.EslintFixAll()
                     else
