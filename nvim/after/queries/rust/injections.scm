@@ -1,3 +1,5 @@
+; extends
+
 (macro_invocation
     (scoped_identifier
         path: (identifier) @_path (#not-eq? @_path "sqlx")
