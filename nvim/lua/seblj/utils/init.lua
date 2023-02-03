@@ -176,23 +176,6 @@ function M.save_and_exec()
     end
 end
 
-function M.read_file(path)
-    local fd = assert(vim.loop.fs_open(path, "r", 438))
-    local stat = assert(vim.loop.fs_fstat(fd))
-    return vim.loop.fs_read(fd, stat.size, 0)
-end
-
-function M.override_queries(lang, query_name)
-    local queries_folder = vim.fs.normalize("~/dotfiles/nvim/lua/config/treesitter/queries")
-    if require("nvim-treesitter.parsers").has_parser(lang) then
-        vim.treesitter.query.set_query(
-            lang,
-            query_name,
-            M.read_file(queries_folder .. string.format("/%s/%s.scm", lang, query_name))
-        )
-    end
-end
-
 ---------- HIDE CURSOR ----------
 
 -- https://github.com/tamago324/lir.nvim/blob/master/lua/lir/smart_cursor/init.lua

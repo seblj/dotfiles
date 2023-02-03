@@ -14,12 +14,12 @@ if require("nvim-treesitter.parsers").has_parser("go") then
         "go",
         "LuaSnip_Result",
         [[
-    [
-    (method_declaration result: (_) @id)
-    (function_declaration result: (_) @id)
-    (func_literal result: (_) @id)
-    ]
-    ]]
+            [
+                (method_declaration result: (_) @id)
+                (function_declaration result: (_) @id)
+                (func_literal result: (_) @id)
+            ]
+        ]]
     )
 end
 
@@ -100,12 +100,12 @@ return make({
     -- Template file
     new = fmt(
         [[
-        package main
+            package main
 
-        func main() {{
-        {tab}{insert}
-        }}
-    ]],
+            func main() {{
+            {tab}{insert}
+            }}
+        ]],
         {
             insert = i(0),
             tab = "\t",
@@ -114,11 +114,11 @@ return make({
 
     ier = fmt(
         [[
-        if err != nil {{
-        {tab}return {go_ret_vals}
-        }}
-        {insert}
-    ]],
+            if err != nil {{
+            {tab}return {go_ret_vals}
+            }}
+            {insert}
+        ]],
         {
             tab = "\t",
             go_ret_vals = d(1, go_ret_vals, {}),

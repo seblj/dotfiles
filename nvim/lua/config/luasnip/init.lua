@@ -1,3 +1,5 @@
+---------- LUASNIP ----------
+
 local ls = require("luasnip")
 local keymap = vim.keymap.set
 

@@ -28,7 +28,7 @@ autocmd("FileType", {
     callback = function()
         vim.opt_local.spell = true
     end,
-    desc = "Set spell and formatoptions",
+    desc = "Set spell",
 })
 
 autocmd("FileType", {

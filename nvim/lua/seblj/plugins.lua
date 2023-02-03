@@ -145,6 +145,7 @@ lazy.setup({
             { "S", "<Plug>Yssurround", desc = "Surround entire line" },
             { "s", "<Plug>VSurround", mode = "v", desc = "Surround visual" },
         },
+        lazy = false,
     },
     { "tpope/vim-commentary" },
     { "tpope/vim-scriptease" },

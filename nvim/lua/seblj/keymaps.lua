@@ -107,14 +107,12 @@ keymap("n", "<leader>tm", function()
     if vim.o.mouse == "nvi" then
         vim.opt.mouse = ""
         vim.opt.signcolumn = "no"
-        vim.opt.number = false
-        vim.opt.relativenumber = false
     else
         vim.opt.mouse = "nvi"
         vim.opt.signcolumn = "auto"
-        vim.opt.number = true
-        vim.opt.relativenumber = true
     end
+    vim.opt.number = not vim.o.number
+    vim.opt.relativenumber = not vim.o.relativenumber
 end, {
     desc = "Toggle mouse, number and signcolumn",
 })

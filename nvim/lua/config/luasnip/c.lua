@@ -8,13 +8,13 @@ return make({
     -- Template file
     new = fmt(
         [[
-        #include <stdio.h>
-        #include <stdlib.h>
+            #include <stdio.h>
+            #include <stdlib.h>
 
-        int main(int argc, char **argv) {{
-        {tab}{insert}
-        }}
-    ]],
+            int main(int argc, char **argv) {{
+            {tab}{insert}
+            }}
+        ]],
         {
             insert = i(0),
             tab = "\t",
