@@ -18,7 +18,6 @@ keymap({ "n", "v", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapp
 keymap({ "n", "v", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
 keymap("n", "<C-i>", "<C-i>")
-keymap("n", "<leader>r", utils.reload_config, { desc = "Reload config" })
 keymap("n", "<Tab>", "gt", { desc = "Next tab" })
 keymap("n", "<S-TAB>", "gT", { desc = "Previous tab" })
 keymap("n", "<leader>=", "<C-w>=", { desc = "Resize all splits" })
@@ -99,7 +98,7 @@ keymap("n", "<Up>", function()
     end
 end, { desc = "Move up in qflist" })
 
-keymap("n", "<leader>z", "<cmd>TSHighlightCapturesUnderCursor<CR>", { desc = "Print syntax under cursor" })
+keymap("n", "<leader>z", "<cmd>Inspect<CR>", { desc = "Print syntax under cursor" })
 
 keymap("n", "<leader>@", "<cmd>lcd %:p:h<CR><cmd>pwd<CR>", { desc = "cd to directory of open buffer" })
 
@@ -165,11 +164,9 @@ vim.cmd.cnoreabbrev({ "make", "Make" })
 -- Open term in splits
 local opts = { nargs = "*", bang = true }
 
----@param direction "split" | "vsplit" | "tabnew"
----@param focus boolean
----@param stopinsert boolean
 ---@param key string
-local function create_command(direction, focus, stopinsert, key)
+---@param direction "split" | "vsplit" | "tabnew"
+local function create_command(key, direction)
     local function completion(_, cmdline, _)
         local file = vim.api.nvim_buf_get_name(0)
         local dir = vim.fn.fnamemodify(file, ":p:h")
@@ -179,12 +176,12 @@ local function create_command(direction, focus, stopinsert, key)
     end
     opts["complete"] = completion
     command(key, function(x)
-        utils.run_term({ direction = direction, focus = focus, stopinsert = stopinsert, cmd = x.args, new = true })
+        utils.run_term({ direction = direction, focus = true, stopinsert = false, cmd = x.args, new = true })
     end, opts)
 end
-create_command("split", true, false, "T")
-create_command("vsplit", true, false, "VT")
-create_command("tabnew", true, false, "TT")
+create_command("T", "split")
+create_command("VT", "vsplit")
+create_command("TT", "tabnew")
 command("Make", function(x)
     vim.cmd.make({ args = { x.args }, bang = true, mods = { silent = true } })
     vim.cmd.copen()

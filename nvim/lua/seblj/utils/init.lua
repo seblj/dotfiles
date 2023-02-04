@@ -6,18 +6,6 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local M = {}
 
--- Reloads config for nvim so I don't need to reopen buffer in some cases
-function M.reload_config()
-    vim.cmd.source("~/dotfiles/nvim/init.lua")
-    for pack, _ in pairs(package.loaded) do
-        if pack:match("^config") or pack:match("^seblj") then
-            package.loaded[pack] = nil
-            require(pack)
-        end
-    end
-    vim.api.nvim_echo({ { "Reloaded config" } }, false, {}) -- Don't add to message history
-end
-
 ---@class TermConfig
 ---@field direction "split" | "vsplit" | "tabnew"
 ---@field stopinsert boolean
@@ -49,18 +37,16 @@ function M.run_term(opts, ...)
 end
 
 function M.get_zsh_completion(command)
-    local ok, Job = pcall(require, "plenary.job")
-    if not ok then
-        return {}
-    end
     local res
-    Job:new({
-        command = "capture",
-        args = { command },
-        on_exit = function(j)
-            res = j:result()
-        end,
-    }):sync()
+    require("plenary.job")
+        :new({
+            command = "capture",
+            args = { command },
+            on_exit = function(j)
+                res = j:result()
+            end,
+        })
+        :sync()
 
     for k, v in ipairs(res) do
         res[k] = vim.fn.split(v, " -- ")[1]
@@ -68,12 +54,10 @@ function M.get_zsh_completion(command)
     return res
 end
 
-vim.api.nvim_create_user_command("RunOnSave", function(opts)
+---Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
+---root_dir is not found
+local function get_root_dir_pattern()
     local pattern = "<buffer>"
-    -- Try to find a root_dir to use that as pattern since I probably often want
-    -- to run the command on all the files in the project. If I get annoyed by
-    -- this, then just make a `RunOnSaveBuffer` or something to always use
-    -- buffer no matter what
     local active_clients = vim.lsp.get_active_clients()
     if #active_clients > 0 and active_clients[1].config and active_clients[1].config.root_dir then
         local root_dir = active_clients[1].config.root_dir
@@ -81,6 +65,11 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
             pattern = string.format("%s/*", root_dir)
         end
     end
+    return pattern
+end
+
+vim.api.nvim_create_user_command("RunOnSave", function(opts)
+    local pattern = get_root_dir_pattern()
     autocmd("BufWritePost", {
         group = augroup("RunOnSave", { clear = true }),
         pattern = pattern,
@@ -108,9 +97,8 @@ end, {
     complete = function(arg_lead, cmdline, _)
         local command = vim.split(cmdline, "RunOnSave ")[2]
         if command:sub(1, 1) == "!" then
-            local file = vim.api.nvim_buf_get_name(0)
-            local dir = vim.fn.fnamemodify(file, ":p:h")
-            vim.cmd.lcd(dir)
+            -- cd to dir which contains current buffer
+            vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
             local completions = M.get_zsh_completion(string.sub(command, 2))
             if arg_lead:sub(1, 1) == "!" then
                 for k in ipairs(completions) do
