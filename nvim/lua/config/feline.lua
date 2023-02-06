@@ -1,14 +1,5 @@
 ---------- STATUSLINE CONFIG ----------
 
-local ok_feline, feline = pcall(require, "feline")
-if not ok_feline then
-    return
-end
-
-local function has(item)
-    return vim.fn.has(item) == 1
-end
-
 local function get_color(group, attr)
     local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
     return color ~= "" and color or nil
@@ -16,22 +7,14 @@ end
 
 -- Get wordcount in latex document. Only update the count on save
 local latex_word_count = nil
-local augroup = vim.api.nvim_create_augroup("UpdateWordCount", {})
 vim.api.nvim_create_autocmd("BufWritePost", {
-    group = augroup,
+    group = vim.api.nvim_create_augroup("UpdateWordCount", {}),
     pattern = "*.tex",
     callback = function()
         latex_word_count = string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
     end,
     desc = "Update word count in latex",
 })
-
-local function get_word_count()
-    if not latex_word_count then
-        latex_word_count = string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
-    end
-    return latex_word_count
-end
 
 local colors = {
     bg = "#303030",
@@ -150,9 +133,9 @@ local components = {
     },
     os = {
         provider = function()
-            if has("mac") then
+            if vim.fn.has("mac") == 1 then
                 return " "
-            elseif has("linux") then
+            elseif vim.fn.has("linux") == 1 then
                 return " "
             end
         end,
@@ -161,7 +144,10 @@ local components = {
     custom = {
         latex_words = {
             provider = function()
-                return get_word_count()
+                if not latex_word_count then
+                    latex_word_count = string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
+                end
+                return latex_word_count
             end,
             enabled = function()
                 return vim.bo.filetype == "tex"
@@ -169,17 +155,11 @@ local components = {
         },
         buffer_type = {
             provider = function()
-                local ft = vim.bo.filetype:upper()
                 local bufname = vim.api.nvim_buf_get_name(0)
                 local fname = vim.fn.fnamemodify(bufname, ":t")
-                local readonly, modified = "", ""
-                if vim.bo.readonly then
-                    readonly = " "
-                end
-                if vim.bo.modified then
-                    modified = " "
-                end
-                local name = fname ~= "" and fname or ft
+                local readonly = vim.bo.readonly and " " or ""
+                local modified = vim.bo.modified and " " or ""
+                local name = fname ~= "" and fname or vim.bo.filetype:upper()
                 return readonly .. name .. modified
             end,
             hl = { style = "bold" },
@@ -213,7 +193,7 @@ local inactive = {
     },
 }
 
-feline.setup({
+require("feline").setup({
     theme = { bg = colors.bg, fg = colors.fg },
     components = { active = active, inactive = inactive },
     vi_mode_colors = vi_mode_colors,
@@ -230,10 +210,9 @@ feline.setup({
 local icons = require("seblj.utils.icons")
 local navic = require("nvim-navic")
 
-local icons_with_space = {}
-for key, val in pairs(icons.kind) do
-    icons_with_space[key] = val .. " "
-end
+local icons_with_space = vim.tbl_map(function(val)
+    return val .. " "
+end, icons.kind)
 
 local winbar_components = {
     maximized = {
@@ -256,7 +235,7 @@ local winbar_components = {
             str = " ",
             hl = { bg = get_color("Normal", "bg") },
         },
-        hl = { bg = get_color("Normal", "bg"), style = "bold" },
+        hl = { style = "bold" },
         enabled = function()
             return vim.api.nvim_buf_get_name(0) ~= ""
         end,
@@ -279,7 +258,6 @@ local winbar_components = {
         enabled = function()
             return navic.is_available()
         end,
-        hl = { fb = get_color("Normal", "fg") },
     },
 }
 
@@ -312,7 +290,7 @@ local blocked_fts = {
     "startuptime",
 }
 
-feline.winbar.setup({
+require("feline").winbar.setup({
     theme = { bg = get_color("Normal", "bg") },
     components = { active = winbar, inactive = winbar },
     disable = {
@@ -321,9 +299,8 @@ feline.winbar.setup({
 })
 
 -- Hack to not enable winbar on all buffers
-local winbar_group = vim.api.nvim_create_augroup("AttachWinbar", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWinEnter", "TabNew", "TabEnter", "BufEnter", "WinClosed", "BufWritePost" }, {
-    group = winbar_group,
+    group = vim.api.nvim_create_augroup("AttachWinbar", { clear = true }),
     desc = "Winbar only on some buffers",
     callback = function()
         vim.o.winbar = ""
