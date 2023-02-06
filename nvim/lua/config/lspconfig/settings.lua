@@ -18,8 +18,8 @@ return {
     rust_analyzer = {
         settings = {
             ["rust-analyzer"] = {
-                rustfmt = {
-                    extraArgs = { "+nightly" },
+                check = {
+                    command = "clippy",
                 },
             },
         },
