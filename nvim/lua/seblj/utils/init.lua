@@ -13,10 +13,10 @@ local M = {}
 ---@field new boolean
 ---@field focus boolean
 ---@param opts TermConfig
-function M.run_term(opts, ...)
+function M.term(opts, ...)
     local terminal = vim.fn.filter(vim.fn.getwininfo(), "v:val.terminal")[1]
-    local current_win = vim.api.nvim_get_current_win()
     if not terminal or opts.new then
+        local current_win = vim.api.nvim_get_current_win()
         local height = vim.api.nvim_win_get_height(0)
         vim.cmd[opts.direction]()
         if opts.direction == "split" then
@@ -68,7 +68,21 @@ local function get_root_dir_pattern()
     return pattern
 end
 
+-- Creates a user_command to run a command each time a buffer is saved. By
+-- default it will try to find the root of the current buffer using LSP, and run
+-- the command on save for all files in the project.
+--
+-- To run a shell-command, prefix the arguments to `RunOnSave` with `!`.
+-- For example: `RunOnSave !cat foo.txt`.
+-- To run a vim-command, don't prefix with `!`.
+-- For example: `RunOnSave lua print("foo")`
 vim.api.nvim_create_user_command("RunOnSave", function(opts)
+    -- Create a user_command to clear only if we create an autocmd to run on save
+    vim.api.nvim_create_user_command("RunOnSaveClear", function()
+        vim.api.nvim_clear_autocmds({ group = "RunOnSave" })
+        vim.api.nvim_del_user_command("RunOnSaveClear")
+    end, { bang = true })
+
     local pattern = get_root_dir_pattern()
     autocmd("BufWritePost", {
         group = augroup("RunOnSave", { clear = true }),
@@ -76,7 +90,7 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
         callback = function()
             vim.schedule(function()
                 if opts.args:sub(1, 1) == "!" then
-                    M.run_term({
+                    M.term({
                         direction = "split",
                         focus = false,
                         stopinsert = true,
@@ -111,10 +125,6 @@ end, {
         end
     end,
 })
-
-vim.api.nvim_create_user_command("RunOnSaveClear", function()
-    vim.api.nvim_clear_autocmds({ group = "RunOnSave" })
-end, { bang = true })
 
 local runner = {
     python = "python3 $file",
@@ -160,7 +170,7 @@ function M.save_and_exec()
         command = command:gsub("$file", file)
         command = command:gsub("$output", output)
         command = command:gsub("$dir", dir)
-        M.run_term({ direction = "split", focus = false, stopinsert = true, cmd = command })
+        M.term({ direction = "split", focus = false, stopinsert = true, cmd = command })
     end
 end
 
@@ -200,7 +210,5 @@ function M.setup_hidden_cursor()
         desc = "Show cursor",
     })
 end
-
-----------------------------------------
 
 return M

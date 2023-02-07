@@ -168,15 +168,13 @@ local opts = { nargs = "*", bang = true }
 ---@param direction "split" | "vsplit" | "tabnew"
 local function create_command(key, direction)
     local function completion(_, cmdline, _)
-        local file = vim.api.nvim_buf_get_name(0)
-        local dir = vim.fn.fnamemodify(file, ":p:h")
-        vim.cmd.lcd(dir)
+        vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
         local run_command = vim.split(cmdline, key .. " ")[2]
         return utils.get_zsh_completion(run_command)
     end
     opts["complete"] = completion
     command(key, function(x)
-        utils.run_term({ direction = direction, focus = true, stopinsert = false, cmd = x.args, new = true })
+        utils.term({ direction = direction, focus = true, stopinsert = false, cmd = x.args, new = true })
     end, opts)
 end
 create_command("T", "split")

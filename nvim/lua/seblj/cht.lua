@@ -1,6 +1,6 @@
 local M = {}
 local utils = require("seblj.utils")
-local run_term = utils.run_term
+local run_term = utils.term
 
 local languages = {
     "golang",
