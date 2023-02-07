@@ -4,9 +4,7 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local format_languages = {
     "eslint",
-    "jsonls",
     "omnisharp",
-    "texlab",
 }
 
 function M.setup(client)

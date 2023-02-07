@@ -35,6 +35,16 @@ require("formatter").setup({
                 args = { "--edition", "2021" },
             }
         end,
+        tex = function()
+            return {
+                exe = "latexindent",
+            }
+        end,
+        json = function()
+            return {
+                exe = "jq",
+            }
+        end,
         javascript = prettierd,
         typescript = prettierd,
         javascriptreact = prettierd,
@@ -64,6 +74,8 @@ autocmd("BufWritePost", {
         "*.scss",
         "*.rs",
         "*.sql",
+        "*.tex",
+        "*.json",
     },
     group = group,
     callback = function()
