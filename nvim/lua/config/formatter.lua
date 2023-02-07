@@ -10,6 +10,12 @@ local function prettierd()
     }
 end
 
+local function latex()
+    return {
+        exe = "latexindent",
+    }
+end
+
 require("formatter").setup({
     filetype = {
         lua = function()
@@ -35,16 +41,13 @@ require("formatter").setup({
                 args = { "--edition", "2021" },
             }
         end,
-        tex = function()
-            return {
-                exe = "latexindent",
-            }
-        end,
         json = function()
             return {
                 exe = "jq",
             }
         end,
+        tex = latex,
+        bib = latex,
         javascript = prettierd,
         typescript = prettierd,
         javascriptreact = prettierd,
@@ -75,6 +78,7 @@ autocmd("BufWritePost", {
         "*.rs",
         "*.sql",
         "*.tex",
+        "*.bib",
         "*.json",
     },
     group = group,
