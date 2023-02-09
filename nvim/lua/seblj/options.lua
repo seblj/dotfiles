@@ -33,3 +33,29 @@ vim.opt.textwidth = 80
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.vimsyn_embed = "l"
+
+-- Titlestring
+function _G.modified()
+    if vim.bo.modified then
+        return ""
+    else
+        return ""
+    end
+end
+
+function _G.devicon()
+    local ok, web = pcall(require, "nvim-web-devicons")
+    local bufname = vim.api.nvim_buf_get_name(0)
+    local filename = vim.fn.fnamemodify(bufname, ":t")
+    local extension = vim.fn.fnamemodify(bufname, ":e")
+
+    if ok then
+        local icon = web.get_icon(filename, extension, { default = true })
+        return icon
+    else
+        return ""
+    end
+end
+
+vim.opt.title = true
+vim.opt.titlestring = [[%{luaeval('devicon()')} %t %{luaeval('modified()')}]]
