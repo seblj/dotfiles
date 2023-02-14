@@ -38,10 +38,10 @@ lazy.setup({
         config = conf("lspconfig"),
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            { "folke/neodev.nvim" },
+            { "folke/neodev.nvim", opts = { library = { plugins = false } } },
             { "b0o/schemastore.nvim" },
             { "williamboman/mason.nvim", config = true, cmd = "Mason" },
-            { "williamboman/mason-lspconfig.nvim", config = true, cmd = "LspInstall" },
+            { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
             { "SmiteshP/nvim-navic" },
             {

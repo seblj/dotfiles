@@ -1,11 +1,5 @@
 ---------- LANGUAGE SERVERS ----------
 
-require("neodev").setup({
-    library = {
-        plugins = false,
-    },
-})
-
 return {
     volar = {
         init_options = {
@@ -20,18 +14,6 @@ return {
             ["rust-analyzer"] = {
                 check = {
                     command = "clippy",
-                },
-            },
-        },
-    },
-
-    sumneko_lua = {
-        settings = {
-            Lua = {
-                workspace = {
-                    library = {
-                        ["/Users/sebastianlyngjohansen/.hammerspoon/Spoons/EmmyLua.spoon/annotations"] = true,
-                    },
                 },
             },
         },
