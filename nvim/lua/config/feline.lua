@@ -1,10 +1,5 @@
 ---------- STATUSLINE CONFIG ----------
 
-local function get_color(group, attr)
-    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
-    return color ~= "" and color or nil
-end
-
 -- Get wordcount in latex document. Only update the count on save
 local latex_word_count = nil
 vim.api.nvim_create_autocmd("BufWritePost", {
@@ -73,9 +68,6 @@ local components = {
                 },
             },
             hl = { style = "bold" },
-        },
-        type = {
-            provider = "file_type",
         },
         position = {
             provider = "position",
@@ -153,17 +145,6 @@ local components = {
                 return vim.bo.filetype == "tex"
             end,
         },
-        buffer_type = {
-            provider = function()
-                local bufname = vim.api.nvim_buf_get_name(0)
-                local fname = vim.fn.fnamemodify(bufname, ":t")
-                local readonly = vim.bo.readonly and " " or ""
-                local modified = vim.bo.modified and " " or ""
-                local name = fname ~= "" and fname or vim.bo.filetype:upper()
-                return readonly .. name .. modified
-            end,
-            hl = { style = "bold" },
-        },
     },
 }
 
@@ -187,15 +168,9 @@ local active = {
     },
 }
 
-local inactive = {
-    {
-        components.custom.buffer_type,
-    },
-}
-
 require("feline").setup({
     theme = { bg = colors.bg, fg = colors.fg },
-    components = { active = active, inactive = inactive },
+    components = { active = active, inactive = {} },
     vi_mode_colors = vi_mode_colors,
     force_inactive = {
         filetypes = {
@@ -205,14 +180,14 @@ require("feline").setup({
     },
 })
 
+local function get_color(group, attr)
+    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
+    return color ~= "" and color or nil
+end
+
 ---------- WINBAR ----------
 
-local icons = require("seblj.utils.icons")
 local navic = require("nvim-navic")
-
-local icons_with_space = vim.tbl_map(function(val)
-    return val .. " "
-end, icons.kind)
 
 local winbar_components = {
     maximized = {
@@ -250,8 +225,10 @@ local winbar_components = {
         provider = function()
             local location = navic.get_location({
                 highlight = true,
-                icons = icons_with_space,
                 separator = "  ",
+                icons = vim.tbl_map(function(val)
+                    return val .. " "
+                end, require("seblj.utils.icons").kind),
             })
             return location == "" and "" or "  " .. location
         end,
