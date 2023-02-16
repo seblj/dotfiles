@@ -11,11 +11,11 @@ vim.g.maplocalleader = "\\"
 
 ---------- GENERAL MAPPINGS ----------
 
-keymap({ "n", "v", "i" }, "√", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
-keymap({ "n", "v", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
+keymap({ "n", "x", "i" }, "√", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
+keymap({ "n", "x", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
-keymap({ "n", "v", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
-keymap({ "n", "v", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
+keymap({ "n", "x", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
+keymap({ "n", "x", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
 keymap("n", "<C-i>", "<C-i>")
 keymap("n", "<Tab>", "gt", { desc = "Next tab" })
@@ -27,8 +27,8 @@ keymap("n", "gb", "<C-t>", { desc = "Go back in tag-stack" })
 keymap("n", "gp", "`[v`]", { desc = "Reselect pasted text" })
 keymap("n", "<C-t>", ":tabedit<CR>", { desc = "Create new tab" })
 
-keymap({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete into black hole register" })
-keymap({ "n", "v" }, "<leader>c", '"_c', { desc = "Change into black hole register" })
+keymap({ "n", "x" }, "<leader>d", '"_d', { desc = "Delete into black hole register" })
+keymap({ "n", "x" }, "<leader>c", '"_c', { desc = "Change into black hole register" })
 keymap("x", "<leader>p", '"_dP', { desc = "Delete into black hole register on visual paste" })
 
 keymap("n", "<C-h>", "<C-w>h", { desc = "Navigate to left split" })
@@ -48,15 +48,15 @@ keymap("n", "<S-Up>", resize.resize_up, { desc = "Resize split up" })
 keymap("n", "<S-Down>", resize.resize_down, { desc = "Resize split down" })
 keymap("n", "<leader>gh", ":help <C-r><C-w><CR>", { desc = "Search in help for word under cursor" })
 
-keymap("v", "<", "<gv", { desc = "Keep visual mode on dedent" })
-keymap("v", ">", ">gv", { desc = "Keep visual mode on indent" })
+keymap("x", "<", "<gv", { desc = "Keep visual mode on dedent" })
+keymap("x", ">", ">gv", { desc = "Keep visual mode on indent" })
 
 keymap("n", "<A-j>", ":m.+1<CR>==", { desc = "Move current line down" })
-keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move current line down" })
+keymap("x", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move current line down" })
 keymap("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move current line down" })
 
 keymap("n", "<A-k>", ":m.-2<CR>==", { desc = "Move current line up" })
-keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move current line up" })
+keymap("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move current line up" })
 keymap("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
 
 keymap("x", "<leader>sr", [["sy:let @/=@s<CR>cgn]], { desc = "Replace word under cursor" })
@@ -72,11 +72,11 @@ keymap("", "<leader>j", "J", { desc = "Join [count] lines" })
 keymap("n", "j", 'v:count ? "j" : "gj"', { expr = true, desc = "gj" })
 keymap("n", "k", 'v:count ? "k" : "gk"', { expr = true, desc = "gk" })
 
-keymap({ "n", "v" }, "J", "10gj")
-keymap({ "n", "v" }, "K", "10gk")
+keymap({ "n", "x" }, "J", "10gj")
+keymap({ "n", "x" }, "K", "10gk")
 
-keymap({ "n", "v", "o" }, "H", "^", { desc = "Move to beginning of line" })
-keymap({ "n", "v", "o" }, "L", "$", { desc = "Move to end of line" })
+keymap({ "n", "x", "o" }, "H", "^", { desc = "Move to beginning of line" })
+keymap({ "n", "x", "o" }, "L", "$", { desc = "Move to end of line" })
 
 keymap("x", "@", '":norm @" . getcharstr() . "<CR>"', { desc = "Macro over visual range", expr = true })
 

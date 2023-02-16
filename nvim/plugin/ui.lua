@@ -1,5 +1,7 @@
 local keymap = vim.keymap.set
 
+local ns = vim.api.nvim_create_namespace("seblj_ui")
+
 local options = {
     prefix = " ",
     border_line = "─",
@@ -81,8 +83,7 @@ vim.ui.select = function(items, opts, on_choice)
         })
 
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "Title", 0, 0, #title)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "NormalFloat", 1, 0, -1)
+        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 0, 0, { end_col = #title, hl_group = "Title" })
 
         for k, _ in ipairs(choices) do
             if k > 1 then
@@ -133,7 +134,19 @@ vim.ui.input = function(opts, on_confirm)
         vim.bo[popup_bufnr].modifiable = true
         vim.bo[popup_bufnr].buftype = "prompt"
         vim.fn.prompt_setprompt(popup_bufnr, options.prefix)
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "Title", 0, 0, #lines[1])
-        vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "NormalFloat", 1, 0, -1)
+        if opts.default then
+            vim.api.nvim_input(opts.default)
+            vim.api.nvim_input("<Esc>0wv$h<C-g>")
+        end
+        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 0, 0, { end_col = #lines[1], hl_group = "Title" })
+        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 1, 0, {
+            virt_text_win_col = 0,
+            virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
+            priority = 100,
+        })
+        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 2, 0, {
+            virt_text_win_col = 0,
+            virt_text = { { options.prefix, "Title" } },
+        })
     end)
 end

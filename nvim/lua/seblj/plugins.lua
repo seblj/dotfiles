@@ -143,7 +143,7 @@ lazy.setup({
         keys = {
             { "s", "<Plug>Ysurround", desc = "Surround with motion" },
             { "S", "<Plug>Yssurround", desc = "Surround entire line" },
-            { "s", "<Plug>VSurround", mode = "v", desc = "Surround visual" },
+            { "s", "<Plug>VSurround", mode = "x", desc = "Surround visual" },
         },
         lazy = false,
     },

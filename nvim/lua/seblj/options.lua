@@ -19,6 +19,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 20
+vim.opt.showmode = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.termguicolors = true
