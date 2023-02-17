@@ -84,6 +84,11 @@ vim.ui.select = function(items, opts, on_choice)
 
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
         vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 0, 0, { end_col = #title, hl_group = "Title" })
+        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 1, 0, {
+            virt_text_win_col = 0,
+            virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
+            priority = 100,
+        })
 
         for k, _ in ipairs(choices) do
             if k > 1 then
