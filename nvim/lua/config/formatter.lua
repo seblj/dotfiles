@@ -1,8 +1,5 @@
 ---------- FORMATTER ----------
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
 local function prettierd()
     return {
         exe = "prettierd",
@@ -17,6 +14,9 @@ local function latex()
 end
 
 require("formatter").setup({
+    format_on_save = function()
+        return not vim.b.disable_formatting
+    end,
     filetype = {
         lua = function()
             return {
@@ -46,6 +46,16 @@ require("formatter").setup({
                 exe = "jq",
             }
         end,
+        cs = function()
+            return {
+                exe = "dotnet-csharpier",
+            }
+        end,
+        c = function()
+            return {
+                exe = "clang-format",
+            }
+        end,
         tex = latex,
         bib = latex,
         javascript = prettierd,
@@ -62,30 +72,30 @@ require("formatter").setup({
     },
 })
 
-local group = augroup("Formatter", {})
-autocmd("BufWritePost", {
-    pattern = {
-        "*.lua",
-        "*.go",
-        "*.js",
-        "*.ts",
-        "*.jsx",
-        "*.tsx",
-        "*.vue",
-        "*.md",
-        "*.css",
-        "*.scss",
-        "*.rs",
-        "*.sql",
-        "*.tex",
-        "*.bib",
-        "*.json",
-    },
-    group = group,
-    callback = function()
-        if not vim.b.disable_formatting then
-            vim.cmd.FormatWrite()
+---------- LSP FORMATTING ----------
+
+local format_clients = {
+    "eslint",
+}
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if vim.tbl_contains(format_clients, client.name) then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = vim.api.nvim_create_augroup("LspFormat", { clear = true }),
+                buffer = args.buf,
+                callback = function()
+                    if not vim.b.disable_formatting then
+                        if client.name == "eslint" then
+                            vim.cmd.EslintFixAll()
+                        else
+                            vim.lsp.buf.format()
+                        end
+                    end
+                end,
+                desc = "Formatting lsp",
+            })
         end
     end,
-    desc = "Formatting",
 })

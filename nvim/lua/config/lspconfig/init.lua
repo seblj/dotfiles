@@ -45,7 +45,6 @@ function M.make_config()
         capabilities = capabilities,
         on_attach = function(client, bufnr)
             require("config.lspconfig.handlers").handlers()
-            require("config.lspconfig.formatting").setup(client)
             mappings()
             signs()
             if client.server_capabilities.documentSymbolProvider then
