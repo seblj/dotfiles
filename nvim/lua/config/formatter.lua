@@ -7,12 +7,6 @@ local function prettierd()
     }
 end
 
-local function latex()
-    return {
-        exe = "latexindent",
-    }
-end
-
 require("formatter").setup({
     format_on_save = function()
         return not vim.b.disable_formatting
@@ -24,40 +18,14 @@ require("formatter").setup({
                 args = { "--search-parent-directories", "--stdin-filepath", vim.api.nvim_buf_get_name(0), "-" },
             }
         end,
-        go = function()
-            return {
-                exe = "goimports",
-            }
-        end,
-        sql = function()
-            return {
-                exe = "sql-formatter",
-                args = { "-l", "postgresql" },
-            }
-        end,
-        rust = function()
-            return {
-                exe = "rustfmt",
-                args = { "--edition", "2021" },
-            }
-        end,
-        json = function()
-            return {
-                exe = "jq",
-            }
-        end,
-        cs = function()
-            return {
-                exe = "dotnet-csharpier",
-            }
-        end,
-        c = function()
-            return {
-                exe = "clang-format",
-            }
-        end,
-        tex = latex,
-        bib = latex,
+        go = "goimports",
+        sql = { "sql-formatter", "-l", "postgresql" },
+        rust = { "rustfmt", "--edition", "2021" },
+        json = "jq",
+        cs = "dotnet-csharpier",
+        c = "clang-format",
+        tex = "latexindent",
+        bib = "latexindent",
         javascript = prettierd,
         typescript = prettierd,
         javascriptreact = prettierd,
