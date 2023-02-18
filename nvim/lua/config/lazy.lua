@@ -30,12 +30,10 @@ function M.init(name)
     end
 end
 
-local dev_path = string.format("%s/projects/plugins", os.getenv("HOME"))
-
 function M.setup(config)
     require("lazy").setup(config, {
         dev = {
-            path = dev_path,
+            path = string.format("%s/projects/plugins", os.getenv("HOME")),
             fallback = true,
         },
         ui = {
