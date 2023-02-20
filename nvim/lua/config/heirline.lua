@@ -107,7 +107,6 @@ local components = {
                 require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
         end,
         hl = { bg = colors.bg },
-
         {
             provider = function(self)
                 return string.format(" %s", self.icon)
@@ -123,7 +122,21 @@ local components = {
                 return string.format(" %s", name)
             end,
             hl = function()
-                return { bg = colors.bg, fg = colors.fg, bold = true }
+                return { fg = colors.fg, bold = true }
+            end,
+        },
+        {
+            provider = " ",
+            hl = { fg = colors.fg },
+            condition = function()
+                return vim.bo.readonly
+            end,
+        },
+        {
+            provider = "  ",
+            hl = { fg = colors.fg },
+            condition = function()
+                return vim.bo.modified
             end,
         },
     },
