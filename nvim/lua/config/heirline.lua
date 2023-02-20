@@ -78,6 +78,7 @@ local components = {
                 NORMAL = colors.green,
                 INSERT = colors.red,
                 VISUAL = colors.purple,
+                LINES = colors.purple,
                 OP = colors.green,
                 BLOCK = colors.blue,
                 REPLACE = colors.violet,
@@ -106,35 +107,29 @@ local components = {
             self.icon, self.icon_color =
                 require("nvim-web-devicons").get_icon_color(self.filename, self.extension, { default = true })
         end,
-        hl = { bg = colors.bg },
+        hl = { bg = colors.bg, fg = colors.fg, bold = true },
         {
             provider = function(self)
                 return string.format(" %s", self.icon)
             end,
             hl = function(self)
-                return { fg = self.icon_color, bold = true }
+                return { fg = self.icon_color, force = true }
             end,
         },
         {
             provider = function(self)
                 local basename = vim.fs.basename(self.filename)
-                local name = basename ~= "" and basename or "[No Name]"
-                return string.format(" %s", name)
-            end,
-            hl = function()
-                return { fg = colors.fg, bold = true }
+                return string.format(" %s", basename ~= "" and basename or "[No Name]")
             end,
         },
         {
             provider = " ",
-            hl = { fg = colors.fg },
             condition = function()
                 return vim.bo.readonly
             end,
         },
         {
             provider = "  ",
-            hl = { fg = colors.fg },
             condition = function()
                 return vim.bo.modified
             end,
@@ -150,7 +145,7 @@ local components = {
             self.removed_count = self.status_dict.removed or 0
         end,
 
-        hl = { bg = colors.bg, fg = colors.red },
+        hl = { bg = colors.bg },
         static = {
             branch_icon = "",
             add_icon = "",
@@ -161,7 +156,7 @@ local components = {
             provider = function(self)
                 return string.format(" %s %s", self.branch_icon, self.status_dict.head)
             end,
-            hl = { bold = true },
+            hl = { fg = colors.red, bold = true },
         },
         {
             provider = function(self)
@@ -301,9 +296,6 @@ local winbar = {
         hl = function()
             return { bg = utils.get_highlight("Normal").bg, force = true }
         end,
-        condition = function()
-            return vim.api.nvim_buf_get_name(0) ~= ""
-        end,
     },
     { components.navic },
 }
@@ -340,5 +332,13 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "TabNew", "TabEnter", "BufEnter", "
                 win.winbar = nil
             end
         end
+    end,
+})
+
+-- Hack to make it work correctly to disable winbar in certain buffers
+vim.api.nvim_create_autocmd("User", {
+    pattern = "HeirlineInitWinbar",
+    callback = function()
+        vim.opt_local.winbar = nil
     end,
 })
