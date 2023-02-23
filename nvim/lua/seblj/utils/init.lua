@@ -141,6 +141,7 @@ local runner = {
         local dir = vim.fs.dirname(vim.fs.find("go.mod", { upward = true })[1])
         return dir and "go run " .. dir or command
     end,
+    sh = "sh $file",
 }
 
 -- Save and execute file based on filetype
@@ -160,8 +161,11 @@ function M.save_and_exec()
         vim.cmd.lcd(dir)
         local command = runner[ft]
         if not command then
-            vim.api.nvim_echo({ { string.format("No config found for %s", ft) } }, false, {})
-            return
+            return vim.notify(
+                string.format("No config found for %s", ft),
+                vim.log.levels.INFO,
+                { title = "Save and exec" }
+            )
         end
         if type(command) == "function" then
             command = command()
@@ -203,9 +207,11 @@ function M.setup_hidden_cursor()
         group = group,
         pattern = "<buffer>",
         callback = function()
-            vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
-            vim.opt.guicursor = guicursor_saved
-            vim.opt_local.cursorline = false
+            vim.schedule(function()
+                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
+                vim.opt.guicursor = guicursor_saved
+                vim.opt_local.cursorline = false
+            end)
         end,
         desc = "Show cursor",
     })

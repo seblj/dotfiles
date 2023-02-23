@@ -31,6 +31,7 @@ function M.init(name)
 end
 
 function M.setup(config)
+    require("lazy.view.config").keys.hover = "gh"
     require("lazy").setup(config, {
         dev = {
             path = string.format("%s/projects/plugins", os.getenv("HOME")),
