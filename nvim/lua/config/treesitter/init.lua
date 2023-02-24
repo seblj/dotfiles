@@ -1,8 +1,6 @@
 ---------- TREESITTER CONFIG ----------
 
-local treesitter_parsers = require("nvim-treesitter.parsers")
-local ft_to_parser = treesitter_parsers.filetype_to_parsername
-ft_to_parser.zsh = "bash"
+vim.treesitter.language.register("bash", "zsh")
 
 require("config.treesitter.commentstring")
 
@@ -14,7 +12,7 @@ require("nvim-treesitter.configs").setup({
         enable = true,
         disable = vim.tbl_filter(function(val)
             return not vim.tbl_contains({ "tsx", "typescript", "vue", "javascript" }, val)
-        end, treesitter_parsers.available_parsers()),
+        end, require("nvim-treesitter.parsers").available_parsers()),
     },
     textobjects = {
         select = {
