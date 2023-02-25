@@ -6,11 +6,6 @@ OS=$(uname -s)
 # This sets variables needed for installation
 source $HOME/dotfiles/install/utils.sh
 
-if [ "$EUID" -ne 0 ]; then
-    printf "\n${RED}You need to run this script with sudo! ${NC}"
-    exit
-fi
-
 # Installs homebrew and symlinks .macos if OS is macOS. Needs to be sourced before doing $UPDATE
 if [[ $OS == "Darwin" ]]; then
     source $HOME/dotfiles/install/mac.sh
