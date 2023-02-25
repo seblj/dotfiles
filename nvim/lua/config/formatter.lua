@@ -37,6 +37,8 @@ require("formatter").setup({
         yaml = prettierd,
         markdown = prettierd,
         graphql = prettierd,
+        zsh = "shfmt -i 4",
+        sh = "shfmt -i 4",
     },
 })
 

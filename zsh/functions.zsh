@@ -116,3 +116,31 @@ install_neovim() {
 
     cd -
 }
+
+install_packages(){
+    p=""
+    arr=("$@")
+    for package in "${arr[@]}"; do
+            p+="$package "
+    done
+    if [[ $p != "" ]]; then
+        printf "\n${BLUE}Installing $p ${NC}\n\n"
+        echo $p > /dev/null
+    fi
+}
+
+
+test_install_packages(){
+    packages=(
+        zsh
+        curl
+        gcc
+        g++
+        git
+        nodejs
+        tmux
+        ripgrep
+    )
+    # install_packages packages
+    install_packages "${packages[@]}"
+}

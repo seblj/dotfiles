@@ -11,14 +11,13 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-
 # Installs homebrew and symlinks .macos if OS is macOS. Needs to be sourced before doing $UPDATE
 if [[ $OS == "Darwin" ]]; then
     source $HOME/dotfiles/install/mac.sh
 fi
 
 # Runs 'brew update' or 'apt-get update' based on OS
-$UPDATE > /dev/null
+$UPDATE >/dev/null
 
 # Installation
 if [[ $1 == "" ]]; then

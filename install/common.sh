@@ -2,7 +2,7 @@
 
 source $HOME/dotfiles/install/utils.sh
 
-symlink_files_in_dir(){
+symlink_files_in_dir() {
     shopt -s dotglob
     for FILE in $HOME/dotfiles/$1/*; do
         printf "\n${BLUE}Setting up ${FILE##*/} ${NC}\n\n"
