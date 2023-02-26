@@ -26,7 +26,5 @@ elif [[ $1 == 'zsh' ]]; then
     source ~/dotfiles/install/zsh.sh
 fi
 
-chsh -s $(which zsh)
-
 # Hopefully fix insecure directories if there are any
 /bin/zsh -i -c compaudit | xargs chmod g-w,o-w >/dev/null 2>&1

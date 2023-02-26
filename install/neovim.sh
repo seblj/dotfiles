@@ -16,24 +16,19 @@ install_neovim_dependencies() {
 }
 
 clone_neovim() {
-    if [[ -d "$HOME/Applications/neovim" ]]; then
-        return
+    if [[ ! -d "$HOME/Applications/neovim" ]]; then
+        printf "\n${BLUE}Cloning neovim ${NC}\n\n"
+        git clone --quiet https://github.com/neovim/neovim.git $HOME/Applications/neovim >/dev/null
     fi
-    printf "\n${BLUE}Cloning neovim ${NC}\n\n"
-    mkdir -p ~/Applications
-    cd ~/Applications
-
-    git clone --quiet https://github.com/neovim/neovim.git >/dev/null
 }
 
 build_neovim() {
-    if [[ -d "$HOME/Applications/neovim" ]]; then
-        return
+    if [[ ! -d "$HOME/Applications/neovim" ]]; then
+        printf "\n${BLUE}Starting to build neovim ${NC}\n\n"
+        cd ~/Applications/neovim
+        make CMAKE_BUILD_TYPE=RelWithDebInfo >/dev/null
+        sudo make install >/dev/null
     fi
-    printf "\n${BLUE}Starting to build neovim ${NC}\n\n"
-    cd ~/Applications/neovim
-    make CMAKE_BUILD_TYPE=RelWithDebInfo >/dev/null
-    sudo make install >/dev/null
 }
 
 setup_neovim() {
