@@ -12,12 +12,7 @@ require("formatter").setup({
         return not vim.b.disable_formatting
     end,
     filetype = {
-        lua = function()
-            return {
-                exe = "stylua",
-                args = { "--search-parent-directories", "--stdin-filepath", vim.api.nvim_buf_get_name(0), "-" },
-            }
-        end,
+        lua = { "stylua", "--search-parent-directories", "-" },
         go = "goimports",
         sql = { "sql-formatter", "-l", "postgresql" },
         rust = { "rustfmt", "--edition", "2021" },
