@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 symlink_files_in_dir() {
     shopt -s dotglob

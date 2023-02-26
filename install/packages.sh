@@ -19,7 +19,7 @@ install_fzf() {
     $HOME/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish >/dev/null 2>&1
 }
 
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 # Setup gh to be in apt
 if [[ $OS == 'Linux' ]]; then

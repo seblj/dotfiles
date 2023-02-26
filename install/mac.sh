@@ -1,7 +1,7 @@
 #!/bin/bash
 # Setup macos
 
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 if ! installed brew; then
     printf "\n${BLUE}Installing homebrew ${NC}\n\n"

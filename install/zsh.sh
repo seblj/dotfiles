@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installation of ZSH
 
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 # Install oh_my_zsh and plugins
 install_oh_my_zsh() {

@@ -4,11 +4,11 @@
 OS=$(uname -s)
 
 # This sets variables needed for installation
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 # Installs homebrew and symlinks .macos if OS is macOS. Needs to be sourced before doing $UPDATE
 if [[ $OS == "Darwin" ]]; then
-    source $HOME/dotfiles/install/mac.sh
+    source ~/dotfiles/install/mac.sh
 fi
 
 # Runs 'brew update' or 'apt-get update' based on OS
@@ -16,14 +16,14 @@ $UPDATE >/dev/null
 
 # Installation
 if [[ $1 == "" ]]; then
-    source $HOME/dotfiles/install/common.sh
-    source $HOME/dotfiles/install/packages.sh
-    source $HOME/dotfiles/install/neovim.sh
-    source $HOME/dotfiles/install/zsh.sh
+    source ~/dotfiles/install/common.sh
+    source ~/dotfiles/install/packages.sh
+    source ~/dotfiles/install/neovim.sh
+    source ~/dotfiles/install/zsh.sh
 elif [[ $1 == 'nvim' ]]; then
-    source $HOME/dotfiles/install/neovim.sh
+    source ~/dotfiles/install/neovim.sh
 elif [[ $1 == 'zsh' ]]; then
-    source $HOME/dotfiles/install/zsh.sh
+    source ~/dotfiles/install/zsh.sh
 fi
 
 chsh -s $(which zsh)

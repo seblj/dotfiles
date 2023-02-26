@@ -1,7 +1,7 @@
 #!/bin/bash
 # Neovim installation
 
-source $HOME/dotfiles/install/utils.sh
+source ~/dotfiles/install/utils.sh
 
 install_neovim_dependencies() {
     printf "\n${BLUE}Installing neovim dependencies ${NC}\n\n"
