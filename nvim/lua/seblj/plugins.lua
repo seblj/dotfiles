@@ -99,7 +99,7 @@ lazy.setup({
 
     -- File tree
     {
-        "kyazdani42/nvim-tree.lua",
+        "nvim-tree/nvim-tree.lua",
         config = true,
         keys = { { "<leader>nt", ":NvimTreeToggle<CR>", desc = "NvimTree: Toggle tree" } },
     },
