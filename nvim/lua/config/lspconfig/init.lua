@@ -32,17 +32,11 @@ local function signs()
     sign_define("DiagnosticSignError", { text = "✘", texthl = "DiagnosticSignError" })
     sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
     sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
-    -- sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
 end
 
 function M.make_config()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    local ok, cmp_lsp = pcall(require, "cmp_nvim_lsp")
-    if ok then
-        capabilities = cmp_lsp.default_capabilities()
-    end
     return {
-        capabilities = capabilities,
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
         on_attach = function(client, bufnr)
             require("config.lspconfig.handlers").handlers()
             mappings()
@@ -57,15 +51,9 @@ function M.make_config()
     }
 end
 
-local servers = {}
-
-local mason_ok, mason = pcall(require, "mason")
-local ok, lsp_installer = pcall(require, "mason-lspconfig")
-if ok and mason_ok then
-    mason.setup()
-    lsp_installer.setup()
-    servers = lsp_installer.get_installed_servers()
-end
+require("mason").setup()
+require("mason-lspconfig").setup()
+local servers = require("mason-lspconfig").get_installed_servers()
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do

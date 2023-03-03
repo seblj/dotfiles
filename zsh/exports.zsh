@@ -18,6 +18,7 @@ path+=(
     $HOME/.cargo/bin
     $HOME/.local/ltex/bin
     $HOME/.local/bin
+    $HOME/.local/share/nvim/mason/bin
 )
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
