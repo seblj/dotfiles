@@ -51,3 +51,4 @@ node_modules
 *.out
 *.synctex.gz
 *.toc
+run.sh

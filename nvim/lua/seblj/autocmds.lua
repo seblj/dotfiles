@@ -44,6 +44,15 @@ autocmd("FileType", {
 
 autocmd("FileType", {
     group = group,
+    pattern = "python",
+    callback = function()
+        vim.opt.formatoptions = vim.opt.formatoptions - "t"
+    end,
+    desc = "Remove auto-wrap text using textwidth",
+})
+
+autocmd("FileType", {
+    group = group,
     pattern = "*",
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - "o" + "r" + "c"
