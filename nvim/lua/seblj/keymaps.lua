@@ -2,8 +2,6 @@
 
 local utils = require("seblj.utils")
 local resize = require("seblj.utils.resize")
-local keymap = vim.keymap.set
-local command = vim.api.nvim_create_user_command
 
 -- Leader is space and localleader is \
 vim.g.mapleader = " "
@@ -11,78 +9,78 @@ vim.g.maplocalleader = "\\"
 
 ---------- GENERAL MAPPINGS ----------
 
-keymap({ "n", "x", "i" }, "√", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
-keymap({ "n", "x", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "√", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
-keymap({ "n", "x", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
-keymap({ "n", "x", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
-keymap("n", "<C-i>", "<C-i>")
-keymap("n", "<Tab>", "gt", { desc = "Next tab" })
-keymap("n", "<S-TAB>", "gT", { desc = "Previous tab" })
-keymap("n", "<leader>=", "<C-w>=", { desc = "Resize all splits" })
-keymap("n", "<leader>i", "gg=G", { desc = "Indent file" })
-keymap("n", "<CR>", '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true, desc = "Remove highlights" })
-keymap("n", "gb", "<C-t>", { desc = "Go back in tag-stack" })
-keymap("n", "gp", "`[v`]", { desc = "Reselect pasted text" })
-keymap("n", "<C-t>", ":tabedit<CR>", { desc = "Create new tab" })
+vim.keymap.set("n", "<C-i>", "<C-i>")
+vim.keymap.set("n", "<Tab>", "gt", { desc = "Next tab" })
+vim.keymap.set("n", "<S-TAB>", "gT", { desc = "Previous tab" })
+vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "Resize all splits" })
+vim.keymap.set("n", "<leader>i", "gg=G", { desc = "Indent file" })
+vim.keymap.set("n", "<CR>", '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true, desc = "Remove highlights" })
+vim.keymap.set("n", "gb", "<C-t>", { desc = "Go back in tag-stack" })
+vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect pasted text" })
+vim.keymap.set("n", "<C-t>", ":tabedit<CR>", { desc = "Create new tab" })
 
-keymap({ "n", "x" }, "<leader>d", '"_d', { desc = "Delete into black hole register" })
-keymap({ "n", "x" }, "<leader>c", '"_c', { desc = "Change into black hole register" })
-keymap("x", "<leader>p", '"_dP', { desc = "Delete into black hole register on visual paste" })
+vim.keymap.set({ "n", "x" }, "<leader>d", '"_d', { desc = "Delete into black hole register" })
+vim.keymap.set({ "n", "x" }, "<leader>c", '"_c', { desc = "Change into black hole register" })
+vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Delete into black hole register on visual paste" })
 
-keymap("n", "<C-h>", "<C-w>h", { desc = "Navigate to left split" })
-keymap("n", "<C-j>", "<C-w>j", { desc = "Navigate to bottom split" })
-keymap("n", "<C-k>", "<C-w>k", { desc = "Navigate to top split" })
-keymap("n", "<C-l>", "<C-w>l", { desc = "Navigate to right split" })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate to left split" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Navigate to bottom split" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Navigate to top split" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Navigate to right split" })
 
-keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", { desc = "Navigate to left split" })
-keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", { desc = "Navigate to bottom split" })
-keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", { desc = "Navigate to top split" })
-keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", { desc = "Navigate to right split" })
-keymap("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape from term-mode" })
+vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-w>h", { desc = "Navigate to left split" })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-w>j", { desc = "Navigate to bottom split" })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-w>k", { desc = "Navigate to top split" })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-w>l", { desc = "Navigate to right split" })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape from term-mode" })
 
-keymap("n", "<S-Right>", resize.resize_right, { desc = "Resize split right" })
-keymap("n", "<S-Left>", resize.resize_left, { desc = "Resize split left" })
-keymap("n", "<S-Up>", resize.resize_up, { desc = "Resize split up" })
-keymap("n", "<S-Down>", resize.resize_down, { desc = "Resize split down" })
-keymap("n", "<leader>gh", ":help <C-r><C-w><CR>", { desc = "Search in help for word under cursor" })
+vim.keymap.set("n", "<S-Right>", resize.resize_right, { desc = "Resize split right" })
+vim.keymap.set("n", "<S-Left>", resize.resize_left, { desc = "Resize split left" })
+vim.keymap.set("n", "<S-Up>", resize.resize_up, { desc = "Resize split up" })
+vim.keymap.set("n", "<S-Down>", resize.resize_down, { desc = "Resize split down" })
+vim.keymap.set("n", "<leader>gh", ":help <C-r><C-w><CR>", { desc = "Search in help for word under cursor" })
 
-keymap("x", "<", "<gv", { desc = "Keep visual mode on dedent" })
-keymap("x", ">", ">gv", { desc = "Keep visual mode on indent" })
+vim.keymap.set("x", "<", "<gv", { desc = "Keep visual mode on dedent" })
+vim.keymap.set("x", ">", ">gv", { desc = "Keep visual mode on indent" })
 
-keymap("n", "<A-j>", ":m.+1<CR>==", { desc = "Move current line down" })
-keymap("x", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move current line down" })
-keymap("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move current line down" })
+vim.keymap.set("n", "<A-j>", ":m.+1<CR>==", { desc = "Move current line down" })
+vim.keymap.set("x", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move current line down" })
+vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move current line down" })
 
-keymap("n", "<A-k>", ":m.-2<CR>==", { desc = "Move current line up" })
-keymap("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move current line up" })
-keymap("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
+vim.keymap.set("n", "<A-k>", ":m.-2<CR>==", { desc = "Move current line up" })
+vim.keymap.set("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move current line up" })
+vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
 
-keymap("x", "<leader>sr", [["sy:let @/=@s<CR>cgn]], { desc = "Replace word under cursor" })
-keymap("n", "<leader>sr", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn]], {
+vim.keymap.set("x", "<leader>sr", [["sy:let @/=@s<CR>cgn]], { desc = "Replace word under cursor" })
+vim.keymap.set("n", "<leader>sr", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn]], {
     desc = "Replace word under cursor",
 })
-keymap("n", "<leader>sa", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn<C-r>"]], {
+vim.keymap.set("n", "<leader>sa", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn<C-r>"]], {
     desc = "Append to word under cursor",
 })
 
-keymap("", "<leader>j", "J", { desc = "Join [count] lines" })
+vim.keymap.set("", "<leader>j", "J", { desc = "Join [count] lines" })
 
-keymap("n", "j", 'v:count ? "j" : "gj"', { expr = true, desc = "gj" })
-keymap("n", "k", 'v:count ? "k" : "gk"', { expr = true, desc = "gk" })
+vim.keymap.set("n", "j", 'v:count ? "j" : "gj"', { expr = true, desc = "gj" })
+vim.keymap.set("n", "k", 'v:count ? "k" : "gk"', { expr = true, desc = "gk" })
 
-keymap({ "n", "x" }, "J", "10gj")
-keymap({ "n", "x" }, "K", "10gk")
+vim.keymap.set({ "n", "x" }, "J", "10gj")
+vim.keymap.set({ "n", "x" }, "K", "10gk")
 
-keymap({ "n", "x", "o" }, "H", "^", { desc = "Move to beginning of line" })
-keymap({ "n", "x", "o" }, "L", "$", { desc = "Move to end of line" })
+vim.keymap.set({ "n", "x", "o" }, "H", "^", { desc = "Move to beginning of line" })
+vim.keymap.set({ "n", "x", "o" }, "L", "$", { desc = "Move to end of line" })
 
-keymap("x", "@", '":norm @" . getcharstr() . "<CR>"', { desc = "Macro over visual range", expr = true })
+vim.keymap.set("x", "@", '":norm @" . getcharstr() . "<CR>"', { desc = "Macro over visual range", expr = true })
 
-keymap("n", "<leader>x", utils.save_and_exec, { desc = "Save and execute file" })
+vim.keymap.set("n", "<leader>x", utils.save_and_exec, { desc = "Save and execute file" })
 
-keymap("n", "<Down>", function()
+vim.keymap.set("n", "<Down>", function()
     if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) then
         vim.cmd.normal("j")
     else
@@ -90,7 +88,7 @@ keymap("n", "<Down>", function()
     end
 end, { desc = "Move down in qflist" })
 
-keymap("n", "<Up>", function()
+vim.keymap.set("n", "<Up>", function()
     if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) then
         vim.cmd.normal("k")
     else
@@ -98,11 +96,11 @@ keymap("n", "<Up>", function()
     end
 end, { desc = "Move up in qflist" })
 
-keymap("n", "<leader>z", "<cmd>Inspect<CR>", { desc = "Print syntax under cursor" })
+vim.keymap.set("n", "<leader>z", "<cmd>Inspect<CR>", { desc = "Print syntax under cursor" })
 
-keymap("n", "<leader>@", "<cmd>lcd %:p:h<CR><cmd>pwd<CR>", { desc = "cd to directory of open buffer" })
+vim.keymap.set("n", "<leader>@", "<cmd>lcd %:p:h<CR><cmd>pwd<CR>", { desc = "cd to directory of open buffer" })
 
-keymap("n", "<leader>tm", function()
+vim.keymap.set("n", "<leader>tm", function()
     if vim.o.mouse == "nvi" then
         vim.opt.mouse = ""
         vim.opt.signcolumn = "no"
@@ -125,12 +123,12 @@ vim.keymap.set("n", "<leader>tf", function()
     end
 end, { desc = "Format: Toggle format on save" })
 
-keymap("n", "<leader>ts", function()
+vim.keymap.set("n", "<leader>ts", function()
     vim.opt.spelllang = vim.o.spelllang == "en" and "nb" or "en"
     print("Setting spelllang to", vim.o.spelllang)
 end, { desc = "Toggle spelllang between english and norwegian" })
 
-keymap("n", "<leader>m", function()
+vim.keymap.set("n", "<leader>m", function()
     if vim.t.maximized then
         vim.t.maximized = false
         vim.cmd.tabclose()
@@ -173,14 +171,14 @@ local function create_command(key, direction)
         return utils.get_zsh_completion(run_command)
     end
     opts["complete"] = completion
-    command(key, function(x)
+    vim.api.nvim_create_user_command(key, function(x)
         utils.term({ direction = direction, focus = true, stopinsert = false, cmd = x.args, new = true })
     end, opts)
 end
 create_command("T", "split")
 create_command("VT", "vsplit")
 create_command("TT", "tabnew")
-command("Make", function(x)
+vim.api.nvim_create_user_command("Make", function(x)
     vim.cmd.make({ args = { x.args }, bang = true, mods = { silent = true } })
     vim.cmd.copen()
 end, {
