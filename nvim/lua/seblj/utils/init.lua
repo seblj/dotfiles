@@ -36,6 +36,22 @@ function M.term(opts, ...)
     end
 end
 
+function M.get_os_command_output(command, opts)
+    local res
+    require("plenary.job")
+        :new({
+            command = command,
+            args = opts.args,
+            cwd = opts.cwd,
+            on_exit = function(j)
+                res = j:result()
+            end,
+        })
+        :sync()
+
+    return res
+end
+
 function M.get_zsh_completion(command)
     local res
     require("plenary.job")
@@ -113,7 +129,11 @@ end, {
         if command:sub(1, 1) == "!" then
             -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-            local completions = M.get_zsh_completion(string.sub(command, 2))
+            local completions = M.get_os_command_output("capture", { args = { string.sub(command, 2) } })
+            for k, v in ipairs(completions) do
+                completions[k] = vim.fn.split(v, " -- ")[1]
+            end
+
             if arg_lead:sub(1, 1) == "!" then
                 for k in ipairs(completions) do
                     completions[k] = string.format("!%s", completions[k])

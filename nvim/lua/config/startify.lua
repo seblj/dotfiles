@@ -5,7 +5,7 @@ vim.g.startify_files_number = 6
 vim.g.startify_change_to_dir = 0
 
 vim.g.startify_commands = {
-    { "Dotfiles", 'lua require("config.telescope.utils").edit_dotfiles()' },
+    { "Dotfiles", 'lua vim.api.nvim_input("<space>fd")' },
     { "Lazy sync", "Lazy sync" },
     { "Lazy update", "Lazy update" },
     { "Lazy profile", "Lazy profile" },
