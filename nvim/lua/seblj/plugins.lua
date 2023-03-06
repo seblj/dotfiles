@@ -108,7 +108,7 @@ lazy.setup({
     -- UI
     { "NvChad/nvim-colorizer.lua", opts = { user_default_options = { names = false } } },
     { "mhinz/vim-startify", config = conf("startify") },
-    { "rebelot/heirline.nvim", config = conf("heirline") },
+    { "freddiehaddad/feline.nvim", config = conf("feline") },
     { "rcarriga/nvim-notify", config = conf("notify") },
 
     -- Functionality
