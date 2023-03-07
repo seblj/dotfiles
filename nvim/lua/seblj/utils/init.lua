@@ -47,22 +47,12 @@ function M.get_os_command_output(command, opts)
     return res
 end
 
-function M.get_zsh_completion(command)
-    local res
-    require("plenary.job")
-        :new({
-            command = "capture",
-            args = { command },
-            on_exit = function(j)
-                res = j:result()
-            end,
-        })
-        :sync()
-
-    for k, v in ipairs(res) do
-        res[k] = vim.fn.split(v, " -- ")[1]
+function M.get_zsh_completion(args)
+    local completions = M.get_os_command_output("capture", { args = { args } })
+    for k, v in ipairs(completions) do
+        completions[k] = vim.fn.split(v, " -- ")[1]
     end
-    return res
+    return completions
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
@@ -123,10 +113,7 @@ end, {
         if command:sub(1, 1) == "!" then
             -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-            local completions = M.get_os_command_output("capture", { args = { string.sub(command, 2) } })
-            for k, v in ipairs(completions) do
-                completions[k] = vim.fn.split(v, " -- ")[1]
-            end
+            local completions = M.get_zsh_completion(string.sub(command, 2))
 
             if arg_lead:sub(1, 1) == "!" then
                 for k in ipairs(completions) do
