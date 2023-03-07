@@ -43,7 +43,7 @@ local components = {
                 name = "file_info",
                 opts = {
                     file_readonly_icon = " ",
-                    file_modified_icon = "",
+                    file_modified_icon = " ",
                 },
             },
             hl = { style = "bold" },
