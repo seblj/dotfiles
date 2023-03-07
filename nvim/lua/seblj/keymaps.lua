@@ -172,7 +172,7 @@ local function create_command(key, direction)
     end
     opts["complete"] = completion
     vim.api.nvim_create_user_command(key, function(x)
-        utils.term({ direction = direction, focus = true, stopinsert = false, cmd = x.args, new = true })
+        utils.term({ direction = direction, focus = true, cmd = x.args, new = true })
     end, opts)
 end
 create_command("T", "split")

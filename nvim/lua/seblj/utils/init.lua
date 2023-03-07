@@ -1,6 +1,5 @@
 ---------- UTILS ----------
 
-local keymap = vim.keymap.set
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
@@ -8,7 +7,6 @@ local M = {}
 
 ---@class TermConfig
 ---@field direction "split" | "vsplit" | "tabnew"
----@field stopinsert boolean
 ---@field cmd string
 ---@field new boolean
 ---@field focus boolean
@@ -26,14 +24,11 @@ function M.term(opts, ...)
         vim.cmd("$")
         terminal = vim.fn.filter(vim.fn.getwininfo(), "v:val.terminal")[1]
         if not opts.focus then
+            vim.cmd.stopinsert()
             vim.api.nvim_set_current_win(current_win)
         end
     end
     vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. "\n", ...))
-    keymap("n", "q", "<cmd>q<CR>", { buffer = true })
-    if opts.stopinsert then
-        vim.cmd.stopinsert()
-    end
 end
 
 function M.get_os_command_output(command, opts)
@@ -109,7 +104,6 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
                     M.term({
                         direction = "split",
                         focus = false,
-                        stopinsert = true,
                         cmd = string.sub(opts.args, 2),
                     })
                 else
@@ -194,7 +188,7 @@ function M.save_and_exec()
         command = command:gsub("$file", file)
         command = command:gsub("$output", output)
         command = command:gsub("$dir", dir)
-        M.term({ direction = "split", focus = false, stopinsert = true, cmd = command })
+        M.term({ direction = "split", focus = false, cmd = command })
     end
 end
 

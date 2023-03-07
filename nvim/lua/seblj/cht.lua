@@ -34,7 +34,6 @@ function M.telescope_cht()
                         require("seblj.utils").run_term({
                             direction = "tabnew",
                             focus = true,
-                            stopinsert = true,
                             cmd = string.format("curl cht.sh/%s/%s", content.value, query),
                         })
                     end)
