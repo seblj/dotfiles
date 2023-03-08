@@ -24,6 +24,7 @@ lazy.setup({
     {
         "nvim-treesitter/nvim-treesitter",
         config = conf("treesitter"),
+        event = { "BufReadPost", "BufNewFile" },
         build = ":TSUpdate",
         dependencies = {
             { "nvim-treesitter/playground", cmd = { "TSPlaygroundToggle" } },
@@ -43,6 +44,7 @@ lazy.setup({
             { "williamboman/mason.nvim", config = true, cmd = "Mason" },
             { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
+            { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } } },
             { "SmiteshP/nvim-navic" },
             {
                 "seblj/nvim-lsp-extras",
@@ -54,7 +56,6 @@ lazy.setup({
             },
         },
     },
-    { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } } },
 
     -- Completion
     {
@@ -78,9 +79,13 @@ lazy.setup({
         dependencies = { "kristijanhusak/vim-dadbod-completion", "tpope/vim-dadbod" },
     },
 
-    -- Git
+    -- -- Git
     { "lewis6991/gitsigns.nvim", config = conf("gitsigns"), event = { "BufReadPre", "BufWritePre" } },
-    { "akinsho/git-conflict.nvim", opts = { highlights = { current = "DiffChange" } } },
+    {
+        "akinsho/git-conflict.nvim",
+        opts = { highlights = { current = "DiffChange" } },
+        event = { "BufReadPre", "BufWritePre" },
+    },
 
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },
@@ -103,18 +108,22 @@ lazy.setup({
         config = true,
         keys = { { "<leader>nt", ":NvimTreeToggle<CR>", desc = "NvimTree: Toggle tree" } },
     },
-    { "tamago324/lir.nvim", config = conf("lir") },
+    { "tamago324/lir.nvim", config = conf("lir"), event = "VimEnter" },
 
-    -- UI
-    { "NvChad/nvim-colorizer.lua", opts = { user_default_options = { names = false } } },
+    -- -- UI
+    {
+        "NvChad/nvim-colorizer.lua",
+        opts = { user_default_options = { names = false } },
+        event = { "BufReadPre", "BufNewFile" },
+    },
     { "mhinz/vim-startify", config = conf("startify") },
     { "freddiehaddad/feline.nvim", config = conf("feline") },
-    { "rcarriga/nvim-notify", config = conf("notify") },
+    { "rcarriga/nvim-notify", config = conf("notify"), init = init("notify"), lazy = true },
 
     -- Functionality
     { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
     { "NTBBloodbath/rest.nvim", ft = "http" },
-    { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" } },
+    { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" }, event = "TermOpen" },
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
     {
@@ -131,9 +140,9 @@ lazy.setup({
     },
 
     -- Dependencies/helpers for other plugins
-    { "nvim-lua/plenary.nvim" },
-    { "MunifTanjim/nui.nvim" },
-    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-lua/plenary.nvim", lazy = true },
+    { "MunifTanjim/nui.nvim", lazy = true },
+    { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- Tpope
     { "tpope/vim-repeat" },
