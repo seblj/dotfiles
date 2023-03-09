@@ -33,17 +33,14 @@ end
 
 function M.get_os_command_output(command, opts)
     local res
-    require("plenary.job")
-        :new({
-            command = command,
-            args = opts.args,
-            cwd = opts.cwd,
-            on_exit = function(j)
-                res = j:result()
-            end,
-        })
-        :sync()
-
+    opts = opts or {}
+    opts.command = command
+    opts.cwd = opts.cwd or vim.loop.cwd()
+    opts.args = opts.args or {}
+    opts.on_exit = function(j)
+        res = j:result()
+    end
+    require("plenary.job"):new(opts):sync()
     return res
 end
 

@@ -1,12 +1,9 @@
 ---------- AUTOCMDS ----------
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
 -- Avoid nesting neovim sessions
 vim.env.GIT_EDITOR = "nvr -cc split --remote-wait"
-local group = augroup("SebGroup", { clear = true })
-autocmd("FileType", {
+local group = vim.api.nvim_create_augroup("SebGroup", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = { "gitcommit", "gitrebase", "gitconfig" },
     callback = function()
@@ -15,14 +12,14 @@ autocmd("FileType", {
     desc = "Set bufhidden to delete",
 })
 
-autocmd("VimResized", {
+vim.api.nvim_create_autocmd("VimResized", {
     group = group,
     callback = function()
         vim.cmd("tabdo wincmd =")
     end,
 })
 
-autocmd("FileType", {
+vim.api.nvim_create_autocmd("FileType", {
     pattern = { "text", "tex", "markdown" },
     group = group,
     callback = function()
@@ -31,7 +28,7 @@ autocmd("FileType", {
     desc = "Set spell",
 })
 
-autocmd("FileType", {
+vim.api.nvim_create_autocmd("FileType", {
     pattern = { "json", "html", "javascript", "typescript", "typescriptreact", "javascriptreact", "css", "vue" },
     group = group,
     callback = function()
@@ -42,7 +39,7 @@ autocmd("FileType", {
     desc = "2 space indent",
 })
 
-autocmd("FileType", {
+vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "python",
     callback = function()
@@ -51,7 +48,7 @@ autocmd("FileType", {
     desc = "Remove auto-wrap text using textwidth",
 })
 
-autocmd("FileType", {
+vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "*",
     callback = function()
@@ -60,7 +57,7 @@ autocmd("FileType", {
     desc = "Fix formatoptions",
 })
 
-autocmd("TextYankPost", {
+vim.api.nvim_create_autocmd("TextYankPost", {
     group = group,
     pattern = "*",
     callback = function()
@@ -69,16 +66,8 @@ autocmd("TextYankPost", {
             -- See if I should get from another register
             local ok, yank_data = pcall(vim.fn.getreg, "0")
             if ok and #yank_data > 0 then
-                local Job = require("plenary.job")
-                local data = nil
-                Job:new({
-                    command = "base64",
-                    writer = yank_data,
-                    on_exit = function(j, _)
-                        data = table.concat(j:result())
-                    end,
-                }):sync()
-                vim.fn.chansend(vim.v.stderr, string.format("\x1b]52;c;%s\x07", data))
+                local data = require("seblj.utils").get_os_command_output("base64", { writer = yank_data })
+                vim.fn.chansend(vim.v.stderr, string.format("\x1b]52;c;%s\x07", table.concat(data)))
             end
         end
     end,
