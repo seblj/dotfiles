@@ -108,7 +108,7 @@ lazy.setup({
         config = true,
         keys = { { "<leader>nt", ":NvimTreeToggle<CR>", desc = "NvimTree: Toggle tree" } },
     },
-    { "tamago324/lir.nvim", config = conf("lir"), event = "VimEnter" },
+    { "tamago324/lir.nvim", config = conf("lir") },
 
     -- -- UI
     {
