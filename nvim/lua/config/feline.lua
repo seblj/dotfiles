@@ -226,6 +226,7 @@ local blocked_fts = {
     "NvimTree",
     "packer",
     "startuptime",
+    "oil",
 }
 
 require("feline").winbar.setup({
