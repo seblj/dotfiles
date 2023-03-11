@@ -15,55 +15,37 @@ local config = {
     javascript = react,
 }
 
-local uncomment_calculation_config = {
-    c = { "// %s", "/* %s */" },
-    c_sharp = { "// %s", "/* %s */" },
-    tsx = { "// %s", "{/* %s */}" },
-    javascript = { "// %s", "{/* %s */}" },
+local lang_commentstring = {
+    markdown_inline = "<!--%s-->",
 }
 
-local function get_ft_commentstring(ft)
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.bo[buf].ft = ft
-    return vim.bo[buf].commentstring
-end
+local uncomment_calculation_config = {
+    c = { "//%s", "/*%s*/" },
+    c_sharp = { "//%s", "/*%s*/" },
+    tsx = { "//%s", "{/*%s*/}" },
+    javascript = { "//%s", "{/*%s*/}" },
+}
 
 local function default_commentstring(ft)
-    if vim.bo.ft == ft then
-        return get_ft_commentstring(ft)
-    end
-    local filetypes = vim.fn.getcompletion("", "filetype")
-    for _, lang in ipairs(filetypes) do
-        if lang == ft then
-            return get_ft_commentstring(ft)
-        end
-    end
-    return vim.bo.commentstring
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[buf].ft = ft
+    return lang_commentstring[ft] and lang_commentstring[ft] or vim.bo[buf].commentstring
 end
 
 local function uncomment_calculation(language)
-    local function parse_line(commentstring)
-        local curr_line = vim.api.nvim_get_current_line()
-        local first_char = vim.fn.match(curr_line, "\\S")
+    local function uncomment_match(commentstring)
+        local curr_line = vim.api.nvim_get_current_line():gsub("%s+", "")
+        local str = vim.split(commentstring, "%s", { plain = true })
 
-        local a = vim.split(commentstring, "%s", { plain = true })
-        local first = a[1]:gsub("%s+", "")
-        local second = a[2]:gsub("%s+", "")
+        local start = string.sub(curr_line, 0, #str[1]):gsub("%s+", "")
+        local last = string.sub(curr_line, 0 - #str[2], -1):gsub("%s+", "")
 
-        local start = string.sub(curr_line, first_char, first_char + #first):gsub("%s+", "")
-        local last = string.sub(curr_line, 0 - #second, -1):gsub("%s+", "")
-
-        if first == start and (second == last or #second == 0) then
-            return commentstring
-        end
-        return nil
+        return str[1] == start and (str[2] == last or #str[2] == 0)
     end
 
-    local commentstrings = uncomment_calculation_config[language] or {}
-    for _, commentstring in pairs(commentstrings) do
-        local found = parse_line(commentstring)
-        if found then
-            return found
+    for _, commentstring in pairs(uncomment_calculation_config[language] or {}) do
+        if uncomment_match(commentstring) then
+            return commentstring
         end
     end
 end
@@ -79,43 +61,38 @@ end
 
 local function check_node(node, language_config)
     -- We have reached the top-most node
-    if not node or not language_config then
-        return default_commentstring()
+    if not node then
+        return default_commentstring(vim.bo.ft)
     end
 
-    local node_type = node:type()
-    return language_config[node_type] and language_config[node_type] or check_node(node:parent(), language_config)
+    local node_conf = language_config[node:type()]
+    return node_conf and node_conf or check_node(node:parent(), language_config)
 end
 
 local function calculate_commentstring()
     if not require("nvim-treesitter.parsers").has_parser() then
-        return default_commentstring()
+        return vim.bo.commentstring
     end
 
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local range = { cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] }
+    local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local col = vim.fn.match(vim.api.nvim_get_current_line(), "\\S")
+    local range = { row, col, row, col }
 
     -- Get the language tree with nodes inside the given range
     local parser = require("nvim-treesitter.parsers").get_parser()
-    local lang = contains(parser, { unpack(range) }):lang()
+    local lang = contains(parser, range):lang()
 
-    if uncomment_calculation_config[lang] then
-        local commentstring = uncomment_calculation(lang)
-        if commentstring then
-            return commentstring
-        end
+    local commentstring = uncomment_calculation(lang)
+    if commentstring then
+        return commentstring
     end
 
-    if not config[lang] then
+    local tree = parser:tree_for_range(range)
+    if not config[lang] or not tree then
         return default_commentstring(lang)
     end
 
-    local tree = parser.tree_for_range(parser, range, {})
-    if not tree then
-        return default_commentstring(lang)
-    end
     local node = tree:root():named_descendant_for_range(unpack(range))
-
     return check_node(node, config[lang])
 end
 
