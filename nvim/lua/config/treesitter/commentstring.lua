@@ -22,8 +22,6 @@ local uncomment_calculation_config = {
     javascript = { "// %s", "{/* %s */}" },
 }
 
-local parsers = require("nvim-treesitter.parsers")
-
 local function get_ft_commentstring(ft)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.bo[buf].ft = ft
@@ -70,13 +68,13 @@ local function uncomment_calculation(language)
     end
 end
 
-local function contains(tree, range)
-    for lang, child in pairs(tree:children()) do
+local function contains(parser, range)
+    for lang, child in pairs(parser:children()) do
         if lang ~= "comment" and child:contains(range) then
             return contains(child, range)
         end
     end
-    return tree
+    return parser
 end
 
 local function check_node(node, language_config)
@@ -90,25 +88,16 @@ local function check_node(node, language_config)
 end
 
 local function calculate_commentstring()
-    if not parsers.has_parser() then
+    if not require("nvim-treesitter.parsers").has_parser() then
         return default_commentstring()
     end
 
-    local location = {
-        vim.api.nvim_win_get_cursor(0)[1] - 1,
-        vim.fn.match(vim.fn.getline("."), "\\S"),
-    }
-
-    local range = {
-        location[1],
-        location[2],
-        location[1],
-        location[2],
-    }
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local range = { cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] }
 
     -- Get the language tree with nodes inside the given range
-    local root = parsers.get_parser()
-    local lang = contains(root, { unpack(range) }):lang()
+    local parser = require("nvim-treesitter.parsers").get_parser()
+    local lang = contains(parser, { unpack(range) }):lang()
 
     if uncomment_calculation_config[lang] then
         local commentstring = uncomment_calculation(lang)
@@ -121,7 +110,7 @@ local function calculate_commentstring()
         return default_commentstring(lang)
     end
 
-    local tree = root.tree_for_range(root, range, {})
+    local tree = parser.tree_for_range(parser, range, {})
     if not tree then
         return default_commentstring(lang)
     end
