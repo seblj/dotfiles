@@ -62,14 +62,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     callback = function()
         vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
-        if vim.env.SSH_CONNECTION then
-            -- See if I should get from another register
-            local ok, yank_data = pcall(vim.fn.getreg, "0")
-            if ok and #yank_data > 0 then
-                local data = require("seblj.utils").get_os_command_output("base64", { writer = yank_data })
-                vim.fn.chansend(vim.v.stderr, string.format("\x1b]52;c;%s\x07", table.concat(data)))
-            end
-        end
+        local text = vim.fn.getreg(vim.v.event.regname)
+        local data = require("seblj.utils").get_os_command_output("base64", { writer = text })
+        io.stderr:write(string.format("\x1b]52;c;%s\x07", table.concat(data)))
     end,
     desc = "Highlight on yank",
 })
