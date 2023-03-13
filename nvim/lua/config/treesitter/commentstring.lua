@@ -17,6 +17,8 @@ local config = {
 
 local lang_commentstring = {
     markdown_inline = "<!--%s-->",
+    latex = "% %s",
+    c_sharp = "// %s",
 }
 
 local uncomment_calculation_config = {
