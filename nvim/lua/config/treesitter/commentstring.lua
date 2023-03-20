@@ -15,10 +15,10 @@ local config = {
     javascript = react,
 }
 
-local lang_commentstring = {
-    markdown_inline = "<!--%s-->",
-    latex = "% %s",
-    c_sharp = "// %s",
+local lang_to_ft = {
+    markdown_inline = "markdown",
+    latex = "tex",
+    c_sharp = "cs",
 }
 
 local uncomment_calculation_config = {
@@ -27,12 +27,6 @@ local uncomment_calculation_config = {
     tsx = { "//%s", "{/*%s*/}" },
     javascript = { "//%s", "{/*%s*/}" },
 }
-
-local function default_commentstring(ft)
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.bo[buf].ft = ft
-    return lang_commentstring[ft] and lang_commentstring[ft] or vim.bo[buf].commentstring
-end
 
 local function uncomment_calculation(language)
     local function uncomment_match(commentstring)
@@ -52,19 +46,19 @@ local function uncomment_calculation(language)
     end
 end
 
-local function contains(parser, range)
+local function get_lang(parser, range)
     for lang, child in pairs(parser:children()) do
         if lang ~= "comment" and child:contains(range) then
-            return contains(child, range)
+            return get_lang(child, range)
         end
     end
-    return parser
+    return parser:lang()
 end
 
 local function check_node(node, language_config)
     -- We have reached the top-most node
     if not node then
-        return default_commentstring(vim.bo.ft)
+        return vim.filetype.get_option(vim.bo.ft, "commentstring")
     end
 
     local node_conf = language_config[node:type()]
@@ -82,7 +76,7 @@ local function calculate_commentstring()
 
     -- Get the language tree with nodes inside the given range
     local parser = require("nvim-treesitter.parsers").get_parser()
-    local lang = contains(parser, range):lang()
+    local lang = get_lang(parser, range)
 
     local commentstring = uncomment_calculation(lang)
     if commentstring then
@@ -91,7 +85,7 @@ local function calculate_commentstring()
 
     local tree = parser:tree_for_range(range)
     if not config[lang] or not tree then
-        return default_commentstring(lang)
+        return vim.filetype.get_option(lang_to_ft[lang] and lang_to_ft[lang] or lang, "commentstring")
     end
 
     local node = tree:root():named_descendant_for_range(unpack(range))

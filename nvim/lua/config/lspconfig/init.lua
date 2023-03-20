@@ -34,22 +34,22 @@ local function signs()
     sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
 end
 
-function M.make_config()
-    return {
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
-        on_attach = function(client, bufnr)
-            require("config.lspconfig.handlers").handlers()
-            mappings()
-            signs()
-            if client.server_capabilities.documentSymbolProvider then
-                require("nvim-navic").attach(client, bufnr)
-            end
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        local bufnr = args.bufnr
+        require("config.lspconfig.handlers").handlers()
+        mappings()
+        signs()
+        if client.server_capabilities.documentSymbolProvider and bufnr then
+            require("nvim-navic").attach(client, bufnr)
+        end
 
-            -- Turn off semantic tokens
-            client.server_capabilities.semanticTokensProvider = nil
-        end,
-    }
-end
+        -- Turn off semantic tokens
+        client.server_capabilities.semanticTokensProvider = nil
+    end,
+})
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -57,7 +57,9 @@ local servers = require("mason-lspconfig").get_installed_servers()
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
-    local config = vim.tbl_deep_extend("error", M.make_config(), settings[server] or {})
+    local config = vim.tbl_deep_extend("error", {
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    }, settings[server] or {})
     require("lspconfig")[server].setup(config)
 end
 
