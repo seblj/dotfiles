@@ -211,11 +211,15 @@ local winbar = {
 -- Have winbar background to be the same as Normal
 for _, val in pairs(winbar) do
     for _, component in pairs(val) do
-        if not component.hl then
-            component.hl = { bg = get_color("Normal", "bg") }
-        end
-        if not component.hl.bg then
-            component.hl.bg = get_color("Normal", "bg")
+        local hl = component.hl
+        if type(hl) == "function" then
+            component.hl = function()
+                return { unpack(hl()), bg = get_color("Normal", "bg") }
+            end
+        else
+            component.hl = function()
+                return { unpack(hl or {}), bg = get_color("Normal", "bg") }
+            end
         end
     end
 end

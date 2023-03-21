@@ -118,7 +118,7 @@ highlight({
     Statement = { fg = c.red },
     StorageClass = { fg = c.blue },
     String = { fg = c.yellow },
-    Structure = { fg = c.orange },
+    Structure = { fg = c.blue },
     Tag = { fg = c.blue },
     Title = { fg = c.red, bold = true },
     Todo = { fg = c.blue, italic = true },
@@ -180,6 +180,19 @@ highlight({
     ["@text.uri"] = { link = "Underlined", default = true },
     ["@text.warning"] = { link = "Todo", default = true },
     ["@text.danger"] = { link = "WarningMsg", default = true },
+
+    ---------- SEMANTIC TOKENS ----------
+
+    ["@lsp.type.enum"] = { link = "@type" },
+    ["@lsp.type.keyword"] = { link = "@keyword" },
+    ["@lsp.type.interface"] = { link = "@interface" },
+    ["@lsp.type.namespace"] = { link = "@namespace" },
+    ["@lsp.type.parameter"] = { link = "@parameter" },
+    ["@lsp.type.property"] = { link = "@property" },
+    ["@lsp.type.variable"] = {}, -- use treesitter styles for regular variables
+    ["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" },
+    ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+    ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
 
     ---------- LANGUGE SPECIFIC ----------
 

@@ -38,7 +38,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        local bufnr = args.bufnr
+        local bufnr = args.buf
         require("config.lspconfig.handlers").handlers()
         mappings()
         signs()
