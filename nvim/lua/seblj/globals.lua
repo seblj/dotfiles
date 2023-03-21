@@ -1,5 +1,5 @@
 P = function(...)
-    vim.pretty_print(...)
+    vim.print(...)
 end
 
 CUSTOM_BORDER = { "", "", "", "", "", "", "", "" }
