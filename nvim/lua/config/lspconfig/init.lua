@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         require("config.lspconfig.handlers").handlers()
         mappings()
         signs()
-        if client.server_capabilities.documentSymbolProvider and bufnr then
+        if client.server_capabilities.documentSymbolProvider and pcall(require, "nvim-navic") then
             require("nvim-navic").attach(client, bufnr)
         end
 
@@ -57,8 +57,9 @@ local servers = require("mason-lspconfig").get_installed_servers()
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
+    local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
     local config = vim.tbl_deep_extend("error", {
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        capabilities = ok and cmp_nvim_lsp.default_capabilities() or {},
     }, settings[server] or {})
     require("lspconfig")[server].setup(config)
 end

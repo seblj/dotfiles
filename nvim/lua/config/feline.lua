@@ -195,7 +195,8 @@ local winbar_components = {
             return location == "" and "" or "  " .. location
         end,
         enabled = function()
-            return require("nvim-navic").is_available()
+            local ok, navic = pcall(require, "nvim-navic")
+            return ok and navic.is_available() or false
         end,
     },
 }

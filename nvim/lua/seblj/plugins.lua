@@ -79,7 +79,7 @@ lazy.setup({
         dependencies = { "kristijanhusak/vim-dadbod-completion", "tpope/vim-dadbod" },
     },
 
-    -- -- Git
+    -- Git
     { "lewis6991/gitsigns.nvim", config = conf("gitsigns"), event = { "BufReadPre", "BufWritePre" } },
     {
         "akinsho/git-conflict.nvim",
@@ -110,7 +110,7 @@ lazy.setup({
     },
     { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true } } },
 
-    -- -- UI
+    -- UI
     {
         "NvChad/nvim-colorizer.lua",
         opts = { user_default_options = { names = false } },
@@ -156,7 +156,7 @@ lazy.setup({
         },
         lazy = false,
     },
-    { "tpope/vim-commentary" },
+    { "tpope/vim-commentary", config = conf("commentstring") },
     { "tpope/vim-scriptease" },
     { "tpope/vim-sleuth" },
 })

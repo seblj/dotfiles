@@ -2,8 +2,6 @@
 
 vim.treesitter.language.register("bash", "zsh")
 
-require("config.treesitter.commentstring")
-
 require("nvim-treesitter.configs").setup({
     highlight = {
         enable = true,
