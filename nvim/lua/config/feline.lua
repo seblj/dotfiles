@@ -168,8 +168,8 @@ require("feline").setup({
 })
 
 local function get_color(group, attr)
-    local color = vim.fn.synIDattr(vim.fn.hlID(group), attr)
-    return color ~= "" and color or nil
+    local color = vim.api.nvim_get_hl(0, { name = group })[attr]
+    return color and string.format("#%x", color) or nil
 end
 
 ---------- WINBAR ----------
