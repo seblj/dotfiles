@@ -170,7 +170,7 @@ local function create_command(key, direction)
         local run_command = vim.split(cmdline, key .. " ")[2]
         return utils.get_zsh_completion(run_command)
     end
-    opts["complete"] = completion
+    opts.complete = completion
     vim.api.nvim_create_user_command(key, function(x)
         utils.term({ direction = direction, focus = true, cmd = x.args, new = true })
     end, opts)

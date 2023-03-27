@@ -1,16 +1,5 @@
 ---------- STATUSLINE CONFIG ----------
 
--- Get wordcount in latex document. Only update the count on save
-local latex_word_count = nil
-vim.api.nvim_create_autocmd("BufWritePost", {
-    group = vim.api.nvim_create_augroup("UpdateWordCount", {}),
-    pattern = "*.tex",
-    callback = function()
-        latex_word_count = string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
-    end,
-    desc = "Update word count in latex",
-})
-
 local colors = {
     bg = "#303030",
     fg = "#8FBCBB",
@@ -103,22 +92,17 @@ local components = {
         },
     },
     os = {
-        provider = function()
-            if vim.fn.has("mac") == 1 then
-                return "  "
-            elseif vim.fn.has("linux") == 1 then
-                return "  "
-            end
-        end,
+        provider = {
+            name = "os",
+            update = { "VimEnter" },
+        },
     },
     custom = {
         latex_words = {
-            provider = function()
-                if not latex_word_count then
-                    latex_word_count = string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
-                end
-                return latex_word_count
-            end,
+            provider = {
+                name = "latex_words",
+                update = { "BufWritePost" },
+            },
             enabled = function()
                 return vim.bo.filetype == "tex"
             end,
@@ -149,6 +133,18 @@ local statusline = {
 require("feline").setup({
     theme = { bg = colors.bg, fg = colors.fg },
     components = { active = statusline, inactive = statusline },
+    custom_providers = {
+        latex_words = function()
+            return string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
+        end,
+        os = function()
+            if vim.fn.has("mac") == 1 then
+                return "  "
+            elseif vim.fn.has("linux") == 1 then
+                return "  "
+            end
+        end,
+    },
     vi_mode_colors = {
         NORMAL = colors.green,
         INSERT = colors.red,
@@ -166,11 +162,6 @@ require("feline").setup({
         NONE = colors.yellow,
     },
 })
-
-local function get_color(group, attr)
-    local color = vim.api.nvim_get_hl(0, { name = group })[attr]
-    return color and string.format("#%x", color) or nil
-end
 
 ---------- WINBAR ----------
 
@@ -209,6 +200,11 @@ local winbar = {
     },
 }
 
+local function get_color(group, attr)
+    local color = vim.api.nvim_get_hl(0, { name = group })[attr]
+    return color and string.format("#%x", color) or nil
+end
+
 -- Have winbar background to be the same as Normal
 for _, val in pairs(winbar) do
     for _, component in pairs(val) do
@@ -235,7 +231,6 @@ local blocked_fts = {
 }
 
 require("feline").winbar.setup({
-    theme = { bg = get_color("Normal", "bg") },
     components = { active = winbar, inactive = winbar },
     disable = {
         filetypes = blocked_fts,
