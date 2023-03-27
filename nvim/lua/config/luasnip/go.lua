@@ -7,20 +7,6 @@ local d = ls.d
 local snippet_from_nodes = ls.sn
 local fmt = require("luasnip.extras.fmt").fmt
 
-if vim.treesitter.language.get_lang("go") then
-    vim.treesitter.set_query(
-        "go",
-        "LuaSnip_Result",
-        [[
-            [
-                (method_declaration result: (_) @id)
-                (function_declaration result: (_) @id)
-                (func_literal result: (_) @id)
-            ]
-        ]]
-    )
-end
-
 local function transform(text)
     if text == "int" then
         return t({ "0" })
@@ -41,7 +27,6 @@ end
 local handlers = {
     ["parameter_list"] = function(node)
         local result = {}
-
         local count = node:named_child_count()
         for j = 0, count - 1 do
             table.insert(result, transform(vim.treesitter.get_node_text(node:named_child(j), 0)))
@@ -54,44 +39,38 @@ local handlers = {
     end,
 
     ["type_identifier"] = function(node)
-        local text = vim.treesitter.get_node_text(node, 0)
-        return { transform(text) }
+        return { transform(vim.treesitter.get_node_text(node, 0)) }
     end,
 }
 
-local function go_result_type(info)
+local function go_result_type()
     local cursor_node = vim.treesitter.get_node()
-    local scope = require("nvim-treesitter.locals").get_scope_tree(cursor_node, 0)
-
-    local function_node
-    for _, v in ipairs(scope) do
-        if v:type() == "function_declaration" or v:type() == "method_declaration" or v:type() == "func_literal" then
-            function_node = v
-            break
-        end
-    end
-
-    -- I should probably never use the snippet in this case
-    -- But I just don't want it to error so return empty table
-    -- if I for some reason trigger the snippet outside a function
-    if not function_node then
+    if not cursor_node then
         return {}
     end
+    local scope = require("nvim-treesitter.locals").get_scope_tree(cursor_node, 0)
 
-    local query = vim.treesitter.get_query("go", "LuaSnip_Result")
-    for _, node in query:iter_captures(function_node, 0) do
-        if handlers[node:type()] then
-            return handlers[node:type()](node, info)
+    for _, v in ipairs(scope) do
+        if vim.tbl_contains({ "function_declaration", "method_declaration", "func_literal" }, v:type()) then
+            local query = vim.treesitter.query.parse_query(
+                "go",
+                [[
+                    [
+                        (method_declaration result: (_) @id)
+                        (function_declaration result: (_) @id)
+                        (func_literal result: (_) @id)
+                    ]
+                ]]
+            )
+            for _, node in query:iter_captures(v, 0) do
+                if handlers[node:type()] then
+                    return handlers[node:type()](node)
+                end
+            end
         end
     end
 
-    -- Just return empty table if no return values are expected
     return {}
-end
-
-local function go_ret_vals(_)
-    local info = { index = 0, err_name = "err" }
-    return snippet_from_nodes(nil, go_result_type(info))
 end
 
 return make({
@@ -119,7 +98,9 @@ return make({
         ]],
         {
             tab = "\t",
-            go_ret_vals = d(1, go_ret_vals, {}),
+            go_ret_vals = d(1, function()
+                return snippet_from_nodes(nil, go_result_type())
+            end, {}),
             insert = i(0),
         }
     ),
