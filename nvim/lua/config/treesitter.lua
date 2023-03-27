@@ -8,9 +8,6 @@ require("nvim-treesitter.configs").setup({
     },
     indent = {
         enable = true,
-        disable = vim.tbl_filter(function(val)
-            return not vim.tbl_contains({ "tsx", "typescript", "vue", "javascript" }, val)
-        end, require("nvim-treesitter.parsers").available_parsers()),
     },
     textobjects = {
         select = {
