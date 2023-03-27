@@ -1,8 +1,5 @@
 ---------- UTILS ----------
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
 local M = {}
 
 ---@class TermConfig
@@ -82,8 +79,8 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
     end, { bang = true })
 
     local pattern = get_root_dir_pattern()
-    autocmd("BufWritePost", {
-        group = augroup("RunOnSave", { clear = true }),
+    vim.api.nvim_create_autocmd("BufWritePost", {
+        group = vim.api.nvim_create_augroup("RunOnSave", { clear = true }),
         pattern = pattern,
         callback = function()
             vim.schedule(function()
@@ -190,8 +187,8 @@ function M.setup_hidden_cursor()
     hide_cursor()
     vim.opt_local.cursorline = true
     vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
-    local group = augroup("HiddenCursor", {})
-    autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
+    local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
         group = group,
         pattern = "<buffer>",
         callback = function()
@@ -201,7 +198,7 @@ function M.setup_hidden_cursor()
         end,
         desc = "Hide cursor",
     })
-    autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
+    vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
         group = group,
         pattern = "<buffer>",
         callback = function()

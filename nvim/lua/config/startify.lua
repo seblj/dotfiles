@@ -22,11 +22,8 @@ function _G.webDevIcons(path)
     return require("nvim-web-devicons").get_icon(filename, extension, { default = true })
 end
 
-vim.api.nvim_exec(
-    [[
+vim.cmd([[
 function! StartifyEntryFormat() abort
   return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
 endfunction
-]],
-    false
-)
+]])

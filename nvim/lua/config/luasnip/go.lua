@@ -5,11 +5,9 @@ local i = ls.insert_node
 local t = ls.text_node
 local d = ls.d
 local snippet_from_nodes = ls.sn
-local ts_locals = require("nvim-treesitter.locals")
-local ts_utils = require("nvim-treesitter.ts_utils")
 local fmt = require("luasnip.extras.fmt").fmt
 
-if require("nvim-treesitter.parsers").has_parser("go") then
+if vim.treesitter.language.get_lang("go") then
     vim.treesitter.set_query(
         "go",
         "LuaSnip_Result",
@@ -62,8 +60,8 @@ local handlers = {
 }
 
 local function go_result_type(info)
-    local cursor_node = ts_utils.get_node_at_cursor()
-    local scope = ts_locals.get_scope_tree(cursor_node, 0)
+    local cursor_node = vim.treesitter.get_node()
+    local scope = require("nvim-treesitter.locals").get_scope_tree(cursor_node, 0)
 
     local function_node
     for _, v in ipairs(scope) do

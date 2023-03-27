@@ -1,16 +1,11 @@
 ---------- GITSIGNS CONFIG ----------
 
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
-local popup = require("gitsigns.popup")
-
-autocmd("BufNew", {
+vim.api.nvim_create_autocmd("BufNew", {
     pattern = "*",
-    group = augroup("BlameGitmoji", { clear = true }),
+    group = vim.api.nvim_create_augroup("BlameGitmoji", { clear = true }),
     callback = function()
         vim.defer_fn(function()
-            local winid = popup.is_open("blame")
+            local winid = require("gitsigns.popup").is_open("blame")
             if winid then
                 vim.api.nvim_win_call(winid, function()
                     local gitmoji_file = "~/dotfiles/zsh/gitmoji.json"

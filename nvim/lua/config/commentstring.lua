@@ -66,7 +66,7 @@ local function check_node(node, language_config)
 end
 
 local function calculate_commentstring()
-    if not require("nvim-treesitter.parsers").has_parser() then
+    if not vim.treesitter.language.get_lang(vim.bo.ft) then
         return vim.bo.commentstring
     end
 
@@ -75,7 +75,7 @@ local function calculate_commentstring()
     local range = { row, col, row, col }
 
     -- Get the language tree with nodes inside the given range
-    local parser = require("nvim-treesitter.parsers").get_parser()
+    local parser = vim.treesitter.get_parser()
     local lang = get_lang(parser, range)
 
     local commentstring = uncomment_calculation(lang)

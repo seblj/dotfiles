@@ -137,10 +137,6 @@ return {
             })
         end, { desc = "Telescope: Neovim" })
 
-        vim.keymap.set("n", "<leader>fq", function()
-            require("seblj.cht").telescope_cht()
-        end, { desc = "curl cht.sh" })
-
         vim.keymap.set("n", "<leader>fe", function()
             require("telescope").extensions.file_browser.file_browser()
         end, { desc = "Telescope: File Browser" })
@@ -170,5 +166,47 @@ return {
                 })
                 :find()
         end, { desc = "Telescope: Multi grep" })
+
+        local languages = {
+            "golang",
+            "typescript",
+            "python",
+            "lua",
+            "c",
+            "rust",
+        }
+
+        local core_utils = {
+            "xargs",
+            "find",
+        }
+
+        local total = vim.list_extend(languages, core_utils)
+
+        vim.keymap.set("n", "<leader>fq", function()
+            require("telescope.pickers")
+                .new(require("telescope.themes").get_cursor(), {
+                    prompt_title = "Cheat sheet",
+                    finder = require("telescope.finders").new_table({ results = total }),
+                    attach_mappings = function(_, keymap)
+                        keymap({ "i", "n" }, "<CR>", function(bufnr)
+                            local content = require("telescope.actions.state").get_selected_entry()
+                            require("telescope.actions").close(bufnr)
+                            vim.ui.input({ prompt = "Query: " }, function(query)
+                                local input = vim.split(query, " ")
+                                query = table.concat(input, vim.tbl_contains(languages, content.value) and "+" or "~")
+
+                                require("seblj.utils").run_term({
+                                    direction = "tabnew",
+                                    focus = true,
+                                    cmd = string.format("curl cht.sh/%s/%s", content.value, query),
+                                })
+                            end)
+                        end)
+                        return true
+                    end,
+                })
+                :find()
+        end, { desc = "curl cht.sh" })
     end,
 }
