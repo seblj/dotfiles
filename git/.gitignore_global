@@ -39,6 +39,7 @@ node_modules
 
 # Latex files #
 ######################
+_minted-*
 *.aux
 *.acn
 *.acr
