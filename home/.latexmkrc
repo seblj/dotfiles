@@ -24,3 +24,20 @@ push @generated_exts, "ist";
 push @generated_exts, "synctex.gz";
 push @generated_exts, "run.xml";
 push @generated_exts, "xdv";
+
+##############
+# Glossaries #
+##############
+add_cus_dep( 'glo', 'gls', 0, 'glo2gls' );
+add_cus_dep( 'acn', 'acr', 0, 'glo2gls');  # from Overleaf v1
+sub glo2gls {
+    system("makeglossaries $_[0]");
+}
+
+#############
+# makeindex #
+#############
+@ist = glob("*.ist");
+if (scalar(@ist) > 0) {
+    $makeindex = "makeindex -s $ist[0] %O -o %D %S";
+}
