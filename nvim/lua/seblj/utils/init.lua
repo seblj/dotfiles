@@ -194,14 +194,9 @@ function M.setup_hidden_cursor(bufnr)
         group = group,
         buffer = bufnr,
         callback = function()
-            vim.schedule(function()
-                local current_buf = vim.api.nvim_get_current_buf()
-                if current_buf == bufnr then
-                    hide_cursor()
-                    vim.opt_local.cursorline = true
-                    vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
-                end
-            end)
+            hide_cursor()
+            vim.opt_local.cursorline = true
+            vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
         end,
         desc = "Hide cursor",
     })
@@ -210,12 +205,9 @@ function M.setup_hidden_cursor(bufnr)
         buffer = bufnr,
         callback = function()
             vim.schedule(function()
-                local current_buf = vim.api.nvim_get_current_buf()
-                if current_buf == bufnr then
-                    vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
-                    vim.opt.guicursor = guicursor_saved
-                    vim.opt_local.cursorline = false
-                end
+                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
+                vim.opt.guicursor = guicursor_saved
+                vim.opt_local.cursorline = false
             end)
         end,
         desc = "Show cursor",
