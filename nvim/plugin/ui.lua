@@ -46,11 +46,11 @@ vim.ui.select = function(items, opts, on_choice)
             table.insert(choices, string.format("[%d] %s", i, format_item(item)))
         end
 
-        local width = 0
+        local title = opts.prompt or "Select one of:"
+        local width = #title
         for _, line in ipairs(choices) do
             width = math.max(vim.fn.strdisplaywidth(line), width)
         end
-        local title = opts.prompt or "Select one of:"
         local lines = { title, string.rep(options.border_line, width), unpack(choices) }
 
         local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, opts.syntax, {
@@ -60,7 +60,7 @@ vim.ui.select = function(items, opts, on_choice)
         vim.api.nvim_set_current_win(winnr)
         set_close_mappings()
 
-        require("seblj.utils").setup_hidden_cursor()
+        require("seblj.utils").setup_hidden_cursor(popup_bufnr)
         vim.api.nvim_create_autocmd("CursorMoved", {
             group = vim.api.nvim_create_augroup("UISetCursor", { clear = true }),
             pattern = "<buffer>",

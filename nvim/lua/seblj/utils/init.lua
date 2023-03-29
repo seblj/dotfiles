@@ -183,29 +183,39 @@ local function hide_cursor()
     vim.opt.guicursor = vim.opt.guicursor + "a:CursorTransparent/lCursor"
 end
 
-function M.setup_hidden_cursor()
+function M.setup_hidden_cursor(bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
     hide_cursor()
     vim.opt_local.cursorline = true
     vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+
     local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
     vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
         group = group,
-        pattern = "<buffer>",
+        buffer = bufnr,
         callback = function()
-            hide_cursor()
-            vim.opt_local.cursorline = true
-            vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+            vim.schedule(function()
+                local current_buf = vim.api.nvim_get_current_buf()
+                if current_buf == bufnr then
+                    hide_cursor()
+                    vim.opt_local.cursorline = true
+                    vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+                end
+            end)
         end,
         desc = "Hide cursor",
     })
     vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
         group = group,
-        pattern = "<buffer>",
+        buffer = bufnr,
         callback = function()
             vim.schedule(function()
-                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
-                vim.opt.guicursor = guicursor_saved
-                vim.opt_local.cursorline = false
+                local current_buf = vim.api.nvim_get_current_buf()
+                if current_buf == bufnr then
+                    vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
+                    vim.opt.guicursor = guicursor_saved
+                    vim.opt_local.cursorline = false
+                end
             end)
         end,
         desc = "Show cursor",
