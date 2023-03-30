@@ -51,4 +51,22 @@ _minted-*
 *.out
 *.synctex.gz
 *.toc
+*.idx
+*.log
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.bcf
+
+# Shell scripts
 run

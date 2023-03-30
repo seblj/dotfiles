@@ -52,7 +52,7 @@ local function go_result_type()
 
     for _, v in ipairs(scope) do
         if vim.tbl_contains({ "function_declaration", "method_declaration", "func_literal" }, v:type()) then
-            local query = vim.treesitter.query.parse_query(
+            local query = vim.treesitter.query.parse(
                 "go",
                 [[
                     [
