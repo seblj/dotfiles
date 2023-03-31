@@ -7,3 +7,6 @@ K = ["move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_
 
 [editor.cursor-shape]
 insert = "bar"
+
+[editor]
+true-color = true
