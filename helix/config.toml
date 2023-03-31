@@ -1,0 +1,9 @@
+theme = "catppuccin_mocha"
+
+[keys.normal]
+J = ["move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down", "move_line_down"]
+K = ["move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up", "move_line_up"]
+"space" = { j = "join_selections" }
+
+[editor.cursor-shape]
+insert = "bar"
