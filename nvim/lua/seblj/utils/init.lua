@@ -142,10 +142,7 @@ local runner = {
 -- Save and execute file based on filetype
 function M.save_and_exec()
     local ft = vim.bo.filetype
-    local file = vim.api.nvim_buf_get_name(0)
-    local dir = vim.fn.fnamemodify(file, ":p:h")
-    local output = vim.fn.fnamemodify(file, ":t:r")
-    vim.cmd.write({ mods = { emsg_silent = true } })
+    vim.cmd.write({ mods = { emsg_silent = true, noautocmd = true } })
     vim.api.nvim_echo({ { "Executing file" } }, false, {})
     if ft == "vim" or ft == "lua" then
         vim.cmd.source("%")
@@ -153,6 +150,9 @@ function M.save_and_exec()
         -- Not really save and exec, but think it fits nicely in here for mapping
         require("rest-nvim").run()
     else
+        local file = vim.api.nvim_buf_get_name(0)
+        local dir = vim.fn.fnamemodify(file, ":p:h")
+        local output = vim.fn.fnamemodify(file, ":t:r")
         vim.cmd.lcd(dir)
         local command = runner[ft]
         if not command then
