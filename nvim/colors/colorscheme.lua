@@ -1,5 +1,3 @@
-local autocmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
 local function highlight(colors)
     for name, opts in pairs(colors) do
         vim.api.nvim_set_hl(0, name, opts)
@@ -319,8 +317,8 @@ highlight({
 -- When using ':Messages', the text is highlighted with
 -- 'NonText' for some reason Fix this to actually be readable
 -- without changing hl group for everything it's used for
-local group = augroup("FixQFColorscheme", {})
-autocmd("FileType", {
+local group = vim.api.nvim_create_augroup("FixQFColorscheme", {})
+vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "qf",
     callback = function()
