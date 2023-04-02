@@ -1,4 +1,4 @@
--- Some inspiration from https://github.com/JoosepAlviste/nvim-ts-context-commentstring
+---------- COMMENTSTRING ----------
 
 local react = {
     jsx_element = "{/* %s */}",
@@ -13,12 +13,6 @@ local react = {
 local config = {
     tsx = react,
     javascript = react,
-}
-
-local lang_to_ft = {
-    markdown_inline = "markdown",
-    latex = "tex",
-    c_sharp = "cs",
 }
 
 local uncomment_calculation_config = {
@@ -46,6 +40,17 @@ local function uncomment_calculation(language)
     end
 end
 
+local function default_commentstring(lang)
+    local fts = vim.treesitter.language.get_filetypes(lang)
+    for _, ft in ipairs(fts) do
+        local commentstring = vim.filetype.get_option(ft, "commentstring")
+        if commentstring ~= "" then
+            return commentstring
+        end
+    end
+    return vim.filetype.get_option(vim.bo.filetype, "commentstring")
+end
+
 local function get_lang(parser, range)
     for lang, child in pairs(parser:children()) do
         if lang ~= "comment" and child:contains(range) then
@@ -66,16 +71,15 @@ local function check_node(node, language_config)
 end
 
 local function calculate_commentstring()
-    if not vim.treesitter.language.get_lang(vim.bo.ft) then
+    -- Get the language tree with nodes inside the given range
+    local ok, parser = pcall(vim.treesitter.get_parser)
+    if not ok then
         return vim.bo.commentstring
     end
 
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
     local col = vim.fn.match(vim.api.nvim_get_current_line(), "\\S")
     local range = { row, col, row, col }
-
-    -- Get the language tree with nodes inside the given range
-    local parser = vim.treesitter.get_parser()
     local lang = get_lang(parser, range)
 
     local commentstring = uncomment_calculation(lang)
@@ -85,7 +89,7 @@ local function calculate_commentstring()
 
     local tree = parser:tree_for_range(range)
     if not config[lang] or not tree then
-        return vim.filetype.get_option(lang_to_ft[lang] and lang_to_ft[lang] or lang, "commentstring")
+        return default_commentstring(lang)
     end
 
     local node = tree:root():named_descendant_for_range(unpack(range))
