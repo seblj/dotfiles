@@ -17,15 +17,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        local bufnr = args.buf
-        require("config.lspconfig.handlers").handlers()
-
-        if client.server_capabilities.documentSymbolProvider and pcall(require, "nvim-navic") then
-            require("nvim-navic").attach(client, bufnr)
-        end
 
         -- Turn off semantic tokens
         client.server_capabilities.semanticTokensProvider = nil
+
+        require("config.lspconfig.handlers").handlers()
 
         ---------- MAPPINGS ----------
 
@@ -41,6 +37,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
 
         ---------- SIGNS ----------
+
         sign("DiagnosticSignError", "✘")
         sign("DiagnosticSignWarn", "")
         sign("DiagnosticSignHint", "")

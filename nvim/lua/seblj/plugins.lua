@@ -45,7 +45,7 @@ lazy.setup({
             { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
             { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } } },
-            { "SmiteshP/nvim-navic" },
+            { "SmiteshP/nvim-navic", opts = { lsp = { auto_attach = true } } },
             {
                 "seblj/nvim-lsp-extras",
                 opts = {

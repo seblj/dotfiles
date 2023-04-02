@@ -120,7 +120,6 @@ return {
         vim.keymap.set("n", "<leader>fp", function()
             require("telescope.builtin").find_files({
                 cwd = vim.fn.stdpath("data") .. "/lazy",
-                follow = true,
                 prompt_title = "Plugins",
                 search_dirs = vim.tbl_map(function(val)
                     return val.dir
