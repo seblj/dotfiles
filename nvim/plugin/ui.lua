@@ -7,14 +7,8 @@ local options = {
     border_line = "─",
 }
 
-local function set_close_mappings()
-    keymap("n", "<ESC>", function()
-        vim.api.nvim_win_close(0, true)
-    end, {
-        buffer = true,
-        desc = "Close popup",
-    })
-    keymap("n", "q", function()
+local function set_close_mapping(key)
+    keymap("n", key, function()
         vim.api.nvim_win_close(0, true)
     end, {
         buffer = true,
@@ -23,23 +17,23 @@ local function set_close_mappings()
 end
 
 local function confirm(items, on_choice, key)
-    local choice = tonumber(vim.fn.expand("<cword>"))
-    if key then
-        choice = key
-    end
-
+    local choice = key and key or tonumber(vim.fn.expand("<cword>"))
     vim.api.nvim_win_close(0, true)
     on_choice(items[choice], choice)
+end
+
+local function set_highlight(buf, title, width)
+    vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, { end_col = #title, hl_group = "Title" })
+    vim.api.nvim_buf_set_extmark(buf, ns, 1, 0, {
+        virt_text_win_col = 0,
+        virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
+        priority = 100,
+    })
 end
 
 -- Override vim.ui.select to use popup
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
-        vim.validate({
-            items = { items, "table", false },
-            on_choice = { on_choice, "function", false },
-        })
-        opts = opts or {}
         local choices = {}
         local format_item = opts.format_item or tostring
         for i, item in pairs(items) do
@@ -58,16 +52,15 @@ vim.ui.select = function(items, opts, on_choice)
         })
 
         vim.api.nvim_set_current_win(winnr)
-        set_close_mappings()
+        set_close_mapping("<Esc>")
+        set_close_mapping("q")
 
         require("seblj.utils").setup_hidden_cursor(popup_bufnr)
         vim.api.nvim_create_autocmd("CursorMoved", {
             group = vim.api.nvim_create_augroup("UISetCursor", { clear = true }),
             pattern = "<buffer>",
             callback = function()
-                local current_line = vim.fn.line(".")
-                local max_lines = vim.api.nvim_buf_line_count(0)
-                if current_line < 3 and max_lines >= 3 then
+                if vim.fn.line(".") < 3 and vim.api.nvim_buf_line_count(0) >= 3 then
                     vim.api.nvim_win_set_cursor(0, { 3, 1 })
                 end
             end,
@@ -83,22 +76,15 @@ vim.ui.select = function(items, opts, on_choice)
         })
 
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
-        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 0, 0, { end_col = #title, hl_group = "Title" })
-        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 1, 0, {
-            virt_text_win_col = 0,
-            virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
-            priority = 100,
-        })
+        set_highlight(popup_bufnr, title, width)
 
-        for k, _ in ipairs(choices) do
-            if k > 1 then
-                keymap("n", string.format("%d", k - 1), function()
-                    confirm(items, on_choice, k - 1)
-                end, {
-                    buffer = true,
-                    desc = "Select option with number",
-                })
-            end
+        for k = 1, #choices do
+            keymap("n", string.format("%d", k), function()
+                confirm(items, on_choice, k)
+            end, {
+                buffer = true,
+                desc = "Select option with number",
+            })
         end
     end)
 end
@@ -106,11 +92,6 @@ end
 -- Override vim.ui.input to use popup
 vim.ui.input = function(opts, on_confirm)
     vim.schedule(function()
-        vim.validate({
-            on_confirm = { on_confirm, "function", false },
-        })
-        opts = opts or {}
-
         local width = 30
         local lines = { opts.prompt, string.rep(options.border_line, width), unpack({ opts.prompt }, 2) }
 
@@ -120,10 +101,10 @@ vim.ui.input = function(opts, on_confirm)
             height = math.ceil(#opts.prompt / width) + 2,
         })
 
-        vim.wo[winnr].winhl = "Normal:NormalFloat"
         vim.api.nvim_set_current_win(winnr)
 
-        set_close_mappings()
+        set_close_mapping("<Esc>")
+        set_close_mapping("q")
 
         keymap({ "i", "n" }, "<CR>", function()
             local input = vim.trim(vim.fn.getline("."):sub(#options.prefix + 1, -1))
@@ -140,15 +121,9 @@ vim.ui.input = function(opts, on_confirm)
         vim.bo[popup_bufnr].buftype = "prompt"
         vim.fn.prompt_setprompt(popup_bufnr, options.prefix)
         if opts.default then
-            vim.api.nvim_input(opts.default)
-            vim.api.nvim_input("<Esc>0wv$h<C-g>")
+            vim.api.nvim_input(string.format("%s<Esc>0wv$h<C-g>", opts.default))
         end
-        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 0, 0, { end_col = #lines[1], hl_group = "Title" })
-        vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 1, 0, {
-            virt_text_win_col = 0,
-            virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
-            priority = 100,
-        })
+        set_highlight(popup_bufnr, lines[1], width)
         vim.api.nvim_buf_set_extmark(popup_bufnr, ns, 2, 0, {
             virt_text_win_col = 0,
             virt_text = { { options.prefix, "Title" } },
