@@ -16,10 +16,15 @@ local function set_close_mapping(key)
     })
 end
 
-local function confirm(items, on_choice, key)
-    local choice = key and key or tonumber(vim.fn.expand("<cword>"))
-    vim.api.nvim_win_close(0, true)
-    on_choice(items[choice], choice)
+local function setup_confirm_mapping(mapping_key, items, on_choice, key)
+    vim.keymap.set("n", mapping_key, function()
+        local choice = key and key or tonumber(vim.fn.expand("<cword>"))
+        vim.api.nvim_win_close(0, true)
+        on_choice(items[choice], choice)
+    end, {
+        buffer = true,
+        desc = "Confirm selection",
+    })
 end
 
 local function set_highlight(buf, title, width)
@@ -67,24 +72,13 @@ vim.ui.select = function(items, opts, on_choice)
             desc = "Hidden cursor",
         })
 
-        keymap({ "i", "n" }, "<CR>", function()
-            confirm(items, on_choice)
-            vim.cmd.stopinsert()
-        end, {
-            buffer = true,
-            desc = "Confirm selection",
-        })
+        setup_confirm_mapping("<CR>", items, on_choice)
 
         vim.api.nvim_win_set_cursor(winnr, { math.ceil(#title / width) + 2, 1 })
         set_highlight(popup_bufnr, title, width)
 
         for k = 1, #choices do
-            keymap("n", string.format("%d", k), function()
-                confirm(items, on_choice, k)
-            end, {
-                buffer = true,
-                desc = "Select option with number",
-            })
+            setup_confirm_mapping(string.format("%d", k), items, on_choice, k)
         end
     end)
 end
