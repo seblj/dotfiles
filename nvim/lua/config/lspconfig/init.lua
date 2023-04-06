@@ -44,15 +44,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-require("mason").setup()
-require("mason-lspconfig").setup()
 local servers = require("mason-lspconfig").get_installed_servers()
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
     local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
     local config = vim.tbl_deep_extend("error", {
-        capabilities = ok and cmp_nvim_lsp.default_capabilities() or {},
+        capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities(),
     }, require("config.lspconfig.settings")[server] or {})
     require("lspconfig")[server].setup(config)
 end

@@ -1,5 +1,3 @@
-local keymap = vim.keymap.set
-
 local ns = vim.api.nvim_create_namespace("seblj_ui")
 
 local options = {
@@ -8,7 +6,7 @@ local options = {
 }
 
 local function set_close_mapping(key)
-    keymap("n", key, function()
+    vim.keymap.set("n", key, function()
         vim.api.nvim_win_close(0, true)
     end, {
         buffer = true,
@@ -31,7 +29,7 @@ local function set_highlight(buf, title, width)
     vim.api.nvim_buf_set_extmark(buf, ns, 0, 0, { end_col = #title, hl_group = "Title" })
     vim.api.nvim_buf_set_extmark(buf, ns, 1, 0, {
         virt_text_win_col = 0,
-        virt_text = { { string.rep("─", width), "@punctuation.special.markdown" } },
+        virt_text = { { string.rep(options.border_line, width), "@punctuation.special.markdown" } },
         priority = 100,
     })
 end
@@ -100,7 +98,7 @@ vim.ui.input = function(opts, on_confirm)
         set_close_mapping("<Esc>")
         set_close_mapping("q")
 
-        keymap({ "i", "n" }, "<CR>", function()
+        vim.keymap.set({ "i", "n" }, "<CR>", function()
             local input = vim.trim(vim.fn.getline("."):sub(#options.prefix + 1, -1))
             vim.api.nvim_win_close(0, true)
             on_confirm(input)

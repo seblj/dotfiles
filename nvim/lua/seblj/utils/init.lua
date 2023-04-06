@@ -33,7 +33,6 @@ function M.get_os_command_output(command, opts)
     opts = opts or {}
     opts.command = command
     opts.cwd = opts.cwd or vim.loop.cwd()
-    opts.args = opts.args or {}
     opts.on_exit = function(j)
         res = j:result()
     end
@@ -42,25 +41,22 @@ function M.get_os_command_output(command, opts)
 end
 
 function M.get_zsh_completion(args)
-    local completions = M.get_os_command_output("capture", { args = { args } })
-    for k, v in ipairs(completions) do
-        completions[k] = vim.fn.split(v, " -- ")[1]
-    end
-    return completions
+    return vim.tbl_map(function(v)
+        return vim.fn.split(v, " -- ")[1]
+    end, M.get_os_command_output("capture", { args = { args } }))
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
 ---root_dir is not found
 local function get_root_dir_pattern()
-    local pattern = "<buffer>"
     local active_clients = vim.lsp.get_active_clients()
-    if #active_clients > 0 and active_clients[1].config and active_clients[1].config.root_dir then
+    if #active_clients > 0 and active_clients[1].config then
         local root_dir = active_clients[1].config.root_dir
-        if root_dir ~= vim.env.HOME then
-            pattern = string.format("%s/*", root_dir)
+        if root_dir and root_dir ~= vim.env.HOME then
+            return string.format("%s/*", root_dir)
         end
     end
-    return pattern
+    return "<buffer>"
 end
 
 -- Creates a user_command to run a command each time a buffer is saved. By
@@ -78,10 +74,9 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
         vim.api.nvim_del_user_command("RunOnSaveClear")
     end, { bang = true })
 
-    local pattern = get_root_dir_pattern()
     vim.api.nvim_create_autocmd("BufWritePost", {
         group = vim.api.nvim_create_augroup("RunOnSave", { clear = true }),
-        pattern = pattern,
+        pattern = get_root_dir_pattern(),
         callback = function()
             vim.schedule(function()
                 if opts.args:sub(1, 1) == "!" then
@@ -107,14 +102,12 @@ end, {
         if command:sub(1, 1) == "!" then
             -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-            local completions = M.get_zsh_completion(string.sub(command, 2))
-
             if arg_lead:sub(1, 1) == "!" then
-                for k in ipairs(completions) do
-                    completions[k] = string.format("!%s", completions[k])
-                end
+                return vim.tbl_map(function(val)
+                    return string.format("!%s", val)
+                end, M.get_zsh_completion(string.sub(command, 2)))
             end
-            return completions
+            return M.get_zsh_completion(string.sub(command, 2))
         else
             return vim.fn.getcompletion(command, "cmdline")
         end
@@ -151,9 +144,7 @@ function M.save_and_exec()
         require("rest-nvim").run()
     else
         local file = vim.api.nvim_buf_get_name(0)
-        local dir = vim.fn.fnamemodify(file, ":p:h")
-        local output = vim.fn.fnamemodify(file, ":t:r")
-        vim.cmd.lcd(dir)
+        vim.cmd.lcd(vim.fs.dirname(file))
         local command = runner[ft]
         if not command then
             return vim.notify(
@@ -166,9 +157,8 @@ function M.save_and_exec()
             command = command()
         end
 
-        command = command:gsub("$file", file)
-        command = command:gsub("$output", output)
-        command = command:gsub("$dir", dir)
+        local output = vim.fn.fnamemodify(file, ":t:r")
+        command = command:gsub("$file", file):gsub("$output", output)
         M.term({ direction = "split", focus = false, cmd = command })
     end
 end
