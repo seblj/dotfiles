@@ -33,22 +33,16 @@ local function uncomment_calculation(language)
         return str[1] == start and (str[2] == last or #str[2] == 0)
     end
 
-    for _, commentstring in pairs(uncomment_calculation_config[language] or {}) do
-        if uncomment_match(commentstring) then
-            return commentstring
-        end
-    end
+    return vim.iter(uncomment_calculation_config[language] or {}):find(function(commentstring)
+        return uncomment_match(commentstring)
+    end)
 end
 
 local function default_commentstring(lang)
-    local fts = vim.treesitter.language.get_filetypes(lang)
-    for _, ft in ipairs(fts) do
-        local commentstring = vim.filetype.get_option(ft, "commentstring")
-        if commentstring ~= "" then
-            return commentstring
-        end
-    end
-    return vim.filetype.get_option(vim.bo.filetype, "commentstring")
+    local ft = vim.iter(vim.treesitter.language.get_filetypes(lang)):find(function(ft)
+        return vim.filetype.get_option(ft, "commentstring") ~= ""
+    end)
+    return vim.filetype.get_option(ft or vim.bo.filetype, "commentstring")
 end
 
 local function get_lang(parser, range)

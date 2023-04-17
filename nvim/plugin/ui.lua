@@ -37,19 +37,19 @@ end
 -- Override vim.ui.select to use popup
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
-        local choices = {}
         local format_item = opts.format_item or tostring
-        for i, item in pairs(items) do
-            table.insert(choices, string.format("[%d] %s", i, format_item(item)))
-        end
+        local choices = vim.iter(pairs(items))
+            :map(function(i, item)
+                return string.format("[%d] %s", i, format_item(item))
+            end)
+            :totable()
 
         local title = opts.prompt or "Select one of:"
-        local width = #title
-        for _, line in ipairs(choices) do
-            width = math.max(vim.fn.strdisplaywidth(line), width)
-        end
-        local lines = { title, string.rep(options.border_line, width), unpack(choices) }
+        local width = vim.iter(choices):fold(#title, function(acc, line)
+            return math.max(vim.fn.strdisplaywidth(line), acc)
+        end)
 
+        local lines = { title, string.rep(options.border_line, width), unpack(choices) }
         local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, opts.syntax, {
             border = CUSTOM_BORDER,
         })
