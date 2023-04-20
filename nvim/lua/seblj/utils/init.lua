@@ -41,9 +41,11 @@ function M.get_os_command_output(command, opts)
 end
 
 function M.get_zsh_completion(args)
-    return vim.tbl_map(function(v)
-        return vim.fn.split(v, " -- ")[1]
-    end, M.get_os_command_output("capture", { args = { args } }))
+    return vim.iter(M.get_os_command_output("capture", { args = { args } }))
+        :map(function(v)
+            return vim.fn.split(v, " -- ")[1]
+        end)
+        :totable()
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
@@ -103,9 +105,11 @@ end, {
             -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
             if arg_lead:sub(1, 1) == "!" then
-                return vim.tbl_map(function(val)
-                    return string.format("!%s", val)
-                end, M.get_zsh_completion(string.sub(command, 2)))
+                return vim.iter(M.get_zsh_completion(string.sub(command, 2)))
+                    :map(function(val)
+                        return string.format("!%s", val)
+                    end)
+                    :totable()
             end
             return M.get_zsh_completion(string.sub(command, 2))
         else
@@ -145,16 +149,13 @@ function M.save_and_exec()
     else
         local file = vim.api.nvim_buf_get_name(0)
         vim.cmd.lcd(vim.fs.dirname(file))
-        local command = runner[ft]
+        local command = type(runner[ft]) == "function" and runner[ft]() or runner[ft]
         if not command then
             return vim.notify(
                 string.format("No config found for %s", ft),
                 vim.log.levels.INFO,
                 { title = "Save and exec" }
             )
-        end
-        if type(command) == "function" then
-            command = command()
         end
 
         local output = vim.fn.fnamemodify(file, ":t:r")

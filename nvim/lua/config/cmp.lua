@@ -65,9 +65,7 @@ cmp.setup({
             local maxlength = 90
             local length = #item.abbr
             item.abbr = string.sub(item.abbr, 1, maxlength)
-            if length > maxlength then
-                item.abbr = item.abbr .. "..."
-            end
+            item.abbr = length > maxlength and item.abbr .. "..." or item.abbr
             return item
         end,
     },

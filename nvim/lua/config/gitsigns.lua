@@ -9,7 +9,7 @@ vim.api.nvim_create_autocmd("BufNew", {
             if winid then
                 vim.api.nvim_win_call(winid, function()
                     local gitmoji_file = "~/dotfiles/zsh/gitmoji.json"
-                    local gitmojis = vim.json.decode(require("plenary.path"):new(gitmoji_file):read())
+                    local gitmojis = vim.json.decode(require("plenary.path"):new(gitmoji_file):read()) --[[@as table]]
                     vim.bo.modifiable = true
                     for _, v in pairs(gitmojis) do
                         vim.cmd.substitute({
