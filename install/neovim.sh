@@ -6,8 +6,8 @@ source ~/dotfiles/install/utils.sh
 install_neovim_dependencies() {
     printf "\n${BLUE}Installing neovim dependencies ${NC}\n\n"
     case "$OS" in
-    Linux*) sudo apt-get install ninja-build gettext libtool libtool-bin cmake g++ pkg-config unzip curl doxygen >/dev/null ;;
-    Darwin*) brew install ninja libtool cmake pkg-config gettext curl >/dev/null ;;
+    Linux*) $INSTALL ninja-build gettext libtool libtool-bin cmake g++ pkg-config unzip curl doxygen >/dev/null ;;
+    Darwin*) $INSTALL ninja libtool cmake pkg-config gettext curl >/dev/null ;;
     *)
         echo "$OS not supported to download dependencies for neovim"
         return
