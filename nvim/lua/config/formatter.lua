@@ -1,12 +1,5 @@
 ---------- FORMATTER ----------
 
-local function prettierd()
-    return {
-        exe = "prettierd",
-        args = { vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)) },
-    }
-end
-
 require("formatter").setup({
     format_on_save = function()
         return not vim.b.disable_formatting
@@ -21,17 +14,17 @@ require("formatter").setup({
         c = "clang-format",
         tex = "latexindent -g /dev/null",
         bib = "latexindent -g /dev/null",
-        javascript = prettierd,
-        typescript = prettierd,
-        javascriptreact = prettierd,
-        typescriptreact = prettierd,
-        vue = prettierd,
-        css = prettierd,
-        scss = prettierd,
-        html = prettierd,
-        yaml = prettierd,
-        markdown = prettierd,
-        graphql = prettierd,
+        javascript = "prettierd .js",
+        typescript = "prettierd .ts",
+        javascriptreact = "prettierd .jsx",
+        typescriptreact = "prettierd .tsx",
+        vue = "prettierd .vue",
+        css = "prettierd .css",
+        scss = "prettierd .scss",
+        html = "prettierd .html",
+        yaml = "prettierd .yml",
+        markdown = "prettierd .md",
+        graphql = "prettierd .gql",
         zsh = "shfmt -i 4",
         sh = "shfmt -i 4",
     },
