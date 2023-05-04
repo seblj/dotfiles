@@ -168,39 +168,34 @@ return {
                 :find()
         end, { desc = "Telescope: Multi grep" })
 
-        local languages = {
+        local total = {
             "golang",
             "typescript",
             "python",
             "lua",
             "c",
             "rust",
-        }
-
-        local core_utils = {
             "xargs",
             "find",
         }
 
-        local total = vim.list_extend(languages, core_utils)
-
         vim.keymap.set("n", "<leader>fq", function()
+            local opts = require("telescope.themes").get_cursor()
             require("telescope.pickers")
-                .new(require("telescope.themes").get_cursor(), {
+                .new(opts, {
                     prompt_title = "Cheat sheet",
                     finder = require("telescope.finders").new_table({ results = total }),
+                    sorter = require("telescope.config").values.generic_sorter(opts),
                     attach_mappings = function(_, keymap)
                         keymap({ "i", "n" }, "<CR>", function(bufnr)
                             local content = require("telescope.actions.state").get_selected_entry()
                             require("telescope.actions").close(bufnr)
                             vim.ui.input({ prompt = "Query: " }, function(query)
                                 local input = vim.split(query, " ")
-                                query = table.concat(input, vim.tbl_contains(languages, content.value) and "+" or "~")
-
-                                require("seblj.utils").run_term({
+                                require("seblj.utils").term({
                                     direction = "tabnew",
                                     focus = true,
-                                    cmd = string.format("curl cht.sh/%s/%s", content.value, query),
+                                    cmd = string.format("curl cht.sh/%s/%s", content.value, table.concat(input, "+")),
                                 })
                             end)
                         end)
