@@ -4,28 +4,24 @@ local keymap = vim.keymap.set
 
 ---------- MAPPINGS ----------
 
-local function t(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
 keymap("n", "<leader>db", function()
     require("dap").toggle_breakpoint()
-    vim.fn["repeat#set"](t("<leader>db"))
+    vim.fn["repeat#set"](vim.keycode("<leader>db"))
 end, { desc = "Dap: Add breakpoint" })
 
 keymap("n", "<leader>d<leader>", function()
     require("dap").continue()
-    vim.fn["repeat#set"](t("<leader>d<leader>"))
+    vim.fn["repeat#set"](vim.keycode("<leader>d<leader>"))
 end, { desc = "Dap: Continue debugging" })
 
 keymap("n", "<leader>dl", function()
     require("dap").step_into()
-    vim.fn["repeat#set"](t("<leader>dl"))
+    vim.fn["repeat#set"](vim.keycode("<leader>dl"))
 end, { desc = "Dap: Step into" })
 
 keymap("n", "<leader>dj", function()
     require("dap").step_over()
-    vim.fn["repeat#set"](t("<leader>dj"))
+    vim.fn["repeat#set"](vim.keycode("<leader>dj"))
 end, { desc = "Dap: Step over" })
 
 ---------- UI ----------
