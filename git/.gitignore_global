@@ -67,6 +67,3 @@ _minted-*
 *.mtc
 *.mtc1
 *.bcf
-
-# Shell scripts
-run
