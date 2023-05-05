@@ -38,11 +38,9 @@ end
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
         local format_item = opts.format_item or tostring
-        local choices = vim.iter(pairs(items))
-            :map(function(i, item)
-                return string.format("[%d] %s", i, format_item(item))
-            end)
-            :totable()
+        local choices = vim.iter.map(function(i, item)
+            return string.format("[%d] %s", i, format_item(item))
+        end, pairs(items))
 
         local title = opts.prompt or "Select one of:"
         local width = vim.iter(choices):fold(#title, function(acc, line)

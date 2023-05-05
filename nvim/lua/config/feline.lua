@@ -179,11 +179,9 @@ local winbar_components = {
             local location = require("nvim-navic").get_location({
                 highlight = true,
                 separator = "  ",
-                icons = vim.iter(require("seblj.utils.icons").kind)
-                    :map(function(val)
-                        return val .. " "
-                    end)
-                    :totable(),
+                icons = vim.iter.map(function(val)
+                    return val .. " "
+                end, require("seblj.utils.icons").kind),
             })
             return location == "" and "" or "  " .. location
         end,

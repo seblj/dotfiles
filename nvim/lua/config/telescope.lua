@@ -121,11 +121,9 @@ return {
             require("telescope.builtin").find_files({
                 cwd = vim.fn.stdpath("data") .. "/lazy",
                 prompt_title = "Plugins",
-                search_dirs = vim.iter(require("lazy").plugins())
-                    :map(function(val)
-                        return val.dir
-                    end)
-                    :totable(),
+                search_dirs = vim.iter.map(function(val)
+                    return val.dir
+                end, require("lazy").plugins()),
             })
         end, { desc = "Telescope: Plugins" })
 

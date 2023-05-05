@@ -41,11 +41,9 @@ function M.get_os_command_output(command, opts)
 end
 
 function M.get_zsh_completion(args)
-    return vim.iter(M.get_os_command_output("capture", { args = { args } }))
-        :map(function(v)
-            return vim.fn.split(v, " -- ")[1]
-        end)
-        :totable()
+    return vim.iter.map(function(v)
+        return vim.fn.split(v, " -- ")[1]
+    end, M.get_os_command_output("capture", { args = { args } }))
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
@@ -105,11 +103,9 @@ end, {
             -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
             if arg_lead:sub(1, 1) == "!" then
-                return vim.iter(M.get_zsh_completion(string.sub(command, 2)))
-                    :map(function(val)
-                        return string.format("!%s", val)
-                    end)
-                    :totable()
+                return vim.iter.map(function(val)
+                    return string.format("!%s", val)
+                end, M.get_zsh_completion(string.sub(command, 2)))
             end
             return M.get_zsh_completion(string.sub(command, 2))
         else

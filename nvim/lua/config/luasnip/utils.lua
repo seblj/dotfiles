@@ -27,11 +27,9 @@ end
 -- Borrow from tj for how to make a snippet
 -- Looks more clean with the trigger as a key in a table than a string in a snippenode imo
 function M.make(tbl)
-    return vim.iter(pairs(tbl))
-        :map(function(k, v)
-            return ls.s({ trig = k, desc = v.desc }, shortcut(v))
-        end)
-        :totable()
+    return vim.iter.map(function(k, v)
+        return ls.s({ trig = k, desc = v.desc }, shortcut(v))
+    end, pairs(tbl))
 end
 
 return M
