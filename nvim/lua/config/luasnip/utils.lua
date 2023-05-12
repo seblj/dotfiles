@@ -14,11 +14,9 @@ local function shortcut(val)
     end
 
     if type(val) == "table" then
-        for k, v in ipairs(val) do
-            if type(v) == "string" then
-                val[k] = t({ v })
-            end
-        end
+        return vim.iter.map(function(v)
+            return type(v) == "string" and t({ v }) or v
+        end, val)
     end
 
     return val

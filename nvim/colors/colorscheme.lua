@@ -192,12 +192,6 @@ highlight({
     ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
     ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
 
-    ---------- LANGUGE SPECIFIC ----------
-
-    typescriptParenExp = { link = "@punctuation.bracket" },
-    typescript1 = { link = "@punctuation.bracket" },
-    typescriptParens = { link = "@punctuation.bracket" },
-
     ---------- NVIM LSPCONFIG ----------
 
     DiagnosticError = { fg = c.red },
