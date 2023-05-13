@@ -28,24 +28,20 @@ function M.term(opts, ...)
 end
 
 function M.get_os_command_output(command, opts)
-    local res
     opts = opts or {}
     opts.command = command
     opts.cwd = opts.cwd or vim.loop.cwd()
-    opts.on_exit = function(j)
-        res = j:result()
-    end
-    require("plenary.job"):new(opts):sync()
-    return res
+    return require("plenary.job"):new(opts):sync()
 end
 
-function M.get_zsh_completion(args)
+function M.get_zsh_completion(args, prefix)
     return vim.iter.map(function(v)
-        return vim.fn.split(v, " -- ")[1]
+        local val = vim.fn.split(v, " -- ")[1]
+        return prefix and string.format("%s%s", prefix, val) or val
     end, M.get_os_command_output("capture", { args = { args } }))
 end
 
----Tries to find root_dir pattern for a buffer autocmd. Fallback to <pattern> if
+---Tries to find root_dir pattern for a buffer autocmd. Fallback to <buffer> if
 ---root_dir is not found
 local function get_root_dir_pattern()
     local active_clients = vim.lsp.get_active_clients()
@@ -79,11 +75,7 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
         callback = function()
             vim.schedule(function()
                 if opts.args:sub(1, 1) == "!" then
-                    M.term({
-                        direction = "new",
-                        focus = false,
-                        cmd = string.sub(opts.args, 2),
-                    })
+                    M.term({ direction = "new", focus = false, cmd = string.sub(opts.args, 2) })
                 else
                     local this = vim.fn.winnr()
                     vim.cmd(opts.args)
@@ -99,14 +91,8 @@ end, {
     complete = function(arg_lead, cmdline, _)
         local command = vim.split(cmdline, "RunOnSave ")[2]
         if command:sub(1, 1) == "!" then
-            -- cd to dir which contains current buffer
             vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-            if arg_lead:sub(1, 1) == "!" then
-                return vim.iter.map(function(val)
-                    return string.format("!%s", val)
-                end, M.get_zsh_completion(string.sub(command, 2)))
-            end
-            return M.get_zsh_completion(string.sub(command, 2))
+            return M.get_zsh_completion(string.sub(command, 2), arg_lead:sub(1, 1) == "!" and "!" or nil)
         else
             return vim.fn.getcompletion(command, "cmdline")
         end
