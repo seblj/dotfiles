@@ -3,29 +3,28 @@
 local M = {}
 
 ---@class TermConfig
----@field direction "split" | "vsplit" | "tabnew"
+---@field direction "new" | "vnew" | "tabnew"
 ---@field cmd string
 ---@field new boolean
 ---@field focus boolean
 ---@param opts TermConfig
 function M.term(opts, ...)
-    local terminal = vim.fn.filter(vim.fn.getwininfo(), "v:val.terminal")[1]
-    if not terminal or opts.new then
-        local current_win = vim.api.nvim_get_current_win()
-        local height = vim.api.nvim_win_get_height(0)
-        vim.cmd[opts.direction]()
-        if opts.direction == "split" then
-            vim.api.nvim_win_set_height(0, math.floor(height / 3))
-        end
-        vim.cmd.term()
-        vim.cmd("$")
-        terminal = vim.fn.filter(vim.fn.getwininfo(), "v:val.terminal")[1]
-        if not opts.focus then
-            vim.cmd.stopinsert()
-            vim.api.nvim_set_current_win(current_win)
-        end
+    local terminal = vim.iter(vim.fn.getwininfo()):find(function(v)
+        return v.terminal == 1
+    end)
+    if terminal and not opts.new then
+        return vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. "\n", ...))
     end
-    vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. "\n", ...))
+
+    local current_win = vim.api.nvim_get_current_win()
+    local size = math.floor(vim.api.nvim_win_get_height(0) / 3)
+    vim.cmd[opts.direction]({ range = opts.direction == "new" and { size } or { nil } })
+    local term = vim.fn.termopen(vim.env.SHELL) --[[@as number]]
+    if not opts.focus then
+        vim.cmd.stopinsert()
+        vim.api.nvim_set_current_win(current_win)
+    end
+    vim.api.nvim_chan_send(term, string.format(opts.cmd .. "\n", ...))
 end
 
 function M.get_os_command_output(command, opts)
@@ -81,7 +80,7 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
             vim.schedule(function()
                 if opts.args:sub(1, 1) == "!" then
                     M.term({
-                        direction = "split",
+                        direction = "new",
                         focus = false,
                         cmd = string.sub(opts.args, 2),
                     })
@@ -156,7 +155,7 @@ function M.save_and_exec()
 
         local output = vim.fn.fnamemodify(file, ":t:r")
         command = command:gsub("$file", file):gsub("$output", output)
-        M.term({ direction = "split", focus = false, cmd = command })
+        M.term({ direction = "new", focus = false, cmd = command })
     end
 end
 

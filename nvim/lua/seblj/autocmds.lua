@@ -66,6 +66,7 @@ end)
 set_ft_option("term", function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
+    vim.cmd("$")
     vim.cmd.startinsert()
 end)
 
