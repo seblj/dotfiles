@@ -28,7 +28,7 @@ lazy.setup({
         build = ":TSUpdate",
         dependencies = {
             { "nvim-treesitter/playground", cmd = { "TSPlaygroundToggle" } },
-            { "windwp/nvim-ts-autotag" },
+            { "windwp/nvim-ts-autotag", config = true },
             { "nvim-treesitter/nvim-treesitter-textobjects" },
         },
     },
