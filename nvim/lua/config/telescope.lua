@@ -12,6 +12,7 @@ return {
                         flip_columns = 120,
                     },
                 },
+                file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "fonts/", "icons/" },
                 mappings = {
                     i = {
                         ["<C-j>"] = function(prompt_bufnr)
@@ -42,10 +43,10 @@ return {
     end,
 
     init = function()
-        local utils = require("seblj.utils")
-        local function map(mode, keys, func, desc)
-            vim.keymap.set(mode, keys, function()
-                require("telescope.builtin")[func]()
+        local function map(keys, func, desc, opts)
+            vim.keymap.set("n", keys, function()
+                opts = opts and opts() or {}
+                require("telescope.builtin")[func](opts)
             end, { desc = string.format("Telescope: %s", desc) })
         end
 
@@ -59,7 +60,7 @@ return {
         })
 
         local function git_root()
-            return utils.get_os_command_output(
+            return require("seblj.utils").get_os_command_output(
                 "git",
                 { args = { "rev-parse", "--show-toplevel" }, cwd = vim.loop.cwd() }
             )[1]
@@ -69,23 +70,37 @@ return {
             return use_git_root and git_root() or vim.loop.cwd()
         end
 
-        map("n", "<leader>fo", "oldfiles", "Oldfiles")
-        map("n", "<leader>fb", "buffers", "Buffers")
-        map("n", "<leader>fk", "keymaps", "Keymaps")
-        map("n", "<leader>fa", "autocommands", "Autocommands")
-        map("n", "<leader>fh", "help_tags", "Helptags")
-        map("n", "<leader>fc", "command_history", "Command history")
-        map("n", "<leader>vo", "vim_options", "Vim options")
+        map("<leader>fo", "oldfiles", "Oldfiles")
+        map("<leader>fb", "buffers", "Buffers")
+        map("<leader>fk", "keymaps", "Keymaps")
+        map("<leader>fa", "autocommands", "Autocommands")
+        map("<leader>fh", "help_tags", "Helptags")
+        map("<leader>fc", "command_history", "Command history")
+        map("<leader>vo", "vim_options", "Vim options")
+        map("<leader>fd", "find_files", "Dotfiles", function()
+            return { cwd = "~/dotfiles", prompt_title = "Dotfiles", hidden = true }
+        end)
+        map("<leader>ff", "find_files", "Find files", function()
+            ---@diagnostic disable-next-line: param-type-mismatch
+            return { prompt_title = vim.fs.basename(vim.loop.cwd()) }
+        end)
+        map("<leader>fg", "git_files", "Git files", function()
+            return { prompt_title = vim.fs.basename(git_root()), recurse_submodules = true }
+        end)
+        map("<leader>fp", "find_files", "Plugins", function()
+            return {
+                cwd = vim.fn.stdpath("data") .. "/lazy",
+                prompt_title = "Plugins",
+                search_dirs = vim.iter.map(function(val)
+                    return val.dir
+                end, require("lazy").plugins()),
+            }
+        end)
+        map("<leader>fn", "find_files", "Neovim", function()
+            return { cwd = "~/Applications/neovim", prompt_title = "Neovim", hidden = true }
+        end)
 
-        -- Telescope function for quick edit of dotfiles
-        vim.keymap.set("n", "<leader>fd", function()
-            require("telescope.builtin").find_files({
-                cwd = "~/dotfiles",
-                prompt_title = "Dotfiles",
-                hidden = true,
-                file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "fonts/", "icons/" },
-            })
-        end, { desc = "Telescope: Dotfiles" })
+        vim.keymap.set("n", "<leader>fe", "<cmd>Telescope file_browser<CR>", { desc = "Telescope: File Browser" })
 
         vim.keymap.set("n", "<leader>fs", function()
             vim.ui.input({ prompt = "Grep String: " }, function(input)
@@ -96,49 +111,10 @@ return {
                         search = input,
                         ---@diagnostic disable-next-line: param-type-mismatch
                         prompt_title = vim.fs.basename(root),
-                        file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/" },
                     })
                 end)
             end)
         end, { desc = "Telescope: Grep string" })
-
-        vim.keymap.set("n", "<leader>ff", function()
-            require("telescope.builtin").find_files({
-                ---@diagnostic disable-next-line: param-type-mismatch
-                prompt_title = vim.fs.basename(vim.loop.cwd()),
-            })
-        end, { desc = "Telescope: Find files" })
-
-        vim.keymap.set("n", "<leader>fg", function()
-            require("telescope.builtin").git_files({
-                prompt_title = vim.fs.basename(git_root()),
-                recurse_submodules = true,
-                show_untracked = false,
-            })
-        end, { desc = "Telescope: Git files" })
-
-        vim.keymap.set("n", "<leader>fp", function()
-            require("telescope.builtin").find_files({
-                cwd = vim.fn.stdpath("data") .. "/lazy",
-                prompt_title = "Plugins",
-                search_dirs = vim.iter.map(function(val)
-                    return val.dir
-                end, require("lazy").plugins()),
-            })
-        end, { desc = "Telescope: Plugins" })
-
-        vim.keymap.set("n", "<leader>fn", function()
-            require("telescope.builtin").find_files({
-                cwd = "~/Applications/neovim",
-                prompt_title = "Neovim",
-                hidden = true,
-                file_ignore_patterns = { ".git/" },
-            })
-        end, { desc = "Telescope: Neovim" })
-
-        vim.keymap.set("n", "<leader>fe", function()
-            require("telescope").extensions.file_browser.file_browser()
-        end, { desc = "Telescope: File Browser" })
 
         -- Thanks to TJ: https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/telescope/custom/multi_rg.lua
         vim.keymap.set("n", "<leader>fw", function()
