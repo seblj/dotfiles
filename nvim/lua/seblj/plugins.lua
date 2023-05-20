@@ -124,6 +124,7 @@ lazy.setup({
     { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
     { "NTBBloodbath/rest.nvim", ft = "http" },
     { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" }, event = "TermOpen" },
+    { "ahonn/resize.vim" },
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
     {

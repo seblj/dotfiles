@@ -1,7 +1,6 @@
 ---------- MAPPINGS ----------
 
 local utils = require("seblj.utils")
-local resize = require("seblj.utils.resize")
 
 -- Leader is space and localleader is \
 vim.g.mapleader = " "
@@ -40,10 +39,6 @@ vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-w>k", { desc = "Navigate to top spli
 vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-w>l", { desc = "Navigate to right split" })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape from term-mode" })
 
-vim.keymap.set("n", "<S-Right>", resize.resize_right, { desc = "Resize split right" })
-vim.keymap.set("n", "<S-Left>", resize.resize_left, { desc = "Resize split left" })
-vim.keymap.set("n", "<S-Up>", resize.resize_up, { desc = "Resize split up" })
-vim.keymap.set("n", "<S-Down>", resize.resize_down, { desc = "Resize split down" })
 vim.keymap.set("n", "<leader>gh", ":help <C-r><C-w><CR>", { desc = "Search in help for word under cursor" })
 
 vim.keymap.set("x", "<", "<gv", { desc = "Keep visual mode on dedent" })
@@ -163,7 +158,7 @@ vim.cmd.cnoreabbrev({ "make", "Make" })
 local opts = { nargs = "*", bang = true }
 
 ---@param key string
----@param direction "split" | "vsplit" | "tabnew"
+---@param direction "new" | "vnew" | "tabnew"
 local function create_command(key, direction)
     local function completion(_, cmdline, _)
         vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
