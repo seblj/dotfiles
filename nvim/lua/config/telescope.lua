@@ -45,8 +45,7 @@ return {
     init = function()
         local function map(keys, func, desc, opts)
             vim.keymap.set("n", keys, function()
-                opts = opts and opts() or {}
-                require("telescope.builtin")[func](opts)
+                require("telescope.builtin")[func](opts and opts() or {})
             end, { desc = string.format("Telescope: %s", desc) })
         end
 
