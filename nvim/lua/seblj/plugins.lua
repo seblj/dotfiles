@@ -81,11 +81,7 @@ lazy.setup({
 
     -- Git
     { "lewis6991/gitsigns.nvim", config = conf("gitsigns"), event = { "BufReadPre", "BufWritePre" } },
-    {
-        "akinsho/git-conflict.nvim",
-        opts = { highlights = { current = "DiffChange" } },
-        event = { "BufReadPre", "BufWritePre" },
-    },
+    { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },

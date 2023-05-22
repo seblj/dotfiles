@@ -39,6 +39,7 @@
     pc = !gh pr list -L 500 | fzf --height 40% --header='Checkout PR'| awk '{print $1}' | xargs gh pr checkout
     rc = rebase --continue
     ra = rebase --abort
+    ma = merge --abort
 
 [delta]
     line-numbers = true
