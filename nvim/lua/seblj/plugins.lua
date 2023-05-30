@@ -21,17 +21,10 @@ lazy.setup({
     },
 
     -- Treesitter
-    {
-        "nvim-treesitter/nvim-treesitter",
-        config = conf("treesitter"),
-        event = { "BufReadPost", "BufNewFile" },
-        build = ":TSUpdate",
-        dependencies = {
-            { "nvim-treesitter/playground", cmd = { "TSPlaygroundToggle" } },
-            { "windwp/nvim-ts-autotag", config = true },
-            { "nvim-treesitter/nvim-treesitter-textobjects" },
-        },
-    },
+    { "nvim-treesitter/nvim-treesitter", config = conf("treesitter"), build = ":TSUpdate" },
+    { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
+    { "windwp/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" } },
+    { "nvim-treesitter/playground", cmd = { "TSPlaygroundToggle" } },
 
     -- LSP
     {
