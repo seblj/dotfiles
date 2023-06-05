@@ -61,12 +61,12 @@ return {
         local function git_root()
             return require("seblj.utils").get_os_command_output(
                 "git",
-                { args = { "rev-parse", "--show-toplevel" }, cwd = vim.loop.cwd() }
+                { args = { "rev-parse", "--show-toplevel" }, cwd = vim.uv.cwd() }
             )[1]
         end
 
         local function get_root()
-            return use_git_root and git_root() or vim.loop.cwd()
+            return use_git_root and git_root() or vim.uv.cwd()
         end
 
         map("<leader>fo", "oldfiles", "Oldfiles")
@@ -81,7 +81,7 @@ return {
         end)
         map("<leader>ff", "find_files", "Find files", function()
             ---@diagnostic disable-next-line: param-type-mismatch
-            return { prompt_title = vim.fs.basename(vim.loop.cwd()) }
+            return { prompt_title = vim.fs.basename(vim.uv.cwd()) }
         end)
         map("<leader>fg", "git_files", "Git files", function()
             return { prompt_title = vim.fs.basename(git_root()), recurse_submodules = true }

@@ -1,7 +1,7 @@
 vim.api.nvim_create_user_command("Cargo", function(x)
     vim.cmd.compiler("cargo")
     local root_file = vim.fs.find({ "Cargo.toml" }, {
-        stop = vim.loop.os_homedir(),
+        stop = vim.uv.os_homedir(),
         path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)),
         upward = true,
     })[1]

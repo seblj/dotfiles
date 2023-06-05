@@ -30,7 +30,7 @@ end
 function M.get_os_command_output(command, opts)
     opts = opts or {}
     opts.command = command
-    opts.cwd = opts.cwd or vim.loop.cwd()
+    opts.cwd = opts.cwd or vim.uv.cwd()
     return require("plenary.job"):new(opts):sync()
 end
 
