@@ -59,10 +59,7 @@ return {
         })
 
         local function git_root()
-            return require("seblj.utils").get_os_command_output(
-                "git",
-                { args = { "rev-parse", "--show-toplevel" }, cwd = vim.uv.cwd() }
-            )[1]
+            return vim.trim(vim.system({ "git", "rev-parse", "--show-toplevel" }, { cwd = vim.uv.cwd() }):wait().stdout)
         end
 
         local function get_root()

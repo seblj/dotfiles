@@ -27,18 +27,11 @@ function M.term(opts, ...)
     vim.api.nvim_chan_send(term, string.format(opts.cmd .. "\n", ...))
 end
 
-function M.get_os_command_output(command, opts)
-    opts = opts or {}
-    opts.command = command
-    opts.cwd = opts.cwd or vim.uv.cwd()
-    return require("plenary.job"):new(opts):sync()
-end
-
 function M.get_zsh_completion(args, prefix)
     return vim.iter.map(function(v)
         local val = vim.fn.split(v, " -- ")[1]
         return prefix and string.format("%s%s", prefix, val) or val
-    end, M.get_os_command_output("capture", { args = { args } }))
+    end, vim.split(vim.trim(vim.system({ "capture", args }, { text = true }):wait().stdout), "\n"))
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <buffer> if
@@ -106,7 +99,7 @@ local runner = {
     typescript = "ts-node $file",
     rust = function()
         local command = "rustc $file && ./$output; rm $output"
-        local match = vim.fn.system("cargo verify-project"):match('{"success":"true"}')
+        local match = vim.system({ "cargo", "verify-project" }):wait().stdout:match('{"success":"true"}')
         return match and "cargo run" or command
     end,
     go = function()

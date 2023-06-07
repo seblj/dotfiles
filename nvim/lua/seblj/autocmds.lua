@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
         if vim.env.SSH_CONNECTION then
             local text = vim.fn.getreg(vim.v.event.regname)
-            local data = require("seblj.utils").get_os_command_output("base64", { writer = text })
+            local data = vim.system({ "base64" }, { stdin = text }):wait().stdout
             io.stderr:write(string.format("\x1b]52;c;%s\x07", table.concat(data)))
         end
     end,
