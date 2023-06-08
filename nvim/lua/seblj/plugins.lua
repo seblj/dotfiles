@@ -39,14 +39,7 @@ lazy.setup({
             { "Hoffs/omnisharp-extended-lsp.nvim" },
             { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } } },
             { "SmiteshP/nvim-navic", opts = { lsp = { auto_attach = true } } },
-            {
-                "seblj/nvim-lsp-extras",
-                opts = {
-                    signature = { border = CUSTOM_BORDER },
-                    mouse_hover = { border = CUSTOM_BORDER },
-                },
-                dev = true,
-            },
+            { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
         },
     },
 
@@ -92,11 +85,7 @@ lazy.setup({
     },
 
     -- File tree
-    {
-        "nvim-tree/nvim-tree.lua",
-        config = true,
-        keys = { { "<leader>nt", ":NvimTreeToggle<CR>", desc = "NvimTree: Toggle tree" } },
-    },
+    { "nvim-tree/nvim-tree.lua", config = true, keys = { { "<leader>nt", ":NvimTreeToggle<CR>" } } },
     { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true } } },
 
     -- UI
@@ -116,18 +105,9 @@ lazy.setup({
     { "ahonn/resize.vim" },
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
-    {
-        "godlygeek/tabular",
-        init = function()
-            vim.g.no_default_tabular_maps = 1
-        end,
-    },
-    {
-        "lambdalisue/suda.vim",
-        config = function()
-            vim.cmd.cnoreabbrev({ "w!!", "SudaWrite" })
-        end,
-    },
+    -- stylua: ignore
+    { "lambdalisue/suda.vim", config = function() vim.cmd.cnoreabbrev({ "w!!", "SudaWrite" }) end },
+    { "godlygeek/tabular", cmd = "Tabularize" },
 
     -- Dependencies/helpers for other plugins
     { "nvim-lua/plenary.nvim", lazy = true },

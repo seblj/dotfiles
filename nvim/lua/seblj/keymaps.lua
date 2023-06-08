@@ -111,11 +111,8 @@ end, {
 
 vim.keymap.set("n", "<leader>tf", function()
     vim.b.disable_formatting = not vim.b.disable_formatting
-    if vim.b.disable_formatting then
-        vim.api.nvim_echo({ { "Disabled autoformat on save" } }, false, {})
-    else
-        vim.api.nvim_echo({ { "Enabled autoformat on save" } }, false, {})
-    end
+    local res = vim.b.disable_formatting and "Disabled" or "Enabled"
+    vim.api.nvim_echo({ { string.format("%s autoformat on save", res) } }, false, {})
 end, { desc = "Format: Toggle format on save" })
 
 vim.keymap.set("n", "<leader>ts", function()
