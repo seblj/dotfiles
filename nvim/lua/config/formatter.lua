@@ -5,10 +5,10 @@ require("formatter").setup({
         return not vim.b.disable_formatting
     end,
     filetype = {
-        lua = { "stylua", "--search-parent-directories", "-" },
+        lua = "stylua --search-parent-directories -",
         go = "goimports",
-        sql = { "sql-formatter", "-l", "postgresql" },
-        rust = { "rustfmt", "--edition", "2021" },
+        sql = "sql-formatter -l postgresql",
+        rust = "rustfmt --edition 2021",
         json = "jq",
         cs = "dotnet-csharpier",
         c = "clang-format",
