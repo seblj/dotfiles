@@ -105,8 +105,7 @@ lazy.setup({
     { "ahonn/resize.vim" },
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
-    -- stylua: ignore
-    { "lambdalisue/suda.vim", config = function() vim.cmd.cnoreabbrev({ "w!!", "SudaWrite" }) end },
+    { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
     { "godlygeek/tabular", cmd = "Tabularize" },
 
     -- Dependencies/helpers for other plugins
