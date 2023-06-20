@@ -166,14 +166,6 @@ require("feline").setup({
 ---------- WINBAR ----------
 
 local winbar_components = {
-    maximized = {
-        provider = function()
-            return "Maximized"
-        end,
-        enabled = function()
-            return vim.t.maximized
-        end,
-    },
     gps = {
         provider = function()
             local location = require("nvim-navic").get_location({
@@ -181,7 +173,7 @@ local winbar_components = {
                 separator = "  ",
                 icons = vim.iter.map(function(val)
                     return val .. " "
-                end, require("seblj.utils.icons").kind),
+                end, require("lspkind").symbol_map),
             })
             return location == "" and "" or "  " .. location
         end,
@@ -194,32 +186,10 @@ local winbar_components = {
 
 local winbar = {
     {
-        winbar_components.maximized,
         vim.deepcopy(components.file.info),
         winbar_components.gps,
     },
 }
-
-local function get_color(group, attr)
-    local color = vim.api.nvim_get_hl(0, { name = group })[attr]
-    return color and string.format("#%x", color) or nil
-end
-
--- Have winbar background to be the same as Normal
-for _, val in pairs(winbar) do
-    for _, component in pairs(val) do
-        local hl = component.hl
-        if type(hl) == "function" then
-            component.hl = function()
-                return { unpack(hl()), bg = get_color("Normal", "bg") }
-            end
-        else
-            component.hl = function()
-                return { unpack(hl or {}), bg = get_color("Normal", "bg") }
-            end
-        end
-    end
-end
 
 local blocked_fts = {
     "term",
@@ -231,10 +201,8 @@ local blocked_fts = {
 }
 
 require("feline").winbar.setup({
+    theme = { fg = colors.fg, bg = "#1c1c1c" },
     components = { active = winbar, inactive = winbar },
-    disable = {
-        filetypes = blocked_fts,
-    },
 })
 
 -- Hack to not enable winbar on all buffers

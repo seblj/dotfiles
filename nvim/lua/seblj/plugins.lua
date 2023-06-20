@@ -37,7 +37,7 @@ lazy.setup({
             { "williamboman/mason.nvim", config = true, cmd = "Mason" },
             { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
-            { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } } },
+            { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } }, tag = "legacy" },
             { "SmiteshP/nvim-navic", opts = { lsp = { auto_attach = true } } },
             { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
         },
@@ -49,6 +49,7 @@ lazy.setup({
         config = conf("cmp"),
         event = "InsertEnter",
         dependencies = {
+            { "onsails/lspkind.nvim" },
             { "hrsh7th/cmp-nvim-lsp" },
             { "hrsh7th/cmp-buffer" },
             { "hrsh7th/cmp-path" },

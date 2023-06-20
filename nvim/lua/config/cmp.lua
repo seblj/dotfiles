@@ -49,24 +49,18 @@ cmp.setup({
         -- completion = cmp.config.window.bordered(),
     },
 
-    -- Make entry look like (icon, type, source) in completion menu
     formatting = {
-        format = function(entry, item)
-            item.kind = require("seblj.utils.icons").kind[item.kind] .. " " .. item.kind
-            item.menu = ({
+        format = require("lspkind").cmp_format({
+            mode = "symbol_text",
+            menu = {
                 nvim_lsp = "[LSP]",
                 buffer = "[Buffer]",
                 luasnip = "[Luasnip]",
                 path = "[Path]",
                 crates = "[Crates]",
-            })[entry.source.name]
-
-            -- Append '...' if the entry is wider than max length
-            local maxlength = 90
-            local length = #item.abbr
-            item.abbr = string.sub(item.abbr, 1, maxlength)
-            item.abbr = length > maxlength and item.abbr .. "..." or item.abbr
-            return item
-        end,
+            },
+            maxwidth = 90,
+            ellipsis_char = "...",
+        }),
     },
 })
