@@ -163,67 +163,67 @@ require("feline").setup({
     },
 })
 
----------- WINBAR ----------
+-- ---------- WINBAR ----------
 
-local winbar_components = {
-    gps = {
-        provider = function()
-            local location = require("nvim-navic").get_location({
-                highlight = true,
-                separator = "  ",
-                icons = vim.iter.map(function(val)
-                    return val .. " "
-                end, require("lspkind").symbol_map),
-            })
-            return location == "" and "" or "  " .. location
-        end,
-        enabled = function()
-            local ok, navic = pcall(require, "nvim-navic")
-            return ok and navic.is_available() or false
-        end,
-    },
-}
+-- local winbar_components = {
+--     gps = {
+--         provider = function()
+--             local location = require("nvim-navic").get_location({
+--                 highlight = true,
+--                 separator = "  ",
+--                 icons = vim.iter.map(function(val)
+--                     return val .. " "
+--                 end, require("lspkind").symbol_map),
+--             })
+--             return location == "" and "" or "  " .. location
+--         end,
+--         enabled = function()
+--             local ok, navic = pcall(require, "nvim-navic")
+--             return ok and navic.is_available() or false
+--         end,
+--     },
+-- }
 
-local winbar = {
-    {
-        vim.deepcopy(components.file.info),
-        winbar_components.gps,
-    },
-}
+-- local winbar = {
+--     {
+--         vim.deepcopy(components.file.info),
+--         winbar_components.gps,
+--     },
+-- }
 
-local blocked_fts = {
-    "term",
-    "startify",
-    "NvimTree",
-    "packer",
-    "startuptime",
-    "oil",
-}
+-- local blocked_fts = {
+--     "term",
+--     "startify",
+--     "NvimTree",
+--     "packer",
+--     "startuptime",
+--     "oil",
+-- }
 
-require("feline").winbar.setup({
-    theme = { fg = colors.fg, bg = "#1c1c1c" },
-    components = { active = winbar, inactive = winbar },
-})
+-- require("feline").winbar.setup({
+--     theme = { fg = colors.fg, bg = "#1c1c1c" },
+--     components = { active = winbar, inactive = winbar },
+-- })
 
--- Hack to not enable winbar on all buffers
-vim.api.nvim_create_autocmd({ "BufWinEnter", "TabNew", "TabEnter", "BufEnter", "WinClosed", "BufWritePost" }, {
-    group = vim.api.nvim_create_augroup("AttachWinbar", { clear = true }),
-    desc = "Winbar only on some buffers",
-    callback = function()
-        vim.o.winbar = ""
-        for _, w in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-            local buf, win = vim.bo[vim.api.nvim_win_get_buf(w)], vim.wo[w]
-            if
-                not vim.tbl_contains(blocked_fts, buf.filetype)
-                and vim.fn.win_gettype(vim.api.nvim_win_get_number(w)) == ""
-                and buf.buftype == ""
-                and buf.filetype ~= ""
-                and not win.diff
-            then
-                win.winbar = "%{%v:lua.require'feline'.generate_winbar()%}"
-            elseif win.diff then
-                win.winbar = nil
-            end
-        end
-    end,
-})
+-- -- Hack to not enable winbar on all buffers
+-- vim.api.nvim_create_autocmd({ "BufWinEnter", "TabNew", "TabEnter", "BufEnter", "WinClosed", "BufWritePost" }, {
+--     group = vim.api.nvim_create_augroup("AttachWinbar", { clear = true }),
+--     desc = "Winbar only on some buffers",
+--     callback = function()
+--         vim.o.winbar = ""
+--         for _, w in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+--             local buf, win = vim.bo[vim.api.nvim_win_get_buf(w)], vim.wo[w]
+--             if
+--                 not vim.tbl_contains(blocked_fts, buf.filetype)
+--                 and vim.fn.win_gettype(vim.api.nvim_win_get_number(w)) == ""
+--                 and buf.buftype == ""
+--                 and buf.filetype ~= ""
+--                 and not win.diff
+--             then
+--                 win.winbar = "%{%v:lua.require'feline'.generate_winbar()%}"
+--             elseif win.diff then
+--                 win.winbar = nil
+--             end
+--         end
+--     end,
+-- })

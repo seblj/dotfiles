@@ -97,6 +97,7 @@ lazy.setup({
     },
     { "mhinz/vim-startify", config = conf("startify") },
     { "freddiehaddad/feline.nvim", config = conf("feline") },
+    { "Bekaboo/dropbar.nvim", config = true },
     { "rcarriga/nvim-notify", config = conf("notify"), init = init("notify"), lazy = true },
 
     -- Functionality
