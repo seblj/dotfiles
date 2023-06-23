@@ -17,10 +17,7 @@
                     "type": "device_if",
                     "identifiers": [
                       {
-                        "product_id": 832
-                      },
-                      {
-                        "product_id": 632
+                        "is_built_in_keyboard": true
                       }
                     ]
                   },
@@ -139,10 +136,7 @@
                     "type": "device_if",
                     "identifiers": [
                       {
-                        "product_id": 832
-                      },
-                      {
-                        "product_id": 632
+                        "is_built_in_keyboard": true
                       }
                     ]
                   },
