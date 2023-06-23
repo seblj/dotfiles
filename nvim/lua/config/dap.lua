@@ -2,25 +2,18 @@
 
 ---------- MAPPINGS ----------
 
-vim.keymap.set("n", "<leader>db", function()
-    require("dap").toggle_breakpoint()
-    vim.fn["repeat#set"](vim.keycode("<leader>db"))
-end, { desc = "Dap: Add breakpoint" })
+local function keymap(mode, lhs, rhs, opts)
+    opts.desc = string.format("Dap: %s", opts.desc)
+    vim.keymap.set(mode, lhs, function()
+        rhs()
+        vim.fn["repeat#set"](vim.keycode(lhs))
+    end, opts)
+end
 
-vim.keymap.set("n", "<leader>d<leader>", function()
-    require("dap").continue()
-    vim.fn["repeat#set"](vim.keycode("<leader>d<leader>"))
-end, { desc = "Dap: Continue debugging" })
-
-vim.keymap.set("n", "<leader>dl", function()
-    require("dap").step_into()
-    vim.fn["repeat#set"](vim.keycode("<leader>dl"))
-end, { desc = "Dap: Step into" })
-
-vim.keymap.set("n", "<leader>dj", function()
-    require("dap").step_over()
-    vim.fn["repeat#set"](vim.keycode("<leader>dj"))
-end, { desc = "Dap: Step over" })
+keymap("n", "<leader>db", require("dap").toggle_breakpoint, { desc = "Add breakpoint" })
+keymap("n", "<leader>d<leader>", require("dap").continue, { desc = "Continue debugging" })
+keymap("n", "<leader>dl", require("dap").step_into, { desc = "Step into" })
+keymap("n", "<leader>dj", require("dap").step_over, { desc = "Step over" })
 
 ---------- UI ----------
 
