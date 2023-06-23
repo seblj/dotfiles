@@ -59,7 +59,3 @@ sudo sh -c "curl https://raw.githubusercontent.com/mrowa44/emojify/master/emojif
 # Git delta
 printf "\n${BLUE}Installing git-delta ${NC}\n\n"
 $HOME/.cargo/bin/cargo install -q git-delta >/dev/null
-
-# Stylua
-printf "\n${BLUE}Installing stylua ${NC}\n\n"
-$HOME/.cargo/bin/cargo install -q stylua >/dev/null
