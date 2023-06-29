@@ -45,6 +45,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local servers = require("mason-lspconfig").get_installed_servers()
+servers = vim.tbl_extend("force", servers, { "rust_analyzer" })
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
