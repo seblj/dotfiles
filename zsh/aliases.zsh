@@ -10,6 +10,10 @@ alias ssh_kitty="kitty +kitten ssh"
 alias icat="kitty +kitten icat --align=left"
 alias kitty_debug_font="kitty --debug-font-fallback"
 
+function fmt() {
+    nvim -u ~/.config/nvim/init.lua -i NONE -Es +":FormatSync $*"
+}
+
 alias localip="ipconfig getifaddr en0"
 
 # alias cat to bat if bat is installed
