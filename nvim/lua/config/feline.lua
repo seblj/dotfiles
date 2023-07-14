@@ -142,6 +142,8 @@ require("feline").setup({
                 return "  "
             elseif vim.fn.has("linux") == 1 then
                 return "  "
+            else
+                return "  "
             end
         end,
     },
