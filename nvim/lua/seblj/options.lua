@@ -29,6 +29,7 @@ vim.opt.cinkeys:remove("0#")
 vim.opt.fillchars:append("diff:╱")
 vim.opt.laststatus = 3
 vim.opt.textwidth = 80
+vim.opt.wrap = false
 
 -- Disable netrw
 vim.g.loaded_netrw = 1

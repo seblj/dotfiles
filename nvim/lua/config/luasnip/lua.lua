@@ -5,30 +5,6 @@ local i = ls.insert_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 return make({
-    ["function"] = fmt(
-        [[
-            function()
-            {tab}{insert}
-            end
-        ]],
-        { tab = "\t", insert = i(0) }
-    ),
-    ["then"] = fmt(
-        [[
-            then
-            {tab}{insert}
-            end
-        ]],
-        { tab = "\t", insert = i(0) }
-    ),
-    ["do"] = fmt(
-        [[
-            do
-            {tab}{insert}
-            end
-        ]],
-        { tab = "\t", insert = i(0) }
-    ),
     headline = fmt([[---------- {insert} ----------]], {
         insert = i(0),
     }),
