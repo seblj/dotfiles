@@ -6,9 +6,7 @@ cmp.setup({
     sources = {
         { name = "luasnip" },
         { name = "nvim_lsp" },
-        { name = "buffer", option = {
-            keyword_pattern = [[\k\+]],
-        } },
+        { name = "buffer", option = { keyword_pattern = [[\k\+]] } },
         { name = "path" },
         { name = "crates" },
         { name = "vim-dadbod-completion" },

@@ -1,6 +1,6 @@
 ---------- OPTIONS ----------
 
-vim.cmd.colorscheme("colorscheme")
+vim.cmd.colorscheme(COLORSCHEME)
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.splitbelow = true

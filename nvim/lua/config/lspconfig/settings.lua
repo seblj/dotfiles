@@ -1,14 +1,6 @@
 ---------- LANGUAGE SERVERS ----------
 
 return {
-    volar = {
-        init_options = {
-            typescript = {
-                serverPath = "/usr/local/lib/node_modules/typescript/lib/tsserverlibrary.js",
-            },
-        },
-    },
-
     rust_analyzer = {
         settings = {
             ["rust-analyzer"] = {

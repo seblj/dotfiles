@@ -41,7 +41,7 @@ function M.setup(config)
             border = CUSTOM_BORDER,
         },
         install = {
-            colorscheme = { "colorscheme" },
+            colorscheme = { COLORSCHEME },
         },
     })
 end
