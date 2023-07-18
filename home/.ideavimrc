@@ -20,7 +20,8 @@ nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
 
 nnoremap <leader>ff :action SearchEverywhere<CR>
 
-nnoremap gh :action ShowErrorDescription<CR>
+nnoremap <leader>cd :action ShowErrorDescription<CR>
+nnoremap gh :action QuickJavaDoc<CR>
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gr :action FindUsages<CR>
 nnoremap gR :action RenameElement<CR>
