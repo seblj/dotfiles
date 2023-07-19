@@ -59,6 +59,10 @@ set_ft_option({ "c", "cs" }, function()
     vim.opt_local.commentstring = "// %s"
 end)
 
+set_ft_option("vue", function()
+    vim.opt_local.commentstring = "<!-- %s -->"
+end)
+
 set_ft_option("help", function()
     vim.keymap.set("n", "gd", "K", { buffer = true })
 end)

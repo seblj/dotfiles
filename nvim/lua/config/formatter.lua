@@ -25,7 +25,7 @@ require("formatter").setup({
         yaml = "prettierd .yml",
         markdown = "prettierd .md",
         graphql = "prettierd .gql",
-        zsh = "shfmt -i 4",
-        sh = "shfmt -i 4",
+        zsh = "beautysh -",
+        sh = "beautysh -",
     },
 })
