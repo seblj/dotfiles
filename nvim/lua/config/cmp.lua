@@ -43,8 +43,6 @@ cmp.setup({
             border = CUSTOM_BORDER,
             winhighlight = "FloatBorder:FloatBorder,CursorLine:Visual",
         },
-        -- documentation = cmp.config.window.bordered(),
-        -- completion = cmp.config.window.bordered(),
     },
 
     formatting = {

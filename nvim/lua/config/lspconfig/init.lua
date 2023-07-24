@@ -44,7 +44,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-local servers = require("mason-lspconfig").get_installed_servers()
+local ignore = { "tsserver" }
+local servers = vim.iter.filter(function(item)
+    return vim.iter(ignore):find(item) == nil
+end, require("mason-lspconfig").get_installed_servers())
 
 -- Automatic setup for language servers
 for _, server in pairs(servers) do
