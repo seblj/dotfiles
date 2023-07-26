@@ -39,7 +39,6 @@ lazy.setup({
             { "Hoffs/omnisharp-extended-lsp.nvim" },
             { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } }, tag = "legacy" },
             { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
-            { "pmizio/typescript-tools.nvim", config = true },
         },
     },
 

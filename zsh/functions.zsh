@@ -21,7 +21,11 @@ git() {
     # push, and the branch is either master or d2d, then refuse the push
     if [[ "$1" == "push" && "$@" != *"--help"* && "$@" != *"-h"* && $PWD == */work* && $(git rev-parse --is-inside-work-tree 2>/dev/null) ]]; then
         branch=$(git rev-parse --abbrev-ref HEAD)
-        [[ $branch == *master* || $branch == *d2d* ]] && echo "Do not push to master or d2d"
+        if [[ $branch == *master* || $branch == *d2d* ]]; then
+            echo "Do not push to master or d2d"
+        else
+            command git "$@"
+        fi
     else
         command git "$@"
     fi
