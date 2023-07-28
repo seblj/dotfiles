@@ -1,6 +1,7 @@
 set commentary
 set highlightedyank
 set surround
+set NERDTree
 
 set number
 set relativenumber
@@ -9,33 +10,49 @@ set incsearch
 set ignorecase
 set smartcase
 set clipboard=unnamedplus
+set visualbell
+set noerrorbells
 
 let g:highlightedyank_highlight_duration = "150"
 
 let mapleader = " "
 
+nnoremap <leader>nt :NERDTreeToggle<CR>
+
 nnoremap <leader>x :source ~/.ideavimrc<CR>
+nnoremap <leader>fd :edit ~/.ideavimrc<CR>
 
 nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
 
 nnoremap <leader>ff :action SearchEverywhere<CR>
+nnoremap <leader>fg :action GotoFile<CR>
+nnoremap <leader>fs :action TextSearchAction<CR>
+nnoremap <leader>fa :action GotoAction<CR>
+nnoremap <leader>fb :action RecentFiles<CR>
 
 nnoremap <leader>cd :action ShowErrorDescription<CR>
 nnoremap gh :action QuickJavaDoc<CR>
 nnoremap gd :action GotoDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
 nnoremap gr :action FindUsages<CR>
 nnoremap gR :action RenameElement<CR>
 nnoremap <leader>ca :action ShowIntentionActions<CR>
+nnoremap <leader>tt :action RiderUnitTestRunContextAction<CR>
+nnoremap <leader>tr :action RiderUnitTestRepeatPreviousRunAction<CR>
 
 " Would like the v:hlsearch, but ideavim doesn't support v: yet :(
 nnoremap <Enter> :nohl<CR><CR>
 
-nnoremap ∆ :action MoveLineDown<CR>
-nnoremap ˚ :action MoveLineUp<CR>
-vnoremap ∆ :action MoveLineDown<CR>
-vnoremap ˚ :action MoveLineUp<CR>
-inoremap ∆ <Esc>:action MoveLineDown<CR>a
-inoremap ˚ <Esc>:action MoveLineUp<CR>a
+" For mac
+nmap ∆ <A-j>
+nmap ˚ <A-k>
+
+nnoremap <A-j> :action MoveLineDown<CR>
+nnoremap <A-k> :action MoveLineUp<CR>
+vnoremap <A-j> :action MoveLineDown<CR>
+vnoremap <A-k> :action MoveLineUp<CR>
+inoremap <A-j> <Esc>:action MoveLineDown<CR>a
+inoremap <A-k> <Esc>:action MoveLineUp<CR>a
 
 nnoremap <leader>db :action ToggleLineBreakpoint<CR>
 nnoremap <leader>gm :action Annotate<CR>
@@ -55,6 +72,11 @@ nnoremap Y y$
 nnoremap <leader>j J
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 nnoremap H ^
 nnoremap L $
