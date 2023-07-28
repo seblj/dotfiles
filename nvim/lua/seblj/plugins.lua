@@ -96,7 +96,7 @@ lazy.setup({
     },
     { "mhinz/vim-startify", config = conf("startify") },
     { "freddiehaddad/feline.nvim", config = conf("feline") },
-    { "Bekaboo/dropbar.nvim", config = true },
+    { "Bekaboo/dropbar.nvim", config = true, cond = not (vim.uv.os_uname().sysname == "Windows_NT") },
     { "rcarriga/nvim-notify", config = conf("notify"), init = init("notify"), lazy = true },
 
     -- Functionality
