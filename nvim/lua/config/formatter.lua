@@ -8,7 +8,10 @@ require("formatter").setup({
         lua = "stylua --search-parent-directories -",
         go = "goimports",
         sql = "sql-formatter -l postgresql",
-        rust = "rustfmt --edition 2021",
+        rust = {
+            "rustfmt --edition 2021",
+            "leptosfmt --stdin",
+        },
         json = "jq",
         cs = "dotnet-csharpier",
         c = "clang-format",
