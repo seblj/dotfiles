@@ -4,6 +4,13 @@ require("formatter").setup({
     format_on_save = function()
         return not vim.b.disable_formatting
     end,
+    treesitter = {
+        auto_indent = {
+            graphql = function()
+                return vim.bo.ft ~= "markdown"
+            end,
+        },
+    },
     filetype = {
         lua = "stylua --search-parent-directories -",
         go = "goimports",
