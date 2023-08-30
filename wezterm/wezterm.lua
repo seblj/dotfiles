@@ -1,20 +1,20 @@
 local wezterm = require("wezterm")
 local config = {}
 
+config.cell_width = 0.9
 config.window_frame = {
 	active_titlebar_bg = "#1c1c1c",
 	inactive_titlebar_bg = "#1c1c1c",
 }
 
+config.term = "wezterm"
+
+config.cursor_blink_rate = 0
 config.initial_rows = 30
 config.initial_cols = 100
 
--- initial_window_width  100c
--- initial_window_height 30c
-
 config.font_size = 13.0
 
--- config.font = wezterm.font("JetBrains Mono")
 config.font = wezterm.font_with_fallback({
 	"JetBrainsMono Nerd Font",
 	"corners",

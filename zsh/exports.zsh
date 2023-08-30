@@ -20,6 +20,7 @@ path+=(
     $HOME/.local/bin
     $HOME/.local/share/nvim/mason/bin
     /opt/homebrew/opt/dotnet@6/bin
+    /Applications/WezTerm.app/Contents/MacOS
 )
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"

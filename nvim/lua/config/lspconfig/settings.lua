@@ -11,6 +11,15 @@ return {
         },
     },
 
+    -- tsserver = {
+    --     init_options = {
+    --         preferences = {
+    --             importModuleSpecifierPreference = "relative",
+    --             importModuleSpecifierEnding = "minimal",
+    --         },
+    --     },
+    -- },
+
     jsonls = {
         settings = {
             json = {
