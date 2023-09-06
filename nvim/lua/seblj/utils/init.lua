@@ -5,7 +5,7 @@ local M = {}
 ---@class TermConfig
 ---@field direction "new" | "vnew" | "tabnew"
 ---@field cmd string
----@field new boolean
+---@field new? boolean
 ---@field focus boolean
 ---@param opts TermConfig
 function M.term(opts, ...)
@@ -13,6 +13,9 @@ function M.term(opts, ...)
         return v.terminal == 1
     end)
     if terminal and not opts.new then
+        vim.api.nvim_buf_call(terminal.bufnr, function()
+            vim.cmd("$")
+        end)
         return vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. "\n", ...))
     end
 
