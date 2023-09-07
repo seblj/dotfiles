@@ -96,7 +96,20 @@ lazy.setup({
     },
     { "mhinz/vim-startify", config = conf("startify") },
     { "freddiehaddad/feline.nvim", config = conf("feline") },
-    { "Bekaboo/dropbar.nvim", config = true, cond = not (vim.uv.os_uname().sysname == "Windows_NT") },
+    {
+        "Bekaboo/dropbar.nvim",
+        opts = {
+            general = {
+                enable = function(buf, win)
+                    return not vim.api.nvim_win_get_config(win).zindex
+                        and vim.bo[buf].buftype == ""
+                        and vim.api.nvim_buf_get_name(buf) ~= ""
+                        and not vim.wo[win].diff
+                end,
+            },
+        },
+        cond = not (vim.uv.os_uname().sysname == "Windows_NT"),
+    },
     { "rcarriga/nvim-notify", config = conf("notify"), init = init("notify"), lazy = true },
 
     -- Functionality
