@@ -35,6 +35,7 @@
     bc = !git switch -c
     bs = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Switch branch' | xargs git switch
     bd = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --multi --height 40% --header='Delete branch' | xargs git branch -d
+    rb = !git branch --no-color --sort=-committerdate --format='%(refname:short)' | fzf --multi --height 40% --header='Rebase with branch' | xargs git rebase
     bsa = !git branch -r --no-color --sort=-committerdate --format='%(refname:short)' | fzf --height 40% --header='Switch branch' | xargs git switch --track
     pc = !gh pr list -L 500 | fzf --height 40% --header='Checkout PR'| awk '{print $1}' | xargs gh pr checkout
     rc = rebase --continue
