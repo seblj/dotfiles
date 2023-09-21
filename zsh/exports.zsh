@@ -3,6 +3,7 @@
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 export XDG_CONFIG_HOME="$HOME/.config"
+export PATH=$HOME/.local/share/nvim/mason/bin:$PATH
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 if [[ $OS == "Darwin" ]]; then
@@ -18,7 +19,6 @@ path+=(
     $HOME/.cargo/bin
     $HOME/.local/ltex/bin
     $HOME/.local/bin
-    $HOME/.local/share/nvim/mason/bin
     /opt/homebrew/opt/dotnet@6/bin
     /Applications/WezTerm.app/Contents/MacOS
 )

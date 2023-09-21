@@ -23,6 +23,7 @@ git() {
         branch=$(git rev-parse --abbrev-ref HEAD)
         if [[ ($branch == *master* || $branch == *d2d*) && $@ != *"$override_flag"* ]]; then
             echo "Do not push to master or d2d"
+            echo "Use $override_flag if you want to force it"
         else
             # Remove force-override flag from $@ to not get error: unknown option `force-override'
             for arg do
