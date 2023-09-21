@@ -27,3 +27,17 @@ function! StartifyEntryFormat() abort
   return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
 endfunction
 ]])
+
+-- Hack to make startify work after breaking change in neovim
+vim.api.nvim_create_autocmd("VimEnter", {
+    pattern = "*",
+    callback = function()
+        if
+            vim.fn.argc() == 0
+            and vim.api.nvim_buf_line_count(0) == 1
+            and vim.api.nvim_buf_get_lines(0, 0, -1, false)[1] == ""
+        then
+            vim.fn["startify#insane_in_the_membrane"](1)
+        end
+    end,
+})
