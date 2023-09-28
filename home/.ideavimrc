@@ -54,6 +54,7 @@ vnoremap <A-k> :action MoveLineUp<CR>
 inoremap <A-j> <Esc>:action MoveLineDown<CR>a
 inoremap <A-k> <Esc>:action MoveLineUp<CR>a
 
+nnoremap <leader>d<leader> :action XDebugger.AttachToProcess<CR>
 nnoremap <leader>db :action ToggleLineBreakpoint<CR>
 nnoremap <leader>gm :action Annotate<CR>
 
