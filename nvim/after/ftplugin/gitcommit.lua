@@ -2,6 +2,11 @@ local function try_insert_branch(branch_name)
     if vim.regex([[\(chore\|bug\|story\|task\)-\d\{4,5}]]):match_str(branch_name) then
         local line = vim.api.nvim_get_current_line()
         local branch = "[#" .. branch_name:gsub(".*%-", "") .. "]"
+        -- Don't do anything if the branch is already in the first line
+        if string.find(line, branch) then
+            return
+        end
+
         vim.api.nvim_buf_set_lines(0, 0, 0, false, { branch .. " " .. line })
         -- nvim_buf_set_lines creates a new line for some reason so delete it
         vim.cmd.normal({ "2Gdd" })
