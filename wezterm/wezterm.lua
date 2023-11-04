@@ -8,6 +8,7 @@ config.window_frame = {
 }
 
 config.term = "wezterm"
+config.enable_kitty_graphics = true
 
 config.cursor_blink_rate = 0
 config.initial_rows = 30
