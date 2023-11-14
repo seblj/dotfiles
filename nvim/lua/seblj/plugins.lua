@@ -36,7 +36,7 @@ lazy.setup({
             { "williamboman/mason.nvim", config = true, cmd = "Mason" },
             { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
-            { "j-hui/fidget.nvim", opts = { text = { spinner = "dots" } }, tag = "legacy" },
+            { "j-hui/fidget.nvim", config = true },
             { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
         },
     },
@@ -71,9 +71,6 @@ lazy.setup({
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },
     { "vuki656/package-info.nvim", config = true, event = "BufReadPre package.json" },
-
-    -- Latex
-    { "lervag/vimtex", config = conf("vimtex"), ft = { "tex", "bib" } },
 
     -- Debugging
     {
@@ -113,7 +110,6 @@ lazy.setup({
 
     -- Functionality
     { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
-    { "NTBBloodbath/rest.nvim", ft = "http" },
     { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" }, event = "TermOpen" },
     { "ahonn/resize.vim" },
 
@@ -123,7 +119,6 @@ lazy.setup({
 
     -- Dependencies/helpers for other plugins
     { "nvim-lua/plenary.nvim", lazy = true },
-    { "MunifTanjim/nui.nvim", lazy = true },
     { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- Tpope

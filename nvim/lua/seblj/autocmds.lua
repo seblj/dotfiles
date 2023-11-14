@@ -58,6 +58,10 @@ set_ft_option({ "c", "cs" }, function()
     vim.opt_local.commentstring = "// %s"
 end)
 
+set_ft_option({ "sql" }, function()
+    vim.opt_local.commentstring = "-- %s"
+end)
+
 set_ft_option("vue", function()
     vim.opt_local.commentstring = "<!-- %s -->"
 end)

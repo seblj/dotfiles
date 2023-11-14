@@ -40,7 +40,7 @@ end
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <buffer> if
 ---root_dir is not found
 local function get_root_dir_pattern()
-    local active_clients = vim.lsp.get_active_clients()
+    local active_clients = vim.lsp.get_clients()
     if #active_clients > 0 and active_clients[1].config then
         local root_dir = active_clients[1].config.root_dir
         if root_dir and root_dir ~= vim.env.HOME then
@@ -120,9 +120,6 @@ function M.save_and_exec()
     vim.api.nvim_echo({ { "Executing file" } }, false, {})
     if ft == "vim" or ft == "lua" then
         vim.cmd.source("%")
-    elseif ft == "http" then
-        -- Not really save and exec, but think it fits nicely in here for mapping
-        require("rest-nvim").run()
     else
         local file = vim.api.nvim_buf_get_name(0)
         vim.cmd.lcd(vim.fs.dirname(file))
@@ -135,7 +132,7 @@ function M.save_and_exec()
             )
         end
 
-        local output = vim.fn.fnamemodify(file, ":t:r")
+        local output = vim.fn.fnamemodify(file, ":t:r") --[[@as string]]
         command = command:gsub("$file", file):gsub("$output", output)
         M.term({ direction = "new", focus = false, cmd = command })
     end

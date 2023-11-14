@@ -97,17 +97,6 @@ local components = {
             update = { "VimEnter" },
         },
     },
-    custom = {
-        latex_words = {
-            provider = {
-                name = "latex_words",
-                update = { "BufWritePost" },
-            },
-            enabled = function()
-                return vim.bo.filetype == "tex"
-            end,
-        },
-    },
 }
 
 local statusline = {
@@ -123,7 +112,6 @@ local statusline = {
         components.diagnostics.error,
         components.diagnostics.warning,
         components.diagnostics.hint,
-        components.custom.latex_words,
         components.os,
         components.file.position,
         components.file.percentage,
@@ -134,9 +122,6 @@ require("feline").setup({
     theme = { bg = colors.bg, fg = colors.fg },
     components = { active = statusline, inactive = statusline },
     custom_providers = {
-        latex_words = function()
-            return string.format(" Words: %s", vim.fn["vimtex#misc#wordcount"]())
-        end,
         os = function()
             if vim.fn.has("mac") == 1 then
                 return "  "

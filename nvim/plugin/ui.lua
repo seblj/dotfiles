@@ -37,6 +37,7 @@ end
 -- Override vim.ui.select to use popup
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
+        vim.api.nvim_input("<ESC>")
         local format_item = opts.format_item or tostring
         local choices = vim.iter.map(function(i, item)
             return string.format("[%d] %s", i, format_item(item))
