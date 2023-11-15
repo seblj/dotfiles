@@ -14,7 +14,7 @@ local function try_insert_branch(branch_name)
     end
 end
 
-local branch = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait().stdout:gsub("\n", "")
+local branch = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }):wait().stdout:gsub("\n", "") or ""
 
 -- We are in a rebase and need to find the name in a clever way
 if branch == "HEAD" then
@@ -23,7 +23,7 @@ if branch == "HEAD" then
         return string.find(v, "You are currently editing a commit while rebasing branch")
     end)
 
-    local b = string.match(line, "'([^']+)'")
+    local b = string.match(line or "", "'([^']+)'")
     try_insert_branch(b)
 else
     try_insert_branch(branch)

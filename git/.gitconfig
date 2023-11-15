@@ -65,3 +65,6 @@
 
 [mergetool "vimdiff"]
     path = nvim
+
+[push]
+    useForceIfIncludes = true
