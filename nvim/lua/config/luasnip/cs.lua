@@ -6,7 +6,10 @@ local fmt = require("luasnip.extras.fmt").fmt
 
 return make({
     -- Template file
-    printobject = fmt([[System.Console.WriteLine(JsonConvert.SerializeObject({insert}, Formatting.Indented));]], {
-        insert = i(0),
-    }),
+    printobject = fmt(
+        [[System.Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject({insert}, Newtonsoft.Json.Formatting.Indented));]],
+        {
+            insert = i(0),
+        }
+    ),
 })
