@@ -149,34 +149,36 @@ local function hide_cursor()
 end
 
 function M.setup_hidden_cursor(bufnr)
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
-    hide_cursor()
-    vim.opt_local.cursorline = true
-    vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+    vim.defer_fn(function()
+        bufnr = bufnr or vim.api.nvim_get_current_buf()
+        hide_cursor()
+        vim.opt_local.cursorline = true
+        vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
 
-    local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
-    vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
-        group = group,
-        buffer = bufnr,
-        callback = function()
-            hide_cursor()
-            vim.opt_local.cursorline = true
-            vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
-        end,
-        desc = "Hide cursor",
-    })
-    vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
-        group = group,
-        buffer = bufnr,
-        callback = function()
-            vim.schedule(function()
-                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
-                vim.opt.guicursor = guicursor_saved
-                vim.opt_local.cursorline = false
-            end)
-        end,
-        desc = "Show cursor",
-    })
+        local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
+        vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
+            group = group,
+            buffer = bufnr,
+            callback = function()
+                hide_cursor()
+                vim.opt_local.cursorline = true
+                vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+            end,
+            desc = "Hide cursor",
+        })
+        vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
+            group = group,
+            buffer = bufnr,
+            callback = function()
+                vim.schedule(function()
+                    vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
+                    vim.opt.guicursor = guicursor_saved
+                    vim.opt_local.cursorline = false
+                end)
+            end,
+            desc = "Show cursor",
+        })
+    end, 0)
 end
 
 return M

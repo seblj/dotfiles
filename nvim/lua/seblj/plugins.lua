@@ -72,6 +72,8 @@ lazy.setup({
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },
     { "vuki656/package-info.nvim", config = true, event = "BufReadPre package.json" },
 
+    { "lervag/vimtex", config = conf("vimtex"), ft = { "tex", "bib" } },
+
     -- Debugging
     {
         "mfussenegger/nvim-dap",
