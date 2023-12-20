@@ -25,6 +25,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         ---------- MAPPINGS ----------
 
+        keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
         keymap("n", "gr", vim.lsp.buf.references, { desc = "References" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
         keymap({ "n", "i" }, "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature help" })

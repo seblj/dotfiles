@@ -2,9 +2,7 @@
 
 alias cp="cp -i"
 alias mv="mv -i"
-alias f="find . |grep"
 
-alias report="python3 ~/dotfiles/scripts/latex_template.py"
 alias cht="~/dotfiles/scripts/cht.sh"
 alias ssh_kitty="kitty +kitten ssh"
 alias icat="kitty +kitten icat --align=left"

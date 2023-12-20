@@ -4,16 +4,16 @@
 autoload -U promptinit; promptinit
 prompt spaceship
 SPACESHIP_PROMPT_ORDER=(
-  user
-  host
-  dir
-  git
-  exec_time
-  rust
-  node
-  docker
-  venv
-  char
+    user
+    host
+    dir
+    git
+    exec_time
+    rust
+    node
+    docker
+    venv
+    char
 )
 
 SPACESHIP_USER_SHOW=always

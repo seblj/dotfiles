@@ -6,7 +6,7 @@
 export PATH=$PATH
 
 if [ -x /usr/libexec/path_helper ]; then
-	eval `/usr/libexec/path_helper -s`
+    eval `/usr/libexec/path_helper -s`
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"
