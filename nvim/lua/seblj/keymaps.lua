@@ -14,11 +14,13 @@ vim.keymap.set({ "n", "x", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-
 vim.keymap.set({ "n", "x", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
 vim.keymap.set({ "n", "x", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
+vim.keymap.set({ "n", "x" }, "y", '"*y')
+vim.keymap.set({ "n", "x" }, "x", '"_x')
+
 vim.keymap.set("n", "<C-i>", "<C-i>")
 vim.keymap.set("n", "<Tab>", "gt", { desc = "Next tab" })
 vim.keymap.set("n", "<S-TAB>", "gT", { desc = "Previous tab" })
 vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "Resize all splits" })
-vim.keymap.set("n", "<leader>i", "gg=G", { desc = "Indent file" })
 vim.keymap.set("n", "<CR>", '{->v:hlsearch ? ":nohl\\<CR>" : "\\<CR>"}()', { expr = true, desc = "Remove highlights" })
 vim.keymap.set("n", "gb", "<C-t>", { desc = "Go back in tag-stack" })
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect pasted text" })
@@ -70,8 +72,6 @@ vim.keymap.set({ "n", "x" }, "K", "10gk")
 
 vim.keymap.set({ "n", "x", "o" }, "H", "^", { desc = "Move to beginning of line" })
 vim.keymap.set({ "n", "x", "o" }, "L", "$", { desc = "Move to end of line" })
-
-vim.keymap.set("x", "@", '":norm @" . getcharstr() . "<CR>"', { desc = "Macro over visual range", expr = true })
 
 vim.keymap.set("n", "<leader>x", utils.save_and_exec, { desc = "Save and execute file" })
 

@@ -93,7 +93,7 @@ lazy.setup({
         event = { "BufReadPre", "BufNewFile" },
     },
     { "mhinz/vim-startify", config = conf("startify") },
-    { "freddiehaddad/feline.nvim", config = conf("feline") },
+    { "freddiehaddad/feline.nvim", config = conf("feline"), dev = true },
     {
         "Bekaboo/dropbar.nvim",
         opts = {

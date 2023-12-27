@@ -35,7 +35,7 @@ vim-markdown-preview.html
 _minted-report
 .env
 node_modules
-/target/
+target
 
 
 # Latex files #
