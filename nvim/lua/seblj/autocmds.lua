@@ -6,10 +6,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     callback = function()
         vim.highlight.on_yank({ higroup = "IncSearch", timeout = 100 })
-        if vim.env.SSH_CONNECTION then
-            local text = vim.fn.getreg(vim.v.event.regname) --[[@as string]]
-            io.stderr:write(string.format("\x1b]52;c;%s\x07", vim.base64.encode(text)))
-        end
     end,
     desc = "Highlight on yank",
 })
