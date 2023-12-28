@@ -5,7 +5,6 @@ local init = lazy.init
 lazy.setup({
     -- My plugins/forks
     { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
-    { "seblj/nvim-echo-diagnostics", config = true, dev = true },
     { "seblj/nvim-formatter", config = conf("formatter"), dev = true },
 
     -- Telescope
@@ -36,7 +35,6 @@ lazy.setup({
             { "williamboman/mason.nvim", config = true, cmd = "Mason" },
             { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
             { "Hoffs/omnisharp-extended-lsp.nvim" },
-            { "j-hui/fidget.nvim", config = true },
             { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
         },
     },
@@ -93,7 +91,7 @@ lazy.setup({
         event = { "BufReadPre", "BufNewFile" },
     },
     { "mhinz/vim-startify", config = conf("startify") },
-    { "freddiehaddad/feline.nvim", config = conf("feline"), dev = true },
+    { "freddiehaddad/feline.nvim", config = conf("feline") },
     {
         "Bekaboo/dropbar.nvim",
         opts = {
@@ -108,10 +106,10 @@ lazy.setup({
         },
         cond = not (vim.uv.os_uname().sysname == "Windows_NT"),
     },
-    { "rcarriga/nvim-notify", config = conf("notify"), init = init("notify"), lazy = true },
+    { "j-hui/fidget.nvim", opts = { notification = { override_vim_notify = true } } },
 
     -- Functionality
-    { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()" },
+    { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()", ft = "markdown" },
     { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" }, event = "TermOpen" },
     { "ahonn/resize.vim" },
 

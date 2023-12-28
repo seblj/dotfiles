@@ -48,6 +48,7 @@ highlight({
     FloatBorder = { fg = c.bg4 },
     FoldColumn = { fg = c.grey },
     Folded = { fg = c.grey, bg = c.bg },
+    CurSearch = { fg = c.bg, bg = c.red },
     IncSearch = { fg = c.bg, bg = c.red },
     LineNr = { fg = c.grey },
     MatchParen = { bg = c.bg2 },
