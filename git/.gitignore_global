@@ -6,7 +6,8 @@
 *.exe
 *.o
 *.so
-
+obj/
+bin/
 
 # OS generated files #
 ######################

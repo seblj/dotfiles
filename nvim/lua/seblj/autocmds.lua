@@ -47,7 +47,7 @@ set_ft_option("python", function()
 end)
 
 set_ft_option("*", function()
-    vim.opt.formatoptions = vim.opt.formatoptions - "o" + "r" + "c"
+    vim.opt.formatoptions = vim.opt.formatoptions - "o" + "c"
 end)
 
 set_ft_option({ "c", "cs" }, function()
@@ -60,6 +60,7 @@ end)
 
 set_ft_option("vue", function()
     vim.opt_local.commentstring = "<!-- %s -->"
+    vim.opt.formatoptions:remove("r")
 end)
 
 set_ft_option("help", function()

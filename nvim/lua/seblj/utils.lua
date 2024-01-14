@@ -117,7 +117,7 @@ local runner = {
 function M.save_and_exec()
     local ft = vim.bo.filetype
     vim.cmd.write({ mods = { emsg_silent = true, noautocmd = true } })
-    vim.api.nvim_echo({ { "Executing file" } }, false, {})
+    vim.notify("Executing file")
     if ft == "vim" or ft == "lua" then
         vim.cmd.source("%")
     else

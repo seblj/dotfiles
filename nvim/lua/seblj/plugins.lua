@@ -22,7 +22,7 @@ lazy.setup({
     -- Treesitter
     { "nvim-treesitter/nvim-treesitter", config = conf("treesitter"), build = ":TSUpdate" },
     { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
-    { "windwp/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" } },
+    { "seblj/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
 
     -- LSP
     {
@@ -57,9 +57,13 @@ lazy.setup({
     -- Database
     {
         "kristijanhusak/vim-dadbod-ui",
-        config = conf("dadbod"),
         cmd = "DBUI",
         dependencies = { "kristijanhusak/vim-dadbod-completion", "tpope/vim-dadbod" },
+        config = function()
+            vim.g.db_ui_use_nerd_fonts = 1
+            vim.keymap.set("n", "[s", "<Plug>(DBUI_GotoPrevSibling)")
+            vim.keymap.set("n", "]s", "<Plug>(DBUI_GotoNextSibling)")
+        end,
     },
 
     -- Git
@@ -71,14 +75,6 @@ lazy.setup({
     { "vuki656/package-info.nvim", config = true, event = "BufReadPre package.json" },
 
     { "lervag/vimtex", config = conf("vimtex"), ft = { "tex", "bib" } },
-
-    -- Debugging
-    {
-        "mfussenegger/nvim-dap",
-        config = conf("dap"),
-        dependencies = { "rcarriga/nvim-dap-ui" },
-        keys = { "<leader>db" },
-    },
 
     -- File tree
     { "nvim-tree/nvim-tree.lua", config = true, keys = { { "<leader>nt", ":NvimTreeToggle<CR>" } } },

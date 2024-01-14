@@ -12,6 +12,7 @@ cmp.setup({
         { name = "vim-dadbod-completion" },
     },
 
+    ---@diagnostic disable-next-line: missing-fields
     confirmation = {
         -- This seems annoying, so disable it for now for all language servers
         get_commit_characters = function(_)
@@ -45,6 +46,7 @@ cmp.setup({
         },
     },
 
+    ---@diagnostic disable-next-line: missing-fields
     formatting = {
         format = require("lspkind").cmp_format({
             mode = "symbol_text",
@@ -54,6 +56,7 @@ cmp.setup({
                 luasnip = "[Luasnip]",
                 path = "[Path]",
                 crates = "[Crates]",
+                ["vim-dadbod-completion"] = "[DB]",
             },
             maxwidth = 90,
             ellipsis_char = "...",

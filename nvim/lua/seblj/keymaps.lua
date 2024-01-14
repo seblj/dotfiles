@@ -24,6 +24,7 @@ vim.keymap.set("n", "gp", "`[v`]", { desc = "Reselect pasted text" })
 vim.keymap.set("n", "<C-t>", ":tabedit<CR>", { desc = "Create new tab" })
 
 vim.keymap.set({ "n", "x" }, "d", '"+d')
+vim.keymap.set({ "n", "x" }, "D", '"+D')
 vim.keymap.set({ "n", "x" }, "p", '"+p')
 vim.keymap.set({ "n", "x" }, "y", '"+y')
 vim.keymap.set({ "n", "x" }, "Y", '"+y$')
@@ -115,12 +116,12 @@ end, {
 vim.keymap.set("n", "<leader>tf", function()
     vim.b.disable_formatting = not vim.b.disable_formatting
     local res = vim.b.disable_formatting and "Disabled" or "Enabled"
-    vim.api.nvim_echo({ { string.format("%s autoformat on save", res) } }, false, {})
+    vim.notify(string.format("%s autoformat on save", res))
 end, { desc = "Format: Toggle format on save" })
 
 vim.keymap.set("n", "<leader>ts", function()
     vim.opt.spelllang = vim.o.spelllang == "en" and "nb" or "en"
-    print("Setting spelllang to", vim.o.spelllang)
+    vim.notify(string.format("Setting spelllang to: %s", vim.o.spelllang))
 end, { desc = "Toggle spelllang between english and norwegian" })
 
 vim.keymap.set("n", "<leader>m", function()

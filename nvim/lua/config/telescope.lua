@@ -53,7 +53,7 @@ return {
         vim.keymap.set("n", "<leader>tg", function()
             use_git_root = not use_git_root
             local using = use_git_root and "git root" or "current dir"
-            vim.api.nvim_echo({ { string.format("Using %s in telescope", using) } }, false, {})
+            vim.notify(string.format("Using %s in telescope", using))
         end, {
             desc = "Telescope: Toggle root dir between git and cwd",
         })

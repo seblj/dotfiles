@@ -129,15 +129,19 @@ highlight({
 
     ["@constructor"] = { fg = c.fg },
     ["@constant.builtin"] = { fg = c.orange },
-    ["@field"] = { fg = c.green },
+    ["@field"] = { fg = c.green }, -- TODO: Remove
+    ["@variable.member"] = { fg = c.green },
     ["@function.builtin"] = { link = "Function" },
     ["@function.macro"] = { link = "Function" },
-    ["@namespace"] = { fg = c.blue },
+    ["@module"] = { fg = c.blue },
+    ["@namespace"] = { fg = c.blue }, -- TODO: Remove
     ["@text.note"] = { fg = c.blue, bold = true },
-    ["@parameter"] = { fg = c.fg },
+    ["@variable.parameter"] = { fg = c.fg },
+    ["@parameter"] = { fg = c.fg }, -- TODO: Remove
     ["@parameter.reference"] = { link = "@parameter" },
     ["@property"] = { fg = c.green },
-    ["@punctuation.special"] = { fg = c.red },
+    ["@markup.list"] = { fg = c.red },
+    ["@punctuation.special"] = { fg = c.red }, -- TODO: Remove
     ["@string.escape"] = { link = "String" },
     ["@tag"] = { link = "Tag" },
     ["@tag.attribute"] = { fg = c.green },
@@ -151,13 +155,16 @@ highlight({
     ["@punctuation.delimiter"] = { link = "Delimiter", default = true },
     ["@punctuation.bracket"] = { link = "Delimiter", default = true },
 
-    ["@string.regex"] = { link = "String", default = true },
+    ["@string.regexp"] = { link = "String", default = true },
+    ["@string.regex"] = { link = "String", default = true }, -- TODO: Remove
 
     ["@function.call"] = { link = "@function", default = true },
-    ["@method.call"] = { link = "@method", default = true },
+    ["@function.method.call"] = { link = "@method", default = true },
+    ["@method.call"] = { link = "@method", default = true }, -- TODO: Remove
     ["@annotation"] = { link = "PreProc", default = true },
     ["@attribute"] = { link = "PreProc", default = true },
-    ["@symbol"] = { link = "Identifier", default = true },
+    ["@string.special.symbol"] = { link = "Identifier", default = true },
+    ["@symbol"] = { link = "Identifier", default = true }, -- TODO: Remove
 
     ["@keyword.function"] = { link = "Keyword", default = true },
     ["@keyword.operator"] = { link = "@operator", default = true },
@@ -166,19 +173,31 @@ highlight({
     ["@type.builtin"] = { link = "Type", default = true },
     ["@type.qualifier"] = { link = "Type", default = true },
 
-    ["@text"] = { link = "@none", default = true },
-    ["@text.strong"] = { bold = true, default = true },
-    ["@text.emphasis"] = { italic = true, default = true },
-    ["@text.strike"] = { strikethrough = true },
+    ["@markup"] = { link = "@none", default = true },
+    ["@markup.strong"] = { bold = true, default = true },
+    ["@markup.emphasis"] = { italic = true, default = true },
+    ["@markup.strike"] = { strikethrough = true },
+    ["@markup.link"] = { link = "Constant", default = true },
+    ["@markup.environment"] = { link = "Macro", default = true },
+    ["@markup.environment.name"] = { link = "Type", default = true },
+    ["@markup.heading"] = { link = "Title", default = true },
+    ["@markup.raw"] = { link = "String", default = true },
+    ["@markup.link.url"] = { link = "Underlined", default = true },
+    ["@comment.warning"] = { link = "Todo", default = true },
+    ["@comment.error"] = { link = "WarningMsg", default = true },
 
-    ["@text.reference"] = { link = "Constant", default = true },
-    ["@text.environment"] = { link = "Macro", default = true },
-    ["@text.environment.name"] = { link = "Type", default = true },
-    ["@text.title"] = { link = "Title", default = true },
-    ["@text.literal"] = { link = "String", default = true },
-    ["@text.uri"] = { link = "Underlined", default = true },
-    ["@text.warning"] = { link = "Todo", default = true },
-    ["@text.danger"] = { link = "WarningMsg", default = true },
+    ["@text"] = { link = "@none", default = true }, -- TODO: Remove
+    ["@text.strong"] = { bold = true, default = true }, -- TODO: Remove
+    ["@text.emphasis"] = { italic = true, default = true }, -- TODO: Remove
+    ["@text.strike"] = { strikethrough = true }, -- TODO: Remove
+    ["@text.reference"] = { link = "Constant", default = true }, -- TODO: Remove
+    ["@text.environment"] = { link = "Macro", default = true }, -- TODO: Remove
+    ["@text.environment.name"] = { link = "Type", default = true }, -- TODO: Remove
+    ["@text.title"] = { link = "Title", default = true }, -- TODO: Remove
+    ["@text.literal"] = { link = "String", default = true }, -- TODO: Remove
+    ["@text.uri"] = { link = "Underlined", default = true }, -- TODO: Remove
+    ["@text.warning"] = { link = "Todo", default = true }, -- TODO: Remove
+    ["@text.danger"] = { link = "WarningMsg", default = true }, -- TODO: Remove
 
     ---------- SEMANTIC TOKENS ----------
 

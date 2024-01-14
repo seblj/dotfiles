@@ -23,6 +23,7 @@ vim.opt.cindent = true
 vim.opt.cinkeys:remove("0#")
 vim.opt.shortmess:append("c")
 vim.opt.fillchars:append("diff:╱")
+vim.opt.formatoptions:append("r")
 vim.opt.laststatus = 3
 vim.opt.textwidth = 80
 vim.opt.wrap = false

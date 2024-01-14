@@ -6,8 +6,6 @@ function M.handlers()
     vim.diagnostic.config({
         virtual_text = { spacing = 4, prefix = "●" },
         float = { border = CUSTOM_BORDER, source = "if_many" },
-        signs = true,
-        update_in_insert = false,
     })
 
     -- Jump directly to the first available definition every time
@@ -17,7 +15,7 @@ function M.handlers()
     -- Thanks to https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/lsp/handlers.lua
     vim.lsp.handlers["textDocument/definition"] = function(_, result, ctx)
         if not result or vim.tbl_isempty(result) then
-            return vim.api.nvim_echo({ { "Lsp: Could not find definition" } }, false, {})
+            return vim.notify("Lsp: Could not find definition")
         end
         local client = vim.lsp.get_client_by_id(ctx.client_id)
 
