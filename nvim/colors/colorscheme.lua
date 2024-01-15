@@ -75,6 +75,8 @@ highlight({
     StatusLineTerm = { fg = c.fg, bg = c.bg2 },
     StatusLineTermNC = { fg = c.grey, bg = c.bg },
     TabLine = { fg = c.grey, bg = c.bg3 },
+    WinBar = { link = "StatusLine" },
+    WinBarNC = { link = "StatusLineNC" },
     TabLineFill = { fg = c.grey, bg = c.bg3 },
     TabLineSel = { fg = c.fg, bg = c.bg, italic = true, bold = true },
     VertSplit = { fg = c.grey },
