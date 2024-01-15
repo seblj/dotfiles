@@ -31,20 +31,3 @@ vim.opt.wrap = false
 -- Disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
-vim.opt.title = true
-vim.opt.titlestring = [[%{luaeval('titlestring()')}]]
-
--- Titlestring
-function _G.titlestring()
-    local modified = vim.bo.modified and "" or ""
-
-    local ok, web = pcall(require, "nvim-web-devicons")
-    local bufname = vim.api.nvim_buf_get_name(0)
-    local filename = vim.fs.basename(bufname)
-    local extension = vim.fn.fnamemodify(bufname, ":e")
-
-    local icon = ok and web.get_icon(filename, extension, { default = true }) or ""
-    local name = vim.api.nvim_eval_statusline("%t", {}).str
-    return string.format("%s %s %s", modified, name, icon)
-end

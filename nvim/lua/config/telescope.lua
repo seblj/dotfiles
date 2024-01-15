@@ -37,9 +37,6 @@ return {
 
         require("telescope").load_extension("fzf")
         require("telescope").load_extension("file_browser")
-        if pcall(require, "notify") then
-            require("telescope").load_extension("notify")
-        end
     end,
 
     init = function()
@@ -137,42 +134,5 @@ return {
                 })
                 :find()
         end, { desc = "Telescope: Multi grep" })
-
-        local total = {
-            "golang",
-            "typescript",
-            "python",
-            "lua",
-            "c",
-            "rust",
-            "xargs",
-            "find",
-        }
-
-        vim.keymap.set("n", "<leader>fq", function()
-            local opts = require("telescope.themes").get_cursor()
-            require("telescope.pickers")
-                .new(opts, {
-                    prompt_title = "Cheat sheet",
-                    finder = require("telescope.finders").new_table({ results = total }),
-                    sorter = require("telescope.config").values.generic_sorter(opts),
-                    attach_mappings = function(_, keymap)
-                        keymap({ "i", "n" }, "<CR>", function(bufnr)
-                            local content = require("telescope.actions.state").get_selected_entry()
-                            require("telescope.actions").close(bufnr)
-                            vim.ui.input({ prompt = "Query: " }, function(query)
-                                local input = vim.split(query, " ")
-                                require("seblj.utils").term({
-                                    direction = "tabnew",
-                                    focus = true,
-                                    cmd = string.format("curl cht.sh/%s/%s", content.value, table.concat(input, "+")),
-                                })
-                            end)
-                        end)
-                        return true
-                    end,
-                })
-                :find()
-        end, { desc = "curl cht.sh" })
     end,
 }

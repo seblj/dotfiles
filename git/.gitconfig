@@ -11,7 +11,7 @@
 
 [core]
     editor = nvim
-    excludesfile = ~/.gitignore_global
+    excludesfile = ~/.gitignore
     pager = delta
 
 [pull]

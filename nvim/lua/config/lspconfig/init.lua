@@ -9,10 +9,6 @@ local function keymap(mode, l, r, opts)
     vim.keymap.set(mode, l, r, opts)
 end
 
-local function sign(name, text)
-    vim.fn.sign_define(name, { text = text, texthl = name })
-end
-
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function(args)
@@ -36,12 +32,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "gn", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
         keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
-
-        ---------- SIGNS ----------
-
-        sign("DiagnosticSignError", "✘")
-        sign("DiagnosticSignWarn", "")
-        sign("DiagnosticSignHint", "")
     end,
 })
 
