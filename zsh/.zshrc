@@ -21,7 +21,6 @@ source $HOME/.config/zsh/keybinds.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/aliases.zsh
 
-zstyle ':completion:*:*:*:*:*' menu select
 
 # TODO: Automatically clone if not exists
 source ~/.powerlevel10k/powerlevel10k.zsh-theme

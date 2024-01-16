@@ -59,17 +59,13 @@
     # typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n at %m'
 
     function git_dirty_status() {
-        if ((
+        ((
                 VCS_STATUS_NUM_UNSTAGED > 0 ||
                 VCS_STATUS_NUM_STAGED_DELETED > 0 ||
                 VCS_STATUS_NUM_UNSTAGED_DELETED > 0 ||
                 VCS_STATUS_HAS_UNTRACKED ||
                 VCS_STATUS_HAS_STAGED
-            )); then
-            true
-        else
-            false
-        fi
+        ));
     }
 
     # Git status formatter.
@@ -85,19 +81,26 @@
             my_git_format+=${${VCS_STATUS_LOCAL_BRANCH:-${VCS_STATUS_COMMIT[1,8]}}//\%/%%}
             if git_dirty_status; then
                 my_git_format+=" ${1+%1F[}"
-                if (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )); then
-                    # TODO: Figure out what everything means
-                    my_git_format+="✘"
+                # TODO: Figure out what everything means
+                (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_format+="✘"
+                (( VCS_STATUS_NUM_UNSTAGED )) && my_git_format+="!"
+                (( VCS_STATUS_HAS_STAGED )) && my_git_format+="+"
+
+                if [[ $VCS_STATUS_COMMITS_AHEAD > 0 && $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
+                    my_git_format+="⇕"
+                elif [[ $VCS_STATUS_COMMITS_AHEAD > 0 ]]; then
+                    my_git_format+="⇡"
+                elif [[ $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
+                    my_git_format+="⇣"
                 fi
-                if (( VCS_STATUS_NUM_UNSTAGED )); then
-                    my_git_format+="!"
-                fi
-                if (( VCS_STATUS_HAS_STAGED )); then
-                    my_git_format+="+"
-                fi
-                if (( VCS_STATUS_HAS_UNTRACKED )); then
-                    my_git_format+="?"
-                fi
+
+                (( VCS_STATUS_STASHES )) && my_git_format+="$"
+
+                # Renamed files
+                (( VCS_STATUS_NUM_STAGED_NEW && VCS_STATUS_NUM_STAGED_DELETED )) && my_git_format+="»"
+
+                (( VCS_STATUS_HAS_UNTRACKED )) && my_git_format+="?"
+
                 my_git_format+="]"
             fi
         fi
@@ -119,9 +122,6 @@
     # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
     (( ! $+functions[p10k] )) || p10k reload
 }
-
-# Tell `p10k configure` which file it should overwrite.
-# typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 ((${#p10k_config_opts})) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
