@@ -307,31 +307,12 @@ highlight({
 -- When using ':Messages', the text is highlighted with
 -- 'NonText' for some reason Fix this to actually be readable
 -- without changing hl group for everything it's used for
-local group = vim.api.nvim_create_augroup("FixQFColorscheme", {})
-vim.api.nvim_create_autocmd("FileType", {
-    group = group,
-    pattern = "qf",
-    callback = function()
-        vim.opt.winhighlight = "NonText:Normal"
-    end,
-    desc = "Fix colors in qflist",
-})
-
----------- TERM COLORS ----------
-
-vim.g.terminal_color_0 = "#1d1f21"
-vim.g.terminal_color_1 = "#ff2200"
-vim.g.terminal_color_2 = "#198844"
-vim.g.terminal_color_3 = "#bbbb00"
-vim.g.terminal_color_4 = "#00bbbb"
-vim.g.terminal_color_5 = "#bb00bb"
-vim.g.terminal_color_6 = "#00bbbb"
-vim.g.terminal_color_7 = "#f5f5f5"
-vim.g.terminal_color_8 = "#989698"
-vim.g.terminal_color_9 = "#ff2200"
-vim.g.terminal_color_10 = "#198844"
-vim.g.terminal_color_11 = "#d8865f"
-vim.g.terminal_color_12 = "#00bbbb"
-vim.g.terminal_color_13 = "#bb00bb"
-vim.g.terminal_color_14 = "#00bbbb"
-vim.g.terminal_color_15 = "#ffffff"
+-- local group = vim.api.nvim_create_augroup("FixQFColorscheme", {})
+-- vim.api.nvim_create_autocmd("FileType", {
+--     group = group,
+--     pattern = "qf",
+--     callback = function()
+--         vim.opt.winhighlight = "NonText:Normal"
+--     end,
+--     desc = "Fix colors in qflist",
+-- })

@@ -21,6 +21,7 @@ path+=(
     $HOME/.local/bin
     /opt/homebrew/opt/dotnet@6/bin
     /Applications/WezTerm.app/Contents/MacOS
+    $HOME/.local/flutter/bin
 )
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
