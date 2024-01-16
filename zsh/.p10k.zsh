@@ -58,16 +58,6 @@
     typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
     # typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n at %m'
 
-    function git_dirty_status() {
-        ((
-                VCS_STATUS_NUM_UNSTAGED > 0 ||
-                VCS_STATUS_NUM_STAGED_DELETED > 0 ||
-                VCS_STATUS_NUM_UNSTAGED_DELETED > 0 ||
-                VCS_STATUS_HAS_UNTRACKED ||
-                VCS_STATUS_HAS_STAGED
-        ));
-    }
-
     # Git status formatter.
     function my_git_formatter() {
         emulate -L zsh
@@ -79,29 +69,33 @@
             # https://github.com/romkatv/gitstatus/blob/master/gitstatus.plugin.zsh
             typeset -g my_git_format="${1+%B%4F}${1+%5F} "
             my_git_format+=${${VCS_STATUS_LOCAL_BRANCH:-${VCS_STATUS_COMMIT[1,8]}}//\%/%%}
-            if git_dirty_status; then
-                my_git_format+=" ${1+%1F[}"
-                # TODO: Figure out what everything means
-                (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_format+="✘"
-                (( VCS_STATUS_NUM_UNSTAGED )) && my_git_format+="!"
-                (( VCS_STATUS_HAS_STAGED )) && my_git_format+="+"
+            my_git_status=""
 
-                if [[ $VCS_STATUS_COMMITS_AHEAD > 0 && $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
-                    my_git_format+="⇕"
-                elif [[ $VCS_STATUS_COMMITS_AHEAD > 0 ]]; then
-                    my_git_format+="⇡"
-                elif [[ $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
-                    my_git_format+="⇣"
-                fi
+            my_git_status+=" ${1+%1F[}"
+            # TODO: Figure out what everything means
+            (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_status+="✘"
+            (( VCS_STATUS_NUM_UNSTAGED )) && my_git_status+="!"
+            (( VCS_STATUS_HAS_STAGED )) && my_git_status+="+"
 
-                (( VCS_STATUS_STASHES )) && my_git_format+="$"
+            if [[ $VCS_STATUS_COMMITS_AHEAD > 0 && $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
+                my_git_status+="⇕"
+            elif [[ $VCS_STATUS_COMMITS_AHEAD > 0 ]]; then
+                my_git_status+="⇡"
+            elif [[ $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
+                my_git_status+="⇣"
+            fi
 
-                # Renamed files
-                (( VCS_STATUS_NUM_STAGED_NEW && VCS_STATUS_NUM_STAGED_DELETED )) && my_git_format+="»"
+            (( VCS_STATUS_STASHES )) && my_git_status+="$"
 
-                (( VCS_STATUS_HAS_UNTRACKED )) && my_git_format+="?"
+            # Renamed files
+            (( VCS_STATUS_NUM_STAGED_NEW && VCS_STATUS_NUM_STAGED_DELETED )) && my_git_status+="»"
 
-                my_git_format+="]"
+            (( VCS_STATUS_HAS_UNTRACKED )) && my_git_status+="?"
+
+            my_git_status+="]"
+
+            if [[ $my_git_status != "" ]]; then
+                my_git_format+=$my_git_status
             fi
         fi
     }
