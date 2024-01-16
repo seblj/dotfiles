@@ -85,15 +85,10 @@
 
             (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_status+="✘"
 
-            # Renamed files
-            (( VCS_STATUS_NUM_STAGED_NEW && VCS_STATUS_NUM_STAGED_DELETED )) && my_git_status+="»"
-
             (( VCS_STATUS_NUM_UNSTAGED )) && my_git_status+="!"
             (( VCS_STATUS_HAS_UNTRACKED )) && my_git_status+="?"
 
-            # TODO: This is wrong
             (( VCS_STATUS_HAS_STAGED )) && my_git_status+="+"
-
 
             my_git_closing_bracket="]"
 
