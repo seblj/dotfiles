@@ -201,6 +201,9 @@ highlight({
     ["@text.warning"] = { link = "Todo", default = true }, -- TODO: Remove
     ["@text.danger"] = { link = "WarningMsg", default = true }, -- TODO: Remove
 
+    ["@text.diff.delete.diff"] = { fg = c.red },
+    ["@text.diff.add.diff"] = { fg = c.green },
+
     ---------- SEMANTIC TOKENS ----------
 
     ["@lsp.type.enum"] = { link = "@type" },

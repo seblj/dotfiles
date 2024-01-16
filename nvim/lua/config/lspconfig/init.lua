@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap({ "n", "i" }, "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature help" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "gR", vim.lsp.buf.rename, { desc = "Rename" })
-        keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+        keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
         keymap("n", "gp", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
         keymap("n", "gn", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
         keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
