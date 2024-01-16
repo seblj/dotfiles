@@ -71,11 +71,7 @@
             my_git_format+=${${VCS_STATUS_LOCAL_BRANCH:-${VCS_STATUS_COMMIT[1,8]}}//\%/%%}
             my_git_status=""
 
-            my_git_status+=" ${1+%1F[}"
-            # TODO: Figure out what everything means
-            (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_status+="✘"
-            (( VCS_STATUS_NUM_UNSTAGED )) && my_git_status+="!"
-            (( VCS_STATUS_HAS_STAGED )) && my_git_status+="+"
+            my_git_starting_bracket=" ${1+%1F[}"
 
             if [[ $VCS_STATUS_COMMITS_AHEAD > 0 && $VCS_STATUS_COMMITS_BEHIND > 0 ]]; then
                 my_git_status+="⇕"
@@ -87,15 +83,22 @@
 
             (( VCS_STATUS_STASHES )) && my_git_status+="$"
 
+            (( VCS_STATUS_NUM_STAGED_DELETED > 0 || VCS_STATUS_NUM_UNSTAGED_DELETED > 0 )) && my_git_status+="✘"
+
             # Renamed files
             (( VCS_STATUS_NUM_STAGED_NEW && VCS_STATUS_NUM_STAGED_DELETED )) && my_git_status+="»"
 
+            (( VCS_STATUS_NUM_UNSTAGED )) && my_git_status+="!"
             (( VCS_STATUS_HAS_UNTRACKED )) && my_git_status+="?"
 
-            my_git_status+="]"
+            # TODO: This is wrong
+            (( VCS_STATUS_HAS_STAGED )) && my_git_status+="+"
+
+
+            my_git_closing_bracket="]"
 
             if [[ $my_git_status != "" ]]; then
-                my_git_format+=$my_git_status
+                my_git_format+=$my_git_starting_bracket$my_git_status$my_git_closing_bracket
             fi
         fi
     }
