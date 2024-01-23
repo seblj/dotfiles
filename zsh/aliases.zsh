@@ -9,7 +9,7 @@ alias icat="kitty +kitten icat --align=left"
 alias kitty_debug_font="kitty --debug-font-fallback"
 
 function fmt() {
-    nvim -u ~/.config/nvim/init.lua -i NONE -Es +":FormatSync $*"
+    nvim -u ~/.config/nvim/init.lua -i NONE -Es +":Format $*"
 }
 
 alias localip="ipconfig getifaddr en0"

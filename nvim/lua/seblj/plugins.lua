@@ -74,7 +74,7 @@ lazy.setup({
     },
 
     -- Git
-    { "seblj/blame.nvim", config = true, dev = true },
+    { "seblj/blame.nvim", config = true, dev = true, cmd = "BlameToggle" },
     { "lewis6991/gitsigns.nvim", config = conf("gitsigns"), event = { "BufReadPre", "BufWritePre" } },
     { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 

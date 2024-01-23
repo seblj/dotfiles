@@ -31,6 +31,10 @@ local c = {
 highlight({
     ---------- HIGHLIGHTING GROUPS ----------
 
+    Added = { fg = c.green },
+    Removed = { fg = c.red },
+    Changed = { fg = c.blue },
+
     ColorColumn = { bg = c.bg },
     Conceal = { fg = c.grey },
     Cursor = { reverse = true },
@@ -43,7 +47,7 @@ highlight({
     DiffChange = { bg = c.diff_blue },
     DiffDelete = { bg = c.diff_red },
     DiffText = { bg = c.changed_text },
-    Directory = { fg = c.green },
+    Directory = { fg = c.blue },
     ErrorMsg = { fg = c.red },
     FloatBorder = { fg = c.bg4 },
     FoldColumn = { fg = c.grey },
@@ -129,93 +133,48 @@ highlight({
 
     ---------- TREESITTER ----------
 
-    ["@constructor"] = { fg = c.fg },
-    ["@constant.builtin"] = { fg = c.orange },
-    ["@field"] = { fg = c.green }, -- TODO: Remove
-    ["@variable.member"] = { fg = c.green },
-    ["@function.builtin"] = { link = "Function" },
-    ["@function.macro"] = { link = "Function" },
-    ["@module"] = { fg = c.blue },
-    ["@namespace"] = { fg = c.blue }, -- TODO: Remove
-    ["@text.note"] = { fg = c.blue, bold = true },
-    ["@variable.parameter"] = { fg = c.fg },
-    ["@parameter"] = { fg = c.fg }, -- TODO: Remove
-    ["@parameter.reference"] = { link = "@parameter" },
-    ["@property"] = { fg = c.green },
-    ["@markup.list"] = { fg = c.red },
-    ["@punctuation.special"] = { fg = c.red }, -- TODO: Remove
-    ["@string.escape"] = { link = "String" },
-    ["@tag"] = { link = "Tag" },
-    ["@tag.attribute"] = { fg = c.green },
-    ["@tag.delimiter"] = { fg = c.red },
-    ["@variable.builtin"] = { fg = c.orange },
+    -- My own for C custom structs
     ["@type.custom"] = { fg = c.purple },
 
-    -- Treesitter doesn't highlight these by default anymore, and neovim don't
-    -- have them upstream yet
-    ["@none"] = { default = true },
-    ["@punctuation.delimiter"] = { link = "Delimiter", default = true },
-    ["@punctuation.bracket"] = { link = "Delimiter", default = true },
-
-    ["@string.regexp"] = { link = "String", default = true },
-    ["@string.regex"] = { link = "String", default = true }, -- TODO: Remove
-
-    ["@function.call"] = { link = "@function", default = true },
-    ["@function.method.call"] = { link = "@method", default = true },
-    ["@method.call"] = { link = "@method", default = true }, -- TODO: Remove
-    ["@annotation"] = { link = "PreProc", default = true },
     ["@attribute"] = { link = "PreProc", default = true },
-    ["@string.special.symbol"] = { link = "Identifier", default = true },
-    ["@symbol"] = { link = "Identifier", default = true }, -- TODO: Remove
 
-    ["@keyword.function"] = { link = "Keyword", default = true },
-    ["@keyword.operator"] = { link = "@operator", default = true },
-    ["@keyword.return"] = { link = "@keyword", default = true },
+    ["@constructor"] = { fg = c.fg },
+
+    ["@constant.builtin"] = { fg = c.orange },
+    ["@constant.macro"] = { link = "Define", default = true },
+
+    ["@function.builtin"] = { link = "Function" },
+
+    ["@keyword.storage"] = { link = "StorageClass", default = true },
+    ["@keyword.debug"] = { link = "Debug", default = true },
+
+    ["@keyword.directive"] = { link = "PreProc", default = true },
+
+    ["@property"] = { fg = c.green },
+
+    ["@punctuation.special"] = { fg = c.red },
+
+    ["@string.escape"] = { link = "String" },
+    ["@string.regexp"] = { link = "String", default = true },
+
+    ["@tag.attribute"] = { fg = c.green },
+    ["@tag.delimiter"] = { fg = c.red },
 
     ["@type.builtin"] = { link = "Type", default = true },
-    ["@type.qualifier"] = { link = "Type", default = true },
+    ["@type.definition"] = { link = "Typedef", default = true },
 
     ["@markup"] = { link = "@none", default = true },
-    ["@markup.strong"] = { bold = true, default = true },
-    ["@markup.emphasis"] = { italic = true, default = true },
-    ["@markup.strike"] = { strikethrough = true },
-    ["@markup.link"] = { link = "Constant", default = true },
     ["@markup.environment"] = { link = "Macro", default = true },
     ["@markup.environment.name"] = { link = "Type", default = true },
-    ["@markup.heading"] = { link = "Title", default = true },
+    ["@markup.list"] = { fg = c.red },
     ["@markup.raw"] = { link = "String", default = true },
-    ["@markup.link.url"] = { link = "Underlined", default = true },
-    ["@comment.warning"] = { link = "Todo", default = true },
-    ["@comment.error"] = { link = "WarningMsg", default = true },
 
-    ["@text"] = { link = "@none", default = true }, -- TODO: Remove
-    ["@text.strong"] = { bold = true, default = true }, -- TODO: Remove
-    ["@text.emphasis"] = { italic = true, default = true }, -- TODO: Remove
-    ["@text.strike"] = { strikethrough = true }, -- TODO: Remove
-    ["@text.reference"] = { link = "Constant", default = true }, -- TODO: Remove
-    ["@text.environment"] = { link = "Macro", default = true }, -- TODO: Remove
-    ["@text.environment.name"] = { link = "Type", default = true }, -- TODO: Remove
-    ["@text.title"] = { link = "Title", default = true }, -- TODO: Remove
-    ["@text.literal"] = { link = "String", default = true }, -- TODO: Remove
-    ["@text.uri"] = { link = "Underlined", default = true }, -- TODO: Remove
-    ["@text.warning"] = { link = "Todo", default = true }, -- TODO: Remove
-    ["@text.danger"] = { link = "WarningMsg", default = true }, -- TODO: Remove
+    ["@variable"] = { fg = c.fg },
+    ["@variable.member"] = { fg = c.green },
+    ["@variable.builtin"] = { fg = c.orange },
 
-    ["@text.diff.delete.diff"] = { fg = c.red },
-    ["@text.diff.add.diff"] = { fg = c.green },
-
-    ---------- SEMANTIC TOKENS ----------
-
-    ["@lsp.type.enum"] = { link = "@type" },
-    ["@lsp.type.keyword"] = { link = "@keyword" },
-    ["@lsp.type.interface"] = { link = "@interface" },
-    ["@lsp.type.namespace"] = { link = "@namespace" },
-    ["@lsp.type.parameter"] = { link = "@parameter" },
-    ["@lsp.type.property"] = { link = "@property" },
-    ["@lsp.type.variable"] = {}, -- use treesitter styles for regular variables
-    ["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" },
-    ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
-    ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
+    -- Messes with injection of comment parser which is highlighting TODO, NOTE, WARNING, ERROR
+    ["@lsp.type.comment.lua"] = { link = "@none" },
 
     ---------- NVIM LSPCONFIG ----------
 
@@ -237,23 +196,10 @@ highlight({
 
     ---------- GIT ----------
 
-    diffAdded = { fg = c.green },
-    diffRemoved = { fg = c.red },
-    diffChanged = { fg = c.blue },
-    diffOldFile = { fg = c.yellow },
-    diffNewFile = { fg = c.orange },
-    diffFile = { fg = c.purple },
-    diffLine = { fg = c.grey },
-    diffIndexLine = { fg = c.purple },
-
     GitSignsAddInline = { bg = c.diff_green_bright },
     GitSignsDeleteInline = { bg = c.diff_red_bright },
     GitSignsAddLn = { bg = c.diff_green },
     GitSignsDeleteLn = { bg = c.diff_red },
-
-    ---------- TELESCOPE ----------
-
-    TelescopePromptPrefix = { fg = c.red },
 
     ---------- STARTSCREEN ----------
 
@@ -265,12 +211,6 @@ highlight({
     StartifySection = { fg = c.blue },
     StartifyHeader = { fg = c.red },
     StartifySpecial = { fg = c.grey },
-
-    ---------- NVIM TREE ----------
-
-    NvimTreeFolderName = { fg = c.blue },
-    NvimTreeOpenedFolderName = { link = "NvimTreeFolderName" },
-    NvimTreeEmptyFolderName = { link = "NvimTreeFolderName" },
 
     ---------- CMP ----------
 
@@ -284,14 +224,14 @@ highlight({
     CmpItemKindEnum = { fg = c.blue },
     CmpItemKindEnumMember = { fg = c.purple },
     CmpItemKindEvent = { fg = c.red },
-    CmpItemKindField = { link = "@field" },
+    CmpItemKindField = { link = "@variable.member" },
     CmpItemKindFile = { fg = c.yellow },
     CmpItemKindFolder = { fg = c.yellow },
     CmpItemKindFunction = { link = "@function" },
     CmpItemKindInterface = { fg = c.blue },
     CmpItemKindKeyword = { link = "@keyword" },
-    CmpItemKindMethod = { link = "@method" },
-    CmpItemKindModule = { link = "@namespace" },
+    CmpItemKindMethod = { link = "@function.method" },
+    CmpItemKindModule = { link = "@module" },
     CmpItemKindOperator = { link = "@operator" },
     CmpItemKindProperty = { link = "@property" },
     CmpItemKindReference = { fg = c.yellow },
@@ -303,16 +243,3 @@ highlight({
     CmpItemKindValue = { fg = c.purple },
     CmpItemKindVariable = { link = "@variable" },
 })
-
--- When using ':Messages', the text is highlighted with
--- 'NonText' for some reason Fix this to actually be readable
--- without changing hl group for everything it's used for
--- local group = vim.api.nvim_create_augroup("FixQFColorscheme", {})
--- vim.api.nvim_create_autocmd("FileType", {
---     group = group,
---     pattern = "qf",
---     callback = function()
---         vim.opt.winhighlight = "NonText:Normal"
---     end,
---     desc = "Fix colors in qflist",
--- })
