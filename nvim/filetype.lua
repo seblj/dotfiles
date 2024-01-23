@@ -6,3 +6,9 @@ vim.api.nvim_create_autocmd("TermOpen", {
     end,
     desc = "Set filetype for term buffer",
 })
+
+vim.filetype.add({
+    extension = {
+        http = "http",
+    },
+})

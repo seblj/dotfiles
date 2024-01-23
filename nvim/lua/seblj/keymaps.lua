@@ -14,6 +14,10 @@ vim.keymap.set({ "n", "x", "i" }, "ª", "<A-k>", { remap = true, desc = "Fix <A-
 vim.keymap.set({ "n", "x", "i" }, "∆", "<A-j>", { remap = true, desc = "Fix <A-j> mapping on mac" })
 vim.keymap.set({ "n", "x", "i" }, "˚", "<A-k>", { remap = true, desc = "Fix <A-k> mapping on mac" })
 
+vim.keymap.set({ "n", "x", "i" }, "‘", "<A-]>", { remap = true, desc = "Fix <A-]> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "“", "<A-[>", { remap = true, desc = "Fix <A-[> mapping on mac" })
+vim.keymap.set({ "n", "x", "i" }, "«", "<A-\\>", { remap = true, desc = [[Fix <A-\> mapping on mac]] })
+
 vim.keymap.set("n", "<C-i>", "<C-i>")
 vim.keymap.set("n", "<Tab>", "gt", { desc = "Next tab" })
 vim.keymap.set("n", "<S-TAB>", "gT", { desc = "Previous tab" })

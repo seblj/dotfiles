@@ -1,5 +1,5 @@
 ; extends
-; I want component names to be highlighted with TSTag rather that TSConstructor
+; I want component names to be highlighted with @tag rather that @constructor
 (jsx_opening_element
   name: (identifier) @tag)
 

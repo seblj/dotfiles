@@ -20,8 +20,8 @@ lazy.setup({
     },
 
     -- Treesitter
-    { "nvim-treesitter/nvim-treesitter", config = conf("treesitter"), build = ":TSUpdate" },
-    { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
+    { "nvim-treesitter/nvim-treesitter", config = conf("treesitter"), build = ":TSUpdate", branch = "main" },
+    -- { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
     { "seblj/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
 
     -- LSP
@@ -54,6 +54,13 @@ lazy.setup({
         },
     },
 
+    {
+        "github/copilot.vim",
+        config = function()
+            vim.g.copilot_filetypes = { ["*"] = false }
+        end,
+    },
+
     -- Database
     {
         "kristijanhusak/vim-dadbod-ui",
@@ -67,6 +74,7 @@ lazy.setup({
     },
 
     -- Git
+    { "seblj/blame.nvim", config = true, dev = true },
     { "lewis6991/gitsigns.nvim", config = conf("gitsigns"), event = { "BufReadPre", "BufWritePre" } },
     { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 
