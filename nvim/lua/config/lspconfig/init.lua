@@ -1,7 +1,5 @@
 ---------- LSP CONFIG ----------
 
-local M = {}
-
 local function keymap(mode, l, r, opts)
     opts = opts or {}
     opts.buffer = true
@@ -52,17 +50,30 @@ vim.diagnostic.config({
     },
 })
 
-local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-local capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
-require("mason-lspconfig").setup_handlers({
-    function(server)
-        local config = vim.tbl_deep_extend("error", {
-            capabilities = capabilities,
-        }, require("config.lspconfig.settings")[server] or {})
-        require("lspconfig")[server].setup(config)
+return {
+    "neovim/nvim-lspconfig",
+    config = function()
+        local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+        local capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
+
+        require("mason-lspconfig").setup_handlers({
+            function(server)
+                local config = vim.tbl_deep_extend("error", {
+                    capabilities = capabilities,
+                }, require("config.lspconfig.settings")[server] or {})
+                require("lspconfig")[server].setup(config)
+            end,
+        })
+
+        require("lspconfig.ui.windows").default_options.border = CUSTOM_BORDER
     end,
-})
-
-require("lspconfig.ui.windows").default_options.border = CUSTOM_BORDER
-
-return M
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+        { "folke/neodev.nvim", config = true },
+        { "b0o/schemastore.nvim" },
+        { "williamboman/mason.nvim", config = true, cmd = "Mason" },
+        { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
+        { "Hoffs/omnisharp-extended-lsp.nvim" },
+        { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
+    },
+}

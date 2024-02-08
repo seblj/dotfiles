@@ -1,5 +1,3 @@
----------- TREESITTER CONFIG ----------
-
 vim.treesitter.language.register("bash", "zsh")
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -14,3 +12,5 @@ vim.api.nvim_create_autocmd("FileType", {
         -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end,
 })
+
+return { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", branch = "main" }

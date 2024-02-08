@@ -1,6 +1,5 @@
----------- TELESCOPE CONFIG ----------
-
 return {
+    "nvim-telescope/telescope.nvim",
     config = function()
         require("telescope").setup({
             defaults = {
@@ -38,7 +37,6 @@ return {
         require("telescope").load_extension("fzf")
         require("telescope").load_extension("file_browser")
     end,
-
     init = function()
         local function map(keys, func, desc, opts)
             vim.keymap.set("n", keys, function()
@@ -128,11 +126,19 @@ return {
                                 vim.list_extend(args, { "-g", prompt_split[2] })
                             end
 
-                            return vim.tbl_flatten({ args, { "-H", "-n", "-S", "-F", "--column", "-g", "!Spoons/" } })
+                            return vim.tbl_flatten({
+                                args,
+                                { "-H", "-n", "-S", "-F", "--column", "-g", "!Spoons/" },
+                            })
                         end,
                     }),
                 })
                 :find()
         end, { desc = "Telescope: Multi grep" })
     end,
+    cmd = "Telescope",
+    dependencies = {
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+        { "nvim-telescope/telescope-file-browser.nvim" },
+    },
 }

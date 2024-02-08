@@ -1,5 +1,3 @@
----------- COMMENTSTRING ----------
-
 local react = {
     jsx_element = "{/* %s */}",
     jsx_fragment = "{/* %s */}",
@@ -104,3 +102,5 @@ vim.keymap.set("n", "gcu", function()
     vim.bo.commentstring = calculate_commentstring()
     return "<Plug>Commentary<Plug>Commentary"
 end, { expr = true })
+
+return { "tpope/vim-commentary" }

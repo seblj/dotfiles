@@ -1,5 +1,3 @@
----------- STARTIFY CONFIG ----------
-
 vim.g.startify_enable_special = 0
 vim.g.startify_files_number = 6
 vim.g.startify_change_to_dir = 0
@@ -23,7 +21,9 @@ function _G.webDevIcons(path)
 end
 
 vim.cmd([[
-function! StartifyEntryFormat() abort
-  return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
-endfunction
+    function! StartifyEntryFormat() abort
+      return 'v:lua.webDevIcons(absolute_path) . " " . entry_path'
+    endfunction
 ]])
+
+return { "mhinz/vim-startify" }
