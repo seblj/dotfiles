@@ -150,17 +150,17 @@ end
 local function get_file_info()
     local file_info = " %t"
     if vim.bo.readonly and vim.bo.modified then
-        file_info = file_info .. "  " .. ""
+        file_info = file_info .. "  " .. " "
     elseif vim.bo.readonly then
-        file_info = file_info .. " "
+        file_info = file_info .. "  "
     elseif vim.bo.modified then
-        file_info = file_info .. " "
+        file_info = file_info .. "  "
     end
     return file_info
 end
 
 local function get_git_branch()
-    return vim.g.gitsigns_head and hl("Removed") .. "  " .. vim.g.gitsigns_head or ""
+    return vim.b.gitsigns_head and hl("Removed") .. "  " .. vim.b.gitsigns_head or ""
 end
 
 local function get_git_status()
