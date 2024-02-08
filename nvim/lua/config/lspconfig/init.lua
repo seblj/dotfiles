@@ -12,10 +12,10 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        -- local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-        -- Turn off semantic tokens
-        client.server_capabilities.semanticTokensProvider = nil
+        -- -- Turn off semantic tokens
+        -- client.server_capabilities.semanticTokensProvider = nil
 
         require("config.lspconfig.handlers").handlers()
 
