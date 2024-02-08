@@ -29,7 +29,7 @@ set_ft_option({ "gitcommit", "gitrebase", "gitconfig" }, function()
     vim.bo.bufhidden = "delete"
 end)
 
-set_ft_option({ "text", "tex", "markdown" }, function()
+set_ft_option({ "text", "tex", "markdown", "gitcommit" }, function()
     vim.opt_local.spell = true
 end)
 

@@ -226,7 +226,7 @@ highlight({
     CmpItemKindEvent = { fg = c.red },
     CmpItemKindField = { link = "@variable.member" },
     CmpItemKindFile = { fg = c.yellow },
-    CmpItemKindFolder = { fg = c.yellow },
+    CmpItemKindFolder = { link = "Directory" },
     CmpItemKindFunction = { link = "@function" },
     CmpItemKindInterface = { fg = c.blue },
     CmpItemKindKeyword = { link = "@keyword" },

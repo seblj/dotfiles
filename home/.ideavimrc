@@ -19,8 +19,9 @@ let mapleader = " "
 
 nnoremap <leader>nt :NERDTreeToggle<CR>
 
-nnoremap <leader>x :source ~/.ideavimrc<CR>
 nnoremap <leader>fd :edit ~/.ideavimrc<CR>
+
+nnoremap <leader>x :action Run<CR>
 
 nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
 

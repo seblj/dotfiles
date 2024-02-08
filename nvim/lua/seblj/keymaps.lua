@@ -104,13 +104,8 @@ vim.keymap.set("n", "<leader>z", "<cmd>Inspect<CR>", { desc = "Print syntax unde
 vim.keymap.set("n", "<leader>@", "<cmd>lcd %:p:h<CR><cmd>pwd<CR>", { desc = "cd to directory of open buffer" })
 
 vim.keymap.set("n", "<leader>tm", function()
-    if vim.o.mouse == "nvi" then
-        vim.opt.mouse = ""
-        vim.opt.signcolumn = "no"
-    else
-        vim.opt.mouse = "nvi"
-        vim.opt.signcolumn = "auto"
-    end
+    vim.opt.signcolumn = vim.o.mouse == "nvi" and "no" or "auto"
+    vim.opt.mouse = vim.o.mouse == "nvi" and "" or "nvi"
     vim.opt.number = not vim.o.number
     vim.opt.relativenumber = not vim.o.relativenumber
 end, {

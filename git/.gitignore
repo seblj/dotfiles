@@ -38,6 +38,10 @@ _minted-report
 node_modules
 target
 
+WootricSDK.Binding.Droid
+.hitman-data.toml
+.hitman-target
+hitman.local.toml
 
 # Latex files #
 ######################

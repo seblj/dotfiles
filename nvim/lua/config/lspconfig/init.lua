@@ -52,16 +52,16 @@ vim.diagnostic.config({
     },
 })
 
-local servers = require("mason-lspconfig").get_installed_servers()
-
--- Automatic setup for language servers
-for _, server in pairs(servers) do
-    local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-    local config = vim.tbl_deep_extend("error", {
-        capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities(),
-    }, require("config.lspconfig.settings")[server] or {})
-    require("lspconfig")[server].setup(config)
-end
+local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
+require("mason-lspconfig").setup_handlers({
+    function(server)
+        local config = vim.tbl_deep_extend("error", {
+            capabilities = capabilities,
+        }, require("config.lspconfig.settings")[server] or {})
+        require("lspconfig")[server].setup(config)
+    end,
+})
 
 require("lspconfig.ui.windows").default_options.border = CUSTOM_BORDER
 
