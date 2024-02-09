@@ -27,7 +27,7 @@ nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
 
 nnoremap <leader>ff :action SearchEverywhere<CR>
 nnoremap <leader>fg :action GotoFile<CR>
-nnoremap <leader>fs :action TextSearchAction<CR>
+nnoremap <leader>fs :action FindInPath<CR>
 nnoremap <leader>fa :action GotoAction<CR>
 nnoremap <leader>fb :action RecentFiles<CR>
 
