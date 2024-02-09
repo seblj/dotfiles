@@ -26,4 +26,4 @@ vim.cmd([[
     endfunction
 ]])
 
-return { "mhinz/vim-startify" }
+return { "mhinz/vim-startify", dependencies = "nvim-tree/nvim-web-devicons" }

@@ -43,6 +43,8 @@ WootricSDK.Binding.Droid
 .hitman-target
 hitman.local.toml
 
+cypress/screenshots
+
 # Latex files #
 ######################
 _minted-*

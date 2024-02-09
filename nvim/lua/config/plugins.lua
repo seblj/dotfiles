@@ -1,5 +1,4 @@
 return {
-    -- My plugins/forks
     { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
 
     -- { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
@@ -35,6 +34,7 @@ return {
     -- File tree
     { "nvim-tree/nvim-tree.lua", config = true, keys = { { "<leader>nt", ":NvimTreeToggle<CR>" } } },
     { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true } } },
+    { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- UI
     {
@@ -67,10 +67,6 @@ return {
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
     { "godlygeek/tabular", cmd = "Tabularize" },
 
-    -- Dependencies/helpers for other plugins
-    { "nvim-lua/plenary.nvim", lazy = true },
-    { "nvim-tree/nvim-web-devicons", lazy = true },
-
     -- Tpope
     { "tpope/vim-repeat" },
     { "tpope/vim-abolish" },
@@ -85,6 +81,4 @@ return {
     },
     { "tpope/vim-scriptease" },
     { "tpope/vim-sleuth" },
-    { "nvim-lua/plenary.nvim", lazy = true },
-    { "nvim-tree/nvim-web-devicons", lazy = true },
 }

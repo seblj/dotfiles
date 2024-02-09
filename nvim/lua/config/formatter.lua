@@ -1,5 +1,6 @@
 return {
     "seblj/nvim-formatter",
+    dev = true,
     opts = {
         format_on_save = function()
             return not vim.b.disable_formatting
