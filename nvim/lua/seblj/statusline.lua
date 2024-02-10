@@ -96,6 +96,7 @@ local function hl(name)
         local statusline_hl = name .. "SebStatusline"
         vim.api.nvim_set_hl(0, statusline_hl, { fg = fg, bg = bg })
         applied_highlights[name] = statusline_hl
+        name = statusline_hl
     end
     return "%#" .. name .. "#"
 end
