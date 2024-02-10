@@ -70,7 +70,7 @@ local GIT_INFO = {
 }
 
 local applied_highlights = {}
-local background = "Normal"
+local background = "StatusLine"
 local main_fg = "#8FBCBB"
 
 local function highlight()
