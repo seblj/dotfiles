@@ -30,6 +30,17 @@ function M.term(opts, ...)
     vim.api.nvim_chan_send(term, string.format(opts.cmd .. "\n", ...))
 end
 
+---@param fn function
+---@param dir? string
+function M.wrap_lcd(fn, dir)
+    local current_cwd = vim.loop.cwd()
+    local _dir = dir or vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+    vim.cmd.lcd({ args = { _dir }, mods = { silent = true } })
+    local ret = fn()
+    vim.cmd.lcd({ args = { current_cwd }, mods = { silent = true } })
+    return ret
+end
+
 function M.get_zsh_completion(args, prefix)
     return vim.iter.map(function(v)
         local val = vim.fn.split(v, " -- ")[1]
@@ -70,13 +81,15 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
         pattern = get_root_dir_pattern(),
         callback = function()
             vim.schedule(function()
-                if opts.args:sub(1, 1) == "!" then
-                    M.term({ direction = "new", focus = false, cmd = string.sub(opts.args, 2) })
-                else
-                    local this = vim.fn.winnr()
-                    vim.cmd(opts.args)
-                    vim.cmd.wincmd({ "w", count = this })
-                end
+                M.wrap_lcd(function()
+                    if opts.args:sub(1, 1) == "!" then
+                        M.term({ direction = "new", focus = false, cmd = string.sub(opts.args, 2) })
+                    else
+                        local this = vim.fn.winnr()
+                        vim.cmd(opts.args)
+                        vim.cmd.wincmd({ "w", count = this })
+                    end
+                end)
             end)
         end,
         desc = "Run command on save",
@@ -85,17 +98,21 @@ end, {
     nargs = "*",
     bang = true,
     complete = function(arg_lead, cmdline, _)
-        local command = vim.split(cmdline, "RunOnSave ")[2]
-        if command:sub(1, 1) == "!" then
-            vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-            return M.get_zsh_completion(string.sub(command, 2), arg_lead:sub(1, 1) == "!" and "!" or nil)
-        else
-            return vim.fn.getcompletion(command, "cmdline")
-        end
+        return M.wrap_lcd(function()
+            local command = vim.split(cmdline, "RunOnSave ")[2]
+            if command:sub(1, 1) == "!" then
+                print(string.sub(command, 2))
+                return M.get_zsh_completion(string.sub(command, 2), arg_lead:sub(1, 1) == "!" and "!" or nil)
+            else
+                return vim.fn.getcompletion(command, "cmdline")
+            end
+        end)
     end,
 })
 
 local runner = {
+    lua = ":source %",
+    vim = ":source %",
     python = "python3 $file",
     c = "gcc $file -o $output && ./$output; rm $output",
     javascript = "node $file",
@@ -118,24 +135,21 @@ function M.save_and_exec()
     local ft = vim.bo.filetype
     vim.cmd.write({ mods = { emsg_silent = true, noautocmd = true } })
     vim.notify("Executing file")
-    if ft == "vim" or ft == "lua" then
-        vim.cmd.source("%")
-    else
-        local file = vim.api.nvim_buf_get_name(0)
-        vim.cmd.lcd(vim.fs.dirname(file))
+    local file = vim.api.nvim_buf_get_name(0)
+    M.wrap_lcd(function()
         local command = type(runner[ft]) == "function" and runner[ft]() or runner[ft]
         if not command then
-            return vim.notify(
-                string.format("No config found for %s", ft),
-                vim.log.levels.INFO,
-                { title = "Save and exec" }
-            )
+            return vim.notify(string.format("No config found for %s", ft))
         end
 
         local output = vim.fn.fnamemodify(file, ":t:r") --[[@as string]]
         command = command:gsub("$file", file):gsub("$output", output)
-        M.term({ direction = "new", focus = false, cmd = command })
-    end
+        if command:sub(1, 1) == ":" then
+            vim.cmd(command)
+        else
+            M.term({ direction = "new", focus = false, cmd = command })
+        end
+    end)
 end
 
 ---------- HIDE CURSOR ----------
@@ -149,36 +163,34 @@ local function hide_cursor()
 end
 
 function M.setup_hidden_cursor(bufnr)
-    vim.defer_fn(function()
-        bufnr = bufnr or vim.api.nvim_get_current_buf()
-        hide_cursor()
-        vim.opt_local.cursorline = true
-        vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    hide_cursor()
+    vim.opt_local.cursorline = true
+    vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
 
-        local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
-        vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
-            group = group,
-            buffer = bufnr,
-            callback = function()
-                hide_cursor()
-                vim.opt_local.cursorline = true
-                vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
-            end,
-            desc = "Hide cursor",
-        })
-        vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
-            group = group,
-            buffer = bufnr,
-            callback = function()
-                vim.schedule(function()
-                    vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
-                    vim.opt.guicursor = guicursor_saved
-                    vim.opt_local.cursorline = false
-                end)
-            end,
-            desc = "Show cursor",
-        })
-    end, 0)
+    local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
+        group = group,
+        buffer = bufnr,
+        callback = function()
+            hide_cursor()
+            vim.opt_local.cursorline = true
+            vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+        end,
+        desc = "Hide cursor",
+    })
+    vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "CmdwinEnter", "CmdlineEnter" }, {
+        group = group,
+        buffer = bufnr,
+        callback = function()
+            vim.schedule(function()
+                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
+                vim.opt.guicursor = guicursor_saved
+                vim.opt_local.cursorline = false
+            end)
+        end,
+        desc = "Show cursor",
+    })
 end
 
 return M

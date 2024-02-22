@@ -161,13 +161,17 @@ local opts = { nargs = "*", bang = true }
 ---@param direction "new" | "vnew" | "tabnew"
 local function create_command(key, direction)
     local function completion(_, cmdline, _)
-        vim.cmd.lcd(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-        local run_command = vim.split(cmdline, key .. " ")[2]
-        return utils.get_zsh_completion(run_command)
+        local completions = utils.wrap_lcd(function()
+            local run_command = vim.split(cmdline, key .. " ")[2]
+            return utils.get_zsh_completion(run_command)
+        end)
+        return completions
     end
     opts.complete = completion
     vim.api.nvim_create_user_command(key, function(x)
-        utils.term({ direction = direction, focus = true, cmd = x.args, new = true })
+        utils.wrap_lcd(function()
+            utils.term({ direction = direction, focus = true, cmd = x.args, new = true })
+        end)
     end, opts)
 end
 create_command("T", "new")

@@ -5,7 +5,7 @@ source $HOME/.config/zsh/exports.zsh
 # Remove % at end of print when not using \n
 PROMPT_EOL_MARK=""
 
-plugins=(git zsh-z docker docker-compose)
+plugins=(git docker docker-compose)
 if [ -z "$NVIM" ]; then
     source $HOME/.config/zsh/vim.zsh
 fi
@@ -29,6 +29,8 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
 [ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+eval "$(zoxide init --cmd cd bash)"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"

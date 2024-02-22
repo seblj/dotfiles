@@ -14,6 +14,7 @@ vim.opt.swapfile = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.foldmethod = "indent"
+vim.opt.foldtext = ""
 vim.opt.foldlevelstart = 20
 vim.opt.showmode = false
 vim.opt.ignorecase = true

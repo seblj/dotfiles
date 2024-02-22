@@ -6,6 +6,8 @@ vim.api.nvim_create_autocmd("FileType", {
         if not pcall(vim.treesitter.start, args.buf) then
             return
         end
+        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo[0][0].foldmethod = "expr"
         -- TODO: Maybe add indent if an indents.scm file exist. Currently
         -- this doesn't work if no indents.scm file exists.
 

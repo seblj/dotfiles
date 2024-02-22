@@ -63,6 +63,8 @@ nmap gb <Action>(Back)
 nmap <C-o> <Action>(Back)
 nmap <C-i> <Action>(Forward)
 
+nnoremap <C-t> :action PinActiveTab<CR>
+
 nnoremap gn :action GotoNextError<cr>
 nnoremap gp :action GotoPreviousError<cr>
 
