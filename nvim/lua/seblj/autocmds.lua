@@ -42,12 +42,8 @@ set_ft_option(
     end
 )
 
-set_ft_option("python", function()
-    vim.opt.formatoptions = vim.opt.formatoptions - "t"
-end)
-
 set_ft_option("*", function()
-    vim.opt.formatoptions = vim.opt.formatoptions - "o" + "c"
+    vim.opt.formatoptions = vim.opt.formatoptions - "o"
 end)
 
 set_ft_option({ "c", "cs" }, function()

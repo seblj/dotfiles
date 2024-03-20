@@ -30,7 +30,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-eval "$(zoxide init --cmd cd bash)"
+eval "$(zoxide init --cmd cd zsh)"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"

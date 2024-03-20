@@ -26,5 +26,6 @@ vim.opt.shortmess:append("c")
 vim.opt.fillchars:append("diff:╱")
 vim.opt.formatoptions:append("r")
 vim.opt.laststatus = 3
-vim.opt.textwidth = 80
 vim.opt.wrap = false
+vim.opt.title = true
+vim.opt.titlestring = "%F"

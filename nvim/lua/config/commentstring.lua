@@ -52,14 +52,14 @@ local function get_lang(parser, range)
     return parser:lang()
 end
 
-local function check_node(node, language_config)
+local function check_node(node, lang)
     -- We have reached the top-most node
     if not node then
-        return vim.filetype.get_option(vim.bo.ft, "commentstring")
+        return vim.filetype.get_option(lang or vim.bo.ft, "commentstring")
     end
 
-    local node_conf = language_config[node:type()]
-    return node_conf and node_conf or check_node(node:parent(), language_config)
+    local node_conf = config[lang][node:type()]
+    return node_conf and node_conf or check_node(node:parent(), lang)
 end
 
 local function calculate_commentstring()
@@ -85,7 +85,7 @@ local function calculate_commentstring()
     end
 
     local node = tree:root():named_descendant_for_range(unpack(range))
-    return check_node(node, config[lang])
+    return check_node(node, lang)
 end
 
 vim.keymap.set({ "n", "x", "o" }, "gc", function()

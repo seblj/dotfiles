@@ -11,7 +11,7 @@ return {
                         flip_columns = 120,
                     },
                 },
-                file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "fonts/", "icons/" },
+                file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "^fonts/", "^icons/" },
                 mappings = {
                     i = {
                         ["<C-j>"] = function(prompt_bufnr)
@@ -100,7 +100,6 @@ return {
                     require("telescope.builtin").grep_string({
                         cwd = root,
                         search = input,
-                        ---@diagnostic disable-next-line: param-type-mismatch
                         prompt_title = vim.fs.basename(root),
                     })
                 end)
@@ -113,7 +112,6 @@ return {
             require("telescope.pickers")
                 :new({
                     debounce = 100,
-                    ---@diagnostic disable-next-line: param-type-mismatch
                     prompt_title = vim.fs.basename(root),
                     previewer = require("telescope.config").values.grep_previewer({}),
                     finder = require("telescope.finders").new_async_job({
