@@ -15,30 +15,6 @@ diff_commit() {
     fi
 }
 
-git() {
-    # If we are inside a git repo at work, and does not use -h or --help with
-    # push, and the branch is either master or d2d, then refuse the push
-    override_flag="--force-override"
-    if [[ "$1" == "push" && "$@" != *"--help"* && "$@" != *"-h"* && $PWD == */work* && "$@" && $(git rev-parse --is-inside-work-tree 2>/dev/null) ]]; then
-        branch=$(git rev-parse --abbrev-ref HEAD)
-        if [[ ($branch == *master* || $branch == *d2d*) && $@ != *"$override_flag"* ]]; then
-            echo "Do not push to master or d2d"
-            echo "Use $override_flag if you want to force it"
-        else
-            # Remove force-override flag from $@ to not get error: unknown option `force-override'
-            for arg do
-                shift
-                [ "$arg" = "$override_flag" ] && continue
-                set -- "$@" "$arg"
-            done
-
-            command git "$@"
-        fi
-    else
-        command git "$@"
-    fi
-}
-
 fzf_gitmoji() {
     local cmd="cat $HOME/dotfiles/zsh/gitmoji.json | jq -r '.[] | \"\(.emoji) \(.code) \(.description)\"'"
     local result="$(eval "$cmd" | fzf | xargs echo | grep -Eo ':\w+:')"
