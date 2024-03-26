@@ -1,24 +1,5 @@
 local M = {}
 
-local mode_colors = {
-    NORMAL = "Removed",
-    INSERT = "Removed",
-    VISUAL = "Removed",
-    LINES = "Removed",
-    OP = "Removed",
-    BLOCK = "Removed",
-    REPLACE = "Removed",
-    ["V-REPLACE"] = "Removed",
-    ENTER = "Removed",
-    MORE = "Removed",
-    SELECT = "Removed",
-    COMMAND = "Removed",
-    SHELL = "Removed",
-    TERM = "Removed",
-    NONE = "Removed",
-    CONFIRM = "Removed",
-}
-
 local mode_alias = {
     ["n"] = "NORMAL",
     ["no"] = "OP",
@@ -71,13 +52,13 @@ local GIT_INFO = {
 
 local applied_highlights = {}
 local background = "StatusLine"
-local main_fg = "#8FBCBB"
 
 local function highlight()
-    local statusline_hl = background .. "SebStatusline"
+    local statusline_hl = "SebStatusline" .. background
     if not applied_highlights[background] then
         local colors = vim.api.nvim_get_hl(0, { name = background })
-        vim.api.nvim_set_hl(0, statusline_hl, { fg = main_fg or colors.fg, bg = colors.bg })
+        local fg = vim.api.nvim_get_hl(0, { name = "Norma" }).fg
+        vim.api.nvim_set_hl(0, statusline_hl, { fg = fg or colors.fg, bg = colors.bg })
         applied_highlights[background] = statusline_hl
     end
     return "%#" .. statusline_hl .. "#"
@@ -93,7 +74,7 @@ local function hl(name)
         local fg = vim.api.nvim_get_hl(0, { name = name }).fg
         local bg = vim.api.nvim_get_hl(0, { name = background }).bg
 
-        local statusline_hl = name .. "SebStatusline"
+        local statusline_hl = "SebStatusline" .. name
         vim.api.nvim_set_hl(0, statusline_hl, { fg = fg, bg = bg })
         applied_highlights[name] = statusline_hl
         name = statusline_hl
@@ -128,7 +109,7 @@ end
 
 local function get_mode()
     local mode = mode_alias[vim.api.nvim_get_mode().mode]
-    local color = mode_colors[mode]
+    local color = "Error"
     return " " .. hl(color) .. mode .. "   "
 end
 
@@ -142,7 +123,7 @@ local function get_filetype_symbol()
     local ext = vim.fn.fnamemodify(name, ":e")
     local icon, iconhl = devicons.get_icon_color(name, ext, { default = true })
 
-    local hlname = iconhl:gsub("#", "Status")
+    local hlname = "SebStatusline" .. iconhl:gsub("#", "Status")
     vim.api.nvim_set_hl(0, hlname, { fg = iconhl })
 
     return hl(hlname) .. icon
@@ -161,7 +142,7 @@ local function get_file_info()
 end
 
 local function get_git_branch()
-    return vim.b.gitsigns_head and hl("Removed") .. "  " .. vim.b.gitsigns_head or ""
+    return vim.b.gitsigns_head and hl("Error") .. "  " .. vim.b.gitsigns_head or ""
 end
 
 local function get_git_status()

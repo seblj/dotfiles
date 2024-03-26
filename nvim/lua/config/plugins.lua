@@ -8,7 +8,7 @@ return {
         "github/copilot.vim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
-            vim.g.copilot_filetypes = { ["*"] = false }
+            vim.g.copilot_enabled = 0
         end,
     },
 

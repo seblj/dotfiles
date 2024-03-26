@@ -163,10 +163,11 @@ local function hide_cursor()
 end
 
 function M.setup_hidden_cursor(bufnr)
+    vim.api.nvim_set_hl(0, "CursorTransparent", { strikethrough = true, blend = 100 })
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     hide_cursor()
     vim.opt_local.cursorline = true
-    vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+    vim.opt_local.winhighlight = "CursorLine:Error"
 
     local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
     vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
@@ -175,7 +176,7 @@ function M.setup_hidden_cursor(bufnr)
         callback = function()
             hide_cursor()
             vim.opt_local.cursorline = true
-            vim.opt_local.winhighlight = "CursorLine:CursorLineHiddenCursor"
+            vim.opt_local.winhighlight = "CursorLine:Error"
         end,
         desc = "Hide cursor",
     })

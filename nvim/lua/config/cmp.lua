@@ -28,12 +28,6 @@ return {
                 end,
             },
 
-            snippet = {
-                expand = function(args)
-                    require("luasnip").lsp_expand(args.body)
-                end,
-            },
-
             mapping = cmp.mapping.preset.insert({
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
@@ -54,7 +48,6 @@ return {
                 },
             },
 
-            ---@diagnostic disable-next-line: missing-fields
             formatting = {
                 format = require("lspkind").cmp_format({
                     mode = "symbol_text",
