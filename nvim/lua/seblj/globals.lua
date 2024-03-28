@@ -2,7 +2,7 @@ P = function(...)
     vim.print(...)
 end
 
-COLORSCHEME = "colorscheme"
+COLORSCHEME = "catppuccin"
 CUSTOM_BORDER = vim.uv.os_uname().sysname == "Windows_NT" and "single"
     or { "", "", "", "", "", "", "", "" }
 
