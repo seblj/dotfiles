@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
             vim.system({ "kitty", "@", "set-colors", string.format("active_tab_background=%s", neovim_bg) })
             vim.system({ "kitty", "@", "set-colors", string.format("inactive_tab_background=%s", neovim_bg) })
 
-            local filename = "/Users/sebastian/dotfiles/kitty/kitty-theme.conf"
+            local filename = vim.fs.normalize("~/dotfiles/kitty/kitty-theme.conf")
             vim.system({ "cat", filename }, {}, function(_obj)
                 local out = _obj.stdout:gsub(color, neovim_bg)
                 local file = io.open(filename, "w")
