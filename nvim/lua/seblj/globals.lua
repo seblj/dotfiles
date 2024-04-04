@@ -3,8 +3,9 @@ P = function(...)
 end
 
 COLORSCHEME = "catppuccin"
-CUSTOM_BORDER = vim.uv.os_uname().sysname == "Windows_NT" and "single"
-    or { "", "", "", "", "", "", "", "" }
+
+local windows = vim.uv.os_uname().sysname == "Windows_NT" and vim.env.TERM ~= "xterm-kitty"
+CUSTOM_BORDER = windows and "single" or { "", "", "", "", "", "", "", "" }
 
 -- Override vim.keymap.set to have silent as default
 local map = vim.keymap.set
