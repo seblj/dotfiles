@@ -141,11 +141,9 @@ for k, v in pairs(highlights) do
 end
 
 local color_map = vim.iter(colors):fold({}, function(t, k, v)
-    print("v: ", v)
     t[v] = k
     return t
 end)
-P(color_map)
 
 local func = vim.split(
     [[

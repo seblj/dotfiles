@@ -101,7 +101,6 @@ end, {
         return M.wrap_lcd(function()
             local command = vim.split(cmdline, "RunOnSave ")[2]
             if command:sub(1, 1) == "!" then
-                print(string.sub(command, 2))
                 return M.get_zsh_completion(string.sub(command, 2), arg_lead:sub(1, 1) == "!" and "!" or nil)
             else
                 return vim.fn.getcompletion(command, "cmdline")

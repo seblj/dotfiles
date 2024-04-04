@@ -19,6 +19,7 @@ require("lazy").setup("config", {
     },
     ui = {
         border = CUSTOM_BORDER,
+        backdrop = 100,
     },
     install = {
         colorscheme = { COLORSCHEME },
