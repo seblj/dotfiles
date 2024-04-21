@@ -82,9 +82,11 @@ return {
             return {
                 cwd = vim.fn.stdpath("data") .. "/lazy",
                 prompt_title = "Plugins",
-                search_dirs = vim.iter.map(function(val)
-                    return val.dir
-                end, require("lazy").plugins()),
+                search_dirs = vim.iter(require("lazy").plugins())
+                    :map(function(val)
+                        return val.dir
+                    end)
+                    :totable(),
             }
         end)
         map("<leader>fn", "find_files", "Neovim", function()

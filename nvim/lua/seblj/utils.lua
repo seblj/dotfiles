@@ -42,10 +42,12 @@ function M.wrap_lcd(fn, dir)
 end
 
 function M.get_zsh_completion(args, prefix)
-    return vim.iter.map(function(v)
-        local val = vim.fn.split(v, " -- ")[1]
-        return prefix and string.format("%s%s", prefix, val) or val
-    end, vim.split(vim.trim(vim.system({ "capture", args }, { text = true }):wait().stdout), "\n"))
+    return vim.iter(vim.split(vim.trim(vim.system({ "capture", args }, { text = true }):wait().stdout), "\n"))
+        :map(function(v)
+            local val = vim.fn.split(v, " -- ")[1]
+            return prefix and string.format("%s%s", prefix, val) or val
+        end)
+        :totable()
 end
 
 ---Tries to find root_dir pattern for a buffer autocmd. Fallback to <buffer> if

@@ -151,10 +151,12 @@ local function get_git_status()
         return ""
     end
 
-    local status = vim.iter.map(function(val)
-        local status = dict[val[1]]
-        return status and status > 0 and (" %s%s %d"):format(hl(val[3]), val[2], status) or nil
-    end, GIT_INFO)
+    local status = vim.iter(GIT_INFO)
+        :map(function(val)
+            local status = dict[val[1]]
+            return status and status > 0 and (" %s%s %d"):format(hl(val[3]), val[2], status) or nil
+        end)
+        :totable()
 
     return table.concat(status)
 end
@@ -162,9 +164,11 @@ end
 --- @param sections string[][]
 --- @return string
 local function parse_sections(sections)
-    local result = vim.iter.map(function(s)
-        return table.concat(s)
-    end, sections)
+    local result = vim.iter(sections)
+        :map(function(s)
+            return table.concat(s)
+        end)
+        :totable()
 
     return table.concat(result, "%=")
 end

@@ -14,9 +14,11 @@ local function shortcut(val)
     end
 
     if type(val) == "table" then
-        return vim.iter.map(function(v)
-            return type(v) == "string" and t({ v }) or v
-        end, val)
+        return vim.iter(val)
+            :map(function(v)
+                return type(v) == "string" and t({ v }) or v
+            end)
+            :totable()
     end
 
     return val
@@ -25,9 +27,11 @@ end
 -- Borrow from tj for how to make a snippet
 -- Looks more clean with the trigger as a key in a table than a string in a snippenode imo
 function M.make(tbl)
-    return vim.iter.map(function(k, v)
-        return ls.s({ trig = k, desc = v.desc }, shortcut(v))
-    end, pairs(tbl))
+    return vim.iter(pairs(tbl))
+        :map(function(k, v)
+            return ls.s({ trig = k, desc = v.desc }, shortcut(v))
+        end)
+        :totable()
 end
 
 return M
