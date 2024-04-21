@@ -17,10 +17,6 @@ return make({
             <script setup lang="ts">
             {insert}
             </script>
-
-            <style lang="scss">
-
-            </style>
         ]],
         {
             tab = f(function()

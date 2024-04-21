@@ -25,7 +25,7 @@ return {
     },
 
     -- Git
-    { "seblj/blame.nvim", config = true, dev = true, cmd = "BlameToggle" },
+    { "FabijanZulj/blame.nvim", config = true, cmd = "BlameToggle" },
     { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 
     -- Packageinfo
@@ -38,11 +38,7 @@ return {
     { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- UI
-    {
-        "NvChad/nvim-colorizer.lua",
-        opts = { user_default_options = { names = false } },
-        event = { "BufReadPre", "BufNewFile" },
-    },
+    { "brenoprata10/nvim-highlight-colors", config = true, event = { "BufReadPre", "BufNewFile" } },
     {
         "Bekaboo/dropbar.nvim",
         opts = {

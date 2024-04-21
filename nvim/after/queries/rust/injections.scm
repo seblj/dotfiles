@@ -15,9 +15,10 @@
 (macro_invocation
     macro: (identifier) @_macro (#any-of? @_macro "fetch_optional" "fetch_all" "insert" "execute")
     (token_tree
-        (raw_string_literal) @sql
+      (raw_string_literal) @injection.content
     )
-    (#offset! @sql 0 3 0 -2)
+    (#offset! @injection.content 0 3 0 -2)
+    (#set! injection.language "sql")
 )
 
 (call_expression
@@ -25,7 +26,15 @@
         field: (field_identifier) @_field (#any-of? @_field "query" "execute")
     )
     (arguments
-        (raw_string_literal) @sql
+        (raw_string_literal) @injection.content
     )
-    (#offset! @sql 0 3 0 -2)
+    (#offset! @injection.content 0 3 0 -2)
+    (#set! injection.language "sql")
 )
+
+; (macro_invocation
+;     macro: (identifier) @_macro (#eq? @_macro "view")
+;     (token_tree) @injection.content
+;     (#set! injection.language "rust_with_rstml")
+;     (#set! injection.include-children)
+; )

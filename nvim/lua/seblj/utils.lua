@@ -125,6 +125,7 @@ local runner = {
     end,
     go = function()
         local command = "go run $file"
+        ---@diagnostic disable-next-line: missing-fields
         local dir = vim.fs.dirname(vim.fs.find("go.mod", { upward = true })[1])
         return dir and "go run " .. dir or command
     end,
