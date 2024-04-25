@@ -178,7 +178,12 @@ create_command("T", "new")
 create_command("VT", "vnew")
 create_command("TT", "tabnew")
 vim.api.nvim_create_user_command("Make", function(x)
-    vim.cmd.make({ args = { x.args }, bang = true, mods = { silent = true } })
+    local makeprg = vim.opt.makeprg:get()
+    if x.args ~= "" then
+        vim.opt.makeprg = x.args
+    end
+    vim.cmd.make({ bang = true, mods = { silent = true } })
+    vim.opt.makeprg = makeprg
     vim.cmd.copen()
 end, {
     nargs = "*",

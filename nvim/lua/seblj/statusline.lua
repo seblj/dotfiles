@@ -57,7 +57,7 @@ local function highlight()
     local statusline_hl = "SebStatusline" .. background
     if not applied_highlights[background] then
         local colors = vim.api.nvim_get_hl(0, { name = background })
-        local fg = vim.api.nvim_get_hl(0, { name = "Norma" }).fg
+        local fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
         vim.api.nvim_set_hl(0, statusline_hl, { fg = fg or colors.fg, bg = colors.bg })
         applied_highlights[background] = statusline_hl
     end

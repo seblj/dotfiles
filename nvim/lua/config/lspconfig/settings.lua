@@ -11,6 +11,14 @@ return {
         },
     },
 
+    volar = {
+        init_options = {
+            vue = {
+                hybridMode = false,
+            },
+        },
+    },
+
     -- tsserver = {
     --     init_options = {
     --         preferences = {

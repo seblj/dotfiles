@@ -38,6 +38,8 @@ _minted-report
 node_modules
 target
 
+localhost.pem-old
+
 WootricSDK.Binding.Droid
 .hitman-data.toml
 .hitman-target
