@@ -14,12 +14,8 @@ return {
                 file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "^fonts/", "^icons/" },
                 mappings = {
                     i = {
-                        ["<C-j>"] = function(prompt_bufnr)
-                            require("telescope.actions.layout").cycle_layout_next(prompt_bufnr)
-                        end,
-                        ["<C-k>"] = function(prompt_bufnr)
-                            require("telescope.actions.layout").cycle_layout_prev(prompt_bufnr)
-                        end,
+                        ["<C-j>"] = require("telescope.actions.layout").cycle_layout_next,
+                        ["<C-k>"] = require("telescope.actions.layout").cycle_layout_prev,
                     },
                 },
             },
@@ -126,10 +122,12 @@ return {
                                 vim.list_extend(args, { "-g", prompt_split[2] })
                             end
 
-                            return vim.tbl_flatten({
+                            return vim.iter({
                                 args,
                                 { "-H", "-n", "-S", "-F", "--column", "-g", "!Spoons/" },
                             })
+                                :flatten()
+                                :totable()
                         end,
                     }),
                 })

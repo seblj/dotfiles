@@ -13,8 +13,11 @@ function M.handlers()
             return vim.notify("Lsp: Could not find definition")
         end
         local client = vim.lsp.get_client_by_id(ctx.client_id)
+        if not client then
+            return vim.notify("Lsp: Could not find client")
+        end
 
-        if vim.tbl_islist(result) then
+        if vim.islist(result) then
             local results = vim.lsp.util.locations_to_items(result, client.offset_encoding)
             local lnum, filename = results[1].lnum, results[1].filename
             for _, val in pairs(results) do

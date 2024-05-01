@@ -116,8 +116,8 @@ local runner = {
     vim = ":source %",
     python = "python3 $file",
     c = "gcc $file -o $output && ./$output; rm $output",
-    javascript = "node $file",
-    typescript = "ts-node $file",
+    javascript = "bun $file",
+    typescript = "bun $file",
     rust = function()
         local command = "rustc $file && ./$output; rm $output"
         local match = vim.system({ "cargo", "verify-project" }):wait().stdout:match('{"success":"true"}')
@@ -125,8 +125,7 @@ local runner = {
     end,
     go = function()
         local command = "go run $file"
-        ---@diagnostic disable-next-line: missing-fields
-        local dir = vim.fs.dirname(vim.fs.find("go.mod", { upward = true })[1])
+        local dir = vim.fs.root(0, { "go.mod" })
         return dir and "go run " .. dir or command
     end,
     sh = "sh $file",

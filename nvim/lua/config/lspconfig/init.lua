@@ -10,24 +10,13 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function(args)
-        -- local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-        -- -- Turn off semantic tokens
-        -- client.server_capabilities.semanticTokensProvider = nil
-
         require("config.lspconfig.handlers").handlers()
 
         ---------- MAPPINGS ----------
 
         keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
-        keymap("n", "gr", vim.lsp.buf.references, { desc = "References" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
-        keymap({ "n", "i" }, "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature help" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
-        keymap("n", "gR", vim.lsp.buf.rename, { desc = "Rename" })
-        keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-        keymap("n", "gp", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
-        keymap("n", "gn", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
         keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
     end,

@@ -4,10 +4,6 @@ local t = ls.text_node
 
 local M = {}
 
-function M.filename(_, _)
-    return vim.fn.expand("%:t:r")
-end
-
 local function shortcut(val)
     if type(val) == "string" then
         return { t({ val }), i(0) }

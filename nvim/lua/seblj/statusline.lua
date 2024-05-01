@@ -120,8 +120,9 @@ local function get_filetype_symbol()
     end
 
     local name = vim.api.nvim_buf_get_name(0)
+    local filename = vim.fn.fnamemodify(name, ":t")
     local ext = vim.fn.fnamemodify(name, ":e")
-    local icon, iconhl = devicons.get_icon_color(name, ext, { default = true })
+    local icon, iconhl = devicons.get_icon_color(filename, ext, { default = true })
 
     local hlname = "SebStatusline" .. iconhl:gsub("#", "Status")
     vim.api.nvim_set_hl(0, hlname, { fg = iconhl })

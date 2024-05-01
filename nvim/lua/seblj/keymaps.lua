@@ -62,14 +62,6 @@ vim.keymap.set("n", "<A-k>", ":m.-2<CR>==", { desc = "Move current line up" })
 vim.keymap.set("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move current line up" })
 vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
 
-vim.keymap.set("x", "<leader>sr", [["sy:let @/=@s<CR>cgn]], { desc = "Replace word under cursor" })
-vim.keymap.set("n", "<leader>sr", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn]], {
-    desc = "Replace word under cursor",
-})
-vim.keymap.set("n", "<leader>sa", [[:let @/='\<'.expand('<cword>').'\>'<CR>cgn<C-r>"]], {
-    desc = "Append to word under cursor",
-})
-
 vim.keymap.set("", "<leader>j", "J", { desc = "Join [count] lines" })
 
 vim.keymap.set("n", "j", 'v:count ? "j" : "gj"', { expr = true, desc = "gj" })
