@@ -18,7 +18,13 @@ return {
             sql = "sql-formatter -l postgresql",
             rust = {
                 "rustfmt +nightly --edition 2021",
-                "leptosfmt --stdin",
+                {
+                    exe = "leptosfmt",
+                    args = { "--stdin" },
+                    cond = function()
+                        return vim.fs.root(0, "leptosfmt.toml") ~= nil
+                    end,
+                },
             },
             json = "jq",
             cs = "dotnet-csharpier",

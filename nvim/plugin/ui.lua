@@ -34,7 +34,7 @@ local function set_highlight(buf, title, width)
     })
 end
 
--- Override vim.ui.select to use popup
+---@diagnostic disable-next-line: duplicate-set-field
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
         if vim.api.nvim_get_mode().mode == "v" then
@@ -84,7 +84,7 @@ vim.ui.select = function(items, opts, on_choice)
     end)
 end
 
--- Override vim.ui.input to use popup
+---@diagnostic disable-next-line: duplicate-set-field
 vim.ui.input = function(opts, on_confirm)
     vim.schedule(function()
         local width = 30

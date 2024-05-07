@@ -9,6 +9,7 @@ CUSTOM_BORDER = windows and "single" or { "", "", "", "", "", "�
 
 -- Override vim.keymap.set to have silent as default
 local map = vim.keymap.set
+---@diagnostic disable-next-line: duplicate-set-field
 vim.keymap.set = function(mode, lhs, rhs, opts)
     opts = vim.deepcopy(opts) or {}
     if opts.silent == nil then

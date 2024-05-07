@@ -7,7 +7,14 @@ local fmt = require("luasnip.extras.fmt").fmt
 return make({
     -- Template file
     printobject = fmt(
-        [[System.Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject({insert}, Newtonsoft.Json.Formatting.Indented));]],
+        [[
+        System.Console.WriteLine(
+            System.Text.Json.JsonSerializer.Serialize(
+                {insert},
+                new System.Text.Json.JsonSerializerOptions {{ WriteIndented = true }}
+            )
+        );
+        ]],
         {
             insert = i(0),
         }

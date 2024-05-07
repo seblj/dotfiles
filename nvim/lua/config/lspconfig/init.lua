@@ -9,14 +9,18 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
-    callback = function(args)
+    callback = function()
         require("config.lspconfig.handlers").handlers()
 
         ---------- MAPPINGS ----------
 
         keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
+        keymap("n", "gr", vim.lsp.buf.references, { desc = "References" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
+        keymap("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature help" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
+        keymap("n", "gR", vim.lsp.buf.rename, { desc = "Rename" })
+        keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
         keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
     end,
@@ -24,6 +28,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.diagnostic.config({
     virtual_text = { spacing = 4, prefix = "●" },
+    ---@diagnostic disable-next-line: assign-type-mismatch
     float = { border = CUSTOM_BORDER, source = "if_many" },
     signs = {
         text = {
@@ -42,8 +47,11 @@ vim.diagnostic.config({
 return {
     "neovim/nvim-lspconfig",
     config = function()
-        local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-        local capabilities = ok and cmp_nvim_lsp.default_capabilities() or vim.lsp.protocol.make_client_capabilities()
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            vim.lsp.protocol.make_client_capabilities(),
+            require("cmp_nvim_lsp").default_capabilities()
+        )
 
         require("mason-lspconfig").setup_handlers({
             function(server)
@@ -62,7 +70,8 @@ return {
         { "b0o/schemastore.nvim" },
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
-        { "Hoffs/omnisharp-extended-lsp.nvim" },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
+        { "Hoffs/omnisharp-extended-lsp.nvim" },
+        { "jmederosalvarado/roslyn.nvim", config = true, dev = true },
     },
 }

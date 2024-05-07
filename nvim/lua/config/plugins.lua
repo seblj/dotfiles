@@ -34,7 +34,7 @@ return {
 
     -- File tree
     { "nvim-tree/nvim-tree.lua", config = true, keys = { { "<leader>nt", ":NvimTreeToggle<CR>" } } },
-    { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true } } },
+    { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true }, preview = { border = CUSTOM_BORDER } } },
     { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- UI
@@ -62,7 +62,6 @@ return {
 
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
-    { "godlygeek/tabular", cmd = "Tabularize" },
 
     -- Tpope
     { "tpope/vim-repeat" },
