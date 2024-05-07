@@ -47,19 +47,25 @@ vim.ui.select = function(items, opts, on_choice)
             end)
             :totable()
 
+        local max_width = 80
         local title = opts.prompt or "Select one of:"
         local width = vim.iter(choices):fold(#title, function(acc, line)
-            return math.max(vim.fn.strdisplaywidth(line), acc)
+            local strlen = math.max(vim.fn.strdisplaywidth(line), acc)
+            return strlen > max_width and max_width or strlen
         end)
 
         local lines = { title, string.rep(options.border_line, width), unpack(choices) }
         local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, opts.syntax, {
+            max_width = max_width,
             border = CUSTOM_BORDER,
         })
 
         vim.api.nvim_set_current_win(winnr)
         set_close_mapping("<Esc>")
         set_close_mapping("q")
+
+        vim.keymap.set("n", "j", "j", { buffer = true })
+        vim.keymap.set("n", "k", "k", { buffer = true })
 
         require("seblj.utils").setup_hidden_cursor(popup_bufnr)
         vim.api.nvim_create_autocmd("CursorMoved", {
