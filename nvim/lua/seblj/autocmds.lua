@@ -50,6 +50,10 @@ set_ft_option("graphql", function()
     vim.opt_local.commentstring = "# %s"
 end)
 
+set_ft_option("typst", function()
+    vim.opt_local.commentstring = "// %s"
+end)
+
 set_ft_option({ "c", "cs" }, function()
     vim.opt_local.commentstring = "// %s"
 end)
@@ -61,6 +65,7 @@ end)
 set_ft_option("vue", function()
     vim.opt_local.commentstring = "<!-- %s -->"
     vim.opt.formatoptions:remove("r")
+    vim.cmd.compiler("tsc")
 end)
 
 set_ft_option("help", function()

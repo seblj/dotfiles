@@ -1,8 +1,16 @@
 return {
     { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
 
-    -- { "nvim-treesitter/nvim-treesitter-textobjects", event = { "BufReadPost", "BufNewFile" } },
+    -- TODO: Either make it work with injections or look into only using this if it is a "leptos" file
+    -- { "rayliwell/tree-sitter-rstml", config = true, dev = true },
     { "seblj/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
+
+    {
+        "chomosuke/typst-preview.nvim",
+        build = function()
+            require("typst-preview").update()
+        end,
+    },
 
     {
         "github/copilot.vim",
