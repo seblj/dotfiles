@@ -8,10 +8,13 @@ vim.api.nvim_create_autocmd("FileType", {
         end
         vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
         vim.wo[0][0].foldmethod = "expr"
-        -- TODO: Maybe add indent if an indents.scm file exist. Currently
-        -- this doesn't work if no indents.scm file exists.
 
-        -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        -- Only enable indentexpr if the lang contains queries for indents
+        -- Otherwise it will just mess everything up in C# at least
+        local lang = vim.treesitter.language.get_lang(vim.bo.ft) or vim.bo.ft
+        if vim.treesitter.query.get(lang, "indents") then
+            vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+        end
     end,
 })
 
