@@ -34,11 +34,8 @@ return {
 
         snippets.all = {}
 
-        snippets.go = require("config.luasnip.go")
         snippets.lua = require("config.luasnip.lua")
-        snippets.c = require("config.luasnip.c")
         snippets.cs = require("config.luasnip.cs")
-        snippets.vue = require("config.luasnip.vue")
         snippets.rust = require("config.luasnip.rust")
 
         for lang, snips in pairs(snippets) do

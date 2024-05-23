@@ -1,12 +1,10 @@
-local utils = require("config.luasnip.utils")
-local make = utils.make
 local ls = require("luasnip")
+local s = ls.snippet
 local i = ls.insert_node
+local t = ls.text_node
 local fmt = require("luasnip.extras.fmt").fmt
 
-return make({
-    headline = fmt([[---------- {insert} ----------]], {
-        insert = i(0),
-    }),
-    ignore = "-- stylua: ignore",
-})
+return {
+    s("headline", fmt("---------- {} ----------", { i(0) })),
+    s("ignore", t("-- stylua: ignore")),
+}
