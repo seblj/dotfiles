@@ -63,7 +63,6 @@ return {
         map("<leader>fa", "autocommands", "Autocommands")
         map("<leader>fh", "help_tags", "Helptags")
         map("<leader>fc", "command_history", "Command history")
-        map("<leader>vo", "vim_options", "Vim options")
         map("<leader>fd", "find_files", "Dotfiles", function()
             return { cwd = "~/dotfiles", prompt_title = "Dotfiles", hidden = true }
         end)

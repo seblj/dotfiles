@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
             local color = vim.iter(vim.split(obj.stdout, "\n")):find(function(v)
                 return string.match(v, "^background")
             end)
-            color = color and vim.split(color, "%s+")[2] or nil
+            color = color and vim.split(color, "%s+")[2] or "#1c1c1c"
 
             if string.lower(color) == string.lower(neovim_bg) then
                 return
