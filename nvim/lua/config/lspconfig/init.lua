@@ -71,7 +71,6 @@ return {
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
-        { "Hoffs/omnisharp-extended-lsp.nvim" },
-        { "jmederosalvarado/roslyn.nvim", config = true, dev = true },
+        { "seblj/roslyn.nvim", config = true, dev = true },
     },
 }
