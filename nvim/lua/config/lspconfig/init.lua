@@ -15,13 +15,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         ---------- MAPPINGS ----------
 
         keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
-        keymap("n", "gr", vim.lsp.buf.references, { desc = "References" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
-        keymap("i", "<C-s>", vim.lsp.buf.signature_help, { desc = "Signature help" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
-        keymap("n", "gR", vim.lsp.buf.rename, { desc = "Rename" })
-        keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-        keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
     end,
 })
@@ -47,10 +42,11 @@ vim.diagnostic.config({
 return {
     "neovim/nvim-lspconfig",
     config = function()
+        local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
         local capabilities = vim.tbl_deep_extend(
             "force",
             vim.lsp.protocol.make_client_capabilities(),
-            require("cmp_nvim_lsp").default_capabilities()
+            ok and cmp_nvim_lsp.default_capabilities() or {}
         )
 
         require("mason-lspconfig").setup_handlers({

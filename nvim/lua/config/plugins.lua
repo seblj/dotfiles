@@ -62,7 +62,10 @@ return {
         },
         cond = not (vim.uv.os_uname().sysname == "Windows_NT"),
     },
-    { "j-hui/fidget.nvim", opts = { notification = { override_vim_notify = true } } },
+    {
+        "j-hui/fidget.nvim",
+        opts = { notification = { override_vim_notify = true }, integration = { ["nvim-tree"] = { enable = false } } },
+    },
 
     -- Functionality
     { "iamcco/markdown-preview.nvim", build = ":call mkdp#util#install()", ft = "markdown" },

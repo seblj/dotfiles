@@ -31,13 +31,17 @@ nnoremap <leader>fs :action FindInPath<CR>
 nnoremap <leader>fa :action GotoAction<CR>
 nnoremap <leader>fb :action RecentFiles<CR>
 
-nnoremap <leader>cd :action ShowErrorDescription<CR>
 nnoremap gh :action QuickJavaDoc<CR>
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gi :action GotoImplementation<CR>
-nnoremap gr :action FindUsages<CR>
-nnoremap gR :action RenameElement<CR>
-nnoremap <leader>ca :action ShowIntentionActions<CR>
+
+" Use default mappings from neovim to get used to them
+nnoremap <C-w><C-d> :action ShowErrorDescription<CR>
+nnoremap <C-w>d :action ShowErrorDescription<CR>
+nnoremap grr :action FindUsages<CR>
+nnoremap grn :action RenameElement<CR>
+nnoremap gra :action ShowIntentionActions<CR>
+
 nnoremap <leader>tt :action RiderUnitTestRunContextAction<CR>
 nnoremap <leader>tr :action RiderUnitTestRepeatPreviousRunAction<CR>
 
