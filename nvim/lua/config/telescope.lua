@@ -2,6 +2,10 @@ return {
     "nvim-telescope/telescope.nvim",
     config = function()
         require("telescope").setup({
+            pickers = {
+                find_files = { hidden = true },
+                git_files = { recurse_submodules = true },
+            },
             defaults = {
                 prompt_prefix = " ",
                 selection_caret = " ",
@@ -20,30 +24,25 @@ return {
         require("telescope").load_extension("fzf")
     end,
     init = function()
-        local function map(keys, func, desc, opts)
-            vim.keymap.set("n", keys, function()
-                require("telescope.builtin")[func](opts and opts() or {})
-            end, { desc = string.format("Telescope: %s", desc) })
-        end
+        vim.keymap.set("n", "<leader>fo", ":Telescope oldfiles<CR>")
+        vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>")
+        vim.keymap.set("n", "<leader>fk", ":Telescope keymaps<CR>")
+        vim.keymap.set("n", "<leader>fa", ":Telescope autocommands<CR>")
+        vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>")
+        vim.keymap.set("n", "<leader>fc", ":Telescope command_history<CR>")
+        vim.keymap.set("n", "<leader>fw", ":Telescope live_grep<CR>")
+        vim.keymap.set("n", "<leader>fd", ":Telescope find_files prompt_title=Dotfiles cwd=~/dotfiles<CR>")
+        vim.keymap.set("n", "<leader>fn", ":Telescope find_files prompt_title=Neovim cwd=~/Applications/neovim<CR>")
 
-        map("<leader>fo", "oldfiles", "Oldfiles")
-        map("<leader>fb", "buffers", "Buffers")
-        map("<leader>fk", "keymaps", "Keymaps")
-        map("<leader>fa", "autocommands", "Autocommands")
-        map("<leader>fh", "help_tags", "Helptags")
-        map("<leader>fc", "command_history", "Command history")
-        map("<leader>fd", "find_files", "Dotfiles", function()
-            return { cwd = "~/dotfiles", prompt_title = "Dotfiles", hidden = true }
-        end)
-        map("<leader>ff", "find_files", "Find files", function()
-            return { prompt_title = vim.fs.basename(vim.uv.cwd()) }
-        end)
-        map("<leader>fg", "git_files", "Git files", function()
-            return { prompt_title = vim.fs.basename(vim.fs.root(0, ".git")), recurse_submodules = true }
-        end)
-        map("<leader>fw", "live_grep", "Live grep")
-        map("<leader>fp", "find_files", "Plugins", function()
-            return {
+        vim.keymap.set("n", "<leader>ff", function()
+            require("telescope.builtin").find_files({ prompt_title = vim.fs.basename(vim.uv.cwd()) })
+        end, { desc = "Telescope: Find files" })
+        vim.keymap.set("n", "<leader>fg", function()
+            require("telescope.builtin").git_files({ prompt_title = vim.fs.basename(vim.fs.root(0, ".git")) })
+        end, { desc = "Telescope: Git files" })
+
+        vim.keymap.set("n", "<leader>fp", function()
+            require("telescope.builtin").find_files({
                 cwd = vim.fn.stdpath("data") .. "/lazy",
                 prompt_title = "Plugins",
                 search_dirs = vim.iter(require("lazy").plugins())
@@ -51,11 +50,8 @@ return {
                         return val.dir
                     end)
                     :totable(),
-            }
-        end)
-        map("<leader>fn", "find_files", "Neovim", function()
-            return { cwd = "~/Applications/neovim", prompt_title = "Neovim", hidden = true }
-        end)
+            })
+        end, { desc = "Telescope: Find plugins" })
 
         vim.keymap.set("n", "<leader>fs", function()
             vim.ui.input({ prompt = "Grep String: " }, function(input)
