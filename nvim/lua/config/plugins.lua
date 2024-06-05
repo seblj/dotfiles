@@ -88,5 +88,6 @@ return {
         lazy = false,
     },
     { "tpope/vim-scriptease" },
-    { "tpope/vim-sleuth" },
+    -- I have some problems with sleuth on windows when doing interactive rebase for example
+    { "tpope/vim-sleuth", cond = not (vim.uv.os_uname().sysname == "Windows_NT") },
 }

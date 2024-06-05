@@ -62,7 +62,12 @@ return {
     end,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        { "folke/lazydev.nvim", ft = "lua", config = true },
+        {
+            "folke/lazydev.nvim",
+            ft = "lua",
+            opts = { library = { { path = "luvit-meta/library", words = { "vim%.uv" } } } },
+        },
+        { "Bilal2453/luvit-meta", lazy = true },
         { "b0o/schemastore.nvim" },
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
