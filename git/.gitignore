@@ -25,7 +25,6 @@ serial.out
 ~*
 types_c.taghl
 .types_c.taghl
-.vscode
 .vimspector.json
 __pycache__
 vim-markdown-preview.html

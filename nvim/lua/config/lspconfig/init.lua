@@ -62,7 +62,7 @@ return {
     end,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        { "folke/neodev.nvim", config = true },
+        { "folke/lazydev.nvim", ft = "lua", config = true },
         { "b0o/schemastore.nvim" },
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },

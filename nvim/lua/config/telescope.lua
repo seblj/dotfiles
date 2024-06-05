@@ -4,7 +4,6 @@ return {
         require("telescope").setup({
             pickers = {
                 find_files = { hidden = true },
-                git_files = { recurse_submodules = true },
             },
             defaults = {
                 prompt_prefix = " ",
@@ -24,22 +23,29 @@ return {
         require("telescope").load_extension("fzf")
     end,
     init = function()
+        local use_git_root = true
+        vim.keymap.set("n", "<leader>tg", function()
+            use_git_root = not use_git_root
+            local cwd = use_git_root and vim.fs.root(0, ".git") or vim.uv.cwd()
+            vim.notify(string.format("Searching from %s", cwd))
+        end)
+
         vim.keymap.set("n", "<leader>fo", ":Telescope oldfiles<CR>")
         vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>")
         vim.keymap.set("n", "<leader>fk", ":Telescope keymaps<CR>")
         vim.keymap.set("n", "<leader>fa", ":Telescope autocommands<CR>")
         vim.keymap.set("n", "<leader>fh", ":Telescope help_tags<CR>")
         vim.keymap.set("n", "<leader>fc", ":Telescope command_history<CR>")
-        vim.keymap.set("n", "<leader>fw", ":Telescope live_grep<CR>")
         vim.keymap.set("n", "<leader>fd", ":Telescope find_files prompt_title=Dotfiles cwd=~/dotfiles<CR>")
         vim.keymap.set("n", "<leader>fn", ":Telescope find_files prompt_title=Neovim cwd=~/Applications/neovim<CR>")
 
         vim.keymap.set("n", "<leader>ff", function()
-            require("telescope.builtin").find_files({ prompt_title = vim.fs.basename(vim.uv.cwd()) })
+            local cwd = use_git_root and vim.fs.root(0, ".git") or vim.uv.cwd()
+            require("telescope.builtin").find_files({
+                cwd = cwd,
+                prompt_title = vim.fs.basename(cwd),
+            })
         end, { desc = "Telescope: Find files" })
-        vim.keymap.set("n", "<leader>fg", function()
-            require("telescope.builtin").git_files({ prompt_title = vim.fs.basename(vim.fs.root(0, ".git")) })
-        end, { desc = "Telescope: Git files" })
 
         vim.keymap.set("n", "<leader>fp", function()
             require("telescope.builtin").find_files({
@@ -53,12 +59,20 @@ return {
             })
         end, { desc = "Telescope: Find plugins" })
 
+        vim.keymap.set("n", "<leader>fw", function()
+            require("telescope.builtin").live_grep({
+                cwd = use_git_root and vim.fs.root(0, ".git") or vim.uv.cwd(),
+            })
+        end)
+
         vim.keymap.set("n", "<leader>fs", function()
+            local cwd = use_git_root and vim.fs.root(0, ".git") or vim.uv.cwd()
             vim.ui.input({ prompt = "Grep String: " }, function(input)
                 vim.schedule(function()
                     require("telescope.builtin").grep_string({
+                        cwd = cwd,
                         search = input,
-                        prompt_title = vim.fs.basename(vim.uv.cwd()),
+                        prompt_title = vim.fs.basename(cwd),
                     })
                 end)
             end)
