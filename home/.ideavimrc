@@ -21,29 +21,31 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 
 nnoremap <leader>fd :edit ~/.ideavimrc<CR>
 
-nnoremap <leader>x :action Run<CR>
+nmap <leader>x <Action>(Run)
 
-nnoremap <leader>grh :action Vcs.RollbackChangedLines<CR>
+nmap <leader>grh <Action>(Vcs.RollbackChangedLines)
 
-nnoremap <leader>ff :action SearchEverywhere<CR>
-nnoremap <leader>fg :action GotoFile<CR>
-nnoremap <leader>fs :action FindInPath<CR>
-nnoremap <leader>fa :action GotoAction<CR>
-nnoremap <leader>fb :action RecentFiles<CR>
+nmap <leader>ff <Action>(SearchEverywhere)
+nmap <leader>fg <Action>(GotoFile)
+nmap <leader>fs <Action>(FindInPath)
+nmap <leader>fa <Action>(GotoAction)
+nmap <leader>fb <Action>(RecentFiles)
 
-nnoremap gh :action QuickJavaDoc<CR>
-nnoremap gd :action GotoDeclaration<CR>
-nnoremap gi :action GotoImplementation<CR>
+nmap gh <Action>(QuickJavaDoc)
+nmap gd <Action>(GotoDeclaration)
+nmap gi <Action>(GotoImplementation)
 
-" Use default mappings from neovim to get used to them
-nnoremap <C-w><C-d> :action ShowErrorDescription<CR>
-nnoremap <C-w>d :action ShowErrorDescription<CR>
-nnoremap grr :action FindUsages<CR>
-nnoremap grn :action RenameElement<CR>
-nnoremap gra :action ShowIntentionActions<CR>
+" Use native neovim keymaps to get used to them
+nmap <C-w><C-d> <Action>(ShowErrorDescription)
+nmap <C-w>d <Action>(ShowErrorDescription)
+nmap grr <Action>(FindUsages)
+nmap grn <Action>(RenameElement)
+nmap gra <Action>(ShowIntentionActions)
 
-nnoremap <leader>tt :action RiderUnitTestRunContextAction<CR>
-nnoremap <leader>tr :action RiderUnitTestRepeatPreviousRunAction<CR>
+nmap <leader>tt <Action>(RiderUnitTestRunContextAction)
+nmap <leader>tr <Action>(RiderUnitTestRepeatPreviousRunAction)
+
+nmap <leader>s <Action>(com.intellij.csharpier.ReformatWithCSharpierAction)
 
 " Would like the v:hlsearch, but ideavim doesn't support v: yet :(
 nnoremap <Enter> :nohl<CR><CR>
@@ -52,25 +54,25 @@ nnoremap <Enter> :nohl<CR><CR>
 nmap ∆ <A-j>
 nmap ˚ <A-k>
 
-nnoremap <A-j> :action MoveLineDown<CR>
-nnoremap <A-k> :action MoveLineUp<CR>
-vnoremap <A-j> :action MoveLineDown<CR>
-vnoremap <A-k> :action MoveLineUp<CR>
-inoremap <A-j> <Esc>:action MoveLineDown<CR>a
-inoremap <A-k> <Esc>:action MoveLineUp<CR>a
+nmap <A-j> <Action>(MoveLineDown)
+nmap <A-k> <Action>(MoveLineUp)
+vmap <A-j> <Action>(MoveLineDown)
+vmap <A-k> <Action>(MoveLineUp)
+imap <A-j> <Action>(MoveLineDown)
+imap <A-k> <Action>(MoveLineUp)
 
-nnoremap <leader>d<leader> :action XDebugger.AttachToProcess<CR>
-nnoremap <leader>db :action ToggleLineBreakpoint<CR>
-nnoremap <leader>gm :action Annotate<CR>
+nmap <leader>d<leader> <Action>(XDebugger.AttachToProcess)
+nmap <leader>db <Action>(ToggleLineBreakpoint)
+nmap <leader>gm <Action>(Annotate)
 
 nmap gb <Action>(Back)
 nmap <C-o> <Action>(Back)
 nmap <C-i> <Action>(Forward)
 
-nnoremap <C-t> :action PinActiveTab<CR>
+nmap <C-t> <Action>(PinActiveTab)
 
-nnoremap gn :action GotoNextError<cr>
-nnoremap gp :action GotoPreviousError<cr>
+nmap ]d <Action>(GotoNextError)
+nmap [d <Action>(GotoPreviousError)
 
 nmap s <Plug>YSurround
 vmap s <Plug>VSurround
