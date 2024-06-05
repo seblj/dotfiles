@@ -10,7 +10,7 @@ return {
                 selection_caret = " ",
                 layout_strategy = "flex",
                 layout_config = { flex = { flip_columns = 120 } },
-                file_ignore_patterns = { "%.git/", "hammerspoon/Spoons/", "^fonts/", "^icons/" },
+                file_ignore_patterns = { "%.git[/\\]", "hammerspoon[/\\]Spoons", "^fonts[/\\]", "^icons[/\\]" },
                 mappings = {
                     i = {
                         ["<C-j>"] = require("telescope.actions.layout").cycle_layout_next,
