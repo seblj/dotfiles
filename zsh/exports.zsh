@@ -3,8 +3,6 @@
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 export XDG_CONFIG_HOME="$HOME/.config"
-export PATH=$HOME/.local/share/nvim/mason/bin:$PATH
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
@@ -13,11 +11,13 @@ if [[ $OS == "Darwin" ]]; then
     export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
 fi
 
-export _Z_DATA="$HOME/.config/z/.z."
 export FZF_DEFAULT_OPTS='--height 40%'
+export GOPATH=$HOME/go
 
 typeset -U path
 path+=(
+    /opt/local/bin
+    /opt/local/sbin
     /usr/local/opt/llvm/bin
     $HOME/.cargo/bin
     $HOME/.local/ltex/bin
@@ -25,14 +25,14 @@ path+=(
     /opt/homebrew/opt/dotnet@6/bin
     /Applications/WezTerm.app/Contents/MacOS
     $HOME/.local/flutter/bin
+    $HOME/.local/share/nvim/mason/bin
+    $HOME/.dotnet/tools
+    $GOROOT/bin
+    $GOPATH/bin
 )
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
-export PATH="$PATH:$HOME/.dotnet/tools"
-
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -41,5 +41,4 @@ export LC_CTYPE=en_US.UTF-8
 
 export MANPAGER='nvim +Man!'
 
-export ZSH="$HOME/.oh-my-zsh"
 export ZSH_COMPDUMP="$HOME/.cache/zsh/.zcompdump-${HOST/.*/}-${ZSH_VERSION}"

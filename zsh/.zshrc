@@ -11,31 +11,16 @@ source $HOME/.config/zsh/completion.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/aliases.zsh
 
+installed fnm && eval "$(fnm env --use-on-cd)"
 installed pyenv && eval "$(pyenv init -)"
+installed zoxide && eval "$(zoxide init --cmd cd zsh)"
 
 [ -f ~/.linuxbrew/bin/brew ] && eval $(~/.linuxbrew/bin/brew shellenv)
 [ -f /opt/homebrew/bin/brew ] && eval $(/opt/homebrew/bin/brew shellenv)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.local.zsh ] && source ~/.local.zsh
 
-eval "$(zoxide init --cmd cd zsh)"
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-    *":$PNPM_HOME:"*) ;;
-    *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
 # bun completions
 [ -s "/Users/sebastian/.bun/_bun" ] && source "/Users/sebastian/.bun/_bun"
-
-# fnm
-FNM_PATH="/Users/sebastian/Library/Application Support/fnm"
-if [ -d "$FNM_PATH" ]; then
-    export PATH="/Users/sebastian/Library/Application Support/fnm:$PATH"
-    eval "`fnm env`"
-fi
 
 # zprof
