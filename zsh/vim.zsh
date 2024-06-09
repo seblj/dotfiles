@@ -1,4 +1,4 @@
-plugins+=(zsh-vi-mode)
+source $HOME/.config/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 ZVM_ESCAPE_KEYTIMEOUT=0.00
 
 export ZVM_CURSOR_STYLE_ENABLED=false

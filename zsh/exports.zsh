@@ -6,6 +6,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export PATH=$HOME/.local/share/nvim/mason/bin:$PATH
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+
 if [[ $OS == "Darwin" ]]; then
     export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
 fi

@@ -3,15 +3,7 @@
 
 source ~/dotfiles/install/utils.sh
 
-# Install oh_my_zsh and plugins
-install_oh_my_zsh() {
-    if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-        printf "\n${BLUE}Installing OH_MY_ZSH ${NC}\n\n"
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended >/dev/null 2>&1
-    fi
-}
-
-# Install spaceship prompt for oh_my_zsh
+# Install spaceship prompt
 install_spaceship() {
     if [[ ! -d "$HOME/dotfiles/zsh/spaceship-prompt" ]]; then
         printf "\n${BLUE}Configuring prompt ${NC}\n\n"
@@ -35,21 +27,14 @@ install_zsh() {
     fi
 }
 
-install_oh_my_zsh_plugins() {
-    if [[ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-z" ]]; then
-        printf "\n${BLUE}Setting up z plugin for autojump ${NC}\n\n"
-        mkdir -p $HOME/.config/z
-        git clone --quiet https://github.com/agkozak/zsh-z.git $HOME/.oh-my-zsh/custom/plugins/zsh-z >/dev/null
-    fi
-
-    if [[ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode/" ]]; then
+install_plugins() {
+    if [[ ! -d "$HOME/dotfiles/zsh/plugins/zsh-vi-mode" ]]; then
         printf "\n${BLUE}Setting up vim-mode plugin for zsh${NC}\n\n"
-        git clone --quiet https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode >/dev/null
+        git clone --quiet https://github.com/jeffreytse/zsh-vi-mode $HOME/dotfiles/zsh/plugins/zsh-vi-mode >/dev/null
     fi
 }
 
 install_zsh
-install_oh_my_zsh
+install_plugins
 install_spaceship
-install_oh_my_zsh_plugins
 setup_zsh

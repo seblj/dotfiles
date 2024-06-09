@@ -1,5 +1,6 @@
 # Alias
 
+alias ls="ls -G"
 alias cp="cp -i"
 alias mv="mv -i"
 
