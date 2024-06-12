@@ -1,0 +1,45 @@
+-- Avoid nested sessions when using term, and do not depend on third party software like nvr
+-- Automatically return to the terminal when doing a rebase or commit. Otherwise, just open it
+-- in the current buffer as it should behave by default
+return {
+    "willothy/flatten.nvim",
+    opts = {
+        window = { open = "current" },
+        callbacks = {
+            pre_open = function()
+                local termid = vim.api.nvim_get_current_buf()
+                if vim.bo[termid].buftype == "terminal" then
+                    vim.g.seblj_flatten_saved_terminal = termid
+                end
+            end,
+            post_open = function(bufnr, _, ft, _)
+                if ft == "gitcommit" or ft == "gitrebase" then
+                    vim.api.nvim_create_autocmd("QuitPre", {
+                        buffer = bufnr,
+                        once = true,
+                        callback = vim.schedule_wrap(function()
+                            -- Would be nice to cancel the exit here to keep the split size
+                            vim.cmd.split()
+                            if vim.g.seblj_flatten_saved_terminal then
+                                vim.api.nvim_set_current_buf(vim.g.seblj_flatten_saved_terminal)
+                            end
+                            vim.api.nvim_buf_delete(bufnr, {})
+                        end),
+                    })
+                end
+            end,
+            block_end = vim.schedule_wrap(function()
+                if vim.g.seblj_flatten_saved_terminal then
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        if vim.api.nvim_win_get_buf(win) == vim.g.seblj_flatten_saved_terminal then
+                            vim.api.nvim_set_current_win(win)
+                            break
+                        end
+                    end
+
+                    vim.g.seblj_flatten_saved_terminal = nil
+                end
+            end),
+        },
+    },
+}

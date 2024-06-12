@@ -24,11 +24,6 @@ local function set_ft_option(ft, fn)
     })
 end
 
-vim.env.GIT_EDITOR = "nvr -cc split --remote-wait"
-set_ft_option({ "gitcommit", "gitrebase", "gitconfig" }, function()
-    vim.bo.bufhidden = "delete"
-end)
-
 set_ft_option({ "text", "tex", "markdown", "gitcommit" }, function()
     vim.opt_local.spell = true
 end)
