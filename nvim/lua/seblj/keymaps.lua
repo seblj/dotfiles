@@ -29,7 +29,6 @@ vim.keymap.set("n", "<C-t>", ":tabedit<CR>", { desc = "Create new tab" })
 
 vim.keymap.set({ "n", "x" }, "d", '"+d')
 vim.keymap.set({ "n", "x" }, "D", '"+D')
-vim.keymap.set({ "n", "x" }, "p", '"+p')
 vim.keymap.set({ "n", "x" }, "y", '"+y')
 vim.keymap.set({ "n", "x" }, "Y", '"+y$')
 vim.keymap.set({ "n", "x" }, "x", '"_x')

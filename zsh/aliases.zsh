@@ -1,8 +1,16 @@
 # Alias
 
+setopt auto_cd
+
 alias ls="ls -G"
 alias cp="cp -i"
 alias mv="mv -i"
+
+alias -g ..='..'
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
 
 alias cht="~/dotfiles/scripts/cht.sh"
 alias ssh_kitty="kitty +kitten ssh"

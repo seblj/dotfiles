@@ -19,6 +19,8 @@ bin/
 ehthumbs.db
 Thumbs.db
 
+.npmrc
+
 
 .tags
 serial.out
