@@ -44,7 +44,7 @@ return {
                 },
                 completion = {
                     border = CUSTOM_BORDER,
-                    winhighlight = "FloatBorder:FloatBorder,CursorLine:Visual",
+                    winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:Visual",
                 },
             },
 

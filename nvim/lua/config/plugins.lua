@@ -75,6 +75,8 @@ return {
     { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
 
+    { "tpope/vim-unimpaired" },
+
     -- Tpope
     { "tpope/vim-repeat" },
     { "tpope/vim-abolish" },

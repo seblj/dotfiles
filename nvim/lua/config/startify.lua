@@ -26,4 +26,13 @@ vim.cmd([[
     endfunction
 ]])
 
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("SebStartifyGroup", { clear = true }),
+    pattern = "startify",
+    desc = "Hidden cursor for startify buffer",
+    callback = function()
+        require("seblj.utils").setup_hidden_cursor()
+    end,
+})
+
 return { "mhinz/vim-startify", dependencies = "nvim-tree/nvim-web-devicons" }

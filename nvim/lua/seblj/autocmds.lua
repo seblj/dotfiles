@@ -56,7 +56,3 @@ set_ft_option("term", function()
     vim.cmd("$")
     vim.cmd.startinsert()
 end)
-
-set_ft_option("startify", function()
-    require("seblj.utils").setup_hidden_cursor()
-end)

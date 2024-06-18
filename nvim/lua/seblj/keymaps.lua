@@ -74,22 +74,6 @@ vim.keymap.set({ "n", "x", "o" }, "L", "$", { desc = "Move to end of line" })
 
 vim.keymap.set("n", "<leader>x", utils.save_and_exec, { desc = "Save and execute file" })
 
-vim.keymap.set("n", "<Down>", function()
-    if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) then
-        vim.cmd.normal("j")
-    else
-        vim.cmd.cnext({ mods = { emsg_silent = true } })
-    end
-end, { desc = "Move down in qflist" })
-
-vim.keymap.set("n", "<Up>", function()
-    if vim.tbl_isempty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) then
-        vim.cmd.normal("k")
-    else
-        vim.cmd.cprev({ mods = { emsg_silent = true } })
-    end
-end, { desc = "Move up in qflist" })
-
 vim.keymap.set("n", "<leader>z", "<cmd>Inspect<CR>", { desc = "Print syntax under cursor" })
 
 vim.keymap.set("n", "<leader>@", "<cmd>lcd %:p:h<CR><cmd>pwd<CR>", { desc = "cd to directory of open buffer" })
