@@ -1,5 +1,6 @@
 # Exports
 
+export MSBUILDDISABLENODEREUSE=1
 export DOTFILES="$HOME/dotfiles"
 export OS=$(uname -s)
 export XDG_CONFIG_HOME="$HOME/.config"

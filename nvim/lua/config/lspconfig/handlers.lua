@@ -37,9 +37,6 @@ function M.handlers()
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = CUSTOM_BORDER,
     })
-    -- vim.lsp.handlers["window/showMessageRequest"] = function(_, result, _)
-    --     return result
-    -- end
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = CUSTOM_BORDER,
     })

@@ -129,6 +129,7 @@ local runner = {
         return dir and "go run " .. dir or command
     end,
     sh = "sh $file",
+    http = "hitman $file",
 }
 
 -- Save and execute file based on filetype

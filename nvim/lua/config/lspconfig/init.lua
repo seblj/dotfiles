@@ -18,6 +18,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
+        keymap("n", "<leader>th", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+        end, { desc = "Toggle inlay hints" })
     end,
 })
 
@@ -72,6 +75,6 @@ return {
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
-        { "seblj/roslyn.nvim", config = true, dev = true },
+        { "seblj/roslyn.nvim", opts = { filewatching = false }, dev = true },
     },
 }
