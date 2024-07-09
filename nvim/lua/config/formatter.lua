@@ -11,6 +11,10 @@ return {
                     return vim.bo.ft ~= "markdown"
                 end,
             },
+            -- JSON injections in rust is messed up
+            disable_injected = {
+                rust = { "json" },
+            },
         },
         filetype = {
             lua = "stylua --search-parent-directories -",
