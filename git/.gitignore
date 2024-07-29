@@ -20,6 +20,7 @@ ehthumbs.db
 Thumbs.db
 
 .npmrc
+.idea/
 
 
 .tags

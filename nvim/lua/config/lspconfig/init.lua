@@ -9,10 +9,17 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
-    callback = function()
+    callback = function(args)
         require("config.lspconfig.handlers").handlers()
 
         ---------- MAPPINGS ----------
+
+        -- local client = vim.lsp.get_client_by_id(args.data.client_id)
+        -- if client.supports_method("textDocument/completion") then
+        --     vim.lsp.completion.enable(true, args.data.client_id, 0, {
+        --         autotrigger = true,
+        --     })
+        -- end
 
         keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
