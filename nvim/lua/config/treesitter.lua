@@ -39,11 +39,20 @@ return {
 
             -- Swap
             local swap = require("nvim-treesitter-textobjects.swap")
-            vim.keymap.set("n", "<leader>sa", swap.swap_next("@parameter.inner"))
-            vim.keymap.set("n", "<leader>sf", swap.swap_next("@function.outer"))
 
-            vim.keymap.set("n", "<leader>sA", swap.swap_previous("@parameter.inner"))
-            vim.keymap.set("n", "<leader>sF", swap.swap_previous("@function.outer"))
+            ---@param swap_fn fun(query_string_regex: string)
+            ---@param query_string_regex string
+            local function wrap_swap(swap_fn, query_string_regex)
+                return function()
+                    swap_fn(query_string_regex)
+                end
+            end
+
+            vim.keymap.set("n", "<leader>sa", wrap_swap(swap.swap_next, "@parameter.inner"))
+            vim.keymap.set("n", "<leader>sf", wrap_swap(swap.swap_next, "@function.outer"))
+
+            vim.keymap.set("n", "<leader>sA", wrap_swap(swap.swap_previous, "@parameter.inner"))
+            vim.keymap.set("n", "<leader>sF", wrap_swap(swap.swap_previous, "@function.outer"))
         end,
     },
 }
