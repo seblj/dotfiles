@@ -33,7 +33,7 @@ end
 ---@param fn function
 ---@param dir? string
 function M.wrap_lcd(fn, dir)
-    local current_cwd = vim.loop.cwd()
+    local current_cwd = vim.uv.cwd()
     local _dir = dir or vim.fs.dirname(vim.api.nvim_buf_get_name(0))
     vim.cmd.lcd({ args = { _dir }, mods = { silent = true } })
     local ret = fn()

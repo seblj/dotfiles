@@ -40,11 +40,11 @@ return {
         vim.keymap.set("n", "<leader>fn", ":Telescope find_files prompt_title=Neovim cwd=~/Applications/neovim<CR>")
 
         vim.keymap.set("n", "<leader>ff", function()
-            local cwd = use_git_root and vim.fs.root(0, ".git") or vim.uv.cwd()
-            require("telescope.builtin").find_files({
-                cwd = cwd,
-                prompt_title = vim.fs.basename(cwd),
-            })
+            require("telescope.builtin").find_files({ prompt_title = vim.fs.basename(vim.uv.cwd()) })
+        end, { desc = "Telescope: Find files" })
+
+        vim.keymap.set("n", "<leader>fg", function()
+            require("telescope.builtin").git_files({ prompt_title = vim.fs.basename(vim.fs.root(0, ".git")) })
         end, { desc = "Telescope: Find files" })
 
         vim.keymap.set("n", "<leader>fp", function()
