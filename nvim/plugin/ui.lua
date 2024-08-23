@@ -3,6 +3,7 @@ local ns = vim.api.nvim_create_namespace("seblj_ui")
 local options = {
     prefix = " ",
     border_line = "─",
+    max_width = 80,
 }
 
 local function set_close_mapping(key)
@@ -47,16 +48,15 @@ vim.ui.select = function(items, opts, on_choice)
             end)
             :totable()
 
-        local max_width = 80
         local title = opts.prompt or "Select one of:"
         local width = vim.iter(choices):fold(#title, function(acc, line)
             local strlen = math.max(vim.fn.strdisplaywidth(line), acc)
-            return strlen > max_width and max_width or strlen
+            return strlen > options.max_width and options.max_width or strlen
         end)
 
         local lines = { title, string.rep(options.border_line, width), unpack(choices) }
         local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, opts.syntax, {
-            max_width = max_width,
+            max_width = options.max_width,
             border = CUSTOM_BORDER,
         })
 
@@ -93,13 +93,17 @@ end
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.ui.input = function(opts, on_confirm)
     vim.schedule(function()
-        local width = 30
-        local lines = { opts.prompt, string.rep(options.border_line, width), unpack({ opts.prompt }, 2) }
+        local default_length = opts.default and #opts.default or 0
+        local calculated_with = math.max(30, #opts.prompt + #options.prefix, default_length + #options.prefix)
+        local width = math.min(calculated_with, options.max_width)
+
+        local lines = { opts.prompt, string.rep(options.border_line, width) }
 
         local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, opts.syntax, {
-            max_width = 50,
+            width = width,
             border = CUSTOM_BORDER,
             height = math.ceil(#opts.prompt / width) + 2,
+            wrap = false,
         })
 
         vim.api.nvim_set_current_win(winnr)

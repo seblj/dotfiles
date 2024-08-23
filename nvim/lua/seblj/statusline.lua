@@ -108,9 +108,7 @@ local function get_diagnostics()
 end
 
 local function get_mode()
-    local mode = mode_alias[vim.api.nvim_get_mode().mode]
-    local color = "Error"
-    return " " .. hl(color) .. mode .. "   "
+    return " " .. hl("Error") .. mode_alias[vim.api.nvim_get_mode().mode] .. "   "
 end
 
 local function get_filetype_symbol()

@@ -11,22 +11,25 @@ return {
         },
     },
 
-    volar = {
+    tsserver = {
+        filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         init_options = {
-            vue = {
-                hybridMode = false,
+            plugins = {
+                {
+                    name = "@vue/typescript-plugin",
+                    location = string.format(
+                        "%s/node_modules/@vue/language-server",
+                        require("mason-registry").get_package("vue-language-server"):get_install_path()
+                    ),
+                    languages = { "vue" },
+                },
             },
+            -- preferences = {
+            --     importModuleSpecifierPreference = "relative",
+            --     importModuleSpecifierEnding = "minimal",
+            -- },
         },
     },
-
-    -- tsserver = {
-    --     init_options = {
-    --         preferences = {
-    --             importModuleSpecifierPreference = "relative",
-    --             importModuleSpecifierEnding = "minimal",
-    --         },
-    --     },
-    -- },
 
     jsonls = {
         settings = {
