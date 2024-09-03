@@ -2,7 +2,7 @@
 
 vim.cmd.colorscheme(COLORSCHEME)
 
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy", "popup" }
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.updatetime = 100

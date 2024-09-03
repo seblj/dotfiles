@@ -71,7 +71,11 @@ return {
     { "chomosuke/term-edit.nvim", opts = { prompt_end = "➜" }, event = "TermOpen" },
     { "ahonn/resize.vim" },
 
-    { "windwp/nvim-autopairs", opts = { ignored_next_char = "[%w%.%{%[%(%\"%']" }, event = "InsertEnter" },
+    {
+        "windwp/nvim-autopairs",
+        opts = { map_cr = not vim.g.use_builtin_completion, ignored_next_char = "[%w%.%{%[%(%\"%']" },
+        event = "InsertEnter",
+    },
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
 
     { "tpope/vim-unimpaired" },

@@ -2,6 +2,8 @@ P = function(...)
     vim.print(...)
 end
 
+-- vim.g.use_builtin_completion = true
+
 COLORSCHEME = "catppuccin"
 
 local pmenu_hl = vim.api.nvim_get_hl(0, { name = "Pmenu" }).bg
