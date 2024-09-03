@@ -34,7 +34,6 @@ return {
     },
 
     -- Git
-    { "FabijanZulj/blame.nvim", config = true, cmd = "BlameToggle" },
     { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 
     -- Packageinfo

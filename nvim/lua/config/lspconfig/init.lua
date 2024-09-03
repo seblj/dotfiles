@@ -9,17 +9,10 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
-    callback = function(args)
+    callback = function()
         require("config.lspconfig.handlers").handlers()
 
         ---------- MAPPINGS ----------
-
-        -- local client = vim.lsp.get_client_by_id(args.data.client_id) --[[@as vim.lsp.Client]]
-        -- if client.supports_method("textDocument/completion") then
-        --     vim.lsp.completion.enable(true, args.data.client_id, 0, {
-        --         autotrigger = true,
-        --     })
-        -- end
 
         keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
@@ -82,6 +75,20 @@ return {
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
-        { "seblj/roslyn.nvim", opts = { filewatching = false }, dev = true },
+        {
+            "seblj/roslyn.nvim",
+            opts = {
+                filewatching = false,
+                choose_sln = function(sln)
+                    return vim.iter(sln):find(function(item)
+                        if string.match(item, "SmartDok.Luna.Api.sln") then
+                            return item
+                        end
+                    end)
+                end,
+            },
+            dev = true,
+        },
+        { "onsails/lspkind.nvim" },
     },
 }

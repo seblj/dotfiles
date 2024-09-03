@@ -98,7 +98,7 @@ highlight({
     Debug = { link = "Special" },
     Define = { link = "PreProc" },
     Delimiter = { fg = c.color18 },
-    DiagnosticDeprecated = { sp = c.color25, strikethrough = true },
+    DiagnosticDeprecated = { fg = c.color13, strikethrough = true },
     DiagnosticError = { fg = c.color6, italic = true },
     DiagnosticHint = { fg = c.color11, italic = true },
     DiagnosticInfo = { fg = c.color17, italic = true },
