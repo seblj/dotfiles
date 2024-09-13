@@ -124,11 +124,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- completion for directory and files
 vim.api.nvim_create_autocmd("InsertCharPre", {
     callback = function(args)
-        if vim.fn.pumvisible() == 1 then
-            return
-        end
-
-        if vim.tbl_contains({ "terminal", "prompt", "help" }, vim.bo[args.buf].buftype) then
+        if vim.fn.pumvisible() == 1 or vim.tbl_contains({ "terminal", "prompt", "help" }, vim.bo[args.buf].buftype) then
             return
         end
 
