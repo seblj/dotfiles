@@ -130,6 +130,7 @@ local runner = {
     end,
     sh = "sh $file",
     http = "hitman $file",
+    graphql = "hitman $file",
 }
 
 -- Save and execute file based on filetype

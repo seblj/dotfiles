@@ -75,20 +75,6 @@ return {
         { "williamboman/mason.nvim", config = true, cmd = "Mason" },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
-        {
-            "seblj/roslyn.nvim",
-            opts = {
-                filewatching = false,
-                choose_sln = function(sln)
-                    return vim.iter(sln):find(function(item)
-                        if string.match(item, "SmartDok.Luna.Api.sln") then
-                            return item
-                        end
-                    end)
-                end,
-            },
-            dev = true,
-        },
         { "onsails/lspkind.nvim" },
     },
 }

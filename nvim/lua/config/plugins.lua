@@ -40,9 +40,6 @@ return {
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },
     { "vuki656/package-info.nvim", config = true, event = "BufReadPre package.json" },
 
-    -- File tree
-    { "nvim-tree/nvim-tree.lua", config = true, keys = { { "<leader>nt", ":NvimTreeToggle<CR>" } } },
-    { "stevearc/oil.nvim", opts = { view_options = { show_hidden = true }, preview = { border = CUSTOM_BORDER } } },
     { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- UI

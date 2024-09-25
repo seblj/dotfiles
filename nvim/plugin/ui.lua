@@ -125,7 +125,7 @@ vim.ui.input = function(opts, on_confirm)
         vim.bo[popup_bufnr].modifiable = true
         vim.bo[popup_bufnr].buftype = "prompt"
         vim.fn.prompt_setprompt(popup_bufnr, options.prefix)
-        if opts.default then
+        if opts.default and #opts.default ~= 0 then
             vim.api.nvim_input(string.format("%s<Esc>0wv$h<C-g>", opts.default))
         end
         set_highlight(popup_bufnr, lines[1], width)
