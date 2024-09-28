@@ -38,6 +38,7 @@ return {
 
             -- Per language config
             require("config.dap.cs").setup()
+            require("config.dap.rust").setup()
         end,
         dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio" },
     },
