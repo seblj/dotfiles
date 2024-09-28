@@ -46,6 +46,10 @@ set_ft_option("vue", function()
     vim.opt.formatoptions:remove("r")
 end)
 
+set_ft_option("cs", function()
+    vim.cmd.compiler("dotnet")
+end)
+
 set_ft_option("help", function()
     vim.keymap.set("n", "gd", "K", { buffer = true })
 end)
