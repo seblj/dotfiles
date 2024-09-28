@@ -25,6 +25,7 @@ path+=(
     $HOME/.dotnet/tools
     $GOROOT/bin
     $GOPATH/bin
+    $HOME/.local/netcoredbg
 )
 
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
