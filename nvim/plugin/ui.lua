@@ -38,6 +38,10 @@ end
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.ui.select = function(items, opts, on_choice)
     vim.schedule(function()
+        if vim.tbl_isempty(items) then
+            return vim.notify("No items to choose from")
+        end
+
         if vim.api.nvim_get_mode().mode == "v" then
             vim.api.nvim_input("<ESC>")
         end
