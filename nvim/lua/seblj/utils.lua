@@ -50,19 +50,6 @@ function M.get_zsh_completion(args, prefix)
         :totable()
 end
 
----Tries to find root_dir pattern for a buffer autocmd. Fallback to <buffer> if
----root_dir is not found
-local function get_root_dir_pattern()
-    local active_clients = vim.lsp.get_clients()
-    if #active_clients > 0 and active_clients[1].config then
-        local root_dir = active_clients[1].config.root_dir
-        if root_dir and root_dir ~= vim.env.HOME then
-            return string.format("%s/*", root_dir)
-        end
-    end
-    return "<buffer>"
-end
-
 -- Creates a user_command to run a command each time a buffer is saved. By
 -- default it will try to find the root of the current buffer using LSP, and run
 -- the command on save for all files in the project.
@@ -77,6 +64,11 @@ vim.api.nvim_create_user_command("RunOnSave", function(opts)
         vim.api.nvim_clear_autocmds({ group = "RunOnSave" })
         vim.api.nvim_del_user_command("RunOnSaveClear")
     end, { bang = true })
+
+    local function get_root_dir_pattern()
+        local root = vim.fs.root(0, ".git")
+        return root and string.format("%s/*", root) or "<buffer>"
+    end
 
     vim.api.nvim_create_autocmd("BufWritePost", {
         group = vim.api.nvim_create_augroup("RunOnSave", { clear = true }),

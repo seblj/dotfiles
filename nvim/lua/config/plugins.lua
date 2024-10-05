@@ -21,18 +21,6 @@ return {
         end,
     },
 
-    -- Database
-    {
-        "kristijanhusak/vim-dadbod-ui",
-        cmd = "DBUI",
-        dependencies = { "kristijanhusak/vim-dadbod-completion", "tpope/vim-dadbod" },
-        config = function()
-            vim.g.db_ui_use_nerd_fonts = 1
-            vim.keymap.set("n", "[s", "<Plug>(DBUI_GotoPrevSibling)")
-            vim.keymap.set("n", "]s", "<Plug>(DBUI_GotoNextSibling)")
-        end,
-    },
-
     -- Git
     { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
 
@@ -74,8 +62,6 @@ return {
         event = "InsertEnter",
     },
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
-
-    { "tpope/vim-unimpaired" },
 
     -- Tpope
     { "tpope/vim-repeat" },

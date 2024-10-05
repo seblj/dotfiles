@@ -2,6 +2,11 @@ return {
     {
         "nvim-tree/nvim-tree.lua",
         opts = {
+            actions = {
+                open_file = {
+                    resize_window = false,
+                },
+            },
             on_attach = function(bufnr)
                 local api = require("nvim-tree.api")
 
@@ -40,6 +45,9 @@ return {
     },
     {
         "stevearc/oil.nvim",
+        init = function()
+            vim.keymap.set("n", "-", "<cmd>Oil<CR>")
+        end,
         opts = {
             keymaps = {
                 ["g?"] = "actions.show_help",
@@ -47,7 +55,8 @@ return {
                 ["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
                 ["<C-p>"] = "actions.preview",
                 ["<C-c>"] = "actions.close",
-                ["<C-l>"] = "actions.refresh",
+                ["<C-l>"] = false,
+                ["<C-h>"] = false,
                 ["-"] = "actions.parent",
                 ["_"] = "actions.open_cwd",
                 ["`"] = "actions.cd",

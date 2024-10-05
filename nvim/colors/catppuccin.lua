@@ -142,7 +142,6 @@ highlight({
     LineNrAbove = { link = "LineNr" },
     LineNrBelow = { link = "LineNr" },
     LspCodeLens = { fg = c.color13 },
-    LspInfoBorder = { link = "FloatBorder" },
     LspInlayHint = { bg = c.color26, fg = c.color13 },
     LspReferenceRead = { bg = c.color4 },
     LspReferenceText = { bg = c.color4 },

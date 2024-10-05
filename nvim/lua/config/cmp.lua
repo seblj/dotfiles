@@ -23,7 +23,6 @@ return {
                 { name = "buffer", option = { keyword_pattern = [[\k\+]] } },
                 { name = "path" },
                 { name = "crates" },
-                { name = "vim-dadbod-completion" },
             },
 
             confirmation = {
@@ -62,7 +61,6 @@ return {
                         luasnip = "[Luasnip]",
                         path = "[Path]",
                         crates = "[Crates]",
-                        ["vim-dadbod-completion"] = "[DB]",
                     },
                     maxwidth = 90,
                     ellipsis_char = "...",

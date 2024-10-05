@@ -5,6 +5,7 @@ vim.cmd.colorscheme(COLORSCHEME)
 vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy", "popup" }
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.clipboard = "unnamedplus"
 vim.opt.updatetime = 100
 vim.opt.tabstop = 4
 vim.opt.expandtab = true

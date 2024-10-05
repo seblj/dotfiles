@@ -17,6 +17,7 @@ return {
             map("n", "]c", gs.next_hunk, { desc = "Go to next diff hunk" })
             map("n", "[c", gs.prev_hunk, { desc = "Go to previous diff hunk" })
             map("n", "<leader>gm", gs.blame_line, { desc = "Git blame current line" })
+            map("n", "<leader>gb", gs.blame, { desc = "Git blame entire file" })
             map("n", "<leader>gd", gs.preview_hunk, { desc = "Preview diff hunk" })
             map("n", "<leader>grh", gs.reset_hunk, { desc = "Reset diff hunk over cursor" })
             map("n", "<leader>grb", gs.reset_buffer, { desc = "Reset diff for entire buffer" })

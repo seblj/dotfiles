@@ -1,6 +1,9 @@
 return {
     "seblj/nvim-formatter",
     dev = true,
+    init = function()
+        vim.opt.formatexpr = "v:lua.require('formatter').formatexpr()"
+    end,
     opts = {
         format_on_save = function()
             return not vim.b.disable_formatting
@@ -14,6 +17,7 @@ return {
             disable_injected = {
                 rust = { "json" }, -- JSON injections in rust is messed up
                 yaml = { "sh", "zsh" },
+                dockerfile = { "sh", "zsh" },
             },
         },
         filetype = {

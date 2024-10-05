@@ -188,9 +188,6 @@ highlight({
     LspReferenceText = { bg = c.bg2 },
     LspReferenceRead = { bg = c.bg2 },
     LspReferenceWrite = { bg = c.bg2 },
-    -- I do not agree with not linking this to FloatBorder by default, but oh
-    -- well...
-    LspInfoBorder = { link = "FloatBorder" },
 
     ---------- GIT ----------
 

@@ -5,17 +5,13 @@ end
 vim.keymap.set("i", "<C-space>", "<C-x><C-o>")
 
 vim.keymap.set("i", "<CR>", function()
-    if vim.fn.pumvisible() == 1 and vim.fn.complete_info()["selected"] ~= -1 then
-        return feedkeys("<C-y>")
+    if vim.fn.pumvisible() == 1 then
+        return vim.fn.complete_info()["selected"] ~= -1 and feedkeys("<C-y>") or feedkeys("<C-e><CR>")
     else
         local ok, npairs = pcall(require, "nvim-autopairs")
-        if ok then
-            return npairs.autopairs_cr()
-        else
-            return feedkeys("<CR>")
-        end
+        return ok and npairs.autopairs_cr() or feedkeys("<CR>")
     end
-end, { expr = true, replace_keycodes = false })
+end, { expr = true, replace_keycodes = false, desc = "Accept completion" })
 
 local function auto_trigger(bufnr, client)
     vim.api.nvim_create_autocmd("InsertCharPre", {
@@ -93,13 +89,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
                     vim.bo[win_data.bufnr].modifiable = true
                     vim.wo[win_data.winid].conceallevel = 2
-                    vim.wo[win_data.winid].wrap = true
 
                     vim.lsp.util.stylize_markdown(win_data.bufnr, contents, {})
                     vim.api.nvim_win_set_config(win_data.winid, { border = CUSTOM_BORDER })
 
                     vim.bo[win_data.bufnr].modifiable = false
-
                     -- Simple scrolling in the preview window
                     local scroll = function(key, dir)
                         vim.keymap.set("i", key, function()
@@ -108,7 +102,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                                     vim.cmd(string.format("normal! %s zt", dir))
                                 end)
                             else
-                                feedkeys("<C-d>")
+                                feedkeys(key)
                             end
                         end, { buffer = args.buf })
                     end
@@ -121,20 +115,48 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
--- completion for directory and files
+local function should_complete_file()
+    -- It stops completing when "accepting" since it includes trailing slash for dirs
+    local _, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line_text = vim.api.nvim_get_current_line()
+    if line_text:sub(col, col) == "/" and vim.v.char:match("%S") then
+        return true
+    end
+
+    -- Trigger chars for normal cases
+    if not vim.list_contains({ "/" }, vim.v.char) then
+        return
+    end
+
+    -- Some inspiration from nvim-cmp for when to do path completion
+    local prefix = line_text:sub(1, col) .. vim.v.char
+    local accept = true
+
+    -- Ignore URL components
+    accept = accept and not prefix:match("%a/$")
+    -- Ignore URL scheme
+    accept = accept and not prefix:match("%a+:/$") and not prefix:match("%a+://$")
+    -- Ignore HTML closing tags
+    accept = accept and not prefix:match("</$")
+    -- Ignore math calculation
+    accept = accept and not prefix:match("[%d%)]%s*/$")
+    -- Ignore / comment
+    accept = accept and (not prefix:match("^[%s/]*$") or not vim.bo.commentstring:match("/[%*/]"))
+
+    return accept
+end
+
+-- Completion for path (and omni if no language server is attached to buffer)
 vim.api.nvim_create_autocmd("InsertCharPre", {
     callback = function(args)
-        if vim.fn.pumvisible() == 1 or vim.tbl_contains({ "terminal", "prompt", "help" }, vim.bo[args.buf].buftype) then
+        local invalid_buftype = vim.list_contains({ "terminal", "prompt", "help" }, vim.bo[args.buf].buftype)
+        if vim.fn.pumvisible() == 1 or invalid_buftype then
             return
         end
 
         local buf_has_client = #vim.lsp.get_clients({ bufnr = args.buf, method = "textDocument/completion" }) > 0
 
-        local _, col = unpack(vim.api.nvim_win_get_cursor(0))
-        local line_text = vim.api.nvim_get_current_line()
-
-        local is_path_related = line_text:sub(col, col):match("[^/][/%w_%-%.~]*")
-        if vim.v.char == "/" and col ~= 0 and is_path_related then
+        if should_complete_file() then
             feedkeys("<C-X><C-F>")
         elseif not vim.v.char:match("%s") and not buf_has_client then
             feedkeys("<C-X><C-N>")

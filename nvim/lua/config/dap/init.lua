@@ -1,11 +1,19 @@
 return {
     {
         "mfussenegger/nvim-dap",
+        keys = { "<leader>d<leader>", "<leader>db" },
+        dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio" },
         config = function()
             local dap = require("dap")
             local dapui = require("dapui")
 
-            dapui.setup()
+            ---@diagnostic disable-next-line: missing-fields
+            dapui.setup({
+                mappings = {
+                    edit = "i",
+                    remove = "dd",
+                },
+            })
 
             local function keymap(mode, lhs, rhs, opts)
                 opts.desc = string.format("Dap: %s", opts.desc)
@@ -40,6 +48,5 @@ return {
             require("config.dap.cs").setup()
             require("config.dap.rust").setup()
         end,
-        dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio" },
     },
 }
