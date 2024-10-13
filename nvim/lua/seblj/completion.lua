@@ -9,7 +9,7 @@ vim.keymap.set("i", "<CR>", function()
         return feedkeys("<C-y>")
     else
         local ok, npairs = pcall(require, "nvim-autopairs")
-        if not ok then
+        if ok then
             return npairs.autopairs_cr()
         else
             if vim.fn.pumvisible() then
@@ -36,6 +36,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id) --[[@as vim.lsp.Client]]
         if not client.supports_method("textDocument/completion") then
+            return
+        end
+
+        -- Some weird things happening when `volar` is started as well as `ts_ls`.
+        -- It adds an extra `.` sometimes, but I cannot figure out why
+        if client.name == "volar" then
             return
         end
 
