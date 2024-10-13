@@ -2,39 +2,33 @@ local function feedkeys(key)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "n", true)
 end
 
-vim.keymap.set("i", "<C-space>", "<C-x><C-o>")
+vim.keymap.set("i", "<C-space>", vim.lsp.completion.trigger)
 
 vim.keymap.set("i", "<CR>", function()
-    if vim.fn.pumvisible() == 1 then
-        return vim.fn.complete_info()["selected"] ~= -1 and feedkeys("<C-y>") or feedkeys("<C-e><CR>")
+    if vim.fn.complete_info()["selected"] ~= -1 then
+        return feedkeys("<C-y>")
     else
         local ok, npairs = pcall(require, "nvim-autopairs")
-        return ok and npairs.autopairs_cr() or feedkeys("<CR>")
+        if not ok then
+            return npairs.autopairs_cr()
+        else
+            if vim.fn.pumvisible() then
+                return feedkeys("<C-e><CR>")
+            else
+                return feedkeys("<CR>")
+            end
+        end
     end
 end, { expr = true, replace_keycodes = false, desc = "Accept completion" })
 
-local function auto_trigger(bufnr, client)
-    vim.api.nvim_create_autocmd("InsertCharPre", {
-        buffer = bufnr,
-        callback = function()
-            -- Do not retrigger if the pum is already visible. This makes the filtering while
-            -- typing better as it is not reordering the list while typing.
-            -- Also blacklist the parenthesis, since I don't want the completion list if
-            -- I potentially can get signature help, as it will overlap
-            if vim.fn.pumvisible() == 1 or vim.list_contains({ "(", ")" }, vim.v.char) then
-                return
-            end
-
-            -- Check to see how nvim-cmp do it, because I don't want it to trigger on space (I think)
-            local triggerchars = vim.tbl_get(client, "server_capabilities", "completionProvider", "triggerCharacters")
-            if vim.v.char:match("[%w_]") or vim.list_contains(triggerchars or {}, vim.v.char) then
-                vim.schedule(function()
-                    vim.lsp.completion.trigger()
-                end)
-            end
-        end,
-    })
-end
+-- I want autocompletion, so do a hack to add all these chars to the servers triggerchars
+-- stylua: ignore
+local triggerchars = {
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F',
+    'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+    'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_'
+}
 
 local current_win_data = nil
 
@@ -46,15 +40,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
 
         local ok, kinds = pcall(require, "lspkind")
+        local lsp_triggerchars = vim.tbl_get(client, "server_capabilities", "completionProvider", "triggerCharacters")
+        if lsp_triggerchars then
+            vim.list_extend(client.server_capabilities.completionProvider.triggerCharacters, triggerchars)
+        end
         vim.lsp.completion.enable(true, args.data.client_id, args.buf, {
-            autotrigger = false,
+            -- TODO: Sort of annoying with the "flickering" when it does multiple requests
+            autotrigger = true,
             convert = function(item)
                 local kind_name = vim.lsp.protocol.CompletionItemKind[item.kind]
                 local kind = ok and string.format("%s %s", kinds.presets.default[kind_name], kind_name) or kind_name
                 return { kind = kind, kind_hlgroup = string.format("CmpItemKind%s", kind_name) }
             end,
         })
-        auto_trigger(args.buf, client)
 
         vim.api.nvim_create_autocmd("CompleteChanged", {
             buffer = args.buf,
@@ -65,7 +63,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
                         vim.api.nvim_win_set_cursor(current_win_data.winid, { 1, 0 })
                     end
 
-                    local info = vim.fn.complete_info({ "selected" })
+                    local info = vim.fn.complete_info({ "selected", "mode" })
+                    -- Strip the final `/` to automatically continue completion
+                    if info.selected ~= -1 and info.mode == "files" then
+                        local line = vim.api.nvim_get_current_line():gsub("/$", "")
+                        vim.api.nvim_set_current_line(line)
+                    end
+
                     local complete = vim.tbl_get(vim.v.completed_item, "user_data", "nvim", "lsp", "completion_item")
                     if complete == nil then
                         return
@@ -130,20 +134,12 @@ local function should_complete_file()
 
     -- Some inspiration from nvim-cmp for when to do path completion
     local prefix = line_text:sub(1, col) .. vim.v.char
-    local accept = true
-
-    -- Ignore URL components
-    accept = accept and not prefix:match("%a/$")
-    -- Ignore URL scheme
-    accept = accept and not prefix:match("%a+:/$") and not prefix:match("%a+://$")
-    -- Ignore HTML closing tags
-    accept = accept and not prefix:match("</$")
-    -- Ignore math calculation
-    accept = accept and not prefix:match("[%d%)]%s*/$")
-    -- Ignore / comment
-    accept = accept and (not prefix:match("^[%s/]*$") or not vim.bo.commentstring:match("/[%*/]"))
-
-    return accept
+    return not (
+        prefix:match("%a+://?$") -- Ignore URL scheme
+        or prefix:match("</$") -- Ignore HTML closing tags
+        or prefix:match("[%d%)]%s*/$") -- Ignore math calculation
+        or (prefix:match("^[%s/]*$") and vim.bo.commentstring:match("/[%*/]")) -- Ignore / comment
+    )
 end
 
 -- Completion for path (and omni if no language server is attached to buffer)
