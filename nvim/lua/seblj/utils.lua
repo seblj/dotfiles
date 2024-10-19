@@ -121,7 +121,13 @@ local runner = {
         return dir and "go run " .. dir or command
     end,
     sh = "sh $file",
-    http = "hitman $file",
+    http = function(file)
+        if string.match(file, "mobileapi/login.http") then
+            return "hitman -t master $file"
+        else
+            return "hitman $file"
+        end
+    end,
     graphql = "hitman $file",
 }
 
@@ -132,7 +138,7 @@ function M.save_and_exec()
     vim.notify("Executing file")
     local file = vim.api.nvim_buf_get_name(0)
     M.wrap_lcd(function()
-        local command = type(runner[ft]) == "function" and runner[ft]() or runner[ft]
+        local command = type(runner[ft]) == "function" and runner[ft](file) or runner[ft]
         if not command then
             return vim.notify(string.format("No config found for %s", ft))
         end

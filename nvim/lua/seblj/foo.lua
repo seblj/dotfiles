@@ -45,7 +45,6 @@ local whitelist = {
     "^GitSignsAddInline$",
     "^GitSignsDeleteInline$",
     "^GitSignsAddLn$",
-    "^LspInfoBorder$",
 }
 
 local function find_and_update(acc, it)

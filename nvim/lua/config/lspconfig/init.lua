@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         ---------- MAPPINGS ----------
 
-        keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Implementation" })
         keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })

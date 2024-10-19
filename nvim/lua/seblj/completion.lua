@@ -10,9 +10,14 @@ vim.keymap.set("i", "<CR>", function()
     else
         local ok, npairs = pcall(require, "nvim-autopairs")
         if ok then
-            return npairs.autopairs_cr()
+            if vim.fn.pumvisible() == 1 then
+                local close = vim.api.nvim_replace_termcodes("<C-e>", true, false, true)
+                return vim.api.nvim_feedkeys(close .. npairs.autopairs_cr(), "n", true)
+            else
+                return npairs.autopairs_cr()
+            end
         else
-            if vim.fn.pumvisible() then
+            if vim.fn.pumvisible() == 1 then
                 return feedkeys("<C-e><CR>")
             else
                 return feedkeys("<CR>")
@@ -61,6 +66,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         })
 
         vim.api.nvim_create_autocmd("CompleteChanged", {
+            group = vim.api.nvim_create_augroup("SebCompleteChangedPopup", { clear = true }),
             buffer = args.buf,
             callback = function()
                 vim.schedule(function()
@@ -69,13 +75,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                         vim.api.nvim_win_set_cursor(current_win_data.winid, { 1, 0 })
                     end
 
-                    local info = vim.fn.complete_info({ "selected", "mode" })
-                    -- Strip the final `/` to automatically continue completion
-                    if info.selected ~= -1 and info.mode == "files" then
-                        local line = vim.api.nvim_get_current_line():gsub("/$", "")
-                        vim.api.nvim_set_current_line(line)
-                    end
-
+                    local info = vim.fn.complete_info({ "selected" })
                     local complete = vim.tbl_get(vim.v.completed_item, "user_data", "nvim", "lsp", "completion_item")
                     if complete == nil then
                         return
@@ -96,6 +96,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
                         return
                     end
                     current_win_data = win_data
+
+                    local height = vim.api.nvim_win_get_height(win_data.winid)
+                    local max_height = math.floor(40 * (40 / vim.o.lines))
+                    if height > max_height then
+                        vim.api.nvim_win_set_height(win_data.winid, max_height)
+                    end
+                    -- max_width = math.floor((40 * 2) * (vim.o.columns / (40 * 2 * 16 / 9))),
 
                     vim.bo[win_data.bufnr].modifiable = true
                     vim.wo[win_data.winid].conceallevel = 2
@@ -135,7 +142,7 @@ local function should_complete_file()
 
     -- Trigger chars for normal cases
     if not vim.list_contains({ "/" }, vim.v.char) then
-        return
+        return false
     end
 
     -- Some inspiration from nvim-cmp for when to do path completion
@@ -147,6 +154,20 @@ local function should_complete_file()
         or (prefix:match("^[%s/]*$") and vim.bo.commentstring:match("/[%*/]")) -- Ignore / comment
     )
 end
+
+vim.api.nvim_create_autocmd("CompleteChanged", {
+    group = vim.api.nvim_create_augroup("SebCompleteChangedFiles", { clear = true }),
+    callback = function()
+        vim.schedule(function()
+            local info = vim.fn.complete_info({ "selected", "mode" })
+            -- Strip the final `/` to automatically continue completion
+            if info.selected ~= -1 and info.mode == "files" then
+                local line = vim.api.nvim_get_current_line():gsub("/$", "")
+                vim.api.nvim_set_current_line(line)
+            end
+        end)
+    end,
+})
 
 -- Completion for path (and omni if no language server is attached to buffer)
 vim.api.nvim_create_autocmd("InsertCharPre", {

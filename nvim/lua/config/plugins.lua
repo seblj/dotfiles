@@ -6,14 +6,6 @@ return {
     { "seblj/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
 
     {
-        "chomosuke/typst-preview.nvim",
-        ft = "typst",
-        build = function()
-            require("typst-preview").update()
-        end,
-    },
-
-    {
         "github/copilot.vim",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -66,6 +58,7 @@ return {
     -- Tpope
     { "tpope/vim-repeat" },
     { "tpope/vim-abolish" },
+    { "tpope/vim-unimpaired" },
     {
         "tpope/vim-surround",
         keys = {
