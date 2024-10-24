@@ -10,13 +10,23 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function()
-        local handlers = require("config.lspconfig.handlers")
-        handlers.handlers()
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = CUSTOM_BORDER })
+        vim.lsp.handlers["textDocument/signatureHelp"] =
+            vim.lsp.with(vim.lsp.handlers.signature_help, { border = CUSTOM_BORDER })
 
         ---------- MAPPINGS ----------
 
-        vim.keymap.set("n", "grr", handlers.references)
-        vim.keymap.set("n", "gd", handlers.defintions)
+        keymap("n", "grr", function()
+            vim.lsp.buf.references(nil, {
+                on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP References" }),
+            })
+        end)
+
+        keymap("n", "gd", function()
+            vim.lsp.buf.definition({
+                on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP Definitions" }),
+            })
+        end)
 
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })

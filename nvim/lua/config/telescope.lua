@@ -83,4 +83,44 @@ return {
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         { "nvim-lua/plenary.nvim" },
     },
+    helpers = {
+        on_list = function(opts)
+            ---@param res vim.lsp.LocationOpts.OnList
+            return function(res)
+                -- Filter out all items that that has the same line number and filename
+                -- Don't need "duplicates" in the list
+                local seen = {}
+                local filtered_items = vim.iter(res.items)
+                    :map(function(item)
+                        local key = string.format("%s:%s", item.filename, item.lnum)
+                        if not seen[key] then
+                            seen[key] = true
+                            return item
+                        end
+                    end)
+                    :totable()
+
+                if #filtered_items == 1 then
+                    -- NOTE: Not necessarily the best option because I am hardcoding `utf-8`, but it
+                    -- requires the least amount of code. Switch out with `vim.jump` if that ever becomes
+                    -- a thing
+                    return vim.lsp.util.show_document(filtered_items[1].user_data, "utf-8")
+                end
+
+                local conf = require("telescope.config").values
+                require("telescope.pickers")
+                    .new(opts, {
+                        finder = require("telescope.finders").new_table({
+                            results = filtered_items,
+                            entry_maker = require("telescope.make_entry").gen_from_quickfix(opts),
+                        }),
+                        previewer = conf.qflist_previewer(opts),
+                        sorter = conf.generic_sorter(opts),
+                        push_cursor_on_edit = true,
+                        push_tagstack_on_edit = true,
+                    })
+                    :find()
+            end
+        end,
+    },
 }
