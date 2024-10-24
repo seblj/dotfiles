@@ -20,13 +20,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.references(nil, {
                 on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP References" }),
             })
-        end)
+        end, { desc = "References" })
 
         keymap("n", "gd", function()
             vim.lsp.buf.definition({
                 on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP Definitions" }),
             })
-        end)
+        end, { desc = "Definitions" })
 
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
@@ -72,8 +72,6 @@ return {
                 require("lspconfig")[server].setup(config)
             end,
         })
-
-        require("lspconfig.ui.windows").default_options.border = CUSTOM_BORDER
     end,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
