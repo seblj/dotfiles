@@ -20,4 +20,5 @@ precmd_functions+=(_fix_cursor)
 # Don't override fzf history widget
 function zvm_after_init() {
     zvm_bindkey viins '^R' fzf-history-widget
+    bindkey '^[[Z' reverse-menu-complete
 }
