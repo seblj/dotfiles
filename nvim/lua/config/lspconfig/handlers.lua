@@ -3,43 +3,58 @@
 local M = {}
 
 function M.handlers()
-    -- Jump directly to the first available definition every time
-    -- unless the definitions different line number for some reason.
-    -- sumneko_lua sometimes returns same line number but different
-    -- column for defintion, so don't care which one we jump to
-    -- Thanks to https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/lsp/handlers.lua
-    vim.lsp.handlers["textDocument/definition"] = function(_, result, ctx)
-        if not result or vim.tbl_isempty(result) then
-            return vim.notify("Lsp: Could not find definition")
-        end
-        local client = vim.lsp.get_client_by_id(ctx.client_id)
-        if not client then
-            return vim.notify("Lsp: Could not find client")
-        end
-
-        if vim.islist(result) then
-            local results = vim.lsp.util.locations_to_items(result, client.offset_encoding)
-            local lnum, filename = results[1].lnum, results[1].filename
-            for _, val in pairs(results) do
-                if val.lnum ~= lnum or val.filename ~= filename then
-                    return require("telescope.builtin").lsp_definitions()
-                end
-            end
-            vim.lsp.util.jump_to_location(result[1], client.offset_encoding, false)
-        else
-            vim.lsp.util.jump_to_location(result, client.offset_encoding, false)
-        end
-    end
-    vim.lsp.handlers["textDocument/references"] = function(_, _, _)
-        require("telescope.builtin").lsp_references()
-    end
-
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = CUSTOM_BORDER,
     })
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = CUSTOM_BORDER,
     })
+end
+
+local function on_list_pick_or_jump(opts)
+    ---@param res vim.lsp.LocationOpts.OnList
+    return function(res)
+        -- Filter out all items that that has the same line number and filename
+        -- Don't need "duplicates" in the list
+        local seen = {}
+        local filtered_items = vim.iter(res.items)
+            :map(function(item)
+                local key = string.format("%s:%s", item.filename, item.lnum)
+                if not seen[key] then
+                    seen[key] = true
+                    return item
+                end
+            end)
+            :totable()
+
+        if #filtered_items == 1 then
+            return vim.lsp.util.show_document(filtered_items[1].user_data, "utf-8")
+        end
+
+        local conf = require("telescope.config").values
+        require("telescope.pickers")
+            .new(opts, {
+                finder = require("telescope.finders").new_table({
+                    results = filtered_items,
+                    entry_maker = require("telescope.make_entry").gen_from_quickfix(opts),
+                }),
+                previewer = conf.qflist_previewer(opts),
+                sorter = conf.generic_sorter(opts),
+                push_cursor_on_edit = true,
+                push_tagstack_on_edit = true,
+            })
+            :find()
+    end
+end
+
+function M.references()
+    local opts = { prompt_title = "LSP References" }
+    vim.lsp.buf.references(nil, { on_list = on_list_pick_or_jump(opts) })
+end
+
+function M.defintions()
+    local opts = { prompt_title = "LSP Definitions" }
+    vim.lsp.buf.definition({ on_list = on_list_pick_or_jump(opts) })
 end
 
 return M

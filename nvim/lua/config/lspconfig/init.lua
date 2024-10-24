@@ -10,11 +10,14 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function()
-        require("config.lspconfig.handlers").handlers()
+        local handlers = require("config.lspconfig.handlers")
+        handlers.handlers()
 
         ---------- MAPPINGS ----------
 
-        keymap("n", "gd", vim.lsp.buf.definition, { desc = "Definitions" })
+        vim.keymap.set("n", "grr", handlers.references)
+        vim.keymap.set("n", "gd", handlers.defintions)
+
         keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
         keymap("n", "<leader>th", function()
