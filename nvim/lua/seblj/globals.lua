@@ -5,6 +5,7 @@ end
 -- vim.g.use_builtin_completion = true
 
 COLORSCHEME = "catppuccin"
+CUSTOM_BORDER = { "", "", "", "", "", "", "", "" }
 
 local pmenu_hl = vim.api.nvim_get_hl(0, { name = "Pmenu" }).bg
 vim.api.nvim_set_hl(0, "StatusLine", { bg = pmenu_hl })
@@ -16,7 +17,6 @@ if windows then
     vim.api.nvim_set_hl(0, "FloatBorder", { bg = hl })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = hl })
 else
-    CUSTOM_BORDER = { "", "", "", "", "", "", "", "" }
     vim.api.nvim_set_hl(0, "FloatBorder", { fg = pmenu_hl })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = pmenu_hl })
 end

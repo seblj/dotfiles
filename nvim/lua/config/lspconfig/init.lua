@@ -10,7 +10,6 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function()
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = CUSTOM_BORDER })
         vim.lsp.handlers["textDocument/signatureHelp"] =
             vim.lsp.with(vim.lsp.handlers.signature_help, { border = CUSTOM_BORDER })
 
@@ -28,7 +27,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
             })
         end, { desc = "Definitions" })
 
-        keymap("n", "gh", vim.lsp.buf.hover, { desc = "Hover" })
+        keymap("n", "gh", function()
+            vim.lsp.buf.hover({ border = CUSTOM_BORDER })
+        end, { desc = "Hover" })
+
         keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
         keymap("n", "<leader>th", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
