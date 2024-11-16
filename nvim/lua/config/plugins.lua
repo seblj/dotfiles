@@ -14,7 +14,7 @@ return {
     },
 
     -- Git
-    { "akinsho/git-conflict.nvim", config = true, event = { "BufReadPre", "BufWritePre" } },
+    { "akinsho/git-conflict.nvim", opts = { default_commands = false }, event = { "BufReadPre", "BufWritePre" } },
 
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },

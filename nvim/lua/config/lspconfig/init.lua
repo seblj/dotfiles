@@ -10,11 +10,6 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("DefaultLspAttach", { clear = true }),
     callback = function()
-        vim.lsp.handlers["textDocument/signatureHelp"] =
-            vim.lsp.with(vim.lsp.handlers.signature_help, { border = CUSTOM_BORDER })
-
-        ---------- MAPPINGS ----------
-
         keymap("n", "grr", function()
             vim.lsp.buf.references(nil, {
                 on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP References" }),
@@ -26,6 +21,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 on_list = require("config.telescope").helpers.on_list({ prompt_title = "LSP Definitions" }),
             })
         end, { desc = "Definitions" })
+
+        keymap("i", "<C-s>", function()
+            vim.lsp.buf.signature_help({ border = CUSTOM_BORDER })
+        end, { desc = "Hover" })
 
         keymap("n", "gh", function()
             vim.lsp.buf.hover({ border = CUSTOM_BORDER })
@@ -84,7 +83,7 @@ return {
         },
         { "Bilal2453/luvit-meta", lazy = true },
         { "b0o/schemastore.nvim" },
-        { "williamboman/mason.nvim", config = true, cmd = "Mason" },
+        { "williamboman/mason.nvim", config = true, cmd = "Mason", dependencies = { "roslyn.nvim" } },
         { "williamboman/mason-lspconfig.nvim", config = true, cmd = { "LspInstall", "LspUninstall" } },
         { "seblj/nvim-lsp-extras", opts = { global = { border = CUSTOM_BORDER } }, dev = true },
         { "onsails/lspkind.nvim" },
