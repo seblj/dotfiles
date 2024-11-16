@@ -33,7 +33,7 @@ nmap <leader>fb <Action>(RecentFiles)
 
 nmap gh <Action>(QuickJavaDoc)
 nmap gd <Action>(GotoDeclaration)
-nmap gi <Action>(GotoImplementation)
+nmap gri <Action>(GotoImplementation)
 
 " Use native neovim keymaps to get used to them
 nmap <C-w><C-d> <Action>(ShowErrorDescription)
