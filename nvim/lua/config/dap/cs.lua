@@ -45,19 +45,7 @@ local function setup()
                     return vim.notify("No solution file found")
                 end
 
-                local solution_dir = vim.fs.dirname(vim.g.roslyn_nvim_selected_solution)
-
-                local res = vim.system({ "dotnet", "sln", vim.g.roslyn_nvim_selected_solution, "list" }):wait()
-                local csproj_files = vim.iter(vim.split(res.stdout, "\n"))
-                    :map(function(it)
-                        local fullpath = vim.fs.normalize(vim.fs.joinpath(solution_dir, it))
-                        if fullpath ~= solution_dir and vim.uv.fs_stat(fullpath) then
-                            return fullpath
-                        else
-                            return nil
-                        end
-                    end)
-                    :totable()
+                local csproj_files = require("roslyn.sln.api").projects(vim.g.roslyn_nvim_selected_solution)
 
                 return dap_utils.pick_process({
                     filter = function(proc)
