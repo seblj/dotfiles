@@ -47,6 +47,7 @@ return {
             css = "prettierd .css",
             scss = "prettierd .scss",
             html = "prettierd .html",
+            svg = "prettierd .html",
             yaml = "prettierd .yml",
             markdown = "prettierd .md",
             graphql = "prettierd .gql",
