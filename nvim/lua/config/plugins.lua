@@ -10,11 +10,12 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             vim.g.copilot_enabled = 0
+            vim.g.copilot_filetypes = { bigfile = false }
         end,
     },
 
     -- Git
-    { "akinsho/git-conflict.nvim", opts = { default_commands = false }, event = { "BufReadPre", "BufWritePre" } },
+    { "akinsho/git-conflict.nvim", opts = {}, event = { "BufReadPre", "BufWritePre" } },
 
     -- Packageinfo
     { "saecki/crates.nvim", config = true, event = "BufReadPre Cargo.toml" },

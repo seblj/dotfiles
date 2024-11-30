@@ -90,15 +90,27 @@ return {
                 -- Filter out all items that that has the same line number and filename
                 -- Don't need "duplicates" in the list
                 local seen = {}
+
+                -- I don't need the current item as a "reference" when using `vim.lsp.buf.references`
+                local filename = vim.api.nvim_buf_get_name(0)
+                local lnum = vim.fn.line(".")
+                local function same_item(item)
+                    return item.filename == filename and item.lnum == lnum
+                end
+
                 local filtered_items = vim.iter(res.items)
                     :map(function(item)
                         local key = string.format("%s:%s", item.filename, item.lnum)
-                        if not seen[key] then
+                        if not seen[key] and not same_item(item) then
                             seen[key] = true
                             return item
                         end
                     end)
                     :totable()
+
+                if vim.tbl_isempty(filtered_items) then
+                    return vim.notify("No items found")
+                end
 
                 if #filtered_items == 1 then
                     -- NOTE: Not necessarily the best option because I am hardcoding `utf-8`, but it
