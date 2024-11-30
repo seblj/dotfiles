@@ -70,6 +70,23 @@ return {
                 local config = vim.tbl_deep_extend("error", {
                     capabilities = capabilities,
                 }, require("config.lspconfig.settings")[server] or {})
+
+                -- Something weird with rust-analyzer and nvim-cmp capabilites
+                -- Makes the completion experience awful
+                if server == "rust_analyzer" then
+                    config.capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
+                        resolveSupport = {
+                            properties = {
+                                "additionalTextEdits",
+                                "textEdits",
+                                "tooltip",
+                                "location",
+                                "command",
+                            },
+                        },
+                    })
+                end
+
                 require("lspconfig")[server].setup(config)
             end,
         })
