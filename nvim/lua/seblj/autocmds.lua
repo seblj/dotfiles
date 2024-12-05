@@ -12,54 +12,44 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.api.nvim_create_autocmd("VimResized", { group = group, command = "tabdo wincmd =" })
 
----@param ft string[] | string
----@param fn function
-local function set_ft_option(ft, fn)
-    ft = type(ft) == "table" and ft or { ft }
-    vim.api.nvim_create_autocmd("FileType", {
-        group = group,
-        pattern = ft,
-        desc = string.format("FileType options for: %s", unpack(ft)),
-        callback = fn,
-    })
-end
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = { "text", "tex", "markdown", "gitcommit" },
+    command = "set spell",
+})
 
-set_ft_option({ "text", "tex", "markdown", "gitcommit" }, function()
-    vim.opt_local.spell = true
-end)
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = { "json", "html", "javascript", "typescript", "typescriptreact", "javascriptreact", "css", "vue" },
+    command = "set tabstop=2 softtabstop=2 shiftwidth=2",
+})
 
-set_ft_option(
-    { "json", "html", "javascript", "typescript", "typescriptreact", "javascriptreact", "css", "vue" },
-    function()
-        vim.opt_local.tabstop = 2
-        vim.opt_local.softtabstop = 2
-        vim.opt_local.shiftwidth = 2
-    end
-)
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "cs",
+    command = "compiler dotnet",
+})
 
-set_ft_option("*", function()
-    vim.opt.formatoptions = vim.opt.formatoptions - "o"
-end)
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "help",
+    command = "nnoremap <buffer> gd K",
+})
 
-set_ft_option("vue", function()
-    vim.opt_local.commentstring = "<!-- %s -->"
-    vim.opt.formatoptions:remove("r")
-end)
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "*",
+    command = "set formatoptions-=o",
+})
 
-set_ft_option("cs", function()
-    vim.cmd.compiler("dotnet")
-end)
-
-set_ft_option("help", function()
-    vim.keymap.set("n", "gd", "K", { buffer = true })
-end)
-
-set_ft_option("term", function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-    vim.cmd("$")
-    vim.cmd.startinsert()
-end)
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "vue",
+    callback = function()
+        vim.opt_local.commentstring = "<!-- %s -->"
+        vim.opt.formatoptions:remove("r")
+    end,
+})
 
 vim.api.nvim_create_autocmd("FileType", {
     group = group,
