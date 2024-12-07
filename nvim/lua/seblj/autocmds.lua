@@ -15,13 +15,13 @@ vim.api.nvim_create_autocmd("VimResized", { group = group, command = "tabdo winc
 vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = { "text", "tex", "markdown", "gitcommit" },
-    command = "set spell",
+    command = "setlocal spell",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = { "json", "html", "javascript", "typescript", "typescriptreact", "javascriptreact", "css", "vue" },
-    command = "set tabstop=2 softtabstop=2 shiftwidth=2",
+    command = "setlocal tabstop=2 softtabstop=2 shiftwidth=2",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
