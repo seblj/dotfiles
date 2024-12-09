@@ -31,6 +31,12 @@ nmap <leader>fs <Action>(FindInPath)
 nmap <leader>fa <Action>(GotoAction)
 nmap <leader>fb <Action>(RecentFiles)
 
+nmap ]c <Action>(VcsShowNextChangeMarker)
+nmap [c <Action>(VcsShowPrevChangeMarker)
+
+nmap ]q <Action>(NextOccurence)
+nmap [q <Action>(PreviousOccurence)
+
 nmap gh <Action>(QuickJavaDoc)
 nmap gd <Action>(GotoDeclaration)
 nmap gri <Action>(GotoImplementation)
