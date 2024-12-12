@@ -123,6 +123,7 @@ vim.keymap.set("ca", "TERm", "term")
 vim.keymap.set("ca", "TErm", "term")
 vim.keymap.set("ca", "Term", "term")
 vim.keymap.set("ca", "make", "Make")
+vim.keymap.set("ia", "TODO:", "TODO(seb):")
 
 -- Open term in splits
 local opts = { nargs = "*", bang = true }

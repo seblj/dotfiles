@@ -40,7 +40,7 @@ local current_win_data = nil
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id) --[[@as vim.lsp.Client]]
-        if not client.supports_method("textDocument/completion") then
+        if not client:supports_method("textDocument/completion") then
             return
         end
 
@@ -81,7 +81,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                         return
                     end
 
-                    local resolved = client.request_sync("completionItem/resolve", complete, 500, args.buf) or {}
+                    local resolved = client:request_sync("completionItem/resolve", complete, 500, args.buf) or {}
                     local docs = vim.tbl_get(resolved, "result", "documentation", "value")
                     if docs == nil then
                         return
