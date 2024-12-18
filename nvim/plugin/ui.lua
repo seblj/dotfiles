@@ -72,7 +72,7 @@ vim.ui.select = function(items, opts, on_choice)
         vim.keymap.set("n", "k", "k", { buffer = true })
 
         vim.schedule(function()
-            require("seblj.utils").setup_hidden_cursor(popup_bufnr)
+            require("seblj.utils").setup_hidden_cursor()
         end)
 
         vim.api.nvim_create_autocmd("CursorMoved", {

@@ -16,7 +16,7 @@ function M.term(opts, ...)
         vim.api.nvim_buf_call(terminal.bufnr, function()
             vim.cmd("$")
         end)
-        return vim.api.nvim_chan_send(vim.b[terminal.bufnr].terminal_job_id, string.format(opts.cmd .. "\n", ...))
+        return vim.api.nvim_chan_send(vim.bo[terminal.bufnr].channel, string.format(opts.cmd .. "\n", ...))
     end
 
     local current_win = vim.api.nvim_get_current_win()
@@ -159,25 +159,20 @@ end
 
 local guicursor_saved = vim.opt.guicursor
 
-local function hide_cursor()
-    vim.opt.guicursor = vim.opt.guicursor + "a:CursorTransparent/lCursor"
-end
+function M.setup_hidden_cursor()
+    local bufnr = vim.api.nvim_get_current_buf()
 
-function M.setup_hidden_cursor(bufnr)
     vim.api.nvim_set_hl(0, "CursorTransparent", { strikethrough = true, blend = 100 })
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
-    hide_cursor()
-    vim.opt_local.cursorline = true
-    vim.opt_local.winhighlight = "CursorLine:Error"
+    vim.opt.guicursor = vim.opt.guicursor + "a:CursorTransparent/lCursor"
+    vim.wo[0][0].cursorline = true
+    vim.wo[0][0].winhighlight = "CursorLine:Error"
 
     local group = vim.api.nvim_create_augroup("HiddenCursor", { clear = true })
     vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "CmdwinLeave", "CmdlineLeave" }, {
         group = group,
         buffer = bufnr,
         callback = function()
-            hide_cursor()
-            vim.opt_local.cursorline = true
-            vim.opt_local.winhighlight = "CursorLine:Error"
+            vim.opt.guicursor = vim.opt.guicursor + "a:CursorTransparent/lCursor"
         end,
         desc = "Hide cursor",
     })
@@ -186,9 +181,7 @@ function M.setup_hidden_cursor(bufnr)
         buffer = bufnr,
         callback = function()
             vim.schedule(function()
-                vim.opt.guicursor = vim.opt.guicursor + "a:Cursor/lCursor"
                 vim.opt.guicursor = guicursor_saved
-                vim.opt_local.cursorline = false
             end)
         end,
         desc = "Show cursor",
