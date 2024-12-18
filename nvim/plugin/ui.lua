@@ -17,6 +17,8 @@ end
 
 local function setup_confirm_mapping(mapping_key, items, on_choice, key)
     vim.keymap.set("n", mapping_key, function()
+        local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+        vim.api.nvim_win_set_cursor(0, { row, 1 })
         local choice = key and key or tonumber(vim.fn.expand("<cword>"))
         vim.api.nvim_win_close(0, true)
         on_choice(items[choice], choice)
