@@ -35,29 +35,9 @@ local function setup()
             request = "attach",
             processId = function()
                 return dap_utils.pick_process({
-                    filter = ".*/Debug/.*",
-                })
-            end,
-        },
-
-        {
-            type = "coreclr",
-            name = "Attach (Smart)",
-            request = "attach",
-            processId = function()
-                if not vim.g.roslyn_nvim_selected_solution then
-                    return vim.notify("No solution file found")
-                end
-
-                local csproj_files = require("roslyn.sln.api").projects(vim.g.roslyn_nvim_selected_solution)
-
-                return dap_utils.pick_process({
                     filter = function(proc)
-                        return vim.iter(csproj_files):find(function(file)
-                            if vim.endswith(proc.name, vim.fn.fnamemodify(file, ":t:r")) then
-                                return true
-                            end
-                        end)
+                        ---@diagnostic disable-next-line: return-type-mismatch
+                        return proc.name:match(".*/Debug/.*") and not proc.name:find("vstest.console.dll")
                     end,
                 })
             end,
