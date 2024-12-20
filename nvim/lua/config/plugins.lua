@@ -24,7 +24,11 @@ return {
     { "nvim-tree/nvim-web-devicons", lazy = true },
 
     -- UI
-    { "brenoprata10/nvim-highlight-colors", config = true, event = { "BufReadPre", "BufNewFile" } },
+    {
+        "brenoprata10/nvim-highlight-colors",
+        opts = { exclude_filetypes = { "yaml" } },
+        event = { "BufReadPre", "BufNewFile" },
+    },
     {
         "Bekaboo/dropbar.nvim",
         opts = {

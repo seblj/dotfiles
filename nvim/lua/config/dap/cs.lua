@@ -33,7 +33,11 @@ local function setup()
             type = "coreclr",
             name = "Attach",
             request = "attach",
-            processId = dap_utils.pick_process,
+            processId = function()
+                return dap_utils.pick_process({
+                    filter = ".*/Debug/.*",
+                })
+            end,
         },
 
         {
