@@ -18,6 +18,7 @@ ln -sf $HOME/dotfiles/scripts/capture $HOME/.local/bin/capture
 
 ln -sf $HOME/dotfiles/kitty $HOME/.config
 ln -sf $HOME/dotfiles/helix $HOME/.config
+ln -sf $HOME/dotfiles/ghostty $HOME/.config
 
 symlink_files_in_dir home
 symlink_files_in_dir git
