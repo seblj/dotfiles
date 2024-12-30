@@ -4,18 +4,17 @@
 return {
     "willothy/flatten.nvim",
     opts = {
-        window = { open = "current" },
-        callbacks = {
+        hooks = {
             pre_open = function()
                 local termid = vim.api.nvim_get_current_buf()
                 if vim.bo[termid].buftype == "terminal" then
                     vim.g.seblj_flatten_saved_terminal = termid
                 end
             end,
-            post_open = function(bufnr, _, ft, _)
-                if ft == "gitcommit" or ft == "gitrebase" then
+            post_open = function(opts)
+                if opts.filetype == "gitcommit" or opts.filetype == "gitrebase" then
                     vim.api.nvim_create_autocmd("QuitPre", {
-                        buffer = bufnr,
+                        buffer = opts.bufnr,
                         once = true,
                         callback = vim.schedule_wrap(function()
                             -- Would be nice to cancel the exit here to keep the split size
@@ -23,7 +22,7 @@ return {
                             if vim.g.seblj_flatten_saved_terminal then
                                 vim.api.nvim_set_current_buf(vim.g.seblj_flatten_saved_terminal)
                             end
-                            vim.api.nvim_buf_delete(bufnr, {})
+                            vim.api.nvim_buf_delete(opts.bufnr, {})
                         end),
                     })
                 end

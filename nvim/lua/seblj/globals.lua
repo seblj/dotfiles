@@ -5,7 +5,8 @@ end
 -- vim.g.use_builtin_completion = true
 
 COLORSCHEME = "catppuccin"
-CUSTOM_BORDER = { "", "", "", "", "", "", "", "" }
+CUSTOM_BORDER = vim.env.TERM == "xterm-ghostty" and { "", "▄", "", "▌", "", "▀", "", "▐" }
+    or { "", "", "", "", "", "", "", "" }
 
 local pmenu_hl = vim.api.nvim_get_hl(0, { name = "Pmenu" }).bg
 vim.api.nvim_set_hl(0, "StatusLine", { bg = pmenu_hl })

@@ -22,12 +22,14 @@ function M.term(opts, ...)
     local current_win = vim.api.nvim_get_current_win()
     local size = math.floor(vim.api.nvim_win_get_height(0) / 3)
     vim.cmd[opts.direction]({ range = opts.direction == "new" and { size } or { nil } })
-    local term = vim.fn.termopen(vim.env.SHELL) --[[@as number]]
+    local term = vim.fn.jobstart(vim.env.SHELL, { term = true })
     if not opts.focus then
         vim.cmd.stopinsert()
         vim.api.nvim_set_current_win(current_win)
     end
-    vim.api.nvim_chan_send(term, string.format(opts.cmd .. "\n", ...))
+    if opts.cmd and opts.cmd ~= "" then
+        vim.api.nvim_chan_send(term, string.format(opts.cmd .. "\n", ...))
+    end
 end
 
 ---@param fn function

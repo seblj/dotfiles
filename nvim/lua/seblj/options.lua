@@ -2,6 +2,7 @@
 
 vim.cmd.colorscheme(COLORSCHEME)
 
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25"
 vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy", "popup" }
 vim.opt.splitbelow = true
 vim.opt.splitright = true

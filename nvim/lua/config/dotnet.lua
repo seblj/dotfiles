@@ -4,7 +4,7 @@ return {
     opts = {
         filewatching = false,
         broad_search = true,
-        ignore_sln = function(sln)
+        ignore_target = function(sln)
             return string.match(sln, "SmartDok.sln") ~= nil
         end,
     },
