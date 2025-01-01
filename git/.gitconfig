@@ -44,9 +44,12 @@
     ma = merge --abort
     cleanup = !git branch --merged | grep -v '\\*\\|master\\|main\\|develop' | xargs -n 1 git branch -d
 
+[include]
+    path = ~/dotfiles/delta/themes/catppuccin.gitconfig
+
 [delta]
+    features = catppuccin-mocha
     line-numbers = true
-    syntax-theme = TwoDark
     side-by-side = false
     file-modified-labed = modified
     file-style = white
