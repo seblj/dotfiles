@@ -1,3 +1,5 @@
+local enable_colors = true
+
 if vim.g.use_builtin_completion then
     require("seblj.completion")
     return {}
@@ -12,6 +14,7 @@ return {
         { "hrsh7th/cmp-buffer" },
         { "hrsh7th/cmp-path" },
         { "saadparwaiz1/cmp_luasnip" },
+        { "xzbdmw/colorful-menu.nvim" },
     },
 
     opts = function()
@@ -53,18 +56,38 @@ return {
             },
 
             formatting = {
-                format = require("lspkind").cmp_format({
-                    mode = "symbol_text",
-                    menu = {
-                        nvim_lsp = "[LSP]",
-                        buffer = "[Buffer]",
-                        luasnip = "[Luasnip]",
-                        path = "[Path]",
-                        crates = "[Crates]",
-                    },
-                    maxwidth = 90,
-                    ellipsis_char = "...",
-                }),
+                format = (function()
+                    if enable_colors then
+                        vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bold = true })
+                        vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { bold = true })
+                        require("colorful-menu").setup({ max_width = 90 })
+                    end
+
+                    return function(entry, vim_item)
+                        if enable_colors then
+                            local ft = vim.bo.filetype == "typescript" and "__dummy__" or vim.bo.filetype
+                            local completion_item = entry:get_completion_item()
+                            local highlights_info = require("colorful-menu").highlights(completion_item, ft)
+
+                            if highlights_info then
+                                vim_item.abbr_hl_group = highlights_info.highlights
+                                vim_item.abbr = highlights_info.text
+                            end
+                        end
+                        return require("lspkind").cmp_format({
+                            mode = "symbol_text",
+                            menu = {
+                                nvim_lsp = "[LSP]",
+                                buffer = "[Buffer]",
+                                luasnip = "[Luasnip]",
+                                path = "[Path]",
+                                crates = "[Crates]",
+                            },
+                            maxwidth = 90,
+                            ellipsis_char = "…",
+                        })(entry, vim_item)
+                    end
+                end)(),
             },
         }
     end,
