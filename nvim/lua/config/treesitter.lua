@@ -1,23 +1,5 @@
 vim.treesitter.language.register("bash", "zsh")
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "*",
-    callback = function(args)
-        if not pcall(vim.treesitter.start, args.buf) then
-            return
-        end
-        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        vim.wo[0][0].foldmethod = "expr"
-
-        -- Only enable indentexpr if the lang contains queries for indents
-        -- Otherwise it will just mess everything up in C# at least
-        local lang = vim.treesitter.language.get_lang(vim.bo.ft) or vim.bo.ft
-        if vim.treesitter.query.get(lang, "indents") then
-            vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
-        end
-    end,
-})
-
 return {
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", branch = "main" },
     {

@@ -1,5 +1,3 @@
-local enable_colors = true
-
 if vim.g.use_builtin_completion then
     require("seblj.completion")
     return {}
@@ -14,7 +12,16 @@ return {
         { "hrsh7th/cmp-buffer" },
         { "hrsh7th/cmp-path" },
         { "saadparwaiz1/cmp_luasnip" },
-        { "xzbdmw/colorful-menu.nvim" },
+        {
+            "xzbdmw/colorful-menu.nvim",
+            opts = {
+                ls = {
+                    gopls = { align_type_to_right = false },
+                    clangd = { align_type_to_right = false },
+                    ["rust-analyzer"] = { align_type_to_right = false },
+                },
+            },
+        },
     },
 
     opts = function()
@@ -56,36 +63,26 @@ return {
             },
 
             formatting = {
+                fields = { "kind", "abbr" },
                 format = (function()
+                    local enable_colors = true
+
                     if enable_colors then
                         vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bold = true })
                         vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { bold = true })
-                        require("colorful-menu").setup({ max_width = 90 })
+                        ---@diagnostic disable-next-line: missing-fields
+                        require("colorful-menu").setup({ max_width = 90, ls = { fallback = false } })
                     end
-
                     return function(entry, vim_item)
                         if enable_colors then
-                            local ft = vim.bo.filetype == "typescript" and "__dummy__" or vim.bo.filetype
-                            local completion_item = entry:get_completion_item()
-                            local highlights_info = require("colorful-menu").highlights(completion_item, ft)
+                            local highlights_info = require("colorful-menu").cmp_highlights(entry)
 
                             if highlights_info then
                                 vim_item.abbr_hl_group = highlights_info.highlights
                                 vim_item.abbr = highlights_info.text
                             end
                         end
-                        return require("lspkind").cmp_format({
-                            mode = "symbol_text",
-                            menu = {
-                                nvim_lsp = "[LSP]",
-                                buffer = "[Buffer]",
-                                luasnip = "[Luasnip]",
-                                path = "[Path]",
-                                crates = "[Crates]",
-                            },
-                            maxwidth = 90,
-                            ellipsis_char = "…",
-                        })(entry, vim_item)
+                        return require("lspkind").cmp_format({ mode = "symbol" })(entry, vim_item)
                     end
                 end)(),
             },
