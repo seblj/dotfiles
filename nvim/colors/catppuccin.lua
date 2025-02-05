@@ -414,4 +414,7 @@ highlight({
     ["@variable.builtin"] = { fg = c.color6 },
     ["@variable.member"] = { fg = c.color9 },
     ["@variable.parameter"] = { fg = c.color14 },
+
+    SnacksPicker = { link = "Normal" },
+    SnacksPickerBorder = { fg = c.color2 },
 })
