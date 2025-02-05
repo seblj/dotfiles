@@ -1,9 +1,9 @@
 local runners = {
     cs = function()
-        return require("seblj.testrunner.runners.dotnet")
+        return require("seblyng.testrunner.runners.dotnet")
     end,
     rust = function()
-        return require("seblj.testrunner.runners.cargo")
+        return require("seblyng.testrunner.runners.cargo")
     end,
 }
 
@@ -23,10 +23,10 @@ local function run(debug)
         return vim.notify("Couldn't find any tests")
     end
 
-    require("seblj.utils").wrap_lcd(function()
+    require("seblyng.utils").wrap_lcd(function()
         local cmd = runner:generate_cmd(captures, debug)
 
-        require("seblj.utils").term({ direction = "new", focus = false, cmd = cmd })
+        require("seblyng.utils").term({ direction = "new", focus = false, cmd = cmd })
     end, runner.root())
 end
 

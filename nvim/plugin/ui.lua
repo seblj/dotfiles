@@ -1,4 +1,4 @@
-local ns = vim.api.nvim_create_namespace("seblj_ui")
+local ns = vim.api.nvim_create_namespace("seblyng_ui")
 
 local options = {
     prefix = " ",
@@ -74,7 +74,7 @@ vim.ui.select = function(items, opts, on_choice)
         vim.keymap.set("n", "k", "k", { buffer = true })
 
         vim.schedule(function()
-            require("seblj.utils").setup_hidden_cursor()
+            require("seblyng.utils").setup_hidden_cursor()
         end)
 
         vim.api.nvim_create_autocmd("CursorMoved", {

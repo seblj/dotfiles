@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "startify",
     desc = "Hidden cursor for startify buffer",
     callback = function()
-        require("seblj.utils").setup_hidden_cursor()
+        require("seblyng.utils").setup_hidden_cursor()
     end,
 })
 

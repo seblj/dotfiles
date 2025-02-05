@@ -1,9 +1,9 @@
 return {
-    { "seblj/nvim-tabline", config = true, event = "TabNew", dev = true },
+    { "seblyng/nvim-tabline", config = true, event = "TabNew", dev = true },
 
     -- TODO: Either make it work with injections or look into only using this if it is a "leptos" file
     -- { "rayliwell/tree-sitter-rstml", config = true, dev = true },
-    { "seblj/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
+    { "seblyng/nvim-ts-autotag", config = true, event = { "BufReadPost", "BufNewFile" }, dev = true },
 
     {
         "github/copilot.vim",

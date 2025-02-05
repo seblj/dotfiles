@@ -1,5 +1,5 @@
 if vim.g.use_builtin_completion then
-    require("seblj.completion")
+    require("seblyng.completion")
     return {}
 end
 

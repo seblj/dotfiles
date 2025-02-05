@@ -1,5 +1,5 @@
 return {
-    "seblj/roslyn.nvim",
+    "seblyng/roslyn.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
         filewatching = false,

@@ -201,6 +201,6 @@ function M.statusline()
     })
 end
 
-vim.o.statusline = "%{%v:lua.require('seblj.statusline').statusline()%}"
+vim.o.statusline = "%{%v:lua.require('seblyng.statusline').statusline()%}"
 
 return M

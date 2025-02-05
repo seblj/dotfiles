@@ -11,8 +11,8 @@ vim.api.nvim_create_autocmd("FileType", {
         end
 
         -- NOTE: These are quite slow if there is a big file
-        -- vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        -- vim.wo[0][0].foldmethod = "expr"
+        vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo[0][0].foldmethod = "expr"
 
         -- Only enable indentexpr if the lang contains queries for indents
         -- Otherwise it will just mess everything up in C# at least

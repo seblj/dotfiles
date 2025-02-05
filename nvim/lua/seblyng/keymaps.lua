@@ -1,6 +1,6 @@
 ---------- MAPPINGS ----------
 
-local utils = require("seblj.utils")
+local utils = require("seblyng.utils")
 
 -- Leader is space and localleader is \
 vim.g.mapleader = " "

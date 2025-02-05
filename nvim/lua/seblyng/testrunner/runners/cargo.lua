@@ -1,4 +1,4 @@
-local TestRunner = require("seblj.testrunner.runner")
+local TestRunner = require("seblyng.testrunner.runner")
 
 local query = [[
       (

@@ -1,5 +1,5 @@
 return {
-    "seblj/nvim-formatter",
+    "seblyng/nvim-formatter",
     dev = true,
     init = function()
         vim.opt.formatexpr = "v:lua.require('formatter').formatexpr()"
