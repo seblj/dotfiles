@@ -106,6 +106,7 @@ end, {
 })
 
 local runner = {
+    typst = "typst compile $file",
     lua = ":source %",
     vim = ":source %",
     python = "python3 $file",

@@ -53,6 +53,8 @@ return {
             graphql = "prettierd .gql",
             zsh = "beautysh -",
             sh = "beautysh -",
+            typst = "typstyle",
+            _ = "sed s/[[:space:]]*$//",
         },
     },
 }

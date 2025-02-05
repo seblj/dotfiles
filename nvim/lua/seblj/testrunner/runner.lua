@@ -29,6 +29,26 @@ function TestRunner:new(config)
     return o
 end
 
+function TestRunner.find_first_capture(query)
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype) or vim.bo.filetype
+    local parsed_query = vim.treesitter.query.parse(lang, query)
+    if not parsed_query then
+        return {}
+    end
+
+    local parser = vim.treesitter.get_parser(0, lang)
+    if not parser then
+        return {}
+    end
+    local root = parser:parse()[1]:root()
+
+    for _, node in parsed_query:iter_captures(root, 0, 0, -1) do
+        return vim.treesitter.get_node_text(node, 0)
+    end
+
+    return {}
+end
+
 ---@param query string
 ---@return string[]
 function TestRunner.find_nearest_captures(query)
