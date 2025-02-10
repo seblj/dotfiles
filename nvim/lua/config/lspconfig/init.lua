@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.hover({ border = CUSTOM_BORDER })
         end, { desc = "Hover" })
 
-        keymap("n", "<leader>dw", ":Telescope diagnostics<CR>", { desc = "Diagnostics in telescope" })
         keymap("n", "<leader>th", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end, { desc = "Toggle inlay hints" })

@@ -45,7 +45,7 @@ return {
     },
     {
         "j-hui/fidget.nvim",
-        opts = { notification = { override_vim_notify = true }, integration = { ["nvim-tree"] = { enable = false } } },
+        opts = { notification = { override_vim_notify = true } },
     },
 
     -- Functionality
@@ -55,8 +55,12 @@ return {
 
     {
         "windwp/nvim-autopairs",
-        opts = { map_cr = not vim.g.use_builtin_completion, ignored_next_char = "[%w%.%{%[%(%\"%']" },
         event = "InsertEnter",
+        opts = {
+            disable_filetype = { "snacks_picker_input" },
+            map_cr = not vim.g.use_builtin_completion,
+            ignored_next_char = "[%w%.%{%[%(%\"%']",
+        },
     },
     { "lambdalisue/suda.vim", keys = { { "w!!", "SudaWrite", mode = "ca" } }, lazy = false },
 
