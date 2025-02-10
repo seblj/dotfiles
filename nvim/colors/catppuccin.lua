@@ -417,4 +417,7 @@ highlight({
 
     SnacksPicker = { link = "Normal" },
     SnacksPickerBorder = { fg = c.color2 },
+
+    BlinkCmpMenuBorder = { link = "FloatBorder" },
+    BlinkCmpDocBorder = { link = "FloatBorder" },
 })
