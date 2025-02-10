@@ -1,5 +1,6 @@
 return {
     "folke/snacks.nvim",
+    priority = 1000,
     config = function()
         local idx = 1
         local preferred = {
@@ -8,6 +9,7 @@ return {
         }
 
         require("snacks").setup({
+            -- bigfile = { enabled = true },
             picker = {
                 ui_select = false,
                 win = {

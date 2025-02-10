@@ -72,16 +72,3 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt.formatoptions:remove("r")
     end,
 })
-
-vim.api.nvim_create_autocmd("FileType", {
-    group = group,
-    pattern = "bigfile",
-    callback = function(ev)
-        vim.notify("Big file detected")
-
-        local ft = vim.filetype.match({ buf = ev.buf }) or ""
-        vim.schedule(function()
-            vim.bo[ev.buf].syntax = ft
-        end)
-    end,
-})
